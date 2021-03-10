@@ -9,9 +9,6 @@ interface Props {
   };
 }
 
-{
-}
-
 const IndexPage: NextPage<Props> = ({ launch }) => {
   const date = new Date(launch.timestamp);
   return (
