@@ -1,38 +1,34 @@
-import { GetServerSideProps, NextPage } from 'next';
+import { Button, PageWithHeader, TopNav, Box, Image } from 'bumbag';
 
-interface Props {
-  launch: {
-    mission: string;
-    site: string;
-    timestamp: number;
-    rocket: string;
-  };
-}
-
-const IndexPage: NextPage<Props> = ({ launch }) => {
-  const date = new Date(launch.timestamp);
+export default function HomePage(): JSX.Element {
   return (
-    <main>
-      <h1>Next SpaceX Launch: {launch.mission}</h1>
-      <p>
-        {launch.rocket} will take off from {launch.site} on {date.toDateString()}
-      </p>
-    </main>
+    <PageWithHeader
+      sticky
+      header={
+        <TopNav>
+          <TopNav.Section>
+            <TopNav.Item href="https://bumbag.style" fontWeight="semibold">
+              <Image src="/logo.png" height="44px" />
+            </TopNav.Item>
+            <TopNav.Item href="#">Get started</TopNav.Item>
+            <TopNav.Item href="#">Components</TopNav.Item>
+          </TopNav.Section>
+          <TopNav.Section marginRight="major-2">
+            <TopNav.Item>
+              <Button variant="ghost" palette="primary">
+                Sign up
+              </Button>
+            </TopNav.Item>
+            <TopNav.Item>
+              <Button palette="primary">Login</Button>
+            </TopNav.Item>
+          </TopNav.Section>
+        </TopNav>
+      }
+      border="default"
+      overrides={{ PageWithHeader: { styles: { base: { minHeight: 'unset' } } } }}
+    >
+      <Box padding="major-2">Hello world</Box>
+    </PageWithHeader>
   );
-};
-export default IndexPage;
-
-export const getServerSideProps: GetServerSideProps<Props> = async () => {
-  const response = await fetch('https://api.spacexdata.com/v3/launches/next');
-  const nextLaunch = await response.json();
-  return {
-    props: {
-      launch: {
-        mission: nextLaunch.mission_name,
-        site: nextLaunch.launch_site.site_name_long,
-        timestamp: nextLaunch.launch_date_unix * 1000,
-        rocket: nextLaunch.rocket.rocket_name,
-      },
-    },
-  };
-};
+}

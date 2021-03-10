@@ -11,6 +11,8 @@
     "postinstall": "husky install"
   },
   "dependencies": {
+    "bumbag": "^1.8.0",
+    "bumbag-server": "^1.7.2",
     "next": "10.0.8",
     "react": "17.0.1",
     "react-dom": "17.0.1"
