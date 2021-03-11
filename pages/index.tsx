@@ -1,4 +1,15 @@
-import { Button, PageWithHeader, TopNav, Box, Image } from 'bumbag';
+import {
+  Box,
+  PageContent,
+  useColorMode,
+  Stack,
+  Text,
+  Set,
+  Button,
+  PageWithHeader,
+  TopNav,
+  Image,
+} from 'bumbag';
 
 export default function HomePage(): JSX.Element {
   return (
@@ -25,10 +36,74 @@ export default function HomePage(): JSX.Element {
           </TopNav.Section>
         </TopNav>
       }
-      border="default"
-      overrides={{ PageWithHeader: { styles: { base: { minHeight: 'unset' } } } }}
     >
       <Box padding="major-2">Hello world</Box>
+      <Box>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+        </PageContent>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+          <Example />
+        </PageContent>
+      </Box>
+      <Box>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+        </PageContent>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+          <Example />
+        </PageContent>
+      </Box>
+      <Box>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+        </PageContent>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+          <Example />
+        </PageContent>
+      </Box>
+      <Box>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+        </PageContent>
+        <PageContent>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+          ut labore et dolore magna aliqua. Arcu bibendum at varius vel. Volutpat sed cras ornare
+          arcu dui. Faucibus scelerisque eleifend donec pretium vulputate sapien nec.
+          <Example />
+        </PageContent>
+      </Box>
     </PageWithHeader>
+  );
+}
+
+function Example(): JSX.Element {
+  const { colorMode, setColorMode } = useColorMode();
+
+  return (
+    <Stack>
+      <Text>Current mode: {colorMode}</Text>
+      <Set>
+        <Button onClick={() => setColorMode('default')}>Light</Button>
+        <Button onClick={() => setColorMode('dark')}>Dark</Button>
+      </Set>
+    </Stack>
   );
 }
