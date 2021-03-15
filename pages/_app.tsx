@@ -1,5 +1,6 @@
 import NextApp from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
+import Page from '../components/Page';
 
 export default class App extends NextApp {
   render(): JSX.Element {
@@ -7,7 +8,9 @@ export default class App extends NextApp {
 
     return (
       <ChakraProvider>
-        <Component {...pageProps} />
+        <Page>
+          <Component {...pageProps} />
+        </Page>
       </ChakraProvider>
     );
   }
