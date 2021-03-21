@@ -24,16 +24,16 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   {
-    label: 'Inspiration',
+    label: 'Contests',
     children: [
       {
-        label: 'Explore Design Work',
-        subLabel: 'Trending Design to inspire you',
+        label: 'NFL Over Under 2021',
+        subLabel: 'Open',
         href: '#',
       },
       {
-        label: 'New & Noteworthy',
-        subLabel: 'Up-and-coming Designers',
+        label: 'NBA Over Under 2021',
+        subLabel: 'Coming Soon!',
         href: '#',
       },
     ],
@@ -54,11 +54,7 @@ export const NAV_ITEMS: NavItem[] = [
     ],
   },
   {
-    label: 'Learn Design',
-    href: '#',
-  },
-  {
-    label: 'Hire Designers',
+    label: 'Profile',
     href: '#',
   },
 ];
@@ -106,15 +102,16 @@ export default function Nav(): JSX.Element {
         </Flex>
 
         <Stack flex={{ base: 1, md: 0 }} justify={'flex-end'} direction={'row'} spacing={6}>
-          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
+          <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'login'}>
             Sign In
           </Button>
           <Button
+            as={'a'}
             display={{ base: 'none', md: 'inline-flex' }}
             fontSize={'sm'}
             fontWeight={600}
             color={'white'}
-            href={'#'}
+            href={'signup'}
           >
             Sign Up
           </Button>
