@@ -35,7 +35,7 @@ const avatars = [
   },
 ];
 
-export default function JoinOurTeam(): JSX.Element {
+export default function SignUpPage(): JSX.Element {
   const size = useBreakpointValue({ base: 'md', md: 'lg' });
   return (
     <Box position={'relative'}>
