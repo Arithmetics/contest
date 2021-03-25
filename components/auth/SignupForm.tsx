@@ -3,6 +3,7 @@ import {
   Button,
   FormControl,
   FormLabel,
+  FormErrorMessage,
   Heading,
   Input,
   InputGroup,
@@ -12,7 +13,33 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+const schema = yup.object().shape({
+  email: yup.string().email().required('Email is required'),
+  realName: yup.string().required('Your real name is required'),
+  userName: yup
+    .string()
+    .min(2, 'Must be at least 2 characters')
+    .required('Display name is required'),
+  password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
+});
+
+type LoginFormInputs = {
+  email: string;
+  realName: string;
+  userName: string;
+  password: string;
+};
+
 export default function SignupForm(): JSX.Element {
+  const { register, handleSubmit, errors } = useForm<LoginFormInputs>({
+    mode: 'onBlur',
+    resolver: yupResolver(schema),
+  });
+
   const submitCreateAcccount = (): void => {
     console.log('submit');
   };
@@ -38,9 +65,16 @@ export default function SignupForm(): JSX.Element {
       </Stack>
       <Box as={'form'} mt={10}>
         <Stack spacing={4}>
-          <FormControl id="email" isRequired>
+          <FormControl
+            id="email"
+            isRequired
+            isInvalid={!!errors?.email?.message}
+            errortext={errors?.email?.message}
+          >
             <FormLabel color={'gray.500'}>Email</FormLabel>
             <Input
+              ref={register}
+              name="email"
               bg={'gray.100'}
               border={0}
               color={'gray.500'}
@@ -48,31 +82,52 @@ export default function SignupForm(): JSX.Element {
               _placeholder={{ color: 'gray.500' }}
               placeholder="For login and contact"
             />
+            <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl id="name" isRequired>
+          <FormControl
+            id="realName"
+            isRequired
+            isInvalid={!!errors?.realName?.message}
+            errortext={errors?.realName?.message}
+          >
             <FormLabel color={'gray.500'}>Real Name</FormLabel>
             <Input
+              ref={register}
+              name="realName"
               bg={'gray.100'}
               border={0}
               color={'gray.500'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="I need this for payment"
             />
+            <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl id="username" isRequired>
+          <FormControl
+            id="userName"
+            isRequired
+            isInvalid={!!errors?.userName?.message}
+            errortext={errors?.userName?.message}
+          >
             <FormLabel color={'gray.500'}>Display Name</FormLabel>
             <Input
+              ref={register}
+              name="userName"
               bg={'gray.100'}
               border={0}
               color={'gray.500'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="Everyone else will see this"
             />
+            <FormErrorMessage>{errors?.userName?.message}</FormErrorMessage>
           </FormControl>
 
-          <PasswordInput />
+          <PasswordInput
+            register={register}
+            isInvalid={!!errors?.password?.message}
+            errorText={errors?.password?.message}
+          />
         </Stack>
         <Button
           fontFamily={'heading'}
@@ -84,7 +139,8 @@ export default function SignupForm(): JSX.Element {
             bgGradient: 'linear(to-r, red.400,pink.400)',
             boxShadow: 'xl',
           }}
-          onClick={submitCreateAcccount}
+          onClick={handleSubmit(submitCreateAcccount)}
+          disabled={!!errors.email || !!errors.password || !!errors.realName || !!errors.userName}
         >
           Submit
         </Button>
@@ -93,15 +149,24 @@ export default function SignupForm(): JSX.Element {
   );
 }
 
-function PasswordInput(): JSX.Element {
+type PasswordInputProps = {
+  isInvalid: boolean;
+  errorText: string | undefined;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: any;
+};
+
+function PasswordInput({ isInvalid, errorText, register }: PasswordInputProps): JSX.Element {
   const [show, setShow] = useState(false);
   const handleClick = (): void => setShow(!show);
 
   return (
-    <FormControl id="name" isRequired>
+    <FormControl id="name" isRequired isInvalid={isInvalid} errortext={errorText}>
       <FormLabel color={'gray.500'}>Password</FormLabel>
       <InputGroup size="md">
         <Input
+          name="password"
+          ref={register}
           pr="4.5rem"
           type={show ? 'text' : 'password'}
           bg={'gray.100'}
@@ -120,6 +185,7 @@ function PasswordInput(): JSX.Element {
           </Button>
         </InputRightElement>
       </InputGroup>
+      <FormErrorMessage>{errorText}</FormErrorMessage>
     </FormControl>
   );
 }
