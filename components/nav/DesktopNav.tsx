@@ -14,7 +14,7 @@ import { NAV_ITEMS } from './Nav';
 export default function DesktopNav(): JSX.Element {
   const linkColor = useColorModeValue('gray.600', 'gray.200');
   const hoverColor = useColorModeValue('gray.800', 'white');
-  const popoverColor = useColorModeValue('white', 'gray.800');
+  const popoverColor = useColorModeValue('white', 'gray.700');
 
   return (
     <Stack direction={'row'} spacing={4}>

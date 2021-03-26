@@ -133,10 +133,10 @@ export default function SignupForm(): JSX.Element {
           fontFamily={'heading'}
           mt={8}
           w={'full'}
-          bgGradient="linear(to-r, red.400,pink.400)"
+          bgGradient="linear(to-r, red.400,red.600)"
           color={'white'}
           _hover={{
-            bgGradient: 'linear(to-r, red.400,pink.400)',
+            bgGradient: 'linear(to-r, red.400,red.600)',
             boxShadow: 'xl',
           }}
           onClick={handleSubmit(submitCreateAcccount)}
