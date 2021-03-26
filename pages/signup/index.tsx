@@ -1,7 +1,6 @@
 import {
   Avatar,
   AvatarGroup,
-  Box,
   Container,
   Flex,
   Heading,
