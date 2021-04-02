@@ -5,5 +5,26 @@ const config: ThemeConfig = {
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
+const theme = extendTheme({
+  config,
+  components: {
+    Button: {
+      variants: {
+        'with-shadow': {
+          bg: 'red.400',
+          boxShadow: '0 0 2px 2px #efdfde',
+        },
+        'red-gradient': {
+          fontFamily: 'heading',
+          bgGradient: 'linear(to-r, red.400,red.600)',
+          color: 'white',
+          _hover: {
+            bgGradient: 'linear(to-r, red.400,red.600)',
+            boxShadow: 'xl',
+          },
+        },
+      },
+    },
+  },
+});
 export default theme;
