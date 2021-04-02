@@ -7,6 +7,9 @@ const config: ThemeConfig = {
 
 const theme = extendTheme({
   config,
+  shadows: {
+    outline: '#fff',
+  },
   components: {
     Button: {
       variants: {

@@ -12,9 +12,13 @@ import {
   IconButton,
   CloseButton,
   Avatar,
+  Tabs,
+  Tab,
+  TabList,
 } from '@chakra-ui/react';
-import { AiOutlineMenu, AiFillHome, AiOutlineInbox } from 'react-icons/ai';
-import { BsFillCameraVideoFill } from 'react-icons/bs';
+import { AiOutlineMenu } from 'react-icons/ai';
+import { IoIosBasketball } from 'react-icons/io';
+import { GiAmericanFootballHelmet, GiAmericanFootballBall } from 'react-icons/gi';
 
 export default function Dsll(): JSX.Element {
   const mobileNav = useDisclosure();
@@ -44,7 +48,7 @@ export default function Dsll(): JSX.Element {
                 p={2}
                 pb={4}
                 m={2}
-                bg="gray.800"
+                bg="gray.900"
                 spacing={3}
                 rounded="sm"
                 shadow="sm"
@@ -54,38 +58,69 @@ export default function Dsll(): JSX.Element {
                   justifySelf="self-start"
                   onClick={mobileNav.onClose}
                 />
-                <Button w="full" variant="ghost" href="#" leftIcon={<AiFillHome />}>
-                  Dashboard
+                <Button w="full" variant="ghost" href="#" leftIcon={<GiAmericanFootballBall />}>
+                  NFL ATS
                 </Button>
-                <Button w="full" variant="ghost" href="#" leftIcon={<AiOutlineInbox />}>
-                  Inbox
+                <Button w="full" variant="ghost" href="#" leftIcon={<GiAmericanFootballHelmet />}>
+                  NFL Over Under
                 </Button>
-                <Button w="full" variant="ghost" href="#" leftIcon={<BsFillCameraVideoFill />}>
-                  Videos
+                <Button w="full" variant="ghost" href="#" leftIcon={<IoIosBasketball />}>
+                  NBA Over Under
                 </Button>
               </VStack>
             </Box>
-            <chakra.a href="/" title="Choc Home Page" display="flex" alignItems="center">
+            <chakra.a href="/" title="Home page" display="flex" alignItems="center">
               Logo
             </chakra.a>
 
             <HStack spacing={3} display={{ base: 'none', md: 'inline-flex' }}>
-              <Button variant="ghost" href="#" leftIcon={<AiFillHome />} size="sm">
-                Dashboard
+              <Button variant="ghost" href="#" leftIcon={<GiAmericanFootballBall />} size="sm">
+                NFL ATS
               </Button>
-              <Button variant="ghost" href="#" leftIcon={<AiOutlineInbox />} size="sm">
-                Inbox
+              <Button
+                variant="solid"
+                colorScheme="teal"
+                href="#"
+                leftIcon={<GiAmericanFootballHelmet />}
+                size="sm"
+              >
+                NFL Over Under
               </Button>
-              <Button variant="ghost" href="#" leftIcon={<BsFillCameraVideoFill />} size="sm">
-                Videos
+              <Button variant="ghost" href="#" leftIcon={<IoIosBasketball />} size="sm">
+                NBA Over Under
               </Button>
             </HStack>
           </HStack>
           <HStack spacing={3} display={mobileNav.isOpen ? 'none' : 'flex'} alignItems="center">
             <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+            <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'login'}>
+              Sign In
+            </Button>
+            <Button as={'a'} fontSize={'sm'} fontWeight={600} color={'white'} href={'signup'}>
+              Sign Up
+            </Button>
           </HStack>
         </Flex>
       </chakra.header>
+      <Flex alignItems="center" justifyContent="center" mx={2} borderWidth={0} overflowX="auto">
+        <Tabs defaultIndex={1} borderBottomColor="transparent" colorScheme="teal">
+          <TabList>
+            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+              Make Picks
+            </Tab>
+            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+              Leaderboard
+            </Tab>
+            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+              Rules
+            </Tab>
+            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+              Tracker
+            </Tab>
+          </TabList>
+        </Tabs>
+        {/* <Spacer /> */}
+      </Flex>
     </>
   );
 }

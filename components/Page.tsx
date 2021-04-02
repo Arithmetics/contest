@@ -1,6 +1,7 @@
 import { Box } from '@chakra-ui/react';
 // import Nav from './nav/Nav';
 import NewNav from './nav/NewNav';
+// import NewDrop from './nav/NewDrop';
 
 interface PageProps {
   children?: React.ReactNode;
