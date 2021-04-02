@@ -87,7 +87,7 @@ export default function Nav(): JSX.Element {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
+        <Flex flex={{ base: 1 }} justify={{ base: 'start', md: 'start' }}>
           <Text
             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
@@ -105,14 +105,7 @@ export default function Nav(): JSX.Element {
           <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'login'}>
             Sign In
           </Button>
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            href={'signup'}
-          >
+          <Button as={'a'} fontSize={'sm'} fontWeight={600} color={'white'} href={'signup'}>
             Sign Up
           </Button>
         </Stack>
