@@ -5,25 +5,15 @@ import {
   Box,
   Flex,
   useColorModeValue,
-  VisuallyHidden,
   HStack,
   Button,
   useDisclosure,
   VStack,
   IconButton,
   CloseButton,
-  InputGroup,
-  InputLeftElement,
-  Input,
   Avatar,
 } from '@chakra-ui/react';
-import {
-  AiOutlineMenu,
-  AiFillHome,
-  AiOutlineInbox,
-  AiOutlineSearch,
-  AiFillBell,
-} from 'react-icons/ai';
+import { AiOutlineMenu, AiFillHome, AiOutlineInbox } from 'react-icons/ai';
 import { BsFillCameraVideoFill } from 'react-icons/bs';
 
 export default function Dsll(): JSX.Element {
