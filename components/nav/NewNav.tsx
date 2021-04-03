@@ -117,6 +117,9 @@ export default function Dsll(): JSX.Element {
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
               Tracker
             </Tab>
+            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+              History
+            </Tab>
           </TabList>
         </Tabs>
         {/* <Spacer /> */}
