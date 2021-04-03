@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 7777",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 7777",
     "type-check": "tsc --project tsconfig.json --pretty --noEmit",
     "lint": "eslint --ext js,jsx,ts,tsx --fix",
     "postinstall": "husky install"
@@ -16,6 +16,7 @@
     "@emotion/react": "^11.1.5",
     "@emotion/styled": "^11.1.5",
     "@hookform/resolvers": "2.0.0-beta.3",
+    "dotenv": "^8.2.0",
     "framer-motion": "^3.10.2",
     "next": "10.0.8",
     "react": "17.0.2",
