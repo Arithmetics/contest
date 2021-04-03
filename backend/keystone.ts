@@ -22,12 +22,24 @@ const auth = createAuth({
   identityField: 'email',
   secretField: 'password',
   initFirstItem: {
-    fields: ['name', 'email', 'password'],
+    fields: ['name', 'username', 'email', 'password'],
   },
 });
 
+const frontendUrl = process.env.FRONTEND_URL;
+
+if (!frontendUrl) {
+  throw new Error(`Where's your FRONTEND_URL dude`);
+}
+
 export default auth.withAuth(
   config({
+    server: {
+      cors: {
+        origin: [frontendUrl],
+        credentials: true,
+      },
+    },
     db: {
       adapter: 'prisma_postgresql',
       url: process.env.DATABASE_URL || 'postgres://localhost:5432/contest',
@@ -41,7 +53,7 @@ export default auth.withAuth(
         maxAge: sessionMaxAge,
         secret: sessionSecret,
       }),
-      { User: 'name' }
+      { User: `id` }
     ),
   })
 );
