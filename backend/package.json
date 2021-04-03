@@ -5,10 +5,12 @@
   "scripts": {
     "dev": "keystone-next dev",
     "start": "keystone-next start",
-    "build": "keystone-next build"
+    "build": "keystone-next build",
+    "seed-data": "keystone-next --seed-data"
   },
   "dependencies": {
     "@keystone-next/auth": "^19.0.0",
+    "@keystone-next/cloudinary": "^3.0.5",
     "@keystone-next/fields": "^5.3.0",
     "@keystone-next/fields-document": "^3.2.0",
     "@keystone-next/keystone": "^14.0.0",

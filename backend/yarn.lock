@@ -587,6 +587,23 @@
     "fast-deep-equal" "^3.1.3"
     "graphql" "^15.5.0"
 
+"@keystone-next/cloudinary@^3.0.5":
+  "integrity" "sha512-0O+x0E3mTgZmP7ZI+m2ZC3sAJVsvZZ3uIqfLp3z0AkpywbzgxCvgZfUIeWC052OXzI9J3TsGE/tq8XY0zACVrA=="
+  "resolved" "https://registry.npmjs.org/@keystone-next/cloudinary/-/cloudinary-3.0.5.tgz"
+  "version" "3.0.5"
+  dependencies:
+    "@babel/runtime" "^7.13.10"
+    "@keystone-next/admin-ui" "^12.0.0"
+    "@keystone-next/fields-cloudinary-image-legacy" "^4.0.0"
+    "@keystone-next/file-adapters-legacy" "^8.0.0"
+    "@keystone-next/types" "^15.0.1"
+    "@keystone-ui/button" "^3.0.1"
+    "@keystone-ui/core" "^2.0.2"
+    "@keystone-ui/fields" "^2.0.2"
+    "@keystone-ui/pill" "^2.0.1"
+    "@types/react" "^17.0.3"
+    "react" "^17.0.2"
+
 "@keystone-next/fields-auto-increment-legacy@^9.0.0":
   "integrity" "sha512-5duplH15DLJyg2BWXSHHzuA+WlEEOBHmXJwmj+78PNgGG+NLJHq5XAhcBSHXNRQl8JGOrx4z3LeUDetucVC1EQ=="
   "resolved" "https://registry.yarnpkg.com/@keystone-next/fields-auto-increment-legacy/-/fields-auto-increment-legacy-9.0.0.tgz"
@@ -595,6 +612,15 @@
     "@babel/runtime" "^7.13.10"
     "@keystone-next/adapter-knex-legacy" "^13.2.3"
     "@keystone-next/adapter-prisma-legacy" "^4.0.1"
+    "@keystone-next/fields-legacy" "^24.0.0"
+
+"@keystone-next/fields-cloudinary-image-legacy@^4.0.0":
+  "integrity" "sha512-VbF/NVlLDK8rWpHNwN0tRQcvU6tXBFFS/QZyfm3nf5aMt/QMQjOIp+D05udP5D0foqHgOIDizVtnus0/Mq/LfQ=="
+  "resolved" "https://registry.npmjs.org/@keystone-next/fields-cloudinary-image-legacy/-/fields-cloudinary-image-legacy-4.0.0.tgz"
+  "version" "4.0.0"
+  dependencies:
+    "@keystone-next/adapter-knex-legacy" "^13.2.3"
+    "@keystone-next/adapter-mongoose-legacy" "^11.1.3"
     "@keystone-next/fields-legacy" "^24.0.0"
 
 "@keystone-next/fields-document@^3.2.0":
@@ -702,6 +728,14 @@
     "fast-deep-equal" "^3.1.3"
     "intersection-observer" "^0.12.0"
     "react" "^17.0.2"
+
+"@keystone-next/file-adapters-legacy@^8.0.0":
+  "integrity" "sha512-CF+r7dEmbX5iyY/olot1tnBFzFGKWZPiEWTe5DbBRWJaQXbYlNoIkqcHS6q+ShggsgW21c+XB0BmBQhXA6Ax2g=="
+  "resolved" "https://registry.npmjs.org/@keystone-next/file-adapters-legacy/-/file-adapters-legacy-8.0.0.tgz"
+  "version" "8.0.0"
+  dependencies:
+    "cloudinary" "^1.25.1"
+    "mkdirp" "^1.0.4"
 
 "@keystone-next/keystone-legacy@^22.0.0":
   "integrity" "sha512-A9SFHN+3OECaO9Opm1U7nQ8hGkgniRRba5hhXYiSW3g+fCQiTtBciPztgAfiUHiptcxOTsonqnOvryrHgnje5w=="
@@ -2651,6 +2685,21 @@
   "resolved" "https://registry.yarnpkg.com/clipboard-copy/-/clipboard-copy-4.0.1.tgz"
   "version" "4.0.1"
 
+"cloudinary-core@^2.10.2":
+  "integrity" "sha512-ZRnpjSgvx+LbSf+aEz5NKzxDB4Z0436aY/0BSDa90kAHiwAyd84VyEi95I74SE80e15Ri9t5S2xtksTXpzk9Xw=="
+  "resolved" "https://registry.npmjs.org/cloudinary-core/-/cloudinary-core-2.11.3.tgz"
+  "version" "2.11.3"
+
+"cloudinary@^1.25.1":
+  "integrity" "sha512-8iyMyOrRhRudJabdNc34GU/Vnr/ltDRq8gmkwQ4NpuJ1lD5Qw88DJGBNeODZnGSNXIPTLln708gsADVKe0AQMw=="
+  "resolved" "https://registry.npmjs.org/cloudinary/-/cloudinary-1.25.1.tgz"
+  "version" "1.25.1"
+  dependencies:
+    "cloudinary-core" "^2.10.2"
+    "core-js" "3.6.5"
+    "lodash" "^4.17.11"
+    "q" "^1.5.1"
+
 "collection-visit@^1.0.0":
   "integrity" "sha1-S8A3PBZLwykbTTaMgpzxqApZ3KA="
   "resolved" "https://registry.yarnpkg.com/collection-visit/-/collection-visit-1.0.0.tgz"
@@ -2803,6 +2852,11 @@
   "integrity" "sha512-MQx/7TLgmmDVamSyfE+O+5BHvG1aUGj/gHhLn1wVtm2B5u1eVIPvh7vkfjwWKNCjrTJB8+He99IntSQ1qP+vYQ=="
   "resolved" "https://registry.yarnpkg.com/core-js/-/core-js-3.10.0.tgz"
   "version" "3.10.0"
+
+"core-js@3.6.5":
+  "integrity" "sha512-vZVEEwZoIsI+vPEuoF9Iqf5H7/M3eeQqWlQnYa8FSKKePuYTf5MWnxb5SDAzCa60b3JBRS5g9b+Dq7b1y/RCrA=="
+  "resolved" "https://registry.npmjs.org/core-js/-/core-js-3.6.5.tgz"
+  "version" "3.6.5"
 
 "core-util-is@~1.0.0":
   "integrity" "sha1-tf1UIgqivFq1eqtxQMlAdUUDwac="
@@ -4831,7 +4885,7 @@
   "resolved" "https://registry.yarnpkg.com/lodash.union/-/lodash.union-4.6.0.tgz"
   "version" "4.6.0"
 
-"lodash@^4.17.13", "lodash@^4.17.15", "lodash@^4.17.19", "lodash@^4.17.21", "lodash@^4.17.4":
+"lodash@^4.17.11", "lodash@^4.17.13", "lodash@^4.17.15", "lodash@^4.17.19", "lodash@^4.17.21", "lodash@^4.17.4", "lodash@>=4.0":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
@@ -6116,6 +6170,11 @@
   "integrity" "sha1-llOgNvt8HuQjQvIyXM7v6jkmxI0="
   "resolved" "https://registry.yarnpkg.com/punycode/-/punycode-1.3.2.tgz"
   "version" "1.3.2"
+
+"q@^1.5.1":
+  "integrity" "sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc="
+  "resolved" "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
+  "version" "1.5.1"
 
 "qs@6.7.0":
   "integrity" "sha512-VCdBRNFTX1fyE7Nb6FYoURo/SPe62QCaAyzJvUjwRaIsc+NePBEniHlvxFmmX56+HZphIGtV0XeCirBtpDrTyQ=="
