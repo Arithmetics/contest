@@ -15,7 +15,7 @@ if (!sessionSecret) {
   }
 }
 
-let sessionMaxAge = 60 * 60 * 24 * 30; // 30 days
+const sessionMaxAge = 60 * 60 * 24 * 30; // 30 days
 
 const auth = createAuth({
   listKey: 'User',
@@ -30,7 +30,7 @@ export default auth.withAuth(
   config({
     db: {
       adapter: 'prisma_postgresql',
-      url: process.env.DATABASE_URL || 'postgres://xxxxlocalhost:5432/contest',
+      url: process.env.DATABASE_URL || 'postgres://localhost:5432/contest',
     },
     ui: {
       isAccessAllowed: (context) => !!context.session?.data,

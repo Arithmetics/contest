@@ -10,6 +10,7 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import ButtonLink from '../components/ButtonLink';
 
 export default function HomePage(): JSX.Element {
   return <SocialProfileWithImage />;
@@ -65,6 +66,7 @@ function SocialProfileWithImage(): JSX.Element {
               <Text fontSize={'sm'} color={'gray.500'}>
                 Other bets
               </Text>
+              <ButtonLink title="test" href="/login" />
             </Stack>
           </Stack>
 

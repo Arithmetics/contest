@@ -20,7 +20,9 @@ import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';
 import { GiAmericanFootballHelmet, GiAmericanFootballBall } from 'react-icons/gi';
 
-export default function Dsll(): JSX.Element {
+import ButtonLink from '../ButtonLink';
+
+export default function NewNav(): JSX.Element {
   const mobileNav = useDisclosure();
 
   return (
@@ -93,12 +95,9 @@ export default function Dsll(): JSX.Element {
           </HStack>
           <HStack spacing={3} display={mobileNav.isOpen ? 'none' : 'flex'} alignItems="center">
             <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-            <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'login'}>
-              Sign In
-            </Button>
-            <Button as={'a'} fontSize={'sm'} fontWeight={600} color={'white'} href={'signup'}>
-              Sign Up
-            </Button>
+            <ButtonLink title="Login" href="/login" />
+
+            <ButtonLink title="Sign Up" href="/signup" />
           </HStack>
         </Flex>
       </chakra.header>
