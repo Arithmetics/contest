@@ -12,10 +12,28 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useState } from 'react';
+import gql from 'graphql-tag';
+import { useMutation } from '@apollo/client';
 
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+const SIGNUP_MUTATION = gql`
+  mutation SIGNUP_MUTATION(
+    $email: String!
+    $name: String!
+    $userName: String!
+    $password: String!
+  ) {
+    createUser(data: { email: $email, password: $password, name: $name, userName: $userName }) {
+      id
+      email
+      name
+      userName
+    }
+  }
+`;
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Email is required'),
@@ -27,7 +45,7 @@ const schema = yup.object().shape({
   password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
 });
 
-type LoginFormInputs = {
+type SignupFormInputs = {
   email: string;
   realName: string;
   userName: string;
@@ -35,13 +53,27 @@ type LoginFormInputs = {
 };
 
 export default function SignupForm(): JSX.Element {
-  const { register, handleSubmit, errors } = useForm<LoginFormInputs>({
+  const { register, handleSubmit, errors } = useForm<SignupFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const submitCreateAcccount = (): void => {
-    console.log('submit');
+  const [signup, { data, loading }] = useMutation(SIGNUP_MUTATION);
+  console.log(data, loading);
+
+  const submitCreateAccount = async (data: SignupFormInputs): Promise<void> => {
+    console.log(data);
+
+    const res = await signup({
+      variables: {
+        email: data.email,
+        password: data.password,
+        name: data.realName,
+        userName: data.userName,
+      },
+    });
+
+    console.log(res);
   };
   return (
     <Stack
@@ -139,7 +171,7 @@ export default function SignupForm(): JSX.Element {
             bgGradient: 'linear(to-r, red.400,red.600)',
             boxShadow: 'xl',
           }}
-          onClick={handleSubmit(submitCreateAcccount)}
+          onClick={handleSubmit(submitCreateAccount)}
           disabled={!!errors.email || !!errors.password || !!errors.realName || !!errors.userName}
         >
           Submit

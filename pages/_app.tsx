@@ -1,27 +1,47 @@
-import NextApp from 'next/app';
+import NextApp, { AppInitialProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import Router from 'next/router';
 import NProgress from 'nprogress';
+import { ApolloProvider } from '@apollo/client';
 
 import '../components/nprogress.css';
 
 import Page from '../components/Page';
 import theme from '../theme';
+import withData from '../lib/withData';
+import { ParsedUrlQuery } from 'node:querystring';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
 Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
-
-export default class App extends NextApp {
+class App extends NextApp {
   render(): JSX.Element {
-    const { Component, pageProps } = this.props;
-
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { Component, pageProps, apollo } = this.props;
     return (
-      <ChakraProvider theme={theme}>
-        <Page>
-          <Component {...pageProps} />
-        </Page>
-      </ChakraProvider>
+      <ApolloProvider client={apollo}>
+        <ChakraProvider theme={theme}>
+          <Page>
+            <Component {...pageProps} />
+          </Page>
+        </ChakraProvider>
+      </ApolloProvider>
     );
   }
 }
+
+type MyPageProps = {
+  query?: ParsedUrlQuery;
+};
+
+App.getInitialProps = async function ({ Component, ctx }): Promise<AppInitialProps> {
+  let pageProps: MyPageProps = {};
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+  pageProps.query = ctx.query;
+  return { pageProps };
+};
+
+export default withData(App);

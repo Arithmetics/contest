@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   chakra,
   Box,
@@ -21,9 +19,16 @@ import { IoIosBasketball } from 'react-icons/io';
 import { GiAmericanFootballHelmet, GiAmericanFootballBall } from 'react-icons/gi';
 
 import ButtonLink from '../ButtonLink';
+import ChakraLink from '../ChakraLink';
+import LogOut from '../auth/LogOut';
+import { useUser } from '../User';
 
 export default function NewNav(): JSX.Element {
   const mobileNav = useDisclosure();
+
+  const user = useUser();
+
+  console.log(user);
 
   return (
     <>
@@ -71,9 +76,11 @@ export default function NewNav(): JSX.Element {
                 </Button>
               </VStack>
             </Box>
-            <chakra.a href="/" title="Home page" display="flex" alignItems="center">
+            {/* <chakra.a href="/" title="Home page" display="flex" alignItems="center">
               Logo
-            </chakra.a>
+            </chakra.a> */}
+
+            <ChakraLink href="/" title="LOGO" />
 
             <HStack spacing={3} display={{ base: 'none', md: 'inline-flex' }}>
               <Button variant="ghost" href="#" leftIcon={<GiAmericanFootballBall />} size="sm">
@@ -94,10 +101,17 @@ export default function NewNav(): JSX.Element {
             </HStack>
           </HStack>
           <HStack spacing={3} display={mobileNav.isOpen ? 'none' : 'flex'} alignItems="center">
-            <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
-            <ButtonLink title="Login" href="/login" />
-
-            <ButtonLink title="Sign Up" href="/signup" />
+            {user ? (
+              <>
+                <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+                <LogOut />
+              </>
+            ) : (
+              <>
+                <ButtonLink title="Sign Up" href="/signup" />
+                <ButtonLink title="Log In" href="/login" />
+              </>
+            )}
           </HStack>
         </Flex>
       </chakra.header>
@@ -121,7 +135,6 @@ export default function NewNav(): JSX.Element {
             </Tab>
           </TabList>
         </Tabs>
-        {/* <Spacer /> */}
       </Flex>
     </>
   );

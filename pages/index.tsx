@@ -10,9 +10,32 @@ import {
   Text,
   useColorModeValue,
 } from '@chakra-ui/react';
+import gql from 'graphql-tag';
+import { useQuery } from '@apollo/client';
 import ButtonLink from '../components/ButtonLink';
 
+const ALL_CONTESTS_QUERY = gql`
+  query ALL_CONTESTS_QUERY {
+    allContests {
+      id
+      name
+      description
+      status
+      image {
+        id
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+`;
+
+// stopped on video 20
+
 export default function HomePage(): JSX.Element {
+  const { data, error, loading } = useQuery(ALL_CONTESTS_QUERY);
+  console.log({ data, error, loading });
   return <SocialProfileWithImage />;
 }
 
