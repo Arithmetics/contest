@@ -9,15 +9,33 @@ import {
   InputGroup,
   InputRightElement,
   Stack,
+  Spinner,
   Text,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import gql from 'graphql-tag';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { useRouter } from 'next/router';
 
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+
+const CHECK_IF_EMAIL_AVAILABLE_QUERY = gql`
+  query CHECK_IF_EMAIL_AVAILABLE_QUERY($email: String!) {
+    _allUsersMeta(where: { email: $email }) {
+      count
+    }
+  }
+`;
+
+const CHECK_IF_USERNAME_AVAILABLE_QUERY = gql`
+  query CHECK_IF_USERNAME_AVAILABLE_QUERY($userName: String!) {
+    _allUsersMeta(where: { userName: $userName }) {
+      count
+    }
+  }
+`;
 
 const SIGNUP_MUTATION = gql`
   mutation SIGNUP_MUTATION(
@@ -35,16 +53,6 @@ const SIGNUP_MUTATION = gql`
   }
 `;
 
-const schema = yup.object().shape({
-  email: yup.string().email().required('Email is required'),
-  realName: yup.string().required('Your real name is required'),
-  userName: yup
-    .string()
-    .min(2, 'Must be at least 2 characters')
-    .required('Display name is required'),
-  password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
-});
-
 type SignupFormInputs = {
   email: string;
   realName: string;
@@ -53,28 +61,76 @@ type SignupFormInputs = {
 };
 
 export default function SignupForm(): JSX.Element {
-  const { register, handleSubmit, errors } = useForm<SignupFormInputs>({
+  const router = useRouter();
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [userNameLoading, setUserNameLoading] = useState(false);
+
+  const emailAvailQuery = useQuery(CHECK_IF_EMAIL_AVAILABLE_QUERY, {
+    skip: true,
+  });
+
+  const testEmail = async (email?: string): Promise<boolean> => {
+    setEmailLoading(true);
+    const res = await emailAvailQuery.refetch({ email });
+    setEmailLoading(false);
+    console.log('refetched');
+    const count = res?.data?._allUsersMeta?.count;
+    return count === 0;
+  };
+
+  const userNameAvailQuery = useQuery(CHECK_IF_USERNAME_AVAILABLE_QUERY, {
+    skip: true,
+  });
+
+  const testUserName = async (userName?: string): Promise<boolean> => {
+    setUserNameLoading(true);
+    const res = await userNameAvailQuery.refetch({ userName });
+    setUserNameLoading(false);
+    const count = res?.data?._allUsersMeta?.count;
+    return count === 0;
+  };
+
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .email()
+      .required('Email is required')
+      .test('Email available', 'Email is taken', async (email) => await testEmail(email)),
+    realName: yup.string().required('Your real name is required'),
+    userName: yup
+      .string()
+      .min(2, 'Must be at least 2 characters')
+      .required('Display name is required')
+      .test(
+        'UserName available',
+        'Display name is taken',
+        async (userName) => await testUserName(userName)
+      ),
+    password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
+  });
+
+  const { register, handleSubmit, errors, reset } = useForm<SignupFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const [signup, { data, loading }] = useMutation(SIGNUP_MUTATION);
-  console.log(data, loading);
+  const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION);
 
-  const submitCreateAccount = async (data: SignupFormInputs): Promise<void> => {
-    console.log(data);
-
+  const submitCreateAccount = async (formData: SignupFormInputs): Promise<void> => {
     const res = await signup({
       variables: {
-        email: data.email,
-        password: data.password,
-        name: data.realName,
-        userName: data.userName,
+        email: formData.email,
+        password: formData.password,
+        name: formData.realName,
+        userName: formData.userName,
       },
     });
-
-    console.log(res);
+    if (res.data.createUser.id) {
+      reset();
+      router.push('/login');
+    }
   };
+
   return (
     <Stack
       bg={'gray.50'}
@@ -113,8 +169,14 @@ export default function SignupForm(): JSX.Element {
               type="email"
               _placeholder={{ color: 'gray.500' }}
               placeholder="For login and contact"
+              disabled={signupLoading || emailLoading}
             />
-            <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
+            {emailLoading && (
+              <Spinner position="absolute" right={5} top={10} color="red.500" zIndex={300} />
+            )}
+            <FormErrorMessage>
+              {errors?.email?.message || emailAvailQuery.error?.message}
+            </FormErrorMessage>
           </FormControl>
 
           <FormControl
@@ -132,6 +194,7 @@ export default function SignupForm(): JSX.Element {
               color={'gray.500'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="I need this for payment"
+              disabled={signupLoading}
             />
             <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
           </FormControl>
@@ -151,14 +214,21 @@ export default function SignupForm(): JSX.Element {
               color={'gray.500'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="Everyone else will see this"
+              disabled={signupLoading}
             />
-            <FormErrorMessage>{errors?.userName?.message}</FormErrorMessage>
+            {userNameLoading && (
+              <Spinner position="absolute" right={5} top={10} color="red.500" zIndex={300} />
+            )}
+            <FormErrorMessage>
+              {errors?.userName?.message || userNameAvailQuery.error?.message}
+            </FormErrorMessage>
           </FormControl>
 
           <PasswordInput
             register={register}
             isInvalid={!!errors?.password?.message}
             errorText={errors?.password?.message}
+            disabled={signupLoading}
           />
         </Stack>
         <Button
@@ -173,6 +243,7 @@ export default function SignupForm(): JSX.Element {
           }}
           onClick={handleSubmit(submitCreateAccount)}
           disabled={!!errors.email || !!errors.password || !!errors.realName || !!errors.userName}
+          isLoading={signupLoading}
         >
           Submit
         </Button>
@@ -182,13 +253,19 @@ export default function SignupForm(): JSX.Element {
 }
 
 type PasswordInputProps = {
-  isInvalid: boolean;
-  errorText: string | undefined;
+  isInvalid?: boolean;
+  errorText?: string | undefined;
+  disabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: any;
 };
 
-function PasswordInput({ isInvalid, errorText, register }: PasswordInputProps): JSX.Element {
+function PasswordInput({
+  isInvalid,
+  errorText,
+  register,
+  disabled,
+}: PasswordInputProps): JSX.Element {
   const [show, setShow] = useState(false);
   const handleClick = (): void => setShow(!show);
 
@@ -204,6 +281,7 @@ function PasswordInput({ isInvalid, errorText, register }: PasswordInputProps): 
           bg={'gray.100'}
           border={0}
           color={'gray.500'}
+          disabled={disabled}
         />
         <InputRightElement width="4.5rem">
           <Button

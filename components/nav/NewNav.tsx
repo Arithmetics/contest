@@ -28,8 +28,6 @@ export default function NewNav(): JSX.Element {
 
   const user = useUser();
 
-  console.log(user);
-
   return (
     <>
       <chakra.header bg="gray.900" w="full" px={{ base: 2, sm: 4 }} py={4} shadow="md">
