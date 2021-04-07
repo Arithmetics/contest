@@ -113,7 +113,7 @@ export default function NewNav(): JSX.Element {
           </HStack>
         </Flex>
       </chakra.header>
-      <Flex alignItems="center" justifyContent="center" mx={2} borderWidth={0} overflowX="auto">
+      {/* <Flex alignItems="center" justifyContent="center" mx={2} borderWidth={0} overflowX="auto">
         <Tabs defaultIndex={1} borderBottomColor="transparent" colorScheme="teal">
           <TabList>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
@@ -133,7 +133,7 @@ export default function NewNav(): JSX.Element {
             </Tab>
           </TabList>
         </Tabs>
-      </Flex>
+      </Flex> */}
     </>
   );
 }

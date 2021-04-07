@@ -45,7 +45,7 @@ type LoginFormInputs = {
   password: string;
 };
 
-export default function Login(): JSX.Element {
+export default function ForgotPasswordForm(): JSX.Element {
   const { register, handleSubmit, errors } = useForm<LoginFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
