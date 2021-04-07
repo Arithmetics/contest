@@ -17,7 +17,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { CURRENT_USER_QUERY } from '../User';
 
-// const SIGNIN_MUTATION = gql`
+// const _SIGNIN_MUTATION = gql`
 //   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
 //     authenticateUserWithPassword(email: $email, password: $password) {
 //       ... on UserAuthenticationWithPasswordSuccess {
