@@ -6,6 +6,7 @@ import 'dotenv/config';
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
 import { ContestImage } from './schemas/ContestImage';
+import { sendPasswordResetEmail } from './lib/mail';
 
 let sessionSecret = process.env.SESSION_SECRET;
 
@@ -25,6 +26,11 @@ const auth = createAuth({
   secretField: 'password',
   initFirstItem: {
     fields: ['name', 'userName', 'email', 'password'],
+  },
+  passwordResetLink: {
+    async sendToken(args) {
+      await sendPasswordResetEmail(args.token, args.identity);
+    },
   },
 });
 

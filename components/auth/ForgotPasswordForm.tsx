@@ -15,53 +15,36 @@ import gql from 'graphql-tag';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { CURRENT_USER_QUERY } from '../User';
 
-// const _SIGNIN_MUTATION = gql`
-//   mutation SIGNIN_MUTATION($email: String!, $password: String!) {
-//     authenticateUserWithPassword(email: $email, password: $password) {
-//       ... on UserAuthenticationWithPasswordSuccess {
-//         item {
-//           id
-//           email
-//           name
-//           userName
-//         }
-//       }
-//       ... on UserAuthenticationWithPasswordFailure {
-//         code
-//         message
-//       }
-//     }
-//   }
-// `;
+const REQUEST_RESET_MUTATION = gql`
+  mutation REQUEST_RESET_MUTATION($email: String!) {
+    sendUserPasswordResetLink(email: $email) {
+      code
+      message
+    }
+  }
+`;
 
 const schema = yup.object().shape({
-  email: yup.string().required('Enter your email'),
+  email: yup.string().email().required('Enter your email'),
 });
 
 type ForgotPasswordFormInputs = {
   email: string;
 };
 
-export default function Login(): JSX.Element {
+export default function ForgotPasswordForm(): JSX.Element {
   const { register, handleSubmit, errors } = useForm<ForgotPasswordFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  // const [signin, { data, loading }] = useMutation(SIGNIN_MUTATION, {
-  //   refetchQueries: [{ query: CURRENT_USER_QUERY }],
-  // });
-
-  // console.log(loading);
+  const [requestReset, { data, loading }] = useMutation(REQUEST_RESET_MUTATION);
 
   const submitForgotPassword = async (data: ForgotPasswordFormInputs): Promise<void> => {
     console.log(data);
-
-    // const res = await signin({ variables: { email: data.email, password: data.password } });
-
-    // console.log(res);
+    const res = await requestReset({ variables: { email: data.email } });
+    console.log(res);
   };
 
   return (
@@ -97,10 +80,18 @@ export default function Login(): JSX.Element {
         />
         <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
       </FormControl>
-
+      {data?.sendUserPasswordResetLink === null && (
+        <p>Password reset email send. Check your inbox</p>
+      )}
+      {data?.sendUserPasswordResetLink?.message && <p>{data?.sendUserPasswordLink?.message}</p>}
       <Stack spacing={6}>
-        <Button variant="red-gradient" onClick={handleSubmit(submitForgotPassword)}>
-          Submit
+        <Button
+          variant="red-gradient"
+          onClick={handleSubmit(submitForgotPassword)}
+          disabled={loading}
+          isLoading={loading}
+        >
+          Request Reset
         </Button>
       </Stack>
     </Stack>
