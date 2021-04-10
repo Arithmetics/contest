@@ -9,6 +9,7 @@ import {
   Stack,
   Spinner,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import gql from 'graphql-tag';
@@ -61,6 +62,8 @@ type SignupFormInputs = {
 
 export default function SignupForm(): JSX.Element {
   const router = useRouter();
+  const toast = useToast();
+
   const [emailLoading, setEmailLoading] = useState(false);
   const [userNameLoading, setUserNameLoading] = useState(false);
 
@@ -125,6 +128,13 @@ export default function SignupForm(): JSX.Element {
       },
     });
     if (res.data.createUser.id) {
+      toast({
+        title: 'Account created',
+        description: 'Go ahead and log in',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
       reset();
       router.push('/login');
     }

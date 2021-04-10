@@ -10,9 +10,6 @@ import {
   IconButton,
   CloseButton,
   Avatar,
-  Tabs,
-  Tab,
-  TabList,
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';

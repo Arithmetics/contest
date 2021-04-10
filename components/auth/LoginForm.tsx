@@ -8,12 +8,15 @@ import {
   Input,
   Link,
   Stack,
+  useToast,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/router';
+
 import { CURRENT_USER_QUERY } from '../User';
 
 const SIGNIN_MUTATION = gql`
@@ -46,7 +49,10 @@ type LoginFormInputs = {
 };
 
 export default function ForgotPasswordForm(): JSX.Element {
-  const { register, handleSubmit, errors } = useForm<LoginFormInputs>({
+  const router = useRouter();
+  const toast = useToast();
+
+  const { register, handleSubmit, errors, reset } = useForm<LoginFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -55,14 +61,20 @@ export default function ForgotPasswordForm(): JSX.Element {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
-  console.log(loading);
-
   const submitLogin = async (data: LoginFormInputs): Promise<void> => {
-    console.log(data);
-
     const res = await signin({ variables: { email: data.email, password: data.password } });
 
-    console.log(res);
+    if (res.data.authenticateUserWithPassword?.item) {
+      toast({
+        title: 'Signed in',
+        description: 'Welcome back',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      reset();
+      router.push('/');
+    }
   };
 
   return (
@@ -118,7 +130,7 @@ export default function ForgotPasswordForm(): JSX.Element {
           <Link color={'blue.500'}>Forgot password?</Link>
         </Stack>
         <FormLabel color={'red.500'}>{data?.authenticateUserWithPassword?.message}</FormLabel>
-        <Button variant="red-gradient" onClick={handleSubmit(submitLogin)}>
+        <Button variant="red-gradient" onClick={handleSubmit(submitLogin)} isLoading={loading}>
           {/* mt={8} w={'full'} */}
           Sign in
         </Button>

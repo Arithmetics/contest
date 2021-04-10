@@ -1,20 +1,19 @@
 import {
   Button,
-  Checkbox,
   FormControl,
-  FormLabel,
   FormErrorMessage,
   Heading,
   Input,
-  Link,
   Stack,
   Text,
+  useToast,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useRouter } from 'next/router';
 
 const REQUEST_RESET_MUTATION = gql`
   mutation REQUEST_RESET_MUTATION($email: String!) {
@@ -34,17 +33,49 @@ type ForgotPasswordFormInputs = {
 };
 
 export default function ForgotPasswordForm(): JSX.Element {
-  const { register, handleSubmit, errors } = useForm<ForgotPasswordFormInputs>({
+  const toast = useToast();
+  const router = useRouter();
+
+  const { register, handleSubmit, errors, reset } = useForm<ForgotPasswordFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  const [requestReset, { data, loading }] = useMutation(REQUEST_RESET_MUTATION);
+  const [requestReset, { loading }] = useMutation(REQUEST_RESET_MUTATION);
 
   const submitForgotPassword = async (data: ForgotPasswordFormInputs): Promise<void> => {
-    console.log(data);
-    const res = await requestReset({ variables: { email: data.email } });
-    console.log(res);
+    try {
+      const res = await requestReset({ variables: { email: data.email } });
+      if (res.data?.sendUserPasswordResetLink === null) {
+        toast({
+          title: 'Reset email sent',
+          description: 'Check your inbox and click the link in the email.',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        reset();
+        router.push('/login');
+      } else {
+        toast({
+          title: 'Error',
+          description: 'Please refresh and try again.',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+        reset();
+      }
+    } catch (e) {
+      toast({
+        title: 'Error',
+        description: 'Please refresh and try again.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      reset();
+    }
   };
 
   return (
@@ -67,7 +98,6 @@ export default function ForgotPasswordForm(): JSX.Element {
         isInvalid={!!errors?.email?.message}
         errortext={errors?.email?.message}
       >
-        {/* <FormLabel color={'gray.500'}>Email address</FormLabel> */}
         <Input
           placeholder="your-email@example.com"
           _placeholder={{ color: 'gray.500' }}
@@ -80,10 +110,6 @@ export default function ForgotPasswordForm(): JSX.Element {
         />
         <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
       </FormControl>
-      {data?.sendUserPasswordResetLink === null && (
-        <p>Password reset email send. Check your inbox</p>
-      )}
-      {data?.sendUserPasswordResetLink?.message && <p>{data?.sendUserPasswordLink?.message}</p>}
       <Stack spacing={6}>
         <Button
           variant="red-gradient"

@@ -6,6 +6,7 @@ import {
   Input,
   FormErrorMessage,
   FormLabel,
+  useToast,
 } from '@chakra-ui/react';
 import { useMutation } from '@apollo/client';
 import gql from 'graphql-tag';
@@ -38,25 +39,32 @@ type ResetPasswordInputs = {
 
 export default function ResetPasswordForm(): JSX.Element {
   const router = useRouter();
+  const toast = useToast();
   const { token } = router.query;
 
-  const { register, handleSubmit, errors } = useForm<ResetPasswordInputs>({
+  const { register, handleSubmit, errors, reset } = useForm<ResetPasswordInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
   const [resetPassword, { data, loading }] = useMutation(RESET_MUTATION);
 
-  // console.log(loading);
-
   const submitResetPassword = async (data: ResetPasswordInputs): Promise<void> => {
-    console.log(data);
-
     const res = await resetPassword({
       variables: { email: data.email, password: data.password, token },
     });
 
-    console.log(res);
+    if (res.data.authenticateUserWithPassword?.item) {
+      toast({
+        title: 'Password reset',
+        description: 'Go ahead and login with your new password',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      reset();
+      router.push('/login');
+    }
   };
 
   if (!token) {
@@ -101,9 +109,6 @@ export default function ResetPasswordForm(): JSX.Element {
         errorText={errors?.password?.message}
         disabled={loading}
       />
-      {data?.redeemUserPasswordResetToken?.message && (
-        <p>{data?.redeemUserPasswordResetToken?.message}</p>
-      )}
       <Stack spacing={6}>
         <Button
           variant="red-gradient"
