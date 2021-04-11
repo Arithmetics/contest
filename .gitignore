@@ -37,4 +37,5 @@ yarn-error.log*
 
 #me
 *.env
-*/backend/.keystone
+*/backend/.keystone/*
+*/backend/node_modules
