@@ -47,7 +47,7 @@ export default function ResetPasswordForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [resetPassword, { data, loading }] = useMutation(RESET_MUTATION);
+  const [resetPassword, { loading }] = useMutation(RESET_MUTATION);
 
   const submitResetPassword = async (data: ResetPasswordInputs): Promise<void> => {
     const res = await resetPassword({

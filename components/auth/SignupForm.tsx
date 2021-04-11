@@ -119,24 +119,34 @@ export default function SignupForm(): JSX.Element {
   const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION);
 
   const submitCreateAccount = async (formData: SignupFormInputs): Promise<void> => {
-    const res = await signup({
-      variables: {
-        email: formData.email,
-        password: formData.password,
-        name: formData.realName,
-        userName: formData.userName,
-      },
-    });
-    if (res.data.createUser.id) {
+    try {
+      const res = await signup({
+        variables: {
+          email: formData.email,
+          password: formData.password,
+          name: formData.realName,
+          userName: formData.userName,
+        },
+      });
+      if (res.data.createUser.id) {
+        toast({
+          title: 'Account created',
+          description: 'Go ahead and log in',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        reset();
+        router.push('/login');
+      }
+    } catch (e) {
       toast({
-        title: 'Account created',
-        description: 'Go ahead and log in',
+        title: 'Error',
+        description: 'Something went wrong creating your account. Refresh and try again.',
         status: 'success',
         duration: 5000,
         isClosable: true,
       });
-      reset();
-      router.push('/login');
     }
   };
 
@@ -241,15 +251,9 @@ export default function SignupForm(): JSX.Element {
           />
         </Stack>
         <Button
-          fontFamily={'heading'}
+          variant="red-gradient"
           mt={8}
           w={'full'}
-          bgGradient="linear(to-r, red.400,red.600)"
-          color={'white'}
-          _hover={{
-            bgGradient: 'linear(to-r, red.400,red.600)',
-            boxShadow: 'xl',
-          }}
           onClick={handleSubmit(submitCreateAccount)}
           disabled={!!errors.email || !!errors.password || !!errors.realName || !!errors.userName}
           isLoading={signupLoading}

@@ -62,18 +62,28 @@ export default function ForgotPasswordForm(): JSX.Element {
   });
 
   const submitLogin = async (data: LoginFormInputs): Promise<void> => {
-    const res = await signin({ variables: { email: data.email, password: data.password } });
+    try {
+      const res = await signin({ variables: { email: data.email, password: data.password } });
 
-    if (res.data.authenticateUserWithPassword?.item) {
+      if (res.data.authenticateUserWithPassword?.item) {
+        toast({
+          title: 'Signed in',
+          description: 'Welcome back',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        reset();
+        router.push('/');
+      }
+    } catch (e) {
       toast({
-        title: 'Signed in',
-        description: 'Welcome back',
-        status: 'success',
+        title: 'Error',
+        description: 'There was an error on the backend. Email Brock',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });
-      reset();
-      router.push('/');
     }
   };
 

@@ -25,6 +25,10 @@ const theme = extendTheme({
             bgGradient: 'linear(to-r, red.400,red.600)',
             boxShadow: 'xl',
           },
+          _active: {
+            bgGradient: 'linear(to-r, red.600,red.800)',
+            boxShadow: 'xl',
+          },
         },
       },
     },
