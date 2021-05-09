@@ -46,7 +46,6 @@ export default function SignupForm(): JSX.Element {
     setEmailLoading(true);
     const res = await emailAvailQuery.refetch({ email });
     setEmailLoading(false);
-    console.log('refetched');
     const count = res?.data?._allUsersMeta?.count;
     return count === 0;
   };

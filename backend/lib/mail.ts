@@ -42,14 +42,16 @@ export interface Envelope {
 
 export async function sendPasswordResetEmail(resetToken: string, to: string): Promise<void> {
   // email the user a token
+
   const info = (await transport.sendMail({
     to,
     from: 'wes@wesbos.com',
     subject: 'Your password reset token!',
     html: makeANiceEmail(`Your Password Reset Token is here!
       <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
-    `),
+      `),
   })) as MailResponse;
+
   if (process.env.MAIL_USER?.includes('ethereal.email')) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
