@@ -1,17 +1,11 @@
 import { Button, useToast } from '@chakra-ui/react';
-import gql from 'graphql-tag';
-import { useMutation } from '@apollo/client';
-import { CURRENT_USER_QUERY } from '../User';
+import { CURRENT_USER_QUERY } from '../queries';
 
-const SIGNOUT_MUTATION = gql`
-  mutation SIGNOUT_MUTATION {
-    endSession
-  }
-`;
+import { useSignout_MutationMutation } from '../../generated/graphql';
 
 export default function LogOut(): JSX.Element {
   const toast = useToast();
-  const [signout] = useMutation(SIGNOUT_MUTATION, {
+  const [signout] = useSignout_MutationMutation({
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 

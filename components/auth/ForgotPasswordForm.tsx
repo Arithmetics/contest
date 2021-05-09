@@ -8,21 +8,12 @@ import {
   Text,
   useToast,
 } from '@chakra-ui/react';
-import { useMutation } from '@apollo/client';
-import gql from 'graphql-tag';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 
-const REQUEST_RESET_MUTATION = gql`
-  mutation REQUEST_RESET_MUTATION($email: String!) {
-    sendUserPasswordResetLink(email: $email) {
-      code
-      message
-    }
-  }
-`;
+import { useRequest_Reset_MutationMutation } from '../../generated/graphql';
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Enter your email'),
@@ -41,7 +32,7 @@ export default function ForgotPasswordForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [requestReset, { loading }] = useMutation(REQUEST_RESET_MUTATION);
+  const [requestReset, { loading }] = useRequest_Reset_MutationMutation();
 
   const submitForgotPassword = async (data: ForgotPasswordFormInputs): Promise<void> => {
     try {

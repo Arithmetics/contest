@@ -12,46 +12,17 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import gql from 'graphql-tag';
-import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 
+import {
+  useCheck_If_Email_Available_QueryQuery,
+  useCheck_If_Username_Available_QueryQuery,
+  useSignup_MutationMutation,
+} from '../../generated/graphql';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import PasswordInput from './PasswordInput';
-
-const CHECK_IF_EMAIL_AVAILABLE_QUERY = gql`
-  query CHECK_IF_EMAIL_AVAILABLE_QUERY($email: String!) {
-    _allUsersMeta(where: { email: $email }) {
-      count
-    }
-  }
-`;
-
-const CHECK_IF_USERNAME_AVAILABLE_QUERY = gql`
-  query CHECK_IF_USERNAME_AVAILABLE_QUERY($userName: String!) {
-    _allUsersMeta(where: { userName: $userName }) {
-      count
-    }
-  }
-`;
-
-const SIGNUP_MUTATION = gql`
-  mutation SIGNUP_MUTATION(
-    $email: String!
-    $name: String!
-    $userName: String!
-    $password: String!
-  ) {
-    createUser(data: { email: $email, password: $password, name: $name, userName: $userName }) {
-      id
-      email
-      name
-      userName
-    }
-  }
-`;
 
 type SignupFormInputs = {
   email: string;
@@ -67,7 +38,7 @@ export default function SignupForm(): JSX.Element {
   const [emailLoading, setEmailLoading] = useState(false);
   const [userNameLoading, setUserNameLoading] = useState(false);
 
-  const emailAvailQuery = useQuery(CHECK_IF_EMAIL_AVAILABLE_QUERY, {
+  const emailAvailQuery = useCheck_If_Email_Available_QueryQuery({
     skip: true,
   });
 
@@ -80,7 +51,7 @@ export default function SignupForm(): JSX.Element {
     return count === 0;
   };
 
-  const userNameAvailQuery = useQuery(CHECK_IF_USERNAME_AVAILABLE_QUERY, {
+  const userNameAvailQuery = useCheck_If_Username_Available_QueryQuery({
     skip: true,
   });
 
@@ -116,7 +87,7 @@ export default function SignupForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [signup, { loading: signupLoading }] = useMutation(SIGNUP_MUTATION);
+  const [signup, { loading: signupLoading }] = useSignup_MutationMutation();
 
   const submitCreateAccount = async (formData: SignupFormInputs): Promise<void> => {
     try {
@@ -128,7 +99,7 @@ export default function SignupForm(): JSX.Element {
           userName: formData.userName,
         },
       });
-      if (res.data.createUser.id) {
+      if (res.data?.createUser?.id) {
         toast({
           title: 'Account created',
           description: 'Go ahead and log in',

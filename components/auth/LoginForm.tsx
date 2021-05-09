@@ -10,33 +10,18 @@ import {
   Stack,
   useToast,
 } from '@chakra-ui/react';
-import { useMutation } from '@apollo/client';
-import gql from 'graphql-tag';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 
-import { CURRENT_USER_QUERY } from '../User';
+import {
+  useSignin_MutationMutation,
+  UserAuthenticationWithPasswordSuccess,
+  UserAuthenticationWithPasswordFailure,
+} from '../../generated/graphql';
 
-const SIGNIN_MUTATION = gql`
-  mutation SIGNIN_MUTATION($email: String!, $password: String!) {
-    authenticateUserWithPassword(email: $email, password: $password) {
-      ... on UserAuthenticationWithPasswordSuccess {
-        item {
-          id
-          email
-          name
-          userName
-        }
-      }
-      ... on UserAuthenticationWithPasswordFailure {
-        code
-        message
-      }
-    }
-  }
-`;
+import { CURRENT_USER_QUERY } from '../queries';
 
 const schema = yup.object().shape({
   email: yup.string().required('Enter your email'),
@@ -57,7 +42,7 @@ export default function ForgotPasswordForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [signin, { data, loading }] = useMutation(SIGNIN_MUTATION, {
+  const [signin, { data, loading }] = useSignin_MutationMutation({
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
@@ -65,7 +50,7 @@ export default function ForgotPasswordForm(): JSX.Element {
     try {
       const res = await signin({ variables: { email: data.email, password: data.password } });
 
-      if (res.data.authenticateUserWithPassword?.item) {
+      if ((res.data?.authenticateUserWithPassword as UserAuthenticationWithPasswordSuccess)?.item) {
         toast({
           title: 'Signed in',
           description: 'Welcome back',
@@ -139,7 +124,9 @@ export default function ForgotPasswordForm(): JSX.Element {
           </Checkbox>
           <Link color={'blue.500'}>Forgot password?</Link>
         </Stack>
-        <FormLabel color={'red.500'}>{data?.authenticateUserWithPassword?.message}</FormLabel>
+        <FormLabel color={'red.500'}>
+          {(data?.authenticateUserWithPassword as UserAuthenticationWithPasswordFailure)?.message}
+        </FormLabel>
         <Button variant="red-gradient" onClick={handleSubmit(submitLogin)} isLoading={loading}>
           {/* mt={8} w={'full'} */}
           Sign in

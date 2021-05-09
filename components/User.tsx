@@ -1,21 +1,6 @@
-import gql from 'graphql-tag';
-import { useQuery } from '@apollo/client';
+import { useCurrent_User_QueryQuery, AuthenticatedItem } from '../generated/graphql';
 
-export const CURRENT_USER_QUERY = gql`
-  query {
-    authenticatedItem {
-      ... on User {
-        id
-        email
-        name
-        userName
-        # other stuff
-      }
-    }
-  }
-`;
-
-export function useUser(): unknown {
-  const { data } = useQuery(CURRENT_USER_QUERY);
+export function useUser(): AuthenticatedItem | null | undefined {
+  const { data } = useCurrent_User_QueryQuery();
   return data?.authenticatedItem;
 }

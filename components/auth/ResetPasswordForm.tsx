@@ -8,24 +8,18 @@ import {
   FormLabel,
   useToast,
 } from '@chakra-ui/react';
-import { useMutation } from '@apollo/client';
-import gql from 'graphql-tag';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import {
+  useReset_MutationMutation,
+  PasswordResetRedemptionErrorCode,
+} from '../../generated/graphql';
+
 import PasswordInput from './PasswordInput';
 import ForgotPasswordForm from './ForgotPasswordForm';
-
-const RESET_MUTATION = gql`
-  mutation RESET_MUTATION($email: String!, $password: String!, $token: String!) {
-    redeemUserPasswordResetToken(email: $email, token: $token, password: $password) {
-      code
-      message
-    }
-  }
-`;
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Enter your email'),
@@ -47,14 +41,17 @@ export default function ResetPasswordForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [resetPassword, { loading }] = useMutation(RESET_MUTATION);
+  const [resetPassword, { loading }] = useReset_MutationMutation();
 
   const submitResetPassword = async (data: ResetPasswordInputs): Promise<void> => {
     const res = await resetPassword({
-      variables: { email: data.email, password: data.password, token },
+      variables: { email: data.email, password: data.password, token: (token as string) || '' },
     });
 
-    if (res.data.authenticateUserWithPassword?.item) {
+    if (
+      res.data?.redeemUserPasswordResetToken?.code ===
+      PasswordResetRedemptionErrorCode.TokenRedeemed
+    ) {
       toast({
         title: 'Password reset',
         description: 'Go ahead and login with your new password',
@@ -64,6 +61,15 @@ export default function ResetPasswordForm(): JSX.Element {
       });
       reset();
       router.push('/login');
+    } else {
+      toast({
+        title: 'Error',
+        description: 'Problem reseting that email address',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      reset();
     }
   };
 
