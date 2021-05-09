@@ -1,6 +1,6 @@
-import { useCurrent_User_QueryQuery, AuthenticatedItem } from '../generated/graphql';
+import { useCurrentUserQuery, AuthenticatedItem } from '../generated/graphql';
 
 export function useUser(): AuthenticatedItem | null | undefined {
-  const { data } = useCurrent_User_QueryQuery();
+  const { data } = useCurrentUserQuery();
   return data?.authenticatedItem;
 }

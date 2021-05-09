@@ -15,9 +15,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import {
-  useCheck_If_Email_Available_QueryQuery,
-  useCheck_If_Username_Available_QueryQuery,
-  useSignup_MutationMutation,
+  useCheckIfEmailAvailableQuery,
+  useCheckIfUsernameAvailableQuery,
+  useSignUpMutation,
 } from '../../generated/graphql';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
@@ -38,7 +38,7 @@ export default function SignupForm(): JSX.Element {
   const [emailLoading, setEmailLoading] = useState(false);
   const [userNameLoading, setUserNameLoading] = useState(false);
 
-  const emailAvailQuery = useCheck_If_Email_Available_QueryQuery({
+  const emailAvailQuery = useCheckIfEmailAvailableQuery({
     skip: true,
   });
 
@@ -51,7 +51,7 @@ export default function SignupForm(): JSX.Element {
     return count === 0;
   };
 
-  const userNameAvailQuery = useCheck_If_Username_Available_QueryQuery({
+  const userNameAvailQuery = useCheckIfUsernameAvailableQuery({
     skip: true,
   });
 
@@ -87,7 +87,7 @@ export default function SignupForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [signup, { loading: signupLoading }] = useSignup_MutationMutation();
+  const [signup, { loading: signupLoading }] = useSignUpMutation();
 
   const submitCreateAccount = async (formData: SignupFormInputs): Promise<void> => {
     try {

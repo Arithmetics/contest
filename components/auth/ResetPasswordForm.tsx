@@ -13,10 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import {
-  useReset_MutationMutation,
-  PasswordResetRedemptionErrorCode,
-} from '../../generated/graphql';
+import { useResetMutation, PasswordResetRedemptionErrorCode } from '../../generated/graphql';
 
 import PasswordInput from './PasswordInput';
 import ForgotPasswordForm from './ForgotPasswordForm';
@@ -41,7 +38,7 @@ export default function ResetPasswordForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [resetPassword, { loading }] = useReset_MutationMutation();
+  const [resetPassword, { loading }] = useResetMutation();
 
   const submitResetPassword = async (data: ResetPasswordInputs): Promise<void> => {
     const res = await resetPassword({

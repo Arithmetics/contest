@@ -1,11 +1,11 @@
 import { Button, useToast } from '@chakra-ui/react';
 import { CURRENT_USER_QUERY } from '../queries';
 
-import { useSignout_MutationMutation } from '../../generated/graphql';
+import { useSignOutMutation } from '../../generated/graphql';
 
 export default function LogOut(): JSX.Element {
   const toast = useToast();
-  const [signout] = useSignout_MutationMutation({
+  const [signout] = useSignOutMutation({
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 

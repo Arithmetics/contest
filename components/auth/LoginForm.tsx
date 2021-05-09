@@ -16,7 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 
 import {
-  useSignin_MutationMutation,
+  useSignInMutation,
   UserAuthenticationWithPasswordSuccess,
   UserAuthenticationWithPasswordFailure,
 } from '../../generated/graphql';
@@ -42,7 +42,7 @@ export default function ForgotPasswordForm(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  const [signin, { data, loading }] = useSignin_MutationMutation({
+  const [signin, { data, loading }] = useSignInMutation({
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
