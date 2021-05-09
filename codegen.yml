@@ -2,7 +2,7 @@ overwrite: true
 schema: 'backend/.keystone/schema.graphql'
 documents: '{components,lib,pages}/**/*.{ts,tsx}'
 generates:
-  generated/graphql.tsx:
+  generated/graphql-types.tsx:
     config:
       dedupeOperationSuffix: true
       withHooks: true

@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 
-import { useRequestResetMutation } from '../../generated/graphql';
+import { useRequestResetMutation } from '../../generated/graphql-types';
 
 const schema = yup.object().shape({
   email: yup.string().email().required('Enter your email'),

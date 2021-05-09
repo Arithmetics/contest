@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useResetMutation, PasswordResetRedemptionErrorCode } from '../../generated/graphql';
+import { useResetMutation, PasswordResetRedemptionErrorCode } from '../../generated/graphql-types';
 
 import PasswordInput from './PasswordInput';
 import ForgotPasswordForm from './ForgotPasswordForm';

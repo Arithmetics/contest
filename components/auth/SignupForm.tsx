@@ -18,7 +18,7 @@ import {
   useCheckIfEmailAvailableQuery,
   useCheckIfUsernameAvailableQuery,
   useSignUpMutation,
-} from '../../generated/graphql';
+} from '../../generated/graphql-types';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

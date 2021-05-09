@@ -19,7 +19,7 @@ import {
   useSignInMutation,
   UserAuthenticationWithPasswordSuccess,
   UserAuthenticationWithPasswordFailure,
-} from '../../generated/graphql';
+} from '../../generated/graphql-types';
 
 import { CURRENT_USER_QUERY } from '../queries';
 

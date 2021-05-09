@@ -1,7 +1,7 @@
 import { Button, useToast } from '@chakra-ui/react';
 import { CURRENT_USER_QUERY } from '../queries';
 
-import { useSignOutMutation } from '../../generated/graphql';
+import { useSignOutMutation } from '../../generated/graphql-types';
 
 export default function LogOut(): JSX.Element {
   const toast = useToast();
