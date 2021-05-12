@@ -32,5 +32,6 @@ export const Contest = list({
         inlineEdit: { fields: ['image', 'altText'] },
       },
     }),
+    lines: relationship({ ref: 'Line.contest', many: true }),
   },
 });
