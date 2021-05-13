@@ -4,6 +4,7 @@ import { createAuth } from '@keystone-next/auth';
 import { createSchema } from '@keystone-next/keystone/schema';
 import 'dotenv/config';
 import { sendPasswordResetEmail } from './lib/mail';
+import { insertSeedData } from './seedData';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -55,10 +56,11 @@ export default auth.withAuth(
     db: {
       adapter: 'prisma_postgresql',
       url: process.env.DATABASE_URL || 'postgres://localhost:5432/contest',
-      async onConnect() {
+      async onConnect(context) {
         console.log('connected');
         if (process.argv.includes('--seed-data')) {
           // could do seeding here...
+          await insertSeedData(context);
         }
       },
     },

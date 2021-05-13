@@ -122,6 +122,8 @@ export type ChoiceWhereInput = {
   readonly selection_not?: ChoiceSelectionType | null;
   readonly selection_in?: ReadonlyArray<ChoiceSelectionType | null> | null;
   readonly selection_not_in?: ReadonlyArray<ChoiceSelectionType | null> | null;
+  readonly isWin?: Scalars['Boolean'] | null;
+  readonly isWin_not?: Scalars['Boolean'] | null;
   readonly line?: LineWhereInput | null;
   readonly line_is_null?: Scalars['Boolean'] | null;
   readonly bets_every?: BetWhereInput | null;
@@ -138,6 +140,8 @@ export type SortChoicesBy =
   | 'id_DESC'
   | 'selection_ASC'
   | 'selection_DESC'
+  | 'isWin_ASC'
+  | 'isWin_DESC'
   | 'line_ASC'
   | 'line_DESC'
   | 'bets_ASC'
@@ -145,6 +149,7 @@ export type SortChoicesBy =
 
 export type ChoiceUpdateInput = {
   readonly selection?: ChoiceSelectionType | null;
+  readonly isWin?: Scalars['Boolean'] | null;
   readonly line?: LineRelateToOneInput | null;
   readonly bets?: BetRelateToManyInput | null;
 };
@@ -156,6 +161,7 @@ export type ChoicesUpdateInput = {
 
 export type ChoiceCreateInput = {
   readonly selection?: ChoiceSelectionType | null;
+  readonly isWin?: Scalars['Boolean'] | null;
   readonly line?: LineRelateToOneInput | null;
   readonly bets?: BetRelateToManyInput | null;
 };
@@ -568,6 +574,8 @@ export type UserWhereInput = {
   readonly userName_in?: ReadonlyArray<Scalars['String'] | null> | null;
   readonly userName_not_in?: ReadonlyArray<Scalars['String'] | null> | null;
   readonly password_is_set?: Scalars['Boolean'] | null;
+  readonly isAdmin?: Scalars['Boolean'] | null;
+  readonly isAdmin_not?: Scalars['Boolean'] | null;
   readonly bets_every?: BetWhereInput | null;
   readonly bets_some?: BetWhereInput | null;
   readonly bets_none?: BetWhereInput | null;
@@ -611,6 +619,8 @@ export type SortUsersBy =
   | 'name_DESC'
   | 'userName_ASC'
   | 'userName_DESC'
+  | 'isAdmin_ASC'
+  | 'isAdmin_DESC'
   | 'bets_ASC'
   | 'bets_DESC'
   | 'passwordResetIssuedAt_ASC'
@@ -623,6 +633,7 @@ export type UserUpdateInput = {
   readonly name?: Scalars['String'] | null;
   readonly userName?: Scalars['String'] | null;
   readonly password?: Scalars['String'] | null;
+  readonly isAdmin?: Scalars['Boolean'] | null;
   readonly bets?: BetRelateToManyInput | null;
   readonly passwordResetToken?: Scalars['String'] | null;
   readonly passwordResetIssuedAt?: Scalars['String'] | null;
@@ -639,6 +650,7 @@ export type UserCreateInput = {
   readonly name?: Scalars['String'] | null;
   readonly userName?: Scalars['String'] | null;
   readonly password?: Scalars['String'] | null;
+  readonly isAdmin?: Scalars['Boolean'] | null;
   readonly bets?: BetRelateToManyInput | null;
   readonly passwordResetToken?: Scalars['String'] | null;
   readonly passwordResetIssuedAt?: Scalars['String'] | null;
@@ -732,10 +744,11 @@ export type BetListFn = (
 
 export type ChoiceListTypeInfo = {
   key: 'Choice';
-  fields: 'id' | 'selection' | 'line' | 'bets';
+  fields: 'id' | 'selection' | 'isWin' | 'line' | 'bets';
   backing: {
     readonly id: string;
     readonly selection?: string | null;
+    readonly isWin?: boolean | null;
     readonly line?: string | null;
     readonly bets?: string | null;
   };
@@ -886,6 +899,7 @@ export type UserListTypeInfo = {
     | 'name'
     | 'userName'
     | 'password'
+    | 'isAdmin'
     | 'bets'
     | 'passwordResetToken'
     | 'passwordResetIssuedAt'
@@ -896,6 +910,7 @@ export type UserListTypeInfo = {
     readonly name?: string | null;
     readonly userName?: string | null;
     readonly password?: string | null;
+    readonly isAdmin?: boolean | null;
     readonly bets?: string | null;
     readonly passwordResetToken?: string | null;
     readonly passwordResetIssuedAt?: Date | null;

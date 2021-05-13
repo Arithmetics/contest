@@ -116,6 +116,7 @@ input BetRelateToManyInput {
 type Choice {
   id: ID!
   selection: ChoiceSelectionType
+  isWin: Boolean
   line: Line
   bets(where: BetWhereInput, search: String, sortBy: [SortBetsBy!], orderBy: String, first: Int, skip: Int): [Bet!]!
   _betsMeta(where: BetWhereInput, search: String, sortBy: [SortBetsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
@@ -136,6 +137,8 @@ input ChoiceWhereInput {
   selection_not: ChoiceSelectionType
   selection_in: [ChoiceSelectionType]
   selection_not_in: [ChoiceSelectionType]
+  isWin: Boolean
+  isWin_not: Boolean
   line: LineWhereInput
   line_is_null: Boolean
 
@@ -158,6 +161,8 @@ enum SortChoicesBy {
   id_DESC
   selection_ASC
   selection_DESC
+  isWin_ASC
+  isWin_DESC
   line_ASC
   line_DESC
   bets_ASC
@@ -166,6 +171,7 @@ enum SortChoicesBy {
 
 input ChoiceUpdateInput {
   selection: ChoiceSelectionType
+  isWin: Boolean
   line: LineRelateToOneInput
   bets: BetRelateToManyInput
 }
@@ -177,6 +183,7 @@ input ChoicesUpdateInput {
 
 input ChoiceCreateInput {
   selection: ChoiceSelectionType
+  isWin: Boolean
   line: LineRelateToOneInput
   bets: BetRelateToManyInput
 }
@@ -593,6 +600,7 @@ type User {
   name: String
   userName: String
   password_is_set: Boolean
+  isAdmin: Boolean
   bets(where: BetWhereInput, search: String, sortBy: [SortBetsBy!], orderBy: String, first: Int, skip: Int): [Bet!]!
   _betsMeta(where: BetWhereInput, search: String, sortBy: [SortBetsBy!], orderBy: String, first: Int, skip: Int): _QueryMeta
   passwordResetToken_is_set: Boolean
@@ -666,6 +674,8 @@ input UserWhereInput {
   userName_in: [String]
   userName_not_in: [String]
   password_is_set: Boolean
+  isAdmin: Boolean
+  isAdmin_not: Boolean
 
   """ condition must be true for all nodes """
   bets_every: BetWhereInput
@@ -707,6 +717,8 @@ enum SortUsersBy {
   name_DESC
   userName_ASC
   userName_DESC
+  isAdmin_ASC
+  isAdmin_DESC
   bets_ASC
   bets_DESC
   passwordResetIssuedAt_ASC
@@ -720,6 +732,7 @@ input UserUpdateInput {
   name: String
   userName: String
   password: String
+  isAdmin: Boolean
   bets: BetRelateToManyInput
   passwordResetToken: String
   passwordResetIssuedAt: String
@@ -736,6 +749,7 @@ input UserCreateInput {
   name: String
   userName: String
   password: String
+  isAdmin: Boolean
   bets: BetRelateToManyInput
   passwordResetToken: String
   passwordResetIssuedAt: String
