@@ -1,5 +1,5 @@
 import { list } from '@keystone-next/keystone/schema';
-import { text, password } from '@keystone-next/fields';
+import { text, checkbox, password, relationship } from '@keystone-next/fields';
 
 export const User = list({
   fields: {
@@ -7,5 +7,12 @@ export const User = list({
     name: text({ isRequired: true }),
     userName: text({ isRequired: true, isUnique: true }),
     password: password(),
+    isAdmin: checkbox({ isRequired: true, defaultValue: false }),
+    bets: relationship({ ref: 'Bet.user', many: true }),
+  },
+  ui: {
+    listView: {
+      initialColumns: ['email', 'name', 'isAdmin'],
+    },
   },
 });

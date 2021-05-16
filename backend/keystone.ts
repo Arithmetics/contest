@@ -3,10 +3,15 @@ import { statelessSessions, withItemData } from '@keystone-next/keystone/session
 import { createAuth } from '@keystone-next/auth';
 import { createSchema } from '@keystone-next/keystone/schema';
 import 'dotenv/config';
+import { sendPasswordResetEmail } from './lib/mail';
+import { insertSeedData } from './seedData';
+
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
 import { ContestImage } from './schemas/ContestImage';
-import { sendPasswordResetEmail } from './lib/mail';
+import { Line } from './schemas/Line';
+import { Choice } from './schemas/Choices';
+import { Bet } from './schemas/Bet';
 
 let sessionSecret = process.env.SESSION_SECRET;
 
@@ -51,10 +56,11 @@ export default auth.withAuth(
     db: {
       adapter: 'prisma_postgresql',
       url: process.env.DATABASE_URL || 'postgres://localhost:5432/contest',
-      async onConnect() {
+      useMigrations: false, // need to change this some day
+      async onConnect(context) {
         console.log('connected');
         if (process.argv.includes('--seed-data')) {
-          // could do seeding here...
+          await insertSeedData(context);
         }
       },
     },
@@ -62,9 +68,12 @@ export default auth.withAuth(
       isAccessAllowed: (context) => !!context.session?.data,
     },
     lists: createSchema({
-      User,
+      Bet,
+      Choice,
       Contest,
       ContestImage,
+      Line,
+      User,
     }),
     session: withItemData(
       statelessSessions({
