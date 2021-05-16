@@ -20,12 +20,196 @@ export type Scalars = {
 
 export type AuthenticatedItem = User;
 
+/** A keystone list */
+export type Bet = {
+  __typename?: 'Bet';
+  id: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+  user?: Maybe<User>;
+  choice?: Maybe<Choice>;
+};
+
+export type BetCreateInput = {
+  title?: Maybe<Scalars['String']>;
+  user?: Maybe<UserRelateToOneInput>;
+  choice?: Maybe<ChoiceRelateToOneInput>;
+};
+
+export type BetRelateToManyInput = {
+  create?: Maybe<Array<Maybe<BetCreateInput>>>;
+  connect?: Maybe<Array<Maybe<BetWhereUniqueInput>>>;
+  disconnect?: Maybe<Array<Maybe<BetWhereUniqueInput>>>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type BetUpdateInput = {
+  title?: Maybe<Scalars['String']>;
+  user?: Maybe<UserRelateToOneInput>;
+  choice?: Maybe<ChoiceRelateToOneInput>;
+};
+
+export type BetWhereInput = {
+  AND?: Maybe<Array<Maybe<BetWhereInput>>>;
+  OR?: Maybe<Array<Maybe<BetWhereInput>>>;
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  title?: Maybe<Scalars['String']>;
+  title_not?: Maybe<Scalars['String']>;
+  title_contains?: Maybe<Scalars['String']>;
+  title_not_contains?: Maybe<Scalars['String']>;
+  title_starts_with?: Maybe<Scalars['String']>;
+  title_not_starts_with?: Maybe<Scalars['String']>;
+  title_ends_with?: Maybe<Scalars['String']>;
+  title_not_ends_with?: Maybe<Scalars['String']>;
+  title_i?: Maybe<Scalars['String']>;
+  title_not_i?: Maybe<Scalars['String']>;
+  title_contains_i?: Maybe<Scalars['String']>;
+  title_not_contains_i?: Maybe<Scalars['String']>;
+  title_starts_with_i?: Maybe<Scalars['String']>;
+  title_not_starts_with_i?: Maybe<Scalars['String']>;
+  title_ends_with_i?: Maybe<Scalars['String']>;
+  title_not_ends_with_i?: Maybe<Scalars['String']>;
+  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  user?: Maybe<UserWhereInput>;
+  user_is_null?: Maybe<Scalars['Boolean']>;
+  choice?: Maybe<ChoiceWhereInput>;
+  choice_is_null?: Maybe<Scalars['Boolean']>;
+};
+
+export type BetWhereUniqueInput = {
+  id: Scalars['ID'];
+};
+
+export type BetsCreateInput = {
+  data?: Maybe<BetCreateInput>;
+};
+
+export type BetsUpdateInput = {
+  id: Scalars['ID'];
+  data?: Maybe<BetUpdateInput>;
+};
+
+/** A keystone list */
+export type Choice = {
+  __typename?: 'Choice';
+  id: Scalars['ID'];
+  selection?: Maybe<ChoiceSelectionType>;
+  isWin?: Maybe<Scalars['Boolean']>;
+  line?: Maybe<Line>;
+  bets: Array<Bet>;
+  _betsMeta?: Maybe<_QueryMeta>;
+};
+
+
+/** A keystone list */
+export type ChoiceBetsArgs = {
+  where?: Maybe<BetWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortBetsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+/** A keystone list */
+export type Choice_BetsMetaArgs = {
+  where?: Maybe<BetWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortBetsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+export type ChoiceCreateInput = {
+  selection?: Maybe<ChoiceSelectionType>;
+  isWin?: Maybe<Scalars['Boolean']>;
+  line?: Maybe<LineRelateToOneInput>;
+  bets?: Maybe<BetRelateToManyInput>;
+};
+
+export type ChoiceRelateToManyInput = {
+  create?: Maybe<Array<Maybe<ChoiceCreateInput>>>;
+  connect?: Maybe<Array<Maybe<ChoiceWhereUniqueInput>>>;
+  disconnect?: Maybe<Array<Maybe<ChoiceWhereUniqueInput>>>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type ChoiceRelateToOneInput = {
+  create?: Maybe<ChoiceCreateInput>;
+  connect?: Maybe<ChoiceWhereUniqueInput>;
+  disconnect?: Maybe<ChoiceWhereUniqueInput>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export enum ChoiceSelectionType {
+  Over = 'OVER',
+  Under = 'UNDER',
+  Away = 'AWAY',
+  Home = 'HOME'
+}
+
+export type ChoiceUpdateInput = {
+  selection?: Maybe<ChoiceSelectionType>;
+  isWin?: Maybe<Scalars['Boolean']>;
+  line?: Maybe<LineRelateToOneInput>;
+  bets?: Maybe<BetRelateToManyInput>;
+};
+
+export type ChoiceWhereInput = {
+  AND?: Maybe<Array<Maybe<ChoiceWhereInput>>>;
+  OR?: Maybe<Array<Maybe<ChoiceWhereInput>>>;
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  selection?: Maybe<ChoiceSelectionType>;
+  selection_not?: Maybe<ChoiceSelectionType>;
+  selection_in?: Maybe<Array<Maybe<ChoiceSelectionType>>>;
+  selection_not_in?: Maybe<Array<Maybe<ChoiceSelectionType>>>;
+  isWin?: Maybe<Scalars['Boolean']>;
+  isWin_not?: Maybe<Scalars['Boolean']>;
+  line?: Maybe<LineWhereInput>;
+  line_is_null?: Maybe<Scalars['Boolean']>;
+  /** condition must be true for all nodes */
+  bets_every?: Maybe<BetWhereInput>;
+  /** condition must be true for at least 1 node */
+  bets_some?: Maybe<BetWhereInput>;
+  /** condition must be false for all nodes */
+  bets_none?: Maybe<BetWhereInput>;
+};
+
+export type ChoiceWhereUniqueInput = {
+  id: Scalars['ID'];
+};
+
+export type ChoicesCreateInput = {
+  data?: Maybe<ChoiceCreateInput>;
+};
+
+export type ChoicesUpdateInput = {
+  id: Scalars['ID'];
+  data?: Maybe<ChoiceUpdateInput>;
+};
+
 /**
  * Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/documentation/image_transformation_reference).
  * All options are strings as they ultimately end up in a URL.
  */
 export type CloudinaryImageFormat = {
-  /**  Rewrites the filename to be this pretty string. Do not include `/` or `.`  */
+  /** Rewrites the filename to be this pretty string. Do not include `/` or `.` */
   prettyName?: Maybe<Scalars['String']>;
   width?: Maybe<Scalars['String']>;
   height?: Maybe<Scalars['String']>;
@@ -74,7 +258,7 @@ export type CloudinaryImage_FilePublicUrlTransformedArgs = {
   transformation?: Maybe<CloudinaryImageFormat>;
 };
 
-/**  A keystone list  */
+/** A keystone list */
 export type Contest = {
   __typename?: 'Contest';
   id: Scalars['ID'];
@@ -83,6 +267,30 @@ export type Contest = {
   status?: Maybe<Scalars['String']>;
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<ContestImage>;
+  lines: Array<Line>;
+  _linesMeta?: Maybe<_QueryMeta>;
+};
+
+
+/** A keystone list */
+export type ContestLinesArgs = {
+  where?: Maybe<LineWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortLinesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+/** A keystone list */
+export type Contest_LinesMetaArgs = {
+  where?: Maybe<LineWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortLinesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
 };
 
 export type ContestCreateInput = {
@@ -91,9 +299,10 @@ export type ContestCreateInput = {
   status?: Maybe<Scalars['String']>;
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<ContestImageRelateToOneInput>;
+  lines?: Maybe<LineRelateToManyInput>;
 };
 
-/**  A keystone list  */
+/** A keystone list */
 export type ContestImage = {
   __typename?: 'ContestImage';
   id: Scalars['ID'];
@@ -184,6 +393,7 @@ export type ContestUpdateInput = {
   status?: Maybe<Scalars['String']>;
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<ContestImageRelateToOneInput>;
+  lines?: Maybe<LineRelateToManyInput>;
 };
 
 export type ContestWhereInput = {
@@ -247,6 +457,12 @@ export type ContestWhereInput = {
   entryFee_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
   image?: Maybe<ContestImageWhereInput>;
   image_is_null?: Maybe<Scalars['Boolean']>;
+  /** condition must be true for all nodes */
+  lines_every?: Maybe<LineWhereInput>;
+  /** condition must be true for at least 1 node */
+  lines_some?: Maybe<LineWhereInput>;
+  /** condition must be false for all nodes */
+  lines_none?: Maybe<LineWhereInput>;
 };
 
 export type ContestWhereUniqueInput = {
@@ -368,44 +584,212 @@ export type KeystoneMeta = {
   adminMeta: KeystoneAdminMeta;
 };
 
+/** A keystone list */
+export type Line = {
+  __typename?: 'Line';
+  id: Scalars['ID'];
+  title?: Maybe<Scalars['String']>;
+  closingTime?: Maybe<Scalars['String']>;
+  benchmark?: Maybe<Scalars['Float']>;
+  contest?: Maybe<Contest>;
+  choices: Array<Choice>;
+  _choicesMeta?: Maybe<_QueryMeta>;
+};
+
+
+/** A keystone list */
+export type LineChoicesArgs = {
+  where?: Maybe<ChoiceWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortChoicesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+/** A keystone list */
+export type Line_ChoicesMetaArgs = {
+  where?: Maybe<ChoiceWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortChoicesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+export type LineCreateInput = {
+  title?: Maybe<Scalars['String']>;
+  closingTime?: Maybe<Scalars['String']>;
+  benchmark?: Maybe<Scalars['Float']>;
+  contest?: Maybe<ContestRelateToOneInput>;
+  choices?: Maybe<ChoiceRelateToManyInput>;
+};
+
+export type LineRelateToManyInput = {
+  create?: Maybe<Array<Maybe<LineCreateInput>>>;
+  connect?: Maybe<Array<Maybe<LineWhereUniqueInput>>>;
+  disconnect?: Maybe<Array<Maybe<LineWhereUniqueInput>>>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type LineRelateToOneInput = {
+  create?: Maybe<LineCreateInput>;
+  connect?: Maybe<LineWhereUniqueInput>;
+  disconnect?: Maybe<LineWhereUniqueInput>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type LineUpdateInput = {
+  title?: Maybe<Scalars['String']>;
+  closingTime?: Maybe<Scalars['String']>;
+  benchmark?: Maybe<Scalars['Float']>;
+  contest?: Maybe<ContestRelateToOneInput>;
+  choices?: Maybe<ChoiceRelateToManyInput>;
+};
+
+export type LineWhereInput = {
+  AND?: Maybe<Array<Maybe<LineWhereInput>>>;
+  OR?: Maybe<Array<Maybe<LineWhereInput>>>;
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  title?: Maybe<Scalars['String']>;
+  title_not?: Maybe<Scalars['String']>;
+  title_contains?: Maybe<Scalars['String']>;
+  title_not_contains?: Maybe<Scalars['String']>;
+  title_starts_with?: Maybe<Scalars['String']>;
+  title_not_starts_with?: Maybe<Scalars['String']>;
+  title_ends_with?: Maybe<Scalars['String']>;
+  title_not_ends_with?: Maybe<Scalars['String']>;
+  title_i?: Maybe<Scalars['String']>;
+  title_not_i?: Maybe<Scalars['String']>;
+  title_contains_i?: Maybe<Scalars['String']>;
+  title_not_contains_i?: Maybe<Scalars['String']>;
+  title_starts_with_i?: Maybe<Scalars['String']>;
+  title_not_starts_with_i?: Maybe<Scalars['String']>;
+  title_ends_with_i?: Maybe<Scalars['String']>;
+  title_not_ends_with_i?: Maybe<Scalars['String']>;
+  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  closingTime?: Maybe<Scalars['String']>;
+  closingTime_not?: Maybe<Scalars['String']>;
+  closingTime_lt?: Maybe<Scalars['String']>;
+  closingTime_lte?: Maybe<Scalars['String']>;
+  closingTime_gt?: Maybe<Scalars['String']>;
+  closingTime_gte?: Maybe<Scalars['String']>;
+  closingTime_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  closingTime_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  benchmark?: Maybe<Scalars['Float']>;
+  benchmark_not?: Maybe<Scalars['Float']>;
+  benchmark_lt?: Maybe<Scalars['Float']>;
+  benchmark_lte?: Maybe<Scalars['Float']>;
+  benchmark_gt?: Maybe<Scalars['Float']>;
+  benchmark_gte?: Maybe<Scalars['Float']>;
+  benchmark_in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  benchmark_not_in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  contest?: Maybe<ContestWhereInput>;
+  contest_is_null?: Maybe<Scalars['Boolean']>;
+  /** condition must be true for all nodes */
+  choices_every?: Maybe<ChoiceWhereInput>;
+  /** condition must be true for at least 1 node */
+  choices_some?: Maybe<ChoiceWhereInput>;
+  /** condition must be false for all nodes */
+  choices_none?: Maybe<ChoiceWhereInput>;
+};
+
+export type LineWhereUniqueInput = {
+  id: Scalars['ID'];
+};
+
+export type LinesCreateInput = {
+  data?: Maybe<LineCreateInput>;
+};
+
+export type LinesUpdateInput = {
+  id: Scalars['ID'];
+  data?: Maybe<LineUpdateInput>;
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  /**  Create a single User item.  */
-  createUser?: Maybe<User>;
-  /**  Create multiple User items.  */
-  createUsers?: Maybe<Array<Maybe<User>>>;
-  /**  Update a single User item by ID.  */
-  updateUser?: Maybe<User>;
-  /**  Update multiple User items by ID.  */
-  updateUsers?: Maybe<Array<Maybe<User>>>;
-  /**  Delete a single User item by ID.  */
-  deleteUser?: Maybe<User>;
-  /**  Delete multiple User items by ID.  */
-  deleteUsers?: Maybe<Array<Maybe<User>>>;
-  /**  Create a single Contest item.  */
+  /** Create a single Bet item. */
+  createBet?: Maybe<Bet>;
+  /** Create multiple Bet items. */
+  createBets?: Maybe<Array<Maybe<Bet>>>;
+  /** Update a single Bet item by ID. */
+  updateBet?: Maybe<Bet>;
+  /** Update multiple Bet items by ID. */
+  updateBets?: Maybe<Array<Maybe<Bet>>>;
+  /** Delete a single Bet item by ID. */
+  deleteBet?: Maybe<Bet>;
+  /** Delete multiple Bet items by ID. */
+  deleteBets?: Maybe<Array<Maybe<Bet>>>;
+  /** Create a single Choice item. */
+  createChoice?: Maybe<Choice>;
+  /** Create multiple Choice items. */
+  createChoices?: Maybe<Array<Maybe<Choice>>>;
+  /** Update a single Choice item by ID. */
+  updateChoice?: Maybe<Choice>;
+  /** Update multiple Choice items by ID. */
+  updateChoices?: Maybe<Array<Maybe<Choice>>>;
+  /** Delete a single Choice item by ID. */
+  deleteChoice?: Maybe<Choice>;
+  /** Delete multiple Choice items by ID. */
+  deleteChoices?: Maybe<Array<Maybe<Choice>>>;
+  /** Create a single Contest item. */
   createContest?: Maybe<Contest>;
-  /**  Create multiple Contest items.  */
+  /** Create multiple Contest items. */
   createContests?: Maybe<Array<Maybe<Contest>>>;
-  /**  Update a single Contest item by ID.  */
+  /** Update a single Contest item by ID. */
   updateContest?: Maybe<Contest>;
-  /**  Update multiple Contest items by ID.  */
+  /** Update multiple Contest items by ID. */
   updateContests?: Maybe<Array<Maybe<Contest>>>;
-  /**  Delete a single Contest item by ID.  */
+  /** Delete a single Contest item by ID. */
   deleteContest?: Maybe<Contest>;
-  /**  Delete multiple Contest items by ID.  */
+  /** Delete multiple Contest items by ID. */
   deleteContests?: Maybe<Array<Maybe<Contest>>>;
-  /**  Create a single ContestImage item.  */
+  /** Create a single ContestImage item. */
   createContestImage?: Maybe<ContestImage>;
-  /**  Create multiple ContestImage items.  */
+  /** Create multiple ContestImage items. */
   createContestImages?: Maybe<Array<Maybe<ContestImage>>>;
-  /**  Update a single ContestImage item by ID.  */
+  /** Update a single ContestImage item by ID. */
   updateContestImage?: Maybe<ContestImage>;
-  /**  Update multiple ContestImage items by ID.  */
+  /** Update multiple ContestImage items by ID. */
   updateContestImages?: Maybe<Array<Maybe<ContestImage>>>;
-  /**  Delete a single ContestImage item by ID.  */
+  /** Delete a single ContestImage item by ID. */
   deleteContestImage?: Maybe<ContestImage>;
-  /**  Delete multiple ContestImage items by ID.  */
+  /** Delete multiple ContestImage items by ID. */
   deleteContestImages?: Maybe<Array<Maybe<ContestImage>>>;
+  /** Create a single Line item. */
+  createLine?: Maybe<Line>;
+  /** Create multiple Line items. */
+  createLines?: Maybe<Array<Maybe<Line>>>;
+  /** Update a single Line item by ID. */
+  updateLine?: Maybe<Line>;
+  /** Update multiple Line items by ID. */
+  updateLines?: Maybe<Array<Maybe<Line>>>;
+  /** Delete a single Line item by ID. */
+  deleteLine?: Maybe<Line>;
+  /** Delete multiple Line items by ID. */
+  deleteLines?: Maybe<Array<Maybe<Line>>>;
+  /** Create a single User item. */
+  createUser?: Maybe<User>;
+  /** Create multiple User items. */
+  createUsers?: Maybe<Array<Maybe<User>>>;
+  /** Update a single User item by ID. */
+  updateUser?: Maybe<User>;
+  /** Update multiple User items by ID. */
+  updateUsers?: Maybe<Array<Maybe<User>>>;
+  /** Delete a single User item by ID. */
+  deleteUser?: Maybe<User>;
+  /** Delete multiple User items by ID. */
+  deleteUsers?: Maybe<Array<Maybe<User>>>;
   authenticateUserWithPassword: UserAuthenticationWithPasswordResult;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
   sendUserPasswordResetLink?: Maybe<SendUserPasswordResetLinkResult>;
@@ -414,33 +798,64 @@ export type Mutation = {
 };
 
 
-export type MutationCreateUserArgs = {
-  data?: Maybe<UserCreateInput>;
+export type MutationCreateBetArgs = {
+  data?: Maybe<BetCreateInput>;
 };
 
 
-export type MutationCreateUsersArgs = {
-  data?: Maybe<Array<Maybe<UsersCreateInput>>>;
+export type MutationCreateBetsArgs = {
+  data?: Maybe<Array<Maybe<BetsCreateInput>>>;
 };
 
 
-export type MutationUpdateUserArgs = {
+export type MutationUpdateBetArgs = {
   id: Scalars['ID'];
-  data?: Maybe<UserUpdateInput>;
+  data?: Maybe<BetUpdateInput>;
 };
 
 
-export type MutationUpdateUsersArgs = {
-  data?: Maybe<Array<Maybe<UsersUpdateInput>>>;
+export type MutationUpdateBetsArgs = {
+  data?: Maybe<Array<Maybe<BetsUpdateInput>>>;
 };
 
 
-export type MutationDeleteUserArgs = {
+export type MutationDeleteBetArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationDeleteUsersArgs = {
+export type MutationDeleteBetsArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
+export type MutationCreateChoiceArgs = {
+  data?: Maybe<ChoiceCreateInput>;
+};
+
+
+export type MutationCreateChoicesArgs = {
+  data?: Maybe<Array<Maybe<ChoicesCreateInput>>>;
+};
+
+
+export type MutationUpdateChoiceArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<ChoiceUpdateInput>;
+};
+
+
+export type MutationUpdateChoicesArgs = {
+  data?: Maybe<Array<Maybe<ChoicesUpdateInput>>>;
+};
+
+
+export type MutationDeleteChoiceArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteChoicesArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
 
@@ -507,6 +922,68 @@ export type MutationDeleteContestImagesArgs = {
 };
 
 
+export type MutationCreateLineArgs = {
+  data?: Maybe<LineCreateInput>;
+};
+
+
+export type MutationCreateLinesArgs = {
+  data?: Maybe<Array<Maybe<LinesCreateInput>>>;
+};
+
+
+export type MutationUpdateLineArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<LineUpdateInput>;
+};
+
+
+export type MutationUpdateLinesArgs = {
+  data?: Maybe<Array<Maybe<LinesUpdateInput>>>;
+};
+
+
+export type MutationDeleteLineArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteLinesArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
+export type MutationCreateUserArgs = {
+  data?: Maybe<UserCreateInput>;
+};
+
+
+export type MutationCreateUsersArgs = {
+  data?: Maybe<Array<Maybe<UsersCreateInput>>>;
+};
+
+
+export type MutationUpdateUserArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<UserUpdateInput>;
+};
+
+
+export type MutationUpdateUsersArgs = {
+  data?: Maybe<Array<Maybe<UsersUpdateInput>>>;
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUsersArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
 export type MutationAuthenticateUserWithPasswordArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -554,57 +1031,92 @@ export enum PasswordResetRequestErrorCode {
 
 export type Query = {
   __typename?: 'Query';
-  /**  Search for all User items which match the where clause.  */
-  allUsers?: Maybe<Array<Maybe<User>>>;
-  /**  Search for the User item with the matching ID.  */
-  User?: Maybe<User>;
-  /**  Perform a meta-query on all User items which match the where clause.  */
-  _allUsersMeta?: Maybe<_QueryMeta>;
-  /**  Retrieve the meta-data for the User list.  */
-  _UsersMeta?: Maybe<_ListMeta>;
-  /**  Search for all Contest items which match the where clause.  */
+  /** Search for all Bet items which match the where clause. */
+  allBets?: Maybe<Array<Maybe<Bet>>>;
+  /** Search for the Bet item with the matching ID. */
+  Bet?: Maybe<Bet>;
+  /** Perform a meta-query on all Bet items which match the where clause. */
+  _allBetsMeta?: Maybe<_QueryMeta>;
+  /** Search for all Choice items which match the where clause. */
+  allChoices?: Maybe<Array<Maybe<Choice>>>;
+  /** Search for the Choice item with the matching ID. */
+  Choice?: Maybe<Choice>;
+  /** Perform a meta-query on all Choice items which match the where clause. */
+  _allChoicesMeta?: Maybe<_QueryMeta>;
+  /** Search for all Contest items which match the where clause. */
   allContests?: Maybe<Array<Maybe<Contest>>>;
-  /**  Search for the Contest item with the matching ID.  */
+  /** Search for the Contest item with the matching ID. */
   Contest?: Maybe<Contest>;
-  /**  Perform a meta-query on all Contest items which match the where clause.  */
+  /** Perform a meta-query on all Contest items which match the where clause. */
   _allContestsMeta?: Maybe<_QueryMeta>;
-  /**  Retrieve the meta-data for the Contest list.  */
-  _ContestsMeta?: Maybe<_ListMeta>;
-  /**  Search for all ContestImage items which match the where clause.  */
+  /** Search for all ContestImage items which match the where clause. */
   allContestImages?: Maybe<Array<Maybe<ContestImage>>>;
-  /**  Search for the ContestImage item with the matching ID.  */
+  /** Search for the ContestImage item with the matching ID. */
   ContestImage?: Maybe<ContestImage>;
-  /**  Perform a meta-query on all ContestImage items which match the where clause.  */
+  /** Perform a meta-query on all ContestImage items which match the where clause. */
   _allContestImagesMeta?: Maybe<_QueryMeta>;
-  /**  Retrieve the meta-data for the ContestImage list.  */
-  _ContestImagesMeta?: Maybe<_ListMeta>;
-  /**  Retrieve the meta-data for all lists.  */
-  _ksListsMeta?: Maybe<Array<Maybe<_ListMeta>>>;
+  /** Search for all Line items which match the where clause. */
+  allLines?: Maybe<Array<Maybe<Line>>>;
+  /** Search for the Line item with the matching ID. */
+  Line?: Maybe<Line>;
+  /** Perform a meta-query on all Line items which match the where clause. */
+  _allLinesMeta?: Maybe<_QueryMeta>;
+  /** Search for all User items which match the where clause. */
+  allUsers?: Maybe<Array<Maybe<User>>>;
+  /** Search for the User item with the matching ID. */
+  User?: Maybe<User>;
+  /** Perform a meta-query on all User items which match the where clause. */
+  _allUsersMeta?: Maybe<_QueryMeta>;
   authenticatedItem?: Maybe<AuthenticatedItem>;
   validateUserPasswordResetToken?: Maybe<ValidateUserPasswordResetTokenResult>;
   keystone: KeystoneMeta;
 };
 
 
-export type QueryAllUsersArgs = {
-  where?: Maybe<UserWhereInput>;
+export type QueryAllBetsArgs = {
+  where?: Maybe<BetWhereInput>;
   search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortUsersBy>>;
+  sortBy?: Maybe<Array<SortBetsBy>>;
   orderBy?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
 };
 
 
-export type QueryUserArgs = {
-  where: UserWhereUniqueInput;
+export type QueryBetArgs = {
+  where: BetWhereUniqueInput;
 };
 
 
-export type Query_AllUsersMetaArgs = {
-  where?: Maybe<UserWhereInput>;
+export type Query_AllBetsMetaArgs = {
+  where?: Maybe<BetWhereInput>;
   search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortUsersBy>>;
+  sortBy?: Maybe<Array<SortBetsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAllChoicesArgs = {
+  where?: Maybe<ChoiceWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortChoicesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryChoiceArgs = {
+  where: ChoiceWhereUniqueInput;
+};
+
+
+export type Query_AllChoicesMetaArgs = {
+  where?: Maybe<ChoiceWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortChoicesBy>>;
   orderBy?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
@@ -661,8 +1173,53 @@ export type Query_AllContestImagesMetaArgs = {
 };
 
 
-export type Query_KsListsMetaArgs = {
-  where?: Maybe<_KsListsMetaInput>;
+export type QueryAllLinesArgs = {
+  where?: Maybe<LineWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortLinesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryLineArgs = {
+  where: LineWhereUniqueInput;
+};
+
+
+export type Query_AllLinesMetaArgs = {
+  where?: Maybe<LineWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortLinesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAllUsersArgs = {
+  where?: Maybe<UserWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortUsersBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryUserArgs = {
+  where: UserWhereUniqueInput;
+};
+
+
+export type Query_AllUsersMetaArgs = {
+  where?: Maybe<UserWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortUsersBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
 };
 
 
@@ -682,6 +1239,30 @@ export type SendUserPasswordResetLinkResult = {
   code: PasswordResetRequestErrorCode;
   message: Scalars['String'];
 };
+
+export enum SortBetsBy {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  UserAsc = 'user_ASC',
+  UserDesc = 'user_DESC',
+  ChoiceAsc = 'choice_ASC',
+  ChoiceDesc = 'choice_DESC'
+}
+
+export enum SortChoicesBy {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  SelectionAsc = 'selection_ASC',
+  SelectionDesc = 'selection_DESC',
+  IsWinAsc = 'isWin_ASC',
+  IsWinDesc = 'isWin_DESC',
+  LineAsc = 'line_ASC',
+  LineDesc = 'line_DESC',
+  BetsAsc = 'bets_ASC',
+  BetsDesc = 'bets_DESC'
+}
 
 export enum SortContestImagesBy {
   IdAsc = 'id_ASC',
@@ -704,7 +1285,24 @@ export enum SortContestsBy {
   EntryFeeAsc = 'entryFee_ASC',
   EntryFeeDesc = 'entryFee_DESC',
   ImageAsc = 'image_ASC',
-  ImageDesc = 'image_DESC'
+  ImageDesc = 'image_DESC',
+  LinesAsc = 'lines_ASC',
+  LinesDesc = 'lines_DESC'
+}
+
+export enum SortLinesBy {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  TitleAsc = 'title_ASC',
+  TitleDesc = 'title_DESC',
+  ClosingTimeAsc = 'closingTime_ASC',
+  ClosingTimeDesc = 'closingTime_DESC',
+  BenchmarkAsc = 'benchmark_ASC',
+  BenchmarkDesc = 'benchmark_DESC',
+  ContestAsc = 'contest_ASC',
+  ContestDesc = 'contest_DESC',
+  ChoicesAsc = 'choices_ASC',
+  ChoicesDesc = 'choices_DESC'
 }
 
 export enum SortUsersBy {
@@ -716,6 +1314,10 @@ export enum SortUsersBy {
   NameDesc = 'name_DESC',
   UserNameAsc = 'userName_ASC',
   UserNameDesc = 'userName_DESC',
+  IsAdminAsc = 'isAdmin_ASC',
+  IsAdminDesc = 'isAdmin_DESC',
+  BetsAsc = 'bets_ASC',
+  BetsDesc = 'bets_DESC',
   PasswordResetIssuedAtAsc = 'passwordResetIssuedAt_ASC',
   PasswordResetIssuedAtDesc = 'passwordResetIssuedAt_DESC',
   PasswordResetRedeemedAtAsc = 'passwordResetRedeemedAt_ASC',
@@ -723,7 +1325,7 @@ export enum SortUsersBy {
 }
 
 
-/**  A keystone list  */
+/** A keystone list */
 export type User = {
   __typename?: 'User';
   id: Scalars['ID'];
@@ -731,9 +1333,34 @@ export type User = {
   name?: Maybe<Scalars['String']>;
   userName?: Maybe<Scalars['String']>;
   password_is_set?: Maybe<Scalars['Boolean']>;
+  isAdmin?: Maybe<Scalars['Boolean']>;
+  bets: Array<Bet>;
+  _betsMeta?: Maybe<_QueryMeta>;
   passwordResetToken_is_set?: Maybe<Scalars['Boolean']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
+};
+
+
+/** A keystone list */
+export type UserBetsArgs = {
+  where?: Maybe<BetWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortBetsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+/** A keystone list */
+export type User_BetsMetaArgs = {
+  where?: Maybe<BetWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortBetsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
 };
 
 export type UserAuthenticationWithPasswordFailure = {
@@ -755,9 +1382,18 @@ export type UserCreateInput = {
   name?: Maybe<Scalars['String']>;
   userName?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
+  isAdmin?: Maybe<Scalars['Boolean']>;
+  bets?: Maybe<BetRelateToManyInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
+};
+
+export type UserRelateToOneInput = {
+  create?: Maybe<UserCreateInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
 };
 
 export type UserUpdateInput = {
@@ -765,6 +1401,8 @@ export type UserUpdateInput = {
   name?: Maybe<Scalars['String']>;
   userName?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
+  isAdmin?: Maybe<Scalars['Boolean']>;
+  bets?: Maybe<BetRelateToManyInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
@@ -836,6 +1474,14 @@ export type UserWhereInput = {
   userName_in?: Maybe<Array<Maybe<Scalars['String']>>>;
   userName_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
   password_is_set?: Maybe<Scalars['Boolean']>;
+  isAdmin?: Maybe<Scalars['Boolean']>;
+  isAdmin_not?: Maybe<Scalars['Boolean']>;
+  /** condition must be true for all nodes */
+  bets_every?: Maybe<BetWhereInput>;
+  /** condition must be true for at least 1 node */
+  bets_some?: Maybe<BetWhereInput>;
+  /** condition must be false for all nodes */
+  bets_none?: Maybe<BetWhereInput>;
   passwordResetToken_is_set?: Maybe<Scalars['Boolean']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetIssuedAt_not?: Maybe<Scalars['String']>;
@@ -874,166 +1520,9 @@ export type ValidateUserPasswordResetTokenResult = {
   message: Scalars['String'];
 };
 
-export type _ListAccess = {
-  __typename?: '_ListAccess';
-  /**
-   * Access Control settings for the currently logged in (or anonymous)
-   * user when performing 'create' operations.
-   * NOTE: 'create' can only return a Boolean.
-   * It is not possible to specify a declarative Where clause for this
-   * operation
-   */
-  create?: Maybe<Scalars['Boolean']>;
-  /**
-   * Access Control settings for the currently logged in (or anonymous)
-   * user when performing 'read' operations.
-   */
-  read?: Maybe<Scalars['JSON']>;
-  /**
-   * Access Control settings for the currently logged in (or anonymous)
-   * user when performing 'update' operations.
-   */
-  update?: Maybe<Scalars['JSON']>;
-  /**
-   * Access Control settings for the currently logged in (or anonymous)
-   * user when performing 'delete' operations.
-   */
-  delete?: Maybe<Scalars['JSON']>;
-  /**
-   * Access Control settings for the currently logged in (or anonymous)
-   * user when performing 'auth' operations.
-   */
-  auth?: Maybe<Scalars['JSON']>;
-};
-
-export type _ListInputTypes = {
-  __typename?: '_ListInputTypes';
-  /** Input type for matching multiple items */
-  whereInput?: Maybe<Scalars['String']>;
-  /** Input type for matching a unique item */
-  whereUniqueInput?: Maybe<Scalars['String']>;
-  /** Create mutation input type name */
-  createInput?: Maybe<Scalars['String']>;
-  /** Create many mutation input type name */
-  createManyInput?: Maybe<Scalars['String']>;
-  /** Update mutation name input */
-  updateInput?: Maybe<Scalars['String']>;
-  /** Update many mutation name input */
-  updateManyInput?: Maybe<Scalars['String']>;
-};
-
-export type _ListMeta = {
-  __typename?: '_ListMeta';
-  /** The Keystone list key */
-  key?: Maybe<Scalars['String']>;
-  /**
-   * The Keystone List name
-   * @deprecated Use `key` instead
-   */
-  name?: Maybe<Scalars['String']>;
-  /** The list's user-facing description */
-  description?: Maybe<Scalars['String']>;
-  /** The list's display name in the Admin UI */
-  label?: Maybe<Scalars['String']>;
-  /** The list's singular display name */
-  singular?: Maybe<Scalars['String']>;
-  /** The list's plural display name */
-  plural?: Maybe<Scalars['String']>;
-  /** The list's data path */
-  path?: Maybe<Scalars['String']>;
-  /** Access control configuration for the currently authenticated request */
-  access?: Maybe<_ListAccess>;
-  /** Information on the generated GraphQL schema */
-  schema?: Maybe<_ListSchema>;
-};
-
-export type _ListMutations = {
-  __typename?: '_ListMutations';
-  /** Create mutation name */
-  create?: Maybe<Scalars['String']>;
-  /** Create many mutation name */
-  createMany?: Maybe<Scalars['String']>;
-  /** Update mutation name */
-  update?: Maybe<Scalars['String']>;
-  /** Update many mutation name */
-  updateMany?: Maybe<Scalars['String']>;
-  /** Delete mutation name */
-  delete?: Maybe<Scalars['String']>;
-  /** Delete many mutation name */
-  deleteMany?: Maybe<Scalars['String']>;
-};
-
-export type _ListQueries = {
-  __typename?: '_ListQueries';
-  /** Single-item query name */
-  item?: Maybe<Scalars['String']>;
-  /** All-items query name */
-  list?: Maybe<Scalars['String']>;
-  /** List metadata query name */
-  meta?: Maybe<Scalars['String']>;
-};
-
-export type _ListSchema = {
-  __typename?: '_ListSchema';
-  /** The typename as used in GraphQL queries */
-  type?: Maybe<Scalars['String']>;
-  /**
-   * Top level GraphQL query names which either return this type, or
-   * provide aggregate information about this type
-   */
-  queries?: Maybe<_ListQueries>;
-  /** Top-level GraphQL mutation names */
-  mutations?: Maybe<_ListMutations>;
-  /** Top-level GraphQL input types */
-  inputTypes?: Maybe<_ListInputTypes>;
-  /** Information about fields defined on this list */
-  fields?: Maybe<Array<Maybe<_ListSchemaFields>>>;
-  /**
-   * Information about fields on other types which return this type, or
-   * provide aggregate information about this type
-   */
-  relatedFields?: Maybe<Array<Maybe<_ListSchemaRelatedFields>>>;
-};
-
-
-export type _ListSchemaFieldsArgs = {
-  where?: Maybe<_ListSchemaFieldsInput>;
-};
-
-export type _ListSchemaFields = {
-  __typename?: '_ListSchemaFields';
-  /** The path of the field in its list */
-  path?: Maybe<Scalars['String']>;
-  /**
-   * The name of the field in its list
-   * @deprecated Use `path` instead
-   */
-  name?: Maybe<Scalars['String']>;
-  /** The field type (ie, Checkbox, Text, etc) */
-  type?: Maybe<Scalars['String']>;
-};
-
-export type _ListSchemaFieldsInput = {
-  type?: Maybe<Scalars['String']>;
-};
-
-export type _ListSchemaRelatedFields = {
-  __typename?: '_ListSchemaRelatedFields';
-  /** The typename as used in GraphQL queries */
-  type?: Maybe<Scalars['String']>;
-  /** A list of GraphQL field names */
-  fields?: Maybe<Array<Maybe<Scalars['String']>>>;
-};
-
 export type _QueryMeta = {
   __typename?: '_QueryMeta';
   count?: Maybe<Scalars['Int']>;
-};
-
-export type _KsListsMetaInput = {
-  key?: Maybe<Scalars['String']>;
-  /** Whether this is an auxiliary helper list */
-  auxiliary?: Maybe<Scalars['Boolean']>;
 };
 
 export type CheckIfEmailAvailableQueryVariables = Exact<{

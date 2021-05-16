@@ -1,5 +1,5 @@
 overwrite: true
-schema: 'backend/.keystone/schema.graphql'
+schema: 'backend/schema.graphql'
 documents: '{components,lib,pages}/**/*.{ts,tsx}'
 generates:
   generated/graphql-types.tsx:
