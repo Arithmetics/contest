@@ -12,8 +12,8 @@ const defaultOverUnderSelections: ChoiceCreateInput[] = [
 export const users: UserCreateInput[] = [
   {
     email: 'brock.m.tillotson@gmail.com',
-    name: 'yo yo',
-    userName: 'yoyoyoy',
+    name: 'brock t',
+    userName: 'arithmetics',
     password: 'password',
     isAdmin: true,
   },
