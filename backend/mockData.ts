@@ -1,4 +1,15 @@
-export const users = [
+import { ChoiceCreateInput, ContestCreateInput, UserCreateInput } from '.keystone/types';
+
+const defaultOverUnderSelections: ChoiceCreateInput[] = [
+  {
+    selection: 'OVER',
+  },
+  {
+    selection: 'UNDER',
+  },
+];
+
+export const users: UserCreateInput[] = [
   {
     email: 'brock.m.tillotson@gmail.com',
     name: 'yo yo',
@@ -15,7 +26,7 @@ export const users = [
   },
 ];
 
-export const contests = [
+export const contests: ContestCreateInput[] = [
   {
     name: '2021 NFL Over Under',
     description: 'Pick over under team totals',
@@ -25,32 +36,18 @@ export const contests = [
       create: [
         {
           title: 'Pittsburgh Steelers',
-          closingTime: '1970-01-01T00:00:00.000Z',
+          closingTime: '2021-09-01T00:00:00.000Z',
           benchmark: 10.5,
           choices: {
-            create: [
-              {
-                selection: 'OVER',
-              },
-              {
-                selection: 'UNDER',
-              },
-            ],
+            create: [...defaultOverUnderSelections],
           },
         },
         {
           title: 'Jacksonville Jaguars',
-          closingTime: '1970-01-01T00:00:00.000Z',
+          closingTime: '2021-09-01T00:00:00.000Z',
           benchmark: 6.5,
           choices: {
-            create: [
-              {
-                selection: 'OVER',
-              },
-              {
-                selection: 'UNDER',
-              },
-            ],
+            create: [...defaultOverUnderSelections],
           },
         },
       ],
