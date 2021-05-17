@@ -80,7 +80,7 @@ export default auth.withAuth(
         maxAge: sessionMaxAge,
         secret: sessionSecret,
       }),
-      { User: `id` }
+      { User: `id isAdmin` }
     ),
   })
 );

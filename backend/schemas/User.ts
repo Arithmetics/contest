@@ -1,5 +1,6 @@
 import { list } from '@keystone-next/keystone/schema';
 import { text, checkbox, password, relationship } from '@keystone-next/fields';
+// import { AugKeystoneSession } from '../keystoneTypeAugments';
 
 export const User = list({
   fields: {
@@ -15,4 +16,11 @@ export const User = list({
       initialColumns: ['email', 'name', 'isAdmin'],
     },
   },
+  // hooks: {
+  //   resolveInput: async ({ resolvedData, context }) => {
+  //     const session: AugKeystoneSession = context.session;
+
+  //     return resolvedData;
+  //   },
+  // },
 });

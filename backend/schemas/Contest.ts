@@ -1,9 +1,14 @@
 import { integer, relationship, select, text } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
+import { isAdmin } from '../keystoneTypeAugments';
 
 export const Contest = list({
-  // todo access
-  // access:
+  access: {
+    create: isAdmin,
+    read: true,
+    update: isAdmin,
+    delete: isAdmin,
+  },
   fields: {
     name: text({ isRequired: true }),
     description: text({
