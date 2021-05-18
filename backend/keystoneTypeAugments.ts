@@ -1,3 +1,6 @@
+import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/types';
+import { KeystoneListsTypeInfo } from '.keystone/types';
+
 export type AugKeystoneSession = {
   itemId: string;
   listKey: string;
@@ -10,6 +13,7 @@ export type AugKeystoneSession = {
 export type AugListAccessArgs = {
   itemId?: string;
   session?: AugKeystoneSession;
+  context: KeystoneContext;
 };
 
 export function isSignedIn({ session }: AugListAccessArgs): boolean {
@@ -22,4 +26,78 @@ export function isAdmin({ session }: AugListAccessArgs): boolean {
 
 export function isOwnAccount({ itemId: userId, session }: AugListAccessArgs): boolean {
   return userId === session?.data.id;
+}
+
+export async function canModifyBet(accessArgs: AugListAccessArgs): Promise<boolean> {
+  const { session, context, itemId } = accessArgs;
+
+  if (!itemId) {
+    return false;
+  }
+
+  const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
+  const userId = session?.data.id;
+
+  const graphql = String.raw;
+
+  const bet = await lists.Bet.findOne({
+    where: { id: itemId },
+    query: graphql`
+      id
+      user {
+        id
+      }
+      choice {
+        line {
+          closingTime
+        }
+      }
+
+  `,
+  });
+
+  const isBetOwner = bet?.user.id === userId;
+
+  const closingTime = new Date(bet?.choice?.line?.closingTime || 0);
+  const now = new Date();
+  const isBeforeFuture = now < closingTime;
+
+  return isAdmin(accessArgs) || (isBeforeFuture && isBetOwner);
+}
+
+export async function canReadBet(accessArgs: AugListAccessArgs): Promise<boolean> {
+  const { session, context, itemId } = accessArgs;
+
+  if (!itemId) {
+    return false;
+  }
+
+  const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
+  const userId = session?.data.id;
+
+  const graphql = String.raw;
+
+  const bet = await lists.Bet.findOne({
+    where: { id: itemId },
+    query: graphql`
+      id
+      user {
+        id
+      }
+      choice {
+        line {
+          closingTime
+        }
+      }
+
+  `,
+  });
+
+  const isBetOwner = bet?.user.id === userId;
+
+  const closingTime = new Date(bet?.choice?.line?.closingTime || 0);
+  const now = new Date();
+  const isAfterFuture = now > closingTime;
+
+  return isAdmin(accessArgs) || isAfterFuture || isBetOwner;
 }

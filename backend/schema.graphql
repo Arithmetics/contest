@@ -17,7 +17,6 @@ input ChoiceRelateToOneInput {
 """
 type Bet {
   id: ID!
-  title: String
   user: User
   choice: Choice
 }
@@ -33,24 +32,6 @@ input BetWhereInput {
   id_gte: ID
   id_in: [ID]
   id_not_in: [ID]
-  title: String
-  title_not: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  title_i: String
-  title_not_i: String
-  title_contains_i: String
-  title_not_contains_i: String
-  title_starts_with_i: String
-  title_not_starts_with_i: String
-  title_ends_with_i: String
-  title_not_ends_with_i: String
-  title_in: [String]
-  title_not_in: [String]
   user: UserWhereInput
   user_is_null: Boolean
   choice: ChoiceWhereInput
@@ -64,8 +45,6 @@ input BetWhereUniqueInput {
 enum SortBetsBy {
   id_ASC
   id_DESC
-  title_ASC
-  title_DESC
   user_ASC
   user_DESC
   choice_ASC
@@ -73,7 +52,6 @@ enum SortBetsBy {
 }
 
 input BetUpdateInput {
-  title: String
   user: UserRelateToOneInput
   choice: ChoiceRelateToOneInput
 }
@@ -84,7 +62,6 @@ input BetsUpdateInput {
 }
 
 input BetCreateInput {
-  title: String
   user: UserRelateToOneInput
   choice: ChoiceRelateToOneInput
 }
