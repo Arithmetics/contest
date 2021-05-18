@@ -1,14 +1,24 @@
 import { list } from '@keystone-next/keystone/schema';
 import { text, checkbox, password, relationship } from '@keystone-next/fields';
-// import { AugKeystoneSession } from '../keystoneTypeAugments';
+import { isAdmin, isOwnAccount } from '../keystoneTypeAugments';
 
 export const User = list({
+  access: {
+    create: isOwnAccount,
+    read: true,
+    update: isOwnAccount,
+    delete: isAdmin,
+  },
   fields: {
     email: text({ isRequired: true, isUnique: true }),
     name: text({ isRequired: true }),
     userName: text({ isRequired: true, isUnique: true }),
     password: password(),
-    isAdmin: checkbox({ isRequired: true, defaultValue: false }),
+    isAdmin: checkbox({
+      isRequired: true,
+      defaultValue: false,
+      access: { read: true, update: isAdmin, create: isAdmin },
+    }),
     bets: relationship({ ref: 'Bet.user', many: true }),
   },
   ui: {
@@ -16,11 +26,4 @@ export const User = list({
       initialColumns: ['email', 'name', 'isAdmin'],
     },
   },
-  // hooks: {
-  //   resolveInput: async ({ resolvedData, context }) => {
-  //     const session: AugKeystoneSession = context.session;
-
-  //     return resolvedData;
-  //   },
-  // },
 });

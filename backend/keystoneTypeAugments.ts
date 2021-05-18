@@ -19,3 +19,7 @@ export function isSignedIn({ session }: AugListAccessArgs): boolean {
 export function isAdmin({ session }: AugListAccessArgs): boolean {
   return !!session?.data?.isAdmin;
 }
+
+export function isOwnAccount({ itemId: userId, session }: AugListAccessArgs): boolean {
+  return userId === session?.data.id;
+}
