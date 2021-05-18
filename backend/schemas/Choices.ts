@@ -1,7 +1,14 @@
 import { checkbox, select, relationship } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
+import { isAdmin } from '../keystoneTypeAugments';
 
 export const Choice = list({
+  access: {
+    create: isAdmin,
+    read: true,
+    update: isAdmin,
+    delete: isAdmin,
+  },
   fields: {
     selection: select({
       dataType: 'enum',
