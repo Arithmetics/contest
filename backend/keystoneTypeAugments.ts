@@ -28,6 +28,12 @@ export function isOwnAccount({ itemId: userId, session }: AugListAccessArgs): bo
   return userId === session?.data.id;
 }
 
+export function isIsoDateInFuture(isoDateString: string | number): boolean {
+  const parsedDate = new Date(isoDateString);
+  const now = new Date();
+  return now < parsedDate;
+}
+
 export async function canModifyBet(accessArgs: AugListAccessArgs): Promise<boolean> {
   const { session, context, itemId } = accessArgs;
 
@@ -39,7 +45,6 @@ export async function canModifyBet(accessArgs: AugListAccessArgs): Promise<boole
   const userId = session?.data.id;
 
   const graphql = String.raw;
-
   const bet = await lists.Bet.findOne({
     where: { id: itemId },
     query: graphql`
@@ -57,12 +62,9 @@ export async function canModifyBet(accessArgs: AugListAccessArgs): Promise<boole
   });
 
   const isBetOwner = bet?.user.id === userId;
+  const isInFuture = isIsoDateInFuture(bet?.choice?.line?.closingTime || 0);
 
-  const closingTime = new Date(bet?.choice?.line?.closingTime || 0);
-  const now = new Date();
-  const isBeforeFuture = now < closingTime;
-
-  return isAdmin(accessArgs) || (isBeforeFuture && isBetOwner);
+  return isAdmin(accessArgs) || (!isInFuture && isBetOwner);
 }
 
 export async function canReadBet(accessArgs: AugListAccessArgs): Promise<boolean> {
