@@ -1,0 +1,11 @@
+---
+application:
+  name: "contest-backend"
+  project: "contest-backend"
+  organization: "QoveryCommunity"
+routers:
+- name: "main-contest-backend"
+  routes:
+  - application_name: "contest-backend"
+    paths:
+    - "/*"
