@@ -1,4 +1,4 @@
-import { checkbox, select, relationship } from '@keystone-next/fields';
+import { checkbox, select, relationship, virtual } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
 import { isAdmin } from '../keystoneTypeAugments';
 
@@ -24,9 +24,16 @@ export const Choice = list({
     isWin: checkbox({ isRequired: true, defaultValue: false }),
     line: relationship({ ref: 'Line.choices', many: false }),
     bets: relationship({ ref: 'Bet.choice', many: true }),
+    labelName: virtual({
+      resolver: (item) => {
+        // console.log(item, args, context, info);
+        // todo: come back and get the line title from context
+        return `${item.lineId} - ${item.selection}`;
+      },
+    }),
   },
   ui: {
-    labelField: 'selection',
+    labelField: 'labelName',
     listView: {
       initialColumns: ['selection', 'isWin', 'line'],
     },

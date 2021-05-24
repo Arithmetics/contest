@@ -1,5 +1,5 @@
-import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/types';
-import { KeystoneListsTypeInfo } from '.keystone/types';
+import { KeystoneContext } from '@keystone-next/types';
+import { BetWhereInput } from '.keystone/types';
 
 export type AugKeystoneSession = {
   itemId: string;
@@ -14,6 +14,7 @@ export type AugListAccessArgs = {
   itemId?: string;
   session?: AugKeystoneSession;
   context: KeystoneContext;
+  operation: 'read' | 'update' | 'create' | 'delete';
 };
 
 export function isSignedIn({ session }: AugListAccessArgs): boolean {
@@ -34,72 +35,56 @@ export function isIsoDateInFuture(isoDateString: string | number): boolean {
   return now < parsedDate;
 }
 
-export async function canModifyBet(accessArgs: AugListAccessArgs): Promise<boolean> {
-  const { session, context, itemId } = accessArgs;
+export async function canModifyBet(
+  accessArgs: AugListAccessArgs
+): Promise<boolean | BetWhereInput> {
+  const { session } = accessArgs;
 
-  if (!itemId) {
-    return false;
+  // RULE: Is admin
+  if (isAdmin(accessArgs)) {
+    return true;
   }
 
-  const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
-  const userId = session?.data.id;
+  const userId = session?.data?.id;
+  const now = new Date().toISOString();
 
-  const graphql = String.raw;
-  const bet = await lists.Bet.findOne({
-    where: { id: itemId },
-    query: graphql`
-      id
-      user {
-        id
-      }
-      choice {
-        line {
-          closingTime
-        }
-      }
+  // owns bet AND line is not closed
+  const betOwnerAndLineNotClosed: BetWhereInput = {
+    AND: [
+      { user: { id: userId } },
+      {
+        choice: {
+          line: { closingTime_gt: now },
+        },
+      },
+    ],
+  };
 
-  `,
-  });
-
-  const isBetOwner = bet?.user.id === userId;
-  const isInFuture = isIsoDateInFuture(bet?.choice?.line?.closingTime || 0);
-
-  return isAdmin(accessArgs) || (!isInFuture && isBetOwner);
+  return betOwnerAndLineNotClosed;
 }
 
-export async function canReadBet(accessArgs: AugListAccessArgs): Promise<boolean> {
-  const { session, context, itemId } = accessArgs;
+export async function canReadBet(accessArgs: AugListAccessArgs): Promise<boolean | BetWhereInput> {
+  const { session } = accessArgs;
 
-  if (!itemId) {
-    return false;
+  // RULE: Is admin
+  if (isAdmin(accessArgs)) {
+    return true;
   }
 
-  const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
-  const userId = session?.data.id;
+  const userId = session?.data?.id;
+  const now = new Date().toISOString();
 
-  const graphql = String.raw;
+  // owns bet OR line is closed
+  const betOwnerOrLineClosed: BetWhereInput = {
+    OR: [
+      { user: { id: userId } },
+      {
+        choice: {
+          line: { closingTime_lt: now },
+        },
+      },
+    ],
+  };
 
-  const bet = await lists.Bet.findOne({
-    where: { id: itemId },
-    query: graphql`
-      id
-      user {
-        id
-      }
-      choice {
-        line {
-          closingTime
-        }
-      }
-
-  `,
-  });
-
-  const isBetOwner = bet?.user.id === userId;
-
-  const closingTime = new Date(bet?.choice?.line?.closingTime || 0);
-  const now = new Date();
-  const isAfterFuture = now > closingTime;
-
-  return isAdmin(accessArgs) || isAfterFuture || isBetOwner;
+  return betOwnerOrLineClosed;
 }

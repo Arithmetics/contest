@@ -115,6 +115,7 @@ type Choice {
     first: Int
     skip: Int
   ): _QueryMeta
+  labelName: String
 }
 
 input ChoiceWhereInput {
