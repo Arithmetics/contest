@@ -1,23 +1,14 @@
-# https://docs.docker.com/samples/library/node/
-ARG NODE_VERSION=15.8.0
-# https://github.com/Yelp/dumb-init/releases
-ARG DUMB_INIT_VERSION=1.2.5
+FROM node:14-alpine
 
-# Build container
-FROM node:${NODE_VERSION}-alpine AS build
-ARG DUMB_INIT_VERSION
+RUN mkdir -p /usr/src/xxx
+WORKDIR /usr/src/xxx
 
-WORKDIR /home/node
+RUN apk update && apk upgrade
 
-ADD . /home/node
-RUN cd backend && yarn install && yarn build && yarn cache clean
-
-# Runtime container
-FROM node:${NODE_VERSION}-alpine
-
-WORKDIR /home/node
-
-COPY --from=backend/build /home/node /home/node
+COPY ./backend /usr/src/xxx/
+RUN yarn install
+RUN yarn build
 
 EXPOSE 3000
-CMD ["yarn", "start"]
+# start the app
+CMD [ "yarn", "start" ]
