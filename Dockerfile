@@ -5,11 +5,16 @@ WORKDIR /usr/src/xxx
 
 RUN apk update && apk upgrade
 
+ARG QOVERY_ROUTER_MAIN_CONTEST_BACKEND_URL
+ENV BASE_HOST=$QOVERY_ROUTER_MAIN_CONTEST_BACKEND_URL
+
 COPY ./backend /usr/src/xxx/
 RUN echo yoyoyoyoyo
 RUN echo $CLOUDINARY_CLOUD_NAME
 RUN echo xxxxxx
 RUN echo $SESSION_SECRET
+RUN echo BASE_HOST
+RUN echo $BASE_HOST
 RUN echo yyyy
 RUN echo $QOVERY_ROUTER_MAIN_CONTEST_BACKEND_URL
 RUN yarn install
