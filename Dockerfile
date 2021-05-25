@@ -38,7 +38,7 @@ RUN apk add --no-cache python make g++ curl bash
 COPY backend/package.json backend/yarn.lock ./
 
 # Copy over other files needed to run the service. 
-COPY backend/tsconfig.json backend/keystone.ts backend/schema.ts sbackend/chema.graphql backend/schema.prisma ./
+COPY backend/tsconfig.json backend/keystone.ts backend/schema.ts backend/chema.graphql backend/schema.prisma ./
 
 # Install all dev dependencies (used to build typescript, for docker-compose, etc)
 RUN yarn install --frozen-lockfile
