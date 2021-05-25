@@ -25,7 +25,7 @@ ENV FRONTEND_URL=$FRONTEND_URL
 
 
 
-COPY ./backend /usr/src/xxx/
+COPY ./backend .
 
 RUN npm install
 RUN npm run build
