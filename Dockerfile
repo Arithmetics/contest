@@ -23,9 +23,6 @@ ENV SESSION_SECRET=$SESSION_SECRET
 ARG FRONTEND_URL
 ENV FRONTEND_URL=$FRONTEND_URL
 
-RUN echo $CLOUDINARY_CLOUD_NAME
-RUN echo $CLOUDINARY_SECRET
-RUN echo $CLOUDINARY_KEY
 
 
 COPY ./backend /usr/src/xxx/
@@ -36,3 +33,5 @@ RUN yarn build
 EXPOSE 3000
 # start the app
 CMD [ "yarn", "start" ]
+
+
