@@ -6,6 +6,8 @@ WORKDIR /usr/src/xxx
 RUN apk update && apk upgrade
 
 COPY ./backend /usr/src/xxx/
+RUN echo $CLOUDINARY_CLOUD_NAME
+RUN echo $SESSION_SECRET
 RUN yarn install
 RUN yarn build
 
