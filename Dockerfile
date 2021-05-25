@@ -6,8 +6,11 @@ WORKDIR /usr/src/xxx
 RUN apk update && apk upgrade
 
 COPY ./backend /usr/src/xxx/
+RUN echo yoyoyoyoyo
 RUN echo $CLOUDINARY_CLOUD_NAME
+RUN echo xxxxxx
 RUN echo $SESSION_SECRET
+RUN echo yyyy
 RUN echo $QOVERY_ROUTER_MAIN_CONTEST_BACKEND_URL
 RUN yarn install
 RUN yarn build
