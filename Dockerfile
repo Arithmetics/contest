@@ -1,25 +1,7 @@
 # --- Base Image (all other images are based off this one) ---------------------
 FROM node:15.14.0-alpine3.10 AS base
 
-
-
-ARG CLOUDINARY_CLOUD_NAME
-ENV CLOUDINARY_CLOUD_NAME=$CLOUDINARY_CLOUD_NAME
- 
-ARG CLOUDINARY_SECRET
-ENV CLOUDINARY_SECRET=$CLOUDINARY_SECRET
-
-ARG CLOUDINARY_KEY
-ENV CLOUDINARY_KEY=$CLOUDINARY_KEY
-
-ARG DATABASE_URL
-ENV DATABASE_URL=$DATABASE_URL
-
-ARG SESSION_SECRET
-ENV SESSION_SECRET=$SESSION_SECRET
-
-ARG FRONTEND_URL
-ENV FRONTEND_URL=$FRONTEND_URL
+RUN ls
 
 # Set working directory.
 WORKDIR /var/service
@@ -35,10 +17,11 @@ FROM base AS setup
 RUN apk add --no-cache python make g++ curl bash
 
 # Copying only required files for install command (.npmrc needed for scoped packages)
-COPY backend/package.json backend/yarn.lock ./
+# COPY package.json yarn.lock ./
 
 # Copy over other files needed to run the service. 
-COPY backend/tsconfig.json backend/keystone.ts backend/schema.ts backend/chema.graphql backend/schema.prisma ./
+# COPY tsconfig.json keystone.ts schema.ts schema.graphql schema.prisma ./
+COPY backend/ ./
 
 # Install all dev dependencies (used to build typescript, for docker-compose, etc)
 RUN yarn install --frozen-lockfile
