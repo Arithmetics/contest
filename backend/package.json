@@ -7,7 +7,9 @@
     "start": "keystone-next start",
     "build": "keystone-next build",
     "postinstall": "keystone-next postinstall",
-    "seed-data": "keystone-next --seed-data"
+    "seed-data": "keystone-next --seed-data",
+    "reset-data": "keystone-next dev --reset-db",
+    "migrate": "keystone-next prisma migrate deploy"
   },
   "dependencies": {
     "@keystone-next/auth": "^21.0.0",

@@ -1,11 +1,15 @@
 ---
 application:
-  name: "contest"
-  project: "contest"
-  organization: "QoveryCommunity"
+  name: 'contest'
+  project: 'contest'
+  organization: 'QoveryCommunity'
+databases:
+  - type: postgresql
+    version: 12
+    name: contest-postgresql
 routers:
-- name: "main-contest"
-  routes:
-  - application_name: "contest"
-    paths:
-    - "/*"
+  - name: 'main-contest'
+    routes:
+      - application_name: 'contest'
+        paths:
+          - '/*'

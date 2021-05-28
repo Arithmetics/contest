@@ -43,12 +43,12 @@ RUN apk add --no-cache python make g++ curl bash
 COPY backend/ ./
 
 # Install all dev dependencies (used to build typescript, for docker-compose, etc)
-RUN yarn install --frozen-lockfile
+RUN npm install
 
 # --- Build Stage (image contains NPM credentials, should not be pushed) -------
 FROM setup AS builder
 
-RUN yarn build
+RUN npm run build
 
 # Removing `.npmrc`, tsconfig and source files as the last step -
 RUN rm -rf tsconfig*.json .npmrc src
@@ -65,4 +65,4 @@ USER node
 EXPOSE 3000
 
 # Set default execution command.
-CMD yarn start
+CMD npm start
