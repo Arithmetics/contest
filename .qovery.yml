@@ -9,6 +9,9 @@ databases:
     name: contest-postgresql
 routers:
   - name: 'main-contest'
+    custom_domains:
+      - branch: main
+    domain: api.btbets.ml
     routes:
       - application_name: 'contest'
         paths:
