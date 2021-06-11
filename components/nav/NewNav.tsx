@@ -19,6 +19,7 @@ import ButtonLink from '../ButtonLink';
 import ChakraLink from '../ChakraLink';
 import LogOut from '../auth/LogOut';
 import { useUser } from '../User';
+import AvatarLink from '../AvatarLink';
 
 export default function NewNav(): JSX.Element {
   const mobileNav = useDisclosure();
@@ -98,7 +99,14 @@ export default function NewNav(): JSX.Element {
           <HStack spacing={3} display={mobileNav.isOpen ? 'none' : 'flex'} alignItems="center">
             {user ? (
               <>
-                <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+                {/* <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" /> */}
+                <AvatarLink
+                  size="sm"
+                  name="Dan Abrahmov"
+                  src="https://bit.ly/dan-abramov"
+                  title="account"
+                  href="/account"
+                />
                 <LogOut />
               </>
             ) : (
