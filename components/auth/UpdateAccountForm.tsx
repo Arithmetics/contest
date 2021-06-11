@@ -11,13 +11,14 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-
-import { useCheckIfUsernameAvailableQuery } from '../../generated/graphql-types';
-import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { useUpdateUserMutation } from '../../generated/graphql-types';
+import {
+  useUpdateUserMutation,
+  useCheckIfUsernameAvailableQuery,
+} from '../../generated/graphql-types';
 import { useUser } from '../User';
 
 type UpdateAccountInputs = {

@@ -1,79 +1,63 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  Heading,
-  Input,
-  Stack,
-  Spinner,
-  useToast,
-} from '@chakra-ui/react';
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-
+import { Box, Button, FormControl, Heading, Stack, useToast } from '@chakra-ui/react';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { useUpdatePasswordMutation } from '../../generated/graphql-types';
+import { useUser } from '../User';
+
 import PasswordInput from './PasswordInput';
 
-type UpdateAccountInputs = {
-  realName: string;
-  userName: string;
+type UpdatePasswordInputs = {
   password: string;
 };
 
 export default function UpdatePasswordForm(): JSX.Element {
-  const router = useRouter();
   const toast = useToast();
+  const user = useUser();
 
-  const schema = yup.object().shape({});
+  const schema = yup.object().shape({
+    password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
+  });
 
-  const { register, handleSubmit, errors } = useForm<UpdateAccountInputs>({
+  const { register, handleSubmit, errors, reset } = useForm<UpdatePasswordInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
 
-  // const [signup, { loading: signupLoading }] = useSignUpMutation();
+  const [updatePassword, { loading: updatePasswordLoading }] = useUpdatePasswordMutation();
 
-  const submitUpdateAccount = (): void => {
-    console.log('x');
+  const submitUpdatePassword = async (formData: UpdatePasswordInputs): Promise<void> => {
+    if (!user?.id) {
+      throw new Error('No user logged in');
+    }
+    try {
+      const res = await updatePassword({
+        variables: {
+          id: user?.id,
+          password: formData.password,
+        },
+      });
+      if (res.data?.updateUser?.id) {
+        toast({
+          title: 'Password updated',
+          description: 'You will use your new password next time you log in',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+        reset();
+      }
+    } catch (e) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong updating your password. Refresh and try again.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
-
-  const signupLoading = false;
-
-  // const submitUpdateAccount = async (formData: UpdateAccountInputs): Promise<void> => {
-  //   try {
-  //     const res = await signup({
-  //       variables: {
-  //         password: formData.password,
-  //         name: formData.realName,
-  //         userName: formData.userName,
-  //       },
-  //     });
-  //     if (res.data?.createUser?.id) {
-  //       toast({
-  //         title: 'Account created',
-  //         description: 'Go ahead and log in',
-  //         status: 'success',
-  //         duration: 5000,
-  //         isClosable: true,
-  //       });
-  //       reset();
-  //       router.push('/login');
-  //     }
-  //   } catch (e) {
-  //     toast({
-  //       title: 'Error',
-  //       description: 'Something went wrong creating your account. Refresh and try again.',
-  //       status: 'success',
-  //       duration: 5000,
-  //       isClosable: true,
-  //     });
-  //   }
-  // };
 
   return (
     <Stack
@@ -101,7 +85,7 @@ export default function UpdatePasswordForm(): JSX.Element {
               register={register}
               isInvalid={!!errors?.password?.message}
               errorText={errors?.password?.message}
-              disabled={signupLoading}
+              disabled={updatePasswordLoading}
               isUpdatePassword
             />
           </FormControl>
@@ -110,9 +94,9 @@ export default function UpdatePasswordForm(): JSX.Element {
           variant="red-gradient"
           mt={8}
           w={'full'}
-          onClick={handleSubmit(submitUpdateAccount)}
-          disabled={!!errors.password || !!errors.realName || !!errors.userName}
-          isLoading={signupLoading}
+          onClick={handleSubmit(submitUpdatePassword)}
+          disabled={!!errors.password}
+          isLoading={updatePasswordLoading}
         >
           Submit
         </Button>

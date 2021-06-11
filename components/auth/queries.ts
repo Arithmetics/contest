@@ -80,3 +80,14 @@ export const UPDATE_USER_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_PASSWORD_MUTATION = gql`
+  mutation UpdatePassword($id: ID!, $password: String!) {
+    updateUser(id: $id, data: { password: $password }) {
+      id
+      email
+      userName
+      name
+    }
+  }
+`;
