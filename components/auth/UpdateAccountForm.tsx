@@ -8,7 +8,6 @@ import {
   Input,
   Stack,
   Spinner,
-  Text,
   useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -18,7 +17,6 @@ import { useCheckIfUsernameAvailableQuery } from '../../generated/graphql-types'
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import PasswordInput from './PasswordInput';
 
 type UpdateAccountInputs = {
   realName: string;
@@ -55,7 +53,6 @@ export default function UpdateAccountForm(): JSX.Element {
         'Display name is taken',
         async (userName) => await testUserName(userName)
       ),
-    password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
   });
 
   const { register, handleSubmit, errors } = useForm<UpdateAccountInputs>({
@@ -106,9 +103,11 @@ export default function UpdateAccountForm(): JSX.Element {
     <Stack
       bg={'gray.50'}
       rounded={'xl'}
-      p={{ base: 4, sm: 6, md: 8 }}
+      padding={{ base: 4, sm: 6, md: 8 }}
       spacing={{ base: 8 }}
       maxW={{ lg: 'lg' }}
+      width={'100%'}
+      marginTop={8}
     >
       <Stack spacing={4}>
         <Heading
@@ -116,7 +115,7 @@ export default function UpdateAccountForm(): JSX.Element {
           lineHeight={1.1}
           fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
         >
-          Account Settings
+          Basic Account Settings
         </Heading>
       </Stack>
       <Box as={'form'} mt={10}>
@@ -179,13 +178,6 @@ export default function UpdateAccountForm(): JSX.Element {
               {errors?.userName?.message || userNameAvailQuery.error?.message}
             </FormErrorMessage>
           </FormControl>
-
-          <PasswordInput
-            register={register}
-            isInvalid={!!errors?.password?.message}
-            errorText={errors?.password?.message}
-            disabled={signupLoading}
-          />
         </Stack>
         <Button
           variant="red-gradient"
