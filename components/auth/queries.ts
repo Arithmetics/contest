@@ -71,7 +71,7 @@ export const SIGNUP_MUTATION = gql`
 `;
 
 export const UPDATE_USER_MUTATION = gql`
-  mutation UpdateUser($id: String!, $name: String!, $userName: String!) {
+  mutation UpdateUser($id: ID!, $name: String!, $userName: String!) {
     updateUser(id: $id, data: { name: $name, userName: $userName }) {
       id
       email

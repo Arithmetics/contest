@@ -11,22 +11,23 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 
 import { useCheckIfUsernameAvailableQuery } from '../../generated/graphql-types';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { useUpdateUserMutation } from '../../generated/graphql-types';
+import { useUser } from '../User';
+
 type UpdateAccountInputs = {
   realName: string;
   userName: string;
-  password: string;
 };
 
 export default function UpdateAccountForm(): JSX.Element {
-  const router = useRouter();
   const toast = useToast();
+  const user = useUser();
 
   const [userNameLoading, setUserNameLoading] = useState(false);
 
@@ -38,8 +39,9 @@ export default function UpdateAccountForm(): JSX.Element {
     setUserNameLoading(true);
     const res = await userNameAvailQuery.refetch({ userName });
     setUserNameLoading(false);
+    console.log(res);
     const count = res?.data?._allUsersMeta?.count;
-    return count === 0;
+    return count === 0 || userName === user?.userName;
   };
 
   const schema = yup.object().shape({
@@ -57,47 +59,45 @@ export default function UpdateAccountForm(): JSX.Element {
 
   const { register, handleSubmit, errors } = useForm<UpdateAccountInputs>({
     mode: 'onBlur',
+    defaultValues: {
+      userName: user?.userName ?? '',
+      realName: user?.name ?? '',
+    },
     resolver: yupResolver(schema),
   });
 
-  // const [signup, { loading: signupLoading }] = useSignUpMutation();
+  const [updateUser, { loading: updateUserLoading }] = useUpdateUserMutation();
 
-  const submitUpdateAccount = (): void => {
-    console.log('x');
+  const submitUpdateAccount = async (formData: UpdateAccountInputs): Promise<void> => {
+    if (!user?.id) {
+      throw new Error('No user logged in');
+    }
+    try {
+      const res = await updateUser({
+        variables: {
+          id: user.id,
+          name: formData.realName,
+          userName: formData.userName,
+        },
+      });
+      if (res.data?.updateUser?.id) {
+        toast({
+          title: 'Account information updated',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (e) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong updating your account. Refresh and try again.',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
   };
-
-  const signupLoading = false;
-
-  // const submitUpdateAccount = async (formData: UpdateAccountInputs): Promise<void> => {
-  //   try {
-  //     const res = await signup({
-  //       variables: {
-  //         password: formData.password,
-  //         name: formData.realName,
-  //         userName: formData.userName,
-  //       },
-  //     });
-  //     if (res.data?.createUser?.id) {
-  //       toast({
-  //         title: 'Account created',
-  //         description: 'Go ahead and log in',
-  //         status: 'success',
-  //         duration: 5000,
-  //         isClosable: true,
-  //       });
-  //       reset();
-  //       router.push('/login');
-  //     }
-  //   } catch (e) {
-  //     toast({
-  //       title: 'Error',
-  //       description: 'Something went wrong creating your account. Refresh and try again.',
-  //       status: 'success',
-  //       duration: 5000,
-  //       isClosable: true,
-  //     });
-  //   }
-  // };
 
   return (
     <Stack
@@ -129,7 +129,7 @@ export default function UpdateAccountForm(): JSX.Element {
               color={'gray.500'}
               type="email"
               _placeholder={{ color: 'gray.500' }}
-              placeholder="theUsersEmail@www.com"
+              placeholder={user?.email ?? ''}
               disabled
             />
           </FormControl>
@@ -149,7 +149,7 @@ export default function UpdateAccountForm(): JSX.Element {
               color={'gray.500'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="I need this for payment"
-              disabled={signupLoading}
+              disabled={updateUserLoading}
             />
             <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
           </FormControl>
@@ -169,7 +169,7 @@ export default function UpdateAccountForm(): JSX.Element {
               color={'gray.500'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="Everyone else will see this"
-              disabled={signupLoading}
+              disabled={updateUserLoading}
             />
             {userNameLoading && (
               <Spinner position="absolute" right={5} top={10} color="red.500" zIndex={300} />
@@ -184,8 +184,8 @@ export default function UpdateAccountForm(): JSX.Element {
           mt={8}
           w={'full'}
           onClick={handleSubmit(submitUpdateAccount)}
-          disabled={!!errors.password || !!errors.realName || !!errors.userName}
-          isLoading={signupLoading}
+          disabled={!!errors.realName || !!errors.userName}
+          isLoading={updateUserLoading}
         >
           Submit
         </Button>

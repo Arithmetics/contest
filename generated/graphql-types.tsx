@@ -24,13 +24,11 @@ export type AuthenticatedItem = User;
 export type Bet = {
   __typename?: 'Bet';
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   choice?: Maybe<Choice>;
 };
 
 export type BetCreateInput = {
-  title?: Maybe<Scalars['String']>;
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
 };
@@ -43,7 +41,6 @@ export type BetRelateToManyInput = {
 };
 
 export type BetUpdateInput = {
-  title?: Maybe<Scalars['String']>;
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
 };
@@ -59,24 +56,6 @@ export type BetWhereInput = {
   id_gte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
   id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  title?: Maybe<Scalars['String']>;
-  title_not?: Maybe<Scalars['String']>;
-  title_contains?: Maybe<Scalars['String']>;
-  title_not_contains?: Maybe<Scalars['String']>;
-  title_starts_with?: Maybe<Scalars['String']>;
-  title_not_starts_with?: Maybe<Scalars['String']>;
-  title_ends_with?: Maybe<Scalars['String']>;
-  title_not_ends_with?: Maybe<Scalars['String']>;
-  title_i?: Maybe<Scalars['String']>;
-  title_not_i?: Maybe<Scalars['String']>;
-  title_contains_i?: Maybe<Scalars['String']>;
-  title_not_contains_i?: Maybe<Scalars['String']>;
-  title_starts_with_i?: Maybe<Scalars['String']>;
-  title_not_starts_with_i?: Maybe<Scalars['String']>;
-  title_ends_with_i?: Maybe<Scalars['String']>;
-  title_not_ends_with_i?: Maybe<Scalars['String']>;
-  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
   user?: Maybe<UserWhereInput>;
   user_is_null?: Maybe<Scalars['Boolean']>;
   choice?: Maybe<ChoiceWhereInput>;
@@ -105,6 +84,7 @@ export type Choice = {
   line?: Maybe<Line>;
   bets: Array<Bet>;
   _betsMeta?: Maybe<_QueryMeta>;
+  labelName?: Maybe<Scalars['String']>;
 };
 
 
@@ -1243,8 +1223,6 @@ export type SendUserPasswordResetLinkResult = {
 export enum SortBetsBy {
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
-  TitleAsc = 'title_ASC',
-  TitleDesc = 'title_DESC',
   UserAsc = 'user_ASC',
   UserDesc = 'user_DESC',
   ChoiceAsc = 'choice_ASC',
@@ -1623,6 +1601,21 @@ export type SignUpMutation = (
   )> }
 );
 
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  userName: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'userName' | 'name'>
+  )> }
+);
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1910,6 +1903,44 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($id: ID!, $name: String!, $userName: String!) {
+  updateUser(id: $id, data: {name: $name, userName: $userName}) {
+    id
+    email
+    userName
+    name
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      userName: // value for 'userName'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const CurrentUserDocument = gql`
     query CurrentUser {
   authenticatedItem {
