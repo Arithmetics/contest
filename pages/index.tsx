@@ -12,7 +12,6 @@ import {
 } from '@chakra-ui/react';
 import gql from 'graphql-tag';
 import { useQuery } from '@apollo/client';
-import ButtonLink from '../components/ButtonLink';
 
 const ALL_CONTESTS_QUERY = gql`
   query ALL_CONTESTS_QUERY {
@@ -30,8 +29,6 @@ const ALL_CONTESTS_QUERY = gql`
     }
   }
 `;
-
-// stopped on video 20
 
 export default function HomePage(): JSX.Element {
   const { data, error, loading } = useQuery(ALL_CONTESTS_QUERY);
@@ -89,7 +86,6 @@ function SocialProfileWithImage(): JSX.Element {
               <Text fontSize={'sm'} color={'gray.500'}>
                 Other bets
               </Text>
-              <ButtonLink title="test" href="/login" />
             </Stack>
           </Stack>
 

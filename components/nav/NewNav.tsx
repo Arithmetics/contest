@@ -4,28 +4,39 @@ import {
   Flex,
   useColorModeValue,
   HStack,
-  Button,
   useDisclosure,
   VStack,
   IconButton,
   CloseButton,
+  ThemingProps,
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';
 import { GiAmericanFootballHelmet, GiAmericanFootballBall } from 'react-icons/gi';
+import { useRouter } from 'next/router';
+
+import { Routes } from '../../constants';
+import LogOut from '../auth/LogOut';
 
 import ButtonLink from '../ButtonLink';
 import ChakraLink from '../ChakraLink';
-import LogOut from '../auth/LogOut';
 import { useUser } from '../User';
 import AvatarLink from '../AvatarLink';
 
 export default function NewNav(): JSX.Element {
   const mobileNav = useDisclosure();
+  const router = useRouter();
 
   const user = useUser();
 
   const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+
+  const determineLinkStyle = (link: string): ThemingProps<'Button'> => {
+    if (router.pathname === link) {
+      return { variant: 'solid', size: 'sm', colorScheme: 'teal' };
+    }
+    return { variant: 'ghost', size: 'sm', colorScheme: 'white' };
+  };
 
   return (
     <>
@@ -62,15 +73,27 @@ export default function NewNav(): JSX.Element {
                   justifySelf="self-start"
                   onClick={mobileNav.onClose}
                 />
-                <Button w="full" variant="ghost" href="#" leftIcon={<GiAmericanFootballBall />}>
-                  NFL ATS
-                </Button>
-                <Button w="full" variant="ghost" href="#" leftIcon={<GiAmericanFootballHelmet />}>
-                  NFL Over Under
-                </Button>
-                <Button w="full" variant="ghost" href="#" leftIcon={<IoIosBasketball />}>
-                  NBA Over Under
-                </Button>
+                <ButtonLink
+                  title="NFL ATS"
+                  leftIcon={<GiAmericanFootballBall />}
+                  href={`/${Routes.CONTESTS}/nflPlayoffATS`}
+                  buttonTheme={{ variant: 'ghost' }}
+                  layoutProps={{ w: 'full' }}
+                />
+                <ButtonLink
+                  title="NFL Over Under"
+                  leftIcon={<GiAmericanFootballHelmet />}
+                  href={`/${Routes.CONTESTS}/nflOverUnder`}
+                  buttonTheme={{ variant: 'ghost' }}
+                  layoutProps={{ w: 'full' }}
+                />
+                <ButtonLink
+                  title="NBA Over Under"
+                  leftIcon={<IoIosBasketball />}
+                  href={`/${Routes.CONTESTS}/nbaOverUnder`}
+                  buttonTheme={{ variant: 'ghost' }}
+                  layoutProps={{ w: 'full' }}
+                />
               </VStack>
             </Box>
             {/* <chakra.a href="/" title="Home page" display="flex" alignItems="center">
@@ -80,21 +103,24 @@ export default function NewNav(): JSX.Element {
             <ChakraLink href="/" title="LOGO" />
 
             <HStack spacing={3} display={{ base: 'none', md: 'inline-flex' }}>
-              <Button variant="ghost" href="#" leftIcon={<GiAmericanFootballBall />} size="sm">
-                NFL ATS
-              </Button>
-              <Button
-                variant="solid"
-                colorScheme="teal"
-                href="#"
+              <ButtonLink
+                title="NFL ATS"
+                leftIcon={<GiAmericanFootballBall />}
+                href={`/${Routes.CONTESTS}/nflPlayoffATS`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nflPlayoffATS`)}
+              />
+              <ButtonLink
+                title="NFL Over Under"
                 leftIcon={<GiAmericanFootballHelmet />}
-                size="sm"
-              >
-                NFL Over Under
-              </Button>
-              <Button variant="ghost" href="#" leftIcon={<IoIosBasketball />} size="sm">
-                NBA Over Under
-              </Button>
+                href={`/${Routes.CONTESTS}/nflOverUnder`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nflOverUnder`)}
+              />
+              <ButtonLink
+                title="NBA Over Under"
+                leftIcon={<IoIosBasketball />}
+                href={`/${Routes.CONTESTS}/nbaOverUnder`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nbaOverUnder`)}
+              />
             </HStack>
           </HStack>
           <HStack spacing={3} display={mobileNav.isOpen ? 'none' : 'flex'} alignItems="center">
@@ -111,8 +137,16 @@ export default function NewNav(): JSX.Element {
               </>
             ) : (
               <>
-                <ButtonLink title="Sign Up" href="/signup" />
-                <ButtonLink title="Log In" href="/login" />
+                <ButtonLink
+                  title="Sign Up"
+                  href={`/${Routes.SIGNUP}`}
+                  buttonTheme={{ variant: 'ghost', colorScheme: 'teal' }}
+                />
+                <ButtonLink
+                  title="Log In"
+                  href={`/${Routes.LOGIN}`}
+                  buttonTheme={{ variant: 'ghost', colorScheme: 'teal' }}
+                />
               </>
             )}
           </HStack>

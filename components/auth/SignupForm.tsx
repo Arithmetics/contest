@@ -13,15 +13,16 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 import {
   useCheckIfEmailAvailableQuery,
   useCheckIfUsernameAvailableQuery,
   useSignUpMutation,
 } from '../../generated/graphql-types';
-import * as yup from 'yup';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { Routes } from '../../constants';
 import PasswordInput from './PasswordInput';
 
 type SignupFormInputs = {
@@ -107,7 +108,7 @@ export default function SignupForm(): JSX.Element {
           isClosable: true,
         });
         reset();
-        router.push('/login');
+        router.push(`/${Routes.LOGIN}`);
       }
     } catch (e) {
       toast({

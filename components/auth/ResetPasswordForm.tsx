@@ -14,6 +14,7 @@ import { useRouter } from 'next/router';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { useResetMutation, PasswordResetRedemptionErrorCode } from '../../generated/graphql-types';
+import { Routes } from '../../constants';
 
 import PasswordInput from './PasswordInput';
 import ForgotPasswordForm from './ForgotPasswordForm';
@@ -57,7 +58,7 @@ export default function ResetPasswordForm(): JSX.Element {
         isClosable: true,
       });
       reset();
-      router.push('/login');
+      router.push(`/${Routes.LOGIN}`);
     } else {
       toast({
         title: 'Error',
