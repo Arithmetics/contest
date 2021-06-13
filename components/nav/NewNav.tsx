@@ -9,7 +9,6 @@ import {
   VStack,
   IconButton,
   CloseButton,
-  Avatar,
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';
