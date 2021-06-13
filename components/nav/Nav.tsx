@@ -60,13 +60,14 @@ export default function Nav(): JSX.Element {
                 right={0}
                 display={mobileNav.isOpen ? 'flex' : 'none'}
                 flexDirection="column"
-                p={2}
-                pb={4}
-                m={2}
+                padding={2}
+                paddingBottom={4}
+                margin={0}
                 bg="gray.900"
                 spacing={3}
                 rounded="sm"
                 shadow="sm"
+                zIndex={10}
               >
                 <CloseButton
                   aria-label="Close menu"
@@ -96,9 +97,6 @@ export default function Nav(): JSX.Element {
                 />
               </VStack>
             </Box>
-            {/* <chakra.a href="/" title="Home page" display="flex" alignItems="center">
-              Logo
-            </chakra.a> */}
 
             <ChakraLink href="/" title="LOGO" />
 
@@ -152,27 +150,6 @@ export default function Nav(): JSX.Element {
           </HStack>
         </Flex>
       </chakra.header>
-      {/* <Flex alignItems="center" justifyContent="center" mx={2} borderWidth={0} overflowX="auto">
-        <Tabs defaultIndex={1} borderBottomColor="transparent" colorScheme="teal">
-          <TabList>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              Make Picks
-            </Tab>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              Leaderboard
-            </Tab>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              Rules
-            </Tab>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              Tracker
-            </Tab>
-            <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              History
-            </Tab>
-          </TabList>
-        </Tabs>
-      </Flex> */}
     </>
   );
 }
