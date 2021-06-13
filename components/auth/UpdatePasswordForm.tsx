@@ -52,7 +52,7 @@ export default function UpdatePasswordForm(): JSX.Element {
       toast({
         title: 'Error',
         description: 'Something went wrong updating your password. Refresh and try again.',
-        status: 'success',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });

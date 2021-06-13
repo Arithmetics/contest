@@ -93,7 +93,7 @@ export default function UpdateAccountForm(): JSX.Element {
       toast({
         title: 'Error',
         description: 'Something went wrong updating your account. Refresh and try again.',
-        status: 'success',
+        status: 'error',
         duration: 5000,
         isClosable: true,
       });

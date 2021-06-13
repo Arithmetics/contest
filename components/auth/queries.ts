@@ -91,3 +91,20 @@ export const UPDATE_PASSWORD_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_USER_AVATAR_MUTATION = gql`
+  mutation UpdateUserAvatar($id: ID!, $userName: String!, $image: Upload) {
+    updateUser(id: $id, data: { avatarImage: { create: { image: $image, altText: $userName } } }) {
+      id
+      email
+      userName
+      name
+      avatarImage {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+    }
+  }
+`;

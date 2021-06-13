@@ -1,20 +1,68 @@
 import { Avatar, Button, Flex, Heading, Stack, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import { useUser } from '../User';
+import { useUpdateUserAvatarMutation } from '../../generated/graphql-types';
 
 import dynamic from 'next/dynamic';
+import { CURRENT_USER_QUERY } from '../queries';
 
 const AvatarComponent = dynamic(() => import('./AvatarComponent'), {
   ssr: false,
 });
 
+async function dataUrlToFile(dataUrl: string, fileName: string): Promise<File> {
+  const res: Response = await fetch(dataUrl);
+  const blob: Blob = await res.blob();
+  return new File([blob], fileName, { type: 'image/png' });
+}
+
 export default function UpdateAvatar(): JSX.Element {
-  const router = useRouter();
   const toast = useToast();
   const user = useUser();
 
-  const signupLoading = false;
+  const [uploadedImage, setUploadedImage] = useState<string>('');
+
+  const onCrop = (data: string): void => {
+    setUploadedImage(data);
+  };
+
+  const [updateUserAvatar, { loading }] = useUpdateUserAvatarMutation({
+    refetchQueries: [{ query: CURRENT_USER_QUERY }],
+  });
+
+  const submitUpdateAvatar = async (): Promise<void> => {
+    if (!user?.id) {
+      throw new Error('No user logged in');
+    }
+
+    const constructedFile = await dataUrlToFile(uploadedImage, 'xxx');
+
+    try {
+      const res = await updateUserAvatar({
+        variables: {
+          id: user.id,
+          userName: user?.userName || 'unknown-avatar',
+          image: constructedFile,
+        },
+      });
+      if (res.data?.updateUser?.id) {
+        toast({
+          title: 'New avatar uploaded',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } catch (e) {
+      toast({
+        title: 'Error',
+        description: 'Something went wrong updating your avatar. Refresh and try again.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
     <Stack
@@ -43,14 +91,14 @@ export default function UpdateAvatar(): JSX.Element {
           name={user?.userName || ''}
           src={user?.avatarImage?.image?.publicUrlTransformed || ''}
         />
-        <AvatarComponent />
+        <AvatarComponent onCrop={onCrop} />
         <Button
           variant="red-gradient"
           mt={8}
           w={'full'}
-          //   onClick={handleSubmit(submitUpdateAccount)}
-          //   disabled={!!errors.password || !!errors.realName || !!errors.userName}
-          isLoading={signupLoading}
+          onClick={submitUpdateAvatar}
+          disabled={loading}
+          isLoading={loading}
         >
           Submit
         </Button>

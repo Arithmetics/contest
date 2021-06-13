@@ -1630,6 +1630,29 @@ export type UpdatePasswordMutation = (
   )> }
 );
 
+export type UpdateUserAvatarMutationVariables = Exact<{
+  id: Scalars['ID'];
+  userName: Scalars['String'];
+  image?: Maybe<Scalars['Upload']>;
+}>;
+
+
+export type UpdateUserAvatarMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'userName' | 'name'>
+    & { avatarImage?: Maybe<(
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'altText'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudinaryImage_File' }
+        & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )> }
+  )> }
+);
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2000,6 +2023,53 @@ export function useUpdatePasswordMutation(baseOptions?: Apollo.MutationHookOptio
 export type UpdatePasswordMutationHookResult = ReturnType<typeof useUpdatePasswordMutation>;
 export type UpdatePasswordMutationResult = Apollo.MutationResult<UpdatePasswordMutation>;
 export type UpdatePasswordMutationOptions = Apollo.BaseMutationOptions<UpdatePasswordMutation, UpdatePasswordMutationVariables>;
+export const UpdateUserAvatarDocument = gql`
+    mutation UpdateUserAvatar($id: ID!, $userName: String!, $image: Upload) {
+  updateUser(
+    id: $id
+    data: {avatarImage: {create: {image: $image, altText: $userName}}}
+  ) {
+    id
+    email
+    userName
+    name
+    avatarImage {
+      image {
+        publicUrlTransformed
+      }
+      altText
+    }
+  }
+}
+    `;
+export type UpdateUserAvatarMutationFn = Apollo.MutationFunction<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>;
+
+/**
+ * __useUpdateUserAvatarMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserAvatarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserAvatarMutation, { data, loading, error }] = useUpdateUserAvatarMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      userName: // value for 'userName'
+ *      image: // value for 'image'
+ *   },
+ * });
+ */
+export function useUpdateUserAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>(UpdateUserAvatarDocument, options);
+      }
+export type UpdateUserAvatarMutationHookResult = ReturnType<typeof useUpdateUserAvatarMutation>;
+export type UpdateUserAvatarMutationResult = Apollo.MutationResult<UpdateUserAvatarMutation>;
+export type UpdateUserAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>;
 export const CurrentUserDocument = gql`
     query CurrentUser {
   authenticatedItem {
