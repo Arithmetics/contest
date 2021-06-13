@@ -8,7 +8,7 @@ import { insertSeedData } from './seedData';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
-import { ContestImage } from './schemas/ContestImage';
+import { CloudImage } from './schemas/CloudImage';
 import { Line } from './schemas/Line';
 import { Choice } from './schemas/Choices';
 import { Bet } from './schemas/Bet';
@@ -71,7 +71,7 @@ export default auth.withAuth(
       Bet,
       Choice,
       Contest,
-      ContestImage,
+      CloudImage,
       Line,
       User,
     }),

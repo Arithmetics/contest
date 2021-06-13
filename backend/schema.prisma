@@ -31,23 +31,24 @@ model Choice {
 }
 
 model Contest {
-  id          Int           @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   name        String?
   description String?
   status      String?
   entryFee    Int?
-  image       ContestImage? @relation("Contestimage", fields: [imageId], references: [id])
-  imageId     Int?          @map("image")
-  lines       Line[]        @relation("Linecontest")
+  image       CloudImage? @relation("Contestimage", fields: [imageId], references: [id])
+  imageId     Int?        @map("image")
+  lines       Line[]      @relation("Linecontest")
 
   @@index([imageId])
 }
 
-model ContestImage {
-  id      Int      @id @default(autoincrement())
-  image   Json?
-  altText String?
-  contest Contest? @relation("Contestimage")
+model CloudImage {
+  id                    Int       @id @default(autoincrement())
+  image                 Json?
+  altText               String?
+  from_Contest_image    Contest[] @relation("Contestimage")
+  from_User_avatarImage User[]    @relation("UseravatarImage")
 }
 
 model Line {
@@ -63,16 +64,20 @@ model Line {
 }
 
 model User {
-  id                      Int       @id @default(autoincrement())
-  email                   String?   @unique
+  id                      Int         @id @default(autoincrement())
+  email                   String?     @unique
   name                    String?
-  userName                String?   @unique
+  userName                String?     @unique
   password                String?
   isAdmin                 Boolean?
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
-  bets                    Bet[]     @relation("Betuser")
+  bets                    Bet[]       @relation("Betuser")
+  avatarImage             CloudImage? @relation("UseravatarImage", fields: [avatarImageId], references: [id])
+  avatarImageId           Int?        @map("avatarImage")
+
+  @@index([avatarImageId])
 }
 
 enum ChoiceSelectionEnum {

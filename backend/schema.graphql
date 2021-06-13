@@ -194,10 +194,10 @@ input ChoicesCreateInput {
   data: ChoiceCreateInput
 }
 
-input ContestImageRelateToOneInput {
-  create: ContestImageCreateInput
-  connect: ContestImageWhereUniqueInput
-  disconnect: ContestImageWhereUniqueInput
+input CloudImageRelateToOneInput {
+  create: CloudImageCreateInput
+  connect: CloudImageWhereUniqueInput
+  disconnect: CloudImageWhereUniqueInput
   disconnectAll: Boolean
 }
 
@@ -217,7 +217,7 @@ type Contest {
   description: String
   status: String
   entryFee: Int
-  image: ContestImage
+  image: CloudImage
   lines(
     where: LineWhereInput
     search: String
@@ -295,7 +295,7 @@ input ContestWhereInput {
   entryFee_gte: Int
   entryFee_in: [Int]
   entryFee_not_in: [Int]
-  image: ContestImageWhereInput
+  image: CloudImageWhereInput
   image_is_null: Boolean
 
   """
@@ -340,7 +340,7 @@ input ContestUpdateInput {
   description: String
   status: String
   entryFee: Int
-  image: ContestImageRelateToOneInput
+  image: CloudImageRelateToOneInput
   lines: LineRelateToManyInput
 }
 
@@ -354,7 +354,7 @@ input ContestCreateInput {
   description: String
   status: String
   entryFee: Int
-  image: ContestImageRelateToOneInput
+  image: CloudImageRelateToOneInput
   lines: LineRelateToManyInput
 }
 
@@ -412,26 +412,18 @@ input CloudinaryImageFormat {
   transformation: String
 }
 
-input ContestRelateToOneInput {
-  create: ContestCreateInput
-  connect: ContestWhereUniqueInput
-  disconnect: ContestWhereUniqueInput
-  disconnectAll: Boolean
-}
-
 """
  A keystone list
 """
-type ContestImage {
+type CloudImage {
   id: ID!
   image: CloudinaryImage_File
   altText: String
-  contest: Contest
 }
 
-input ContestImageWhereInput {
-  AND: [ContestImageWhereInput]
-  OR: [ContestImageWhereInput]
+input CloudImageWhereInput {
+  AND: [CloudImageWhereInput]
+  OR: [CloudImageWhereInput]
   id: ID
   id_not: ID
   id_lt: ID
@@ -462,42 +454,43 @@ input ContestImageWhereInput {
   altText_not_ends_with_i: String
   altText_in: [String]
   altText_not_in: [String]
-  contest: ContestWhereInput
-  contest_is_null: Boolean
 }
 
-input ContestImageWhereUniqueInput {
+input CloudImageWhereUniqueInput {
   id: ID!
 }
 
-enum SortContestImagesBy {
+enum SortCloudImagesBy {
   id_ASC
   id_DESC
   altText_ASC
   altText_DESC
-  contest_ASC
-  contest_DESC
 }
 
-input ContestImageUpdateInput {
+input CloudImageUpdateInput {
   image: Upload
   altText: String
-  contest: ContestRelateToOneInput
 }
 
-input ContestImagesUpdateInput {
+input CloudImagesUpdateInput {
   id: ID!
-  data: ContestImageUpdateInput
+  data: CloudImageUpdateInput
 }
 
-input ContestImageCreateInput {
+input CloudImageCreateInput {
   image: Upload
   altText: String
-  contest: ContestRelateToOneInput
 }
 
-input ContestImagesCreateInput {
-  data: ContestImageCreateInput
+input CloudImagesCreateInput {
+  data: CloudImageCreateInput
+}
+
+input ContestRelateToOneInput {
+  create: ContestCreateInput
+  connect: ContestWhereUniqueInput
+  disconnect: ContestWhereUniqueInput
+  disconnectAll: Boolean
 }
 
 input ChoiceRelateToManyInput {
@@ -668,6 +661,7 @@ type User {
     first: Int
     skip: Int
   ): _QueryMeta
+  avatarImage: CloudImage
   passwordResetToken_is_set: Boolean
   passwordResetIssuedAt: String
   passwordResetRedeemedAt: String
@@ -756,6 +750,8 @@ input UserWhereInput {
    condition must be false for all nodes
   """
   bets_none: BetWhereInput
+  avatarImage: CloudImageWhereInput
+  avatarImage_is_null: Boolean
   passwordResetToken_is_set: Boolean
   passwordResetIssuedAt: String
   passwordResetIssuedAt_not: String
@@ -792,6 +788,8 @@ enum SortUsersBy {
   isAdmin_DESC
   bets_ASC
   bets_DESC
+  avatarImage_ASC
+  avatarImage_DESC
   passwordResetIssuedAt_ASC
   passwordResetIssuedAt_DESC
   passwordResetRedeemedAt_ASC
@@ -805,6 +803,7 @@ input UserUpdateInput {
   password: String
   isAdmin: Boolean
   bets: BetRelateToManyInput
+  avatarImage: CloudImageRelateToOneInput
   passwordResetToken: String
   passwordResetIssuedAt: String
   passwordResetRedeemedAt: String
@@ -822,6 +821,7 @@ input UserCreateInput {
   password: String
   isAdmin: Boolean
   bets: BetRelateToManyInput
+  avatarImage: CloudImageRelateToOneInput
   passwordResetToken: String
   passwordResetIssuedAt: String
   passwordResetRedeemedAt: String
@@ -935,34 +935,34 @@ type Mutation {
   deleteContests(ids: [ID!]): [Contest]
 
   """
-   Create a single ContestImage item.
+   Create a single CloudImage item.
   """
-  createContestImage(data: ContestImageCreateInput): ContestImage
+  createCloudImage(data: CloudImageCreateInput): CloudImage
 
   """
-   Create multiple ContestImage items.
+   Create multiple CloudImage items.
   """
-  createContestImages(data: [ContestImagesCreateInput]): [ContestImage]
+  createCloudImages(data: [CloudImagesCreateInput]): [CloudImage]
 
   """
-   Update a single ContestImage item by ID.
+   Update a single CloudImage item by ID.
   """
-  updateContestImage(id: ID!, data: ContestImageUpdateInput): ContestImage
+  updateCloudImage(id: ID!, data: CloudImageUpdateInput): CloudImage
 
   """
-   Update multiple ContestImage items by ID.
+   Update multiple CloudImage items by ID.
   """
-  updateContestImages(data: [ContestImagesUpdateInput]): [ContestImage]
+  updateCloudImages(data: [CloudImagesUpdateInput]): [CloudImage]
 
   """
-   Delete a single ContestImage item by ID.
+   Delete a single CloudImage item by ID.
   """
-  deleteContestImage(id: ID!): ContestImage
+  deleteCloudImage(id: ID!): CloudImage
 
   """
-   Delete multiple ContestImage items by ID.
+   Delete multiple CloudImage items by ID.
   """
-  deleteContestImages(ids: [ID!]): [ContestImage]
+  deleteCloudImages(ids: [ID!]): [CloudImage]
 
   """
    Create a single Line item.
@@ -1194,29 +1194,29 @@ type Query {
   ): _QueryMeta
 
   """
-   Search for all ContestImage items which match the where clause.
+   Search for all CloudImage items which match the where clause.
   """
-  allContestImages(
-    where: ContestImageWhereInput
+  allCloudImages(
+    where: CloudImageWhereInput
     search: String
-    sortBy: [SortContestImagesBy!]
+    sortBy: [SortCloudImagesBy!]
     orderBy: String
     first: Int
     skip: Int
-  ): [ContestImage]
+  ): [CloudImage]
 
   """
-   Search for the ContestImage item with the matching ID.
+   Search for the CloudImage item with the matching ID.
   """
-  ContestImage(where: ContestImageWhereUniqueInput!): ContestImage
+  CloudImage(where: CloudImageWhereUniqueInput!): CloudImage
 
   """
-   Perform a meta-query on all ContestImage items which match the where clause.
+   Perform a meta-query on all CloudImage items which match the where clause.
   """
-  _allContestImagesMeta(
-    where: ContestImageWhereInput
+  _allCloudImagesMeta(
+    where: CloudImageWhereInput
     search: String
-    sortBy: [SortContestImagesBy!]
+    sortBy: [SortCloudImagesBy!]
     orderBy: String
     first: Int
     skip: Int

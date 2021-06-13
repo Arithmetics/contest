@@ -1,6 +1,7 @@
-import { Box, Button, Flex, Heading, Stack, useToast } from '@chakra-ui/react';
+import { Avatar, Button, Flex, Heading, Stack, useToast } from '@chakra-ui/react';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useUser } from '../User';
 
 import dynamic from 'next/dynamic';
 
@@ -11,6 +12,7 @@ const AvatarComponent = dynamic(() => import('./AvatarComponent'), {
 export default function UpdateAvatar(): JSX.Element {
   const router = useRouter();
   const toast = useToast();
+  const user = useUser();
 
   const signupLoading = false;
 
@@ -23,6 +25,7 @@ export default function UpdateAvatar(): JSX.Element {
       maxW={{ lg: 'lg' }}
       width={'100%'}
       marginTop={8}
+      marginBottom={8}
     >
       <Stack spacing={4}>
         <Heading
@@ -34,6 +37,12 @@ export default function UpdateAvatar(): JSX.Element {
         </Heading>
       </Stack>
       <Flex as={'form'} flexDirection={'column'} alignItems={'center'} marginTop={10}>
+        <Avatar
+          marginBottom={4}
+          size="2xl"
+          name={user?.userName || ''}
+          src={user?.avatarImage?.image?.publicUrlTransformed || ''}
+        />
         <AvatarComponent />
         <Button
           variant="red-gradient"

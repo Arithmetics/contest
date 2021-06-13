@@ -25,6 +25,8 @@ export default function NewNav(): JSX.Element {
 
   const user = useUser();
 
+  const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+
   return (
     <>
       <chakra.header bg="gray.900" w="full" px={{ base: 2, sm: 4 }} py={4} shadow="md">
@@ -98,11 +100,10 @@ export default function NewNav(): JSX.Element {
           <HStack spacing={3} display={mobileNav.isOpen ? 'none' : 'flex'} alignItems="center">
             {user ? (
               <>
-                {/* <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" /> */}
                 <AvatarLink
-                  size="sm"
-                  name="Dan Abrahmov"
-                  src="https://bit.ly/dan-abramov"
+                  size="md"
+                  name={user.userName || ''}
+                  src={avatarUrl || ''}
                   title="account"
                   href="/account"
                 />
