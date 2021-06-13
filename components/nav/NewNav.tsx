@@ -9,7 +9,6 @@ import {
   VStack,
   IconButton,
   CloseButton,
-  Avatar,
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';
@@ -19,11 +18,14 @@ import ButtonLink from '../ButtonLink';
 import ChakraLink from '../ChakraLink';
 import LogOut from '../auth/LogOut';
 import { useUser } from '../User';
+import AvatarLink from '../AvatarLink';
 
 export default function NewNav(): JSX.Element {
   const mobileNav = useDisclosure();
 
   const user = useUser();
+
+  const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
   return (
     <>
@@ -98,7 +100,13 @@ export default function NewNav(): JSX.Element {
           <HStack spacing={3} display={mobileNav.isOpen ? 'none' : 'flex'} alignItems="center">
             {user ? (
               <>
-                <Avatar size="sm" name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+                <AvatarLink
+                  size="md"
+                  name={user.userName || ''}
+                  src={avatarUrl || ''}
+                  title="account"
+                  href="/account"
+                />
                 <LogOut />
               </>
             ) : (

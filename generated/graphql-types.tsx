@@ -24,13 +24,11 @@ export type AuthenticatedItem = User;
 export type Bet = {
   __typename?: 'Bet';
   id: Scalars['ID'];
-  title?: Maybe<Scalars['String']>;
   user?: Maybe<User>;
   choice?: Maybe<Choice>;
 };
 
 export type BetCreateInput = {
-  title?: Maybe<Scalars['String']>;
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
 };
@@ -43,7 +41,6 @@ export type BetRelateToManyInput = {
 };
 
 export type BetUpdateInput = {
-  title?: Maybe<Scalars['String']>;
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
 };
@@ -59,24 +56,6 @@ export type BetWhereInput = {
   id_gte?: Maybe<Scalars['ID']>;
   id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
   id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  title?: Maybe<Scalars['String']>;
-  title_not?: Maybe<Scalars['String']>;
-  title_contains?: Maybe<Scalars['String']>;
-  title_not_contains?: Maybe<Scalars['String']>;
-  title_starts_with?: Maybe<Scalars['String']>;
-  title_not_starts_with?: Maybe<Scalars['String']>;
-  title_ends_with?: Maybe<Scalars['String']>;
-  title_not_ends_with?: Maybe<Scalars['String']>;
-  title_i?: Maybe<Scalars['String']>;
-  title_not_i?: Maybe<Scalars['String']>;
-  title_contains_i?: Maybe<Scalars['String']>;
-  title_not_contains_i?: Maybe<Scalars['String']>;
-  title_starts_with_i?: Maybe<Scalars['String']>;
-  title_not_starts_with_i?: Maybe<Scalars['String']>;
-  title_ends_with_i?: Maybe<Scalars['String']>;
-  title_not_ends_with_i?: Maybe<Scalars['String']>;
-  title_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  title_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
   user?: Maybe<UserWhereInput>;
   user_is_null?: Maybe<Scalars['Boolean']>;
   choice?: Maybe<ChoiceWhereInput>;
@@ -105,6 +84,7 @@ export type Choice = {
   line?: Maybe<Line>;
   bets: Array<Bet>;
   _betsMeta?: Maybe<_QueryMeta>;
+  labelName?: Maybe<Scalars['String']>;
 };
 
 
@@ -204,6 +184,79 @@ export type ChoicesUpdateInput = {
   data?: Maybe<ChoiceUpdateInput>;
 };
 
+/** A keystone list */
+export type CloudImage = {
+  __typename?: 'CloudImage';
+  id: Scalars['ID'];
+  image?: Maybe<CloudinaryImage_File>;
+  altText?: Maybe<Scalars['String']>;
+};
+
+export type CloudImageCreateInput = {
+  image?: Maybe<Scalars['Upload']>;
+  altText?: Maybe<Scalars['String']>;
+};
+
+export type CloudImageRelateToOneInput = {
+  create?: Maybe<CloudImageCreateInput>;
+  connect?: Maybe<CloudImageWhereUniqueInput>;
+  disconnect?: Maybe<CloudImageWhereUniqueInput>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type CloudImageUpdateInput = {
+  image?: Maybe<Scalars['Upload']>;
+  altText?: Maybe<Scalars['String']>;
+};
+
+export type CloudImageWhereInput = {
+  AND?: Maybe<Array<Maybe<CloudImageWhereInput>>>;
+  OR?: Maybe<Array<Maybe<CloudImageWhereInput>>>;
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  image?: Maybe<Scalars['String']>;
+  image_not?: Maybe<Scalars['String']>;
+  image_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  image_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  altText?: Maybe<Scalars['String']>;
+  altText_not?: Maybe<Scalars['String']>;
+  altText_contains?: Maybe<Scalars['String']>;
+  altText_not_contains?: Maybe<Scalars['String']>;
+  altText_starts_with?: Maybe<Scalars['String']>;
+  altText_not_starts_with?: Maybe<Scalars['String']>;
+  altText_ends_with?: Maybe<Scalars['String']>;
+  altText_not_ends_with?: Maybe<Scalars['String']>;
+  altText_i?: Maybe<Scalars['String']>;
+  altText_not_i?: Maybe<Scalars['String']>;
+  altText_contains_i?: Maybe<Scalars['String']>;
+  altText_not_contains_i?: Maybe<Scalars['String']>;
+  altText_starts_with_i?: Maybe<Scalars['String']>;
+  altText_not_starts_with_i?: Maybe<Scalars['String']>;
+  altText_ends_with_i?: Maybe<Scalars['String']>;
+  altText_not_ends_with_i?: Maybe<Scalars['String']>;
+  altText_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  altText_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+};
+
+export type CloudImageWhereUniqueInput = {
+  id: Scalars['ID'];
+};
+
+export type CloudImagesCreateInput = {
+  data?: Maybe<CloudImageCreateInput>;
+};
+
+export type CloudImagesUpdateInput = {
+  id: Scalars['ID'];
+  data?: Maybe<CloudImageUpdateInput>;
+};
+
 /**
  * Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/documentation/image_transformation_reference).
  * All options are strings as they ultimately end up in a URL.
@@ -266,7 +319,7 @@ export type Contest = {
   description?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   entryFee?: Maybe<Scalars['Int']>;
-  image?: Maybe<ContestImage>;
+  image?: Maybe<CloudImage>;
   lines: Array<Line>;
   _linesMeta?: Maybe<_QueryMeta>;
 };
@@ -298,86 +351,8 @@ export type ContestCreateInput = {
   description?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   entryFee?: Maybe<Scalars['Int']>;
-  image?: Maybe<ContestImageRelateToOneInput>;
+  image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
-};
-
-/** A keystone list */
-export type ContestImage = {
-  __typename?: 'ContestImage';
-  id: Scalars['ID'];
-  image?: Maybe<CloudinaryImage_File>;
-  altText?: Maybe<Scalars['String']>;
-  contest?: Maybe<Contest>;
-};
-
-export type ContestImageCreateInput = {
-  image?: Maybe<Scalars['Upload']>;
-  altText?: Maybe<Scalars['String']>;
-  contest?: Maybe<ContestRelateToOneInput>;
-};
-
-export type ContestImageRelateToOneInput = {
-  create?: Maybe<ContestImageCreateInput>;
-  connect?: Maybe<ContestImageWhereUniqueInput>;
-  disconnect?: Maybe<ContestImageWhereUniqueInput>;
-  disconnectAll?: Maybe<Scalars['Boolean']>;
-};
-
-export type ContestImageUpdateInput = {
-  image?: Maybe<Scalars['Upload']>;
-  altText?: Maybe<Scalars['String']>;
-  contest?: Maybe<ContestRelateToOneInput>;
-};
-
-export type ContestImageWhereInput = {
-  AND?: Maybe<Array<Maybe<ContestImageWhereInput>>>;
-  OR?: Maybe<Array<Maybe<ContestImageWhereInput>>>;
-  id?: Maybe<Scalars['ID']>;
-  id_not?: Maybe<Scalars['ID']>;
-  id_lt?: Maybe<Scalars['ID']>;
-  id_lte?: Maybe<Scalars['ID']>;
-  id_gt?: Maybe<Scalars['ID']>;
-  id_gte?: Maybe<Scalars['ID']>;
-  id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
-  image?: Maybe<Scalars['String']>;
-  image_not?: Maybe<Scalars['String']>;
-  image_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  image_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  altText?: Maybe<Scalars['String']>;
-  altText_not?: Maybe<Scalars['String']>;
-  altText_contains?: Maybe<Scalars['String']>;
-  altText_not_contains?: Maybe<Scalars['String']>;
-  altText_starts_with?: Maybe<Scalars['String']>;
-  altText_not_starts_with?: Maybe<Scalars['String']>;
-  altText_ends_with?: Maybe<Scalars['String']>;
-  altText_not_ends_with?: Maybe<Scalars['String']>;
-  altText_i?: Maybe<Scalars['String']>;
-  altText_not_i?: Maybe<Scalars['String']>;
-  altText_contains_i?: Maybe<Scalars['String']>;
-  altText_not_contains_i?: Maybe<Scalars['String']>;
-  altText_starts_with_i?: Maybe<Scalars['String']>;
-  altText_not_starts_with_i?: Maybe<Scalars['String']>;
-  altText_ends_with_i?: Maybe<Scalars['String']>;
-  altText_not_ends_with_i?: Maybe<Scalars['String']>;
-  altText_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  altText_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  contest?: Maybe<ContestWhereInput>;
-  contest_is_null?: Maybe<Scalars['Boolean']>;
-};
-
-export type ContestImageWhereUniqueInput = {
-  id: Scalars['ID'];
-};
-
-export type ContestImagesCreateInput = {
-  data?: Maybe<ContestImageCreateInput>;
-};
-
-export type ContestImagesUpdateInput = {
-  id: Scalars['ID'];
-  data?: Maybe<ContestImageUpdateInput>;
 };
 
 export type ContestRelateToOneInput = {
@@ -392,7 +367,7 @@ export type ContestUpdateInput = {
   description?: Maybe<Scalars['String']>;
   status?: Maybe<Scalars['String']>;
   entryFee?: Maybe<Scalars['Int']>;
-  image?: Maybe<ContestImageRelateToOneInput>;
+  image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
 };
 
@@ -455,7 +430,7 @@ export type ContestWhereInput = {
   entryFee_gte?: Maybe<Scalars['Int']>;
   entryFee_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
   entryFee_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
-  image?: Maybe<ContestImageWhereInput>;
+  image?: Maybe<CloudImageWhereInput>;
   image_is_null?: Maybe<Scalars['Boolean']>;
   /** condition must be true for all nodes */
   lines_every?: Maybe<LineWhereInput>;
@@ -754,18 +729,18 @@ export type Mutation = {
   deleteContest?: Maybe<Contest>;
   /** Delete multiple Contest items by ID. */
   deleteContests?: Maybe<Array<Maybe<Contest>>>;
-  /** Create a single ContestImage item. */
-  createContestImage?: Maybe<ContestImage>;
-  /** Create multiple ContestImage items. */
-  createContestImages?: Maybe<Array<Maybe<ContestImage>>>;
-  /** Update a single ContestImage item by ID. */
-  updateContestImage?: Maybe<ContestImage>;
-  /** Update multiple ContestImage items by ID. */
-  updateContestImages?: Maybe<Array<Maybe<ContestImage>>>;
-  /** Delete a single ContestImage item by ID. */
-  deleteContestImage?: Maybe<ContestImage>;
-  /** Delete multiple ContestImage items by ID. */
-  deleteContestImages?: Maybe<Array<Maybe<ContestImage>>>;
+  /** Create a single CloudImage item. */
+  createCloudImage?: Maybe<CloudImage>;
+  /** Create multiple CloudImage items. */
+  createCloudImages?: Maybe<Array<Maybe<CloudImage>>>;
+  /** Update a single CloudImage item by ID. */
+  updateCloudImage?: Maybe<CloudImage>;
+  /** Update multiple CloudImage items by ID. */
+  updateCloudImages?: Maybe<Array<Maybe<CloudImage>>>;
+  /** Delete a single CloudImage item by ID. */
+  deleteCloudImage?: Maybe<CloudImage>;
+  /** Delete multiple CloudImage items by ID. */
+  deleteCloudImages?: Maybe<Array<Maybe<CloudImage>>>;
   /** Create a single Line item. */
   createLine?: Maybe<Line>;
   /** Create multiple Line items. */
@@ -891,33 +866,33 @@ export type MutationDeleteContestsArgs = {
 };
 
 
-export type MutationCreateContestImageArgs = {
-  data?: Maybe<ContestImageCreateInput>;
+export type MutationCreateCloudImageArgs = {
+  data?: Maybe<CloudImageCreateInput>;
 };
 
 
-export type MutationCreateContestImagesArgs = {
-  data?: Maybe<Array<Maybe<ContestImagesCreateInput>>>;
+export type MutationCreateCloudImagesArgs = {
+  data?: Maybe<Array<Maybe<CloudImagesCreateInput>>>;
 };
 
 
-export type MutationUpdateContestImageArgs = {
+export type MutationUpdateCloudImageArgs = {
   id: Scalars['ID'];
-  data?: Maybe<ContestImageUpdateInput>;
+  data?: Maybe<CloudImageUpdateInput>;
 };
 
 
-export type MutationUpdateContestImagesArgs = {
-  data?: Maybe<Array<Maybe<ContestImagesUpdateInput>>>;
+export type MutationUpdateCloudImagesArgs = {
+  data?: Maybe<Array<Maybe<CloudImagesUpdateInput>>>;
 };
 
 
-export type MutationDeleteContestImageArgs = {
+export type MutationDeleteCloudImageArgs = {
   id: Scalars['ID'];
 };
 
 
-export type MutationDeleteContestImagesArgs = {
+export type MutationDeleteCloudImagesArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
 
@@ -1049,12 +1024,12 @@ export type Query = {
   Contest?: Maybe<Contest>;
   /** Perform a meta-query on all Contest items which match the where clause. */
   _allContestsMeta?: Maybe<_QueryMeta>;
-  /** Search for all ContestImage items which match the where clause. */
-  allContestImages?: Maybe<Array<Maybe<ContestImage>>>;
-  /** Search for the ContestImage item with the matching ID. */
-  ContestImage?: Maybe<ContestImage>;
-  /** Perform a meta-query on all ContestImage items which match the where clause. */
-  _allContestImagesMeta?: Maybe<_QueryMeta>;
+  /** Search for all CloudImage items which match the where clause. */
+  allCloudImages?: Maybe<Array<Maybe<CloudImage>>>;
+  /** Search for the CloudImage item with the matching ID. */
+  CloudImage?: Maybe<CloudImage>;
+  /** Perform a meta-query on all CloudImage items which match the where clause. */
+  _allCloudImagesMeta?: Maybe<_QueryMeta>;
   /** Search for all Line items which match the where clause. */
   allLines?: Maybe<Array<Maybe<Line>>>;
   /** Search for the Line item with the matching ID. */
@@ -1148,25 +1123,25 @@ export type Query_AllContestsMetaArgs = {
 };
 
 
-export type QueryAllContestImagesArgs = {
-  where?: Maybe<ContestImageWhereInput>;
+export type QueryAllCloudImagesArgs = {
+  where?: Maybe<CloudImageWhereInput>;
   search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortContestImagesBy>>;
+  sortBy?: Maybe<Array<SortCloudImagesBy>>;
   orderBy?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
 };
 
 
-export type QueryContestImageArgs = {
-  where: ContestImageWhereUniqueInput;
+export type QueryCloudImageArgs = {
+  where: CloudImageWhereUniqueInput;
 };
 
 
-export type Query_AllContestImagesMetaArgs = {
-  where?: Maybe<ContestImageWhereInput>;
+export type Query_AllCloudImagesMetaArgs = {
+  where?: Maybe<CloudImageWhereInput>;
   search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortContestImagesBy>>;
+  sortBy?: Maybe<Array<SortCloudImagesBy>>;
   orderBy?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
@@ -1243,8 +1218,6 @@ export type SendUserPasswordResetLinkResult = {
 export enum SortBetsBy {
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
-  TitleAsc = 'title_ASC',
-  TitleDesc = 'title_DESC',
   UserAsc = 'user_ASC',
   UserDesc = 'user_DESC',
   ChoiceAsc = 'choice_ASC',
@@ -1264,13 +1237,11 @@ export enum SortChoicesBy {
   BetsDesc = 'bets_DESC'
 }
 
-export enum SortContestImagesBy {
+export enum SortCloudImagesBy {
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   AltTextAsc = 'altText_ASC',
-  AltTextDesc = 'altText_DESC',
-  ContestAsc = 'contest_ASC',
-  ContestDesc = 'contest_DESC'
+  AltTextDesc = 'altText_DESC'
 }
 
 export enum SortContestsBy {
@@ -1318,6 +1289,8 @@ export enum SortUsersBy {
   IsAdminDesc = 'isAdmin_DESC',
   BetsAsc = 'bets_ASC',
   BetsDesc = 'bets_DESC',
+  AvatarImageAsc = 'avatarImage_ASC',
+  AvatarImageDesc = 'avatarImage_DESC',
   PasswordResetIssuedAtAsc = 'passwordResetIssuedAt_ASC',
   PasswordResetIssuedAtDesc = 'passwordResetIssuedAt_DESC',
   PasswordResetRedeemedAtAsc = 'passwordResetRedeemedAt_ASC',
@@ -1336,6 +1309,7 @@ export type User = {
   isAdmin?: Maybe<Scalars['Boolean']>;
   bets: Array<Bet>;
   _betsMeta?: Maybe<_QueryMeta>;
+  avatarImage?: Maybe<CloudImage>;
   passwordResetToken_is_set?: Maybe<Scalars['Boolean']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
@@ -1384,6 +1358,7 @@ export type UserCreateInput = {
   password?: Maybe<Scalars['String']>;
   isAdmin?: Maybe<Scalars['Boolean']>;
   bets?: Maybe<BetRelateToManyInput>;
+  avatarImage?: Maybe<CloudImageRelateToOneInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
@@ -1403,6 +1378,7 @@ export type UserUpdateInput = {
   password?: Maybe<Scalars['String']>;
   isAdmin?: Maybe<Scalars['Boolean']>;
   bets?: Maybe<BetRelateToManyInput>;
+  avatarImage?: Maybe<CloudImageRelateToOneInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
@@ -1482,6 +1458,8 @@ export type UserWhereInput = {
   bets_some?: Maybe<BetWhereInput>;
   /** condition must be false for all nodes */
   bets_none?: Maybe<BetWhereInput>;
+  avatarImage?: Maybe<CloudImageWhereInput>;
+  avatarImage_is_null?: Maybe<Scalars['Boolean']>;
   passwordResetToken_is_set?: Maybe<Scalars['Boolean']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetIssuedAt_not?: Maybe<Scalars['String']>;
@@ -1623,6 +1601,58 @@ export type SignUpMutation = (
   )> }
 );
 
+export type UpdateUserMutationVariables = Exact<{
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  userName: Scalars['String'];
+}>;
+
+
+export type UpdateUserMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'userName' | 'name'>
+  )> }
+);
+
+export type UpdatePasswordMutationVariables = Exact<{
+  id: Scalars['ID'];
+  password: Scalars['String'];
+}>;
+
+
+export type UpdatePasswordMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'userName' | 'name'>
+  )> }
+);
+
+export type UpdateUserAvatarMutationVariables = Exact<{
+  id: Scalars['ID'];
+  userName: Scalars['String'];
+  image?: Maybe<Scalars['Upload']>;
+}>;
+
+
+export type UpdateUserAvatarMutation = (
+  { __typename?: 'Mutation' }
+  & { updateUser?: Maybe<(
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'email' | 'userName' | 'name'>
+    & { avatarImage?: Maybe<(
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'altText'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudinaryImage_File' }
+        & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )> }
+  )> }
+);
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1631,6 +1661,14 @@ export type CurrentUserQuery = (
   & { authenticatedItem?: Maybe<(
     { __typename?: 'User' }
     & Pick<User, 'id' | 'email' | 'name' | 'userName'>
+    & { avatarImage?: Maybe<(
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'altText'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudinaryImage_File' }
+        & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )> }
   )> }
 );
 
@@ -1643,8 +1681,8 @@ export type All_Contests_Query = (
     { __typename?: 'Contest' }
     & Pick<Contest, 'id' | 'name' | 'description' | 'status'>
     & { image?: Maybe<(
-      { __typename?: 'ContestImage' }
-      & Pick<ContestImage, 'id'>
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'id'>
       & { image?: Maybe<(
         { __typename?: 'CloudinaryImage_File' }
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -1910,6 +1948,128 @@ export function useSignUpMutation(baseOptions?: Apollo.MutationHookOptions<SignU
 export type SignUpMutationHookResult = ReturnType<typeof useSignUpMutation>;
 export type SignUpMutationResult = Apollo.MutationResult<SignUpMutation>;
 export type SignUpMutationOptions = Apollo.BaseMutationOptions<SignUpMutation, SignUpMutationVariables>;
+export const UpdateUserDocument = gql`
+    mutation UpdateUser($id: ID!, $name: String!, $userName: String!) {
+  updateUser(id: $id, data: {name: $name, userName: $userName}) {
+    id
+    email
+    userName
+    name
+  }
+}
+    `;
+export type UpdateUserMutationFn = Apollo.MutationFunction<UpdateUserMutation, UpdateUserMutationVariables>;
+
+/**
+ * __useUpdateUserMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserMutation, { data, loading, error }] = useUpdateUserMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      userName: // value for 'userName'
+ *   },
+ * });
+ */
+export function useUpdateUserMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserMutation, UpdateUserMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserMutation, UpdateUserMutationVariables>(UpdateUserDocument, options);
+      }
+export type UpdateUserMutationHookResult = ReturnType<typeof useUpdateUserMutation>;
+export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>;
+export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
+export const UpdatePasswordDocument = gql`
+    mutation UpdatePassword($id: ID!, $password: String!) {
+  updateUser(id: $id, data: {password: $password}) {
+    id
+    email
+    userName
+    name
+  }
+}
+    `;
+export type UpdatePasswordMutationFn = Apollo.MutationFunction<UpdatePasswordMutation, UpdatePasswordMutationVariables>;
+
+/**
+ * __useUpdatePasswordMutation__
+ *
+ * To run a mutation, you first call `useUpdatePasswordMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdatePasswordMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updatePasswordMutation, { data, loading, error }] = useUpdatePasswordMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      password: // value for 'password'
+ *   },
+ * });
+ */
+export function useUpdatePasswordMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePasswordMutation, UpdatePasswordMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdatePasswordMutation, UpdatePasswordMutationVariables>(UpdatePasswordDocument, options);
+      }
+export type UpdatePasswordMutationHookResult = ReturnType<typeof useUpdatePasswordMutation>;
+export type UpdatePasswordMutationResult = Apollo.MutationResult<UpdatePasswordMutation>;
+export type UpdatePasswordMutationOptions = Apollo.BaseMutationOptions<UpdatePasswordMutation, UpdatePasswordMutationVariables>;
+export const UpdateUserAvatarDocument = gql`
+    mutation UpdateUserAvatar($id: ID!, $userName: String!, $image: Upload) {
+  updateUser(
+    id: $id
+    data: {avatarImage: {create: {image: $image, altText: $userName}}}
+  ) {
+    id
+    email
+    userName
+    name
+    avatarImage {
+      image {
+        publicUrlTransformed
+      }
+      altText
+    }
+  }
+}
+    `;
+export type UpdateUserAvatarMutationFn = Apollo.MutationFunction<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>;
+
+/**
+ * __useUpdateUserAvatarMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserAvatarMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserAvatarMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserAvatarMutation, { data, loading, error }] = useUpdateUserAvatarMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      userName: // value for 'userName'
+ *      image: // value for 'image'
+ *   },
+ * });
+ */
+export function useUpdateUserAvatarMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>(UpdateUserAvatarDocument, options);
+      }
+export type UpdateUserAvatarMutationHookResult = ReturnType<typeof useUpdateUserAvatarMutation>;
+export type UpdateUserAvatarMutationResult = Apollo.MutationResult<UpdateUserAvatarMutation>;
+export type UpdateUserAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>;
 export const CurrentUserDocument = gql`
     query CurrentUser {
   authenticatedItem {
@@ -1918,6 +2078,12 @@ export const CurrentUserDocument = gql`
       email
       name
       userName
+      avatarImage {
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
     }
   }
 }

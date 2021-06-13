@@ -113,6 +113,7 @@ export default function ForgotPasswordForm(): JSX.Element {
           color={'gray.500'}
           ref={register}
           name="password"
+          onKeyPress={(e) => (e.key === 'Enter' ? handleSubmit(submitLogin)() : undefined)}
         />
         <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
       </FormControl>
@@ -128,7 +129,6 @@ export default function ForgotPasswordForm(): JSX.Element {
           {(data?.authenticateUserWithPassword as UserAuthenticationWithPasswordFailure)?.message}
         </FormLabel>
         <Button variant="red-gradient" onClick={handleSubmit(submitLogin)} isLoading={loading}>
-          {/* mt={8} w={'full'} */}
           Sign in
         </Button>
       </Stack>

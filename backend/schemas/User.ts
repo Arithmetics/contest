@@ -20,6 +20,15 @@ export const User = list({
       access: { read: true, update: isAdmin, create: isAdmin },
     }),
     bets: relationship({ ref: 'Bet.user', many: true }),
+    avatarImage: relationship({
+      ref: 'CloudImage',
+      ui: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
+      },
+    }),
   },
   ui: {
     listView: {

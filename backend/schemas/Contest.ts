@@ -29,7 +29,7 @@ export const Contest = list({
     }),
     entryFee: integer(),
     image: relationship({
-      ref: 'ContestImage.contest',
+      ref: 'CloudImage',
       ui: {
         displayMode: 'cards',
         cardFields: ['image', 'altText'],

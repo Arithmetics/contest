@@ -9,6 +9,12 @@ export const CURRENT_USER_QUERY = gql`
         name
         userName
         # other stuff
+        avatarImage {
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
       }
     }
   }

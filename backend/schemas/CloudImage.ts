@@ -1,7 +1,7 @@
-import { relationship, text } from '@keystone-next/fields';
+import { text } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
 import { cloudinaryImage } from '@keystone-next/cloudinary';
-import { isAdmin } from '../keystoneTypeAugments';
+import { isAdmin, isSignedIn } from '../keystoneTypeAugments';
 
 export const cloudinary = {
   cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
@@ -10,10 +10,10 @@ export const cloudinary = {
   folder: 'contests',
 };
 
-export const ContestImage = list({
+export const CloudImage = list({
   access: {
-    create: isAdmin,
-    read: true,
+    create: isSignedIn,
+    read: isSignedIn,
     update: isAdmin,
     delete: isAdmin,
   },
@@ -23,11 +23,10 @@ export const ContestImage = list({
       label: 'Source',
     }),
     altText: text(),
-    contest: relationship({ ref: 'Contest.image' }),
   },
   ui: {
     listView: {
-      initialColumns: ['image', 'altText', 'contest'],
+      initialColumns: ['image', 'altText'],
     },
   },
 });

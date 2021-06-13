@@ -69,3 +69,42 @@ export const SIGNUP_MUTATION = gql`
     }
   }
 `;
+
+export const UPDATE_USER_MUTATION = gql`
+  mutation UpdateUser($id: ID!, $name: String!, $userName: String!) {
+    updateUser(id: $id, data: { name: $name, userName: $userName }) {
+      id
+      email
+      userName
+      name
+    }
+  }
+`;
+
+export const UPDATE_PASSWORD_MUTATION = gql`
+  mutation UpdatePassword($id: ID!, $password: String!) {
+    updateUser(id: $id, data: { password: $password }) {
+      id
+      email
+      userName
+      name
+    }
+  }
+`;
+
+export const UPDATE_USER_AVATAR_MUTATION = gql`
+  mutation UpdateUserAvatar($id: ID!, $userName: String!, $image: Upload) {
+    updateUser(id: $id, data: { avatarImage: { create: { image: $image, altText: $userName } } }) {
+      id
+      email
+      userName
+      name
+      avatarImage {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+    }
+  }
+`;

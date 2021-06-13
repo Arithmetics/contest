@@ -10,6 +10,7 @@ import {
 import { useState } from 'react';
 
 type PasswordInputProps = {
+  isUpdatePassword?: boolean;
   isInvalid?: boolean;
   errorText?: string | undefined;
   disabled?: boolean;
@@ -22,13 +23,14 @@ export default function PasswordInput({
   errorText,
   register,
   disabled,
+  isUpdatePassword,
 }: PasswordInputProps): JSX.Element {
   const [show, setShow] = useState(false);
   const handleClick = (): void => setShow(!show);
 
   return (
     <FormControl id="name" isRequired isInvalid={isInvalid} errortext={errorText}>
-      <FormLabel color={'gray.500'}>Password</FormLabel>
+      <FormLabel color={'gray.500'}>{isUpdatePassword ? 'New Password' : 'Password'}</FormLabel>
       <InputGroup size="md">
         <Input
           name="password"
