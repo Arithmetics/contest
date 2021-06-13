@@ -1,7 +1,7 @@
 import { text } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
 import { cloudinaryImage } from '@keystone-next/cloudinary';
-import { isSignedIn } from '../keystoneTypeAugments';
+import { isAdmin, isSignedIn } from '../keystoneTypeAugments';
 
 export const cloudinary = {
   cloudName: process.env.CLOUDINARY_CLOUD_NAME || '',
@@ -14,8 +14,8 @@ export const CloudImage = list({
   access: {
     create: isSignedIn,
     read: isSignedIn,
-    update: isSignedIn,
-    delete: isSignedIn,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: {
     image: cloudinaryImage({
