@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useRouter } from 'next/router';
 
+import { Routes } from '../../constants';
 import { useRequestResetMutation } from '../../generated/graphql-types';
 
 const schema = yup.object().shape({
@@ -46,7 +47,7 @@ export default function ForgotPasswordForm(): JSX.Element {
           isClosable: true,
         });
         reset();
-        router.push('/login');
+        router.push(`/${Routes.LOGIN}`);
       } else {
         toast({
           title: 'Error',
