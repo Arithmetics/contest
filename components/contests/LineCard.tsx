@@ -1,15 +1,18 @@
 import {
   Box,
   Button,
-  Heading,
   Image,
   Stack,
-  Text,
+  Center,
   HStack,
-  useColorModeValue,
   Checkbox,
   RadioGroup,
   Radio,
+  Divider,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -44,93 +47,108 @@ type LineCardProps = {
 };
 
 export default function LineCard({ line }: LineCardProps): JSX.Element {
-  const [value, setValue] = useState<string | number>('1');
+  const [testingValue, setValue] = useState<string | number>('1');
 
   const lineClosed = hasLineClosed(line);
+  const lineHasWinner = hasLineClosed(line);
+  const winningChoice = line.choices.find((c) => c.isWin);
+
+  const linePicked = true;
+  const pickAvailable = true;
+  const superPickAvailable = false;
+
   return (
     <Box
       maxW={'500px'}
       width={'full'}
-      bg={useColorModeValue('white', 'gray.600')}
+      bg={'gray.600'}
       boxShadow={'2xl'}
       rounded={'md'}
-      overflow={'hidden'}
       position={'relative'}
       margin={4}
+      marginTop={6}
+      p={4}
     >
-      <Box p={6}>
-        <Stack spacing={0} align={'center'} marginBottom={5}>
-          <Heading fontSize={'2xl'} fontWeight={500}>
-            {line.title}: {line.benchmark}
-          </Heading>
-          <Text color={'gray.500'}>Closes: {formatLineDate(line)}</Text>
-          <RadioGroup onChange={setValue} value={value}>
-            <Stack direction="row">
-              {line.choices.map((choice, i) => {
-                if (i % 2 === 0) {
-                  return (
-                    <>
-                      <Image
-                        h={'80px'}
-                        w={'full'}
-                        src={
-                          'https://www.profootballnetwork.com/wp-content/uploads/2020/08/Watt.jpg'
-                        }
-                        objectFit={'cover'}
-                      />
-                      <Radio key={choice.id} value={choice.id} disabled={lineClosed}>
-                        {choice.selection}
-                      </Radio>
-                    </>
-                  );
-                }
-                return (
-                  <>
-                    <Radio key={choice.id} value={choice.id} disabled={lineClosed}>
-                      {choice.selection}
-                    </Radio>
-                    <Image
-                      h={'80px'}
-                      w={'full'}
-                      src={'https://www.profootballnetwork.com/wp-content/uploads/2020/08/Watt.jpg'}
-                      objectFit={'cover'}
-                    />
-                  </>
-                );
-              })}
-            </Stack>
-          </RadioGroup>
-          {!lineClosed && (
-            <HStack display="flex" spacing={3} marginTop={6} justifyContent="center">
-              <Checkbox disabled={lineClosed}>Super Pick?</Checkbox>
-              <Button
-                flexGrow={1}
-                variant="outline"
-                bg="teal.500"
-                color={'white'}
-                rounded={'md'}
-                _hover={{
-                  boxShadow: 'lg',
-                }}
-              >
-                Make Pick
-              </Button>
-              <Button
-                flexGrow={1}
-                variant="outline"
-                bg="red.500"
-                color={'white'}
-                rounded={'md'}
-                _hover={{
-                  boxShadow: 'lg',
-                }}
-              >
-                Remove Pick
-              </Button>
+      <HStack>
+        <Stat>
+          <StatLabel>{line.title}</StatLabel>
+          <StatNumber>{line.benchmark} Wins</StatNumber>
+          <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
+        </Stat>
+        <Image
+          boxSize="75px"
+          bg={'gray.600'}
+          src="https://i.ibb.co/XZp4L8W/pngjoy-com-jacksonville-jaguars-jacksonville-jaguars-old-logo-png-png-6702266.png"
+        />
+      </HStack>
+      <Divider orientation="horizontal" paddingTop={3} />
+      <Stack spacing={0} align={'left'} paddingTop={3}>
+        <RadioGroup
+          onChange={setValue}
+          value={lineHasWinner ? winningChoice?.id || '' : testingValue}
+        >
+          <HStack justifyContent="center" spacing={6}>
+            {line.choices.map((choice) => {
+              return (
+                <Radio
+                  key={choice.id}
+                  value={choice.id}
+                  disabled={lineClosed}
+                  colorScheme="teal"
+                  size="lg"
+                >
+                  {choice.selection}
+                </Radio>
+              );
+            })}
+          </HStack>
+          <Center>
+            <Checkbox
+              marginTop={4}
+              disabled={lineClosed || !superPickAvailable}
+              colorScheme="teal"
+              size="lg"
+            >
+              Super Pick?
+            </Checkbox>
+          </Center>
+        </RadioGroup>
+        {!lineClosed && (
+          <>
+            <Divider orientation="horizontal" paddingTop={3} />
+            <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
+              {linePicked ? (
+                <Button
+                  disabled={!pickAvailable}
+                  flexGrow={1}
+                  variant="outline"
+                  bg="teal.500"
+                  color={'white'}
+                  rounded={'md'}
+                  _hover={{
+                    boxShadow: 'lg',
+                  }}
+                >
+                  Make Pick
+                </Button>
+              ) : (
+                <Button
+                  flexGrow={1}
+                  variant="outline"
+                  bg="red.500"
+                  color={'white'}
+                  rounded={'md'}
+                  _hover={{
+                    boxShadow: 'lg',
+                  }}
+                >
+                  Remove Pick
+                </Button>
+              )}
             </HStack>
-          )}
-        </Stack>
-      </Box>
+          </>
+        )}
+      </Stack>
     </Box>
   );
 }

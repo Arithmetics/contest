@@ -13,6 +13,15 @@ export const Line = list({
     title: text({ isRequired: true }),
     closingTime: timestamp({ isRequired: true }),
     benchmark: float({ isRequired: true }),
+    image: relationship({
+      ref: 'CloudImage',
+      ui: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
+      },
+    }),
     contest: relationship({ ref: 'Contest.lines', many: false }),
     choices: relationship({ ref: 'Choice.line', many: true }),
   },

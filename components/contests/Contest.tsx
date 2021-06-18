@@ -96,11 +96,13 @@ export default function Contest({ id }: ContestProps): JSX.Element {
           <Button marginTop={2} onClick={onPendingToggle}>
             {isPendingOpen ? 'Hide' : 'Reveal'}
           </Button>
-          <Flex justifyContent="center" flexWrap="wrap">
-            {pendingLines.map((line) => {
-              return <LineCard key={line.id} line={line as Line} />;
-            })}
-          </Flex>
+          <Collapse in={isPendingOpen} animateOpacity>
+            <Flex justifyContent="center" flexWrap="wrap">
+              {pendingLines.map((line) => {
+                return <LineCard key={line.id} line={line as Line} />;
+              })}
+            </Flex>
+          </Collapse>
         </Box>
       ) : undefined}
       {settledLines.length !== 0 ? (
@@ -111,11 +113,13 @@ export default function Contest({ id }: ContestProps): JSX.Element {
           <Button marginTop={2} onClick={onSettledToggle}>
             {isSettledOpen ? 'Hide' : 'Reveal'}
           </Button>
-          <Flex justifyContent="center" flexWrap="wrap">
-            {settledLines.map((line) => {
-              return <LineCard key={line.id} line={line as Line} />;
-            })}
-          </Flex>
+          <Collapse in={isSettledOpen} animateOpacity>
+            <Flex justifyContent="center" flexWrap="wrap">
+              {settledLines.map((line) => {
+                return <LineCard key={line.id} line={line as Line} />;
+              })}
+            </Flex>
+          </Collapse>
         </Box>
       ) : undefined}
     </>

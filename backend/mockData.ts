@@ -3,9 +3,22 @@ import { ChoiceCreateInput, ContestCreateInput, UserCreateInput } from '.keyston
 const defaultOverUnderSelections: ChoiceCreateInput[] = [
   {
     selection: 'OVER',
+    isWin: false,
   },
   {
     selection: 'UNDER',
+    isWin: false,
+  },
+];
+
+const overWinningOverUnderSelections: ChoiceCreateInput[] = [
+  {
+    selection: 'OVER',
+    isWin: true,
+  },
+  {
+    selection: 'UNDER',
+    isWin: false,
   },
 ];
 
@@ -34,6 +47,7 @@ export const contests: ContestCreateInput[] = [
     entryFee: 25,
     lines: {
       create: [
+        // open
         {
           title: 'Pittsburgh Steelers',
           closingTime: '2021-09-01T00:00:00.000Z',
@@ -50,6 +64,40 @@ export const contests: ContestCreateInput[] = [
             create: [...defaultOverUnderSelections],
           },
         },
+        {
+          title: 'Los Angeles Chargers',
+          closingTime: '2021-09-01T00:00:00.000Z',
+          benchmark: 14.5,
+          choices: {
+            create: [...defaultOverUnderSelections],
+          },
+        },
+        // pending
+        {
+          title: 'Seattle Seahawks',
+          closingTime: '2021-01-01T00:00:00.000Z',
+          benchmark: 9.5,
+          choices: {
+            create: [...defaultOverUnderSelections],
+          },
+        },
+        {
+          title: 'Green Bay Packers',
+          closingTime: '2021-01-01T00:00:00.000Z',
+          benchmark: 3.5,
+          choices: {
+            create: [...defaultOverUnderSelections],
+          },
+        },
+        // settled
+        {
+          title: 'Baltimore Ravens',
+          closingTime: '2021-01-01T00:00:00.000Z',
+          benchmark: 11.5,
+          choices: {
+            create: [...overWinningOverUnderSelections],
+          },
+        },
       ],
     },
   },
@@ -62,7 +110,7 @@ export const contests: ContestCreateInput[] = [
       create: [
         {
           title: 'Cleveland Browns',
-          closingTime: '2021-09-01T00:00:00.000Z',
+          closingTime: '2020-09-01T00:00:00.000Z',
           benchmark: 10.5,
           choices: {
             create: [...defaultOverUnderSelections],
@@ -70,7 +118,7 @@ export const contests: ContestCreateInput[] = [
         },
         {
           title: 'Tampa Bay Buccaneers',
-          closingTime: '2021-09-01T00:00:00.000Z',
+          closingTime: '2020-09-01T00:00:00.000Z',
           benchmark: 6.5,
           choices: {
             create: [...defaultOverUnderSelections],
