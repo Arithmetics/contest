@@ -36,7 +36,7 @@ export default function Contest({ id }: ContestProps): JSX.Element {
     },
   });
 
-  if (!id) {
+  if (!data?.Contest) {
     return (
       <Center marginTop={'30vh'}>
         <Text fontSize="2xl">No contest found</Text>
