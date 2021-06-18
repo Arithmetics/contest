@@ -15,13 +15,21 @@ import { useState } from 'react';
 
 import { Line } from '../../generated/graphql-types';
 
-function hasLineClosed(line: Line): boolean {
+export function hasLineClosed(line: Line): boolean {
   if (!line.closingTime) {
     return false;
   }
   const lineClosed = Date.parse(line.closingTime);
   const now = Date.now();
   return lineClosed - now < 0 ? true : false;
+}
+
+export function lineHasWinner(line: Line): boolean {
+  if (!line.choices || line.choices.length === 0) {
+    return false;
+  }
+
+  return line.choices.some((c) => c.isWin);
 }
 
 function formatLineDate(line: Line): string {
