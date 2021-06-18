@@ -17,6 +17,7 @@ export const Contest = list({
       },
     }),
     status: select({
+      dataType: 'enum',
       options: [
         { label: 'Open', value: 'OPEN' },
         { label: 'In Progress', value: 'IN_PROGRESS' },

@@ -31,14 +31,14 @@ model Choice {
 }
 
 model Contest {
-  id          Int         @id @default(autoincrement())
+  id          Int                @id @default(autoincrement())
   name        String?
   description String?
-  status      String?
+  status      ContestStatusEnum?
   entryFee    Int?
-  image       CloudImage? @relation("Contestimage", fields: [imageId], references: [id])
-  imageId     Int?        @map("image")
-  lines       Line[]      @relation("Linecontest")
+  image       CloudImage?        @relation("Contestimage", fields: [imageId], references: [id])
+  imageId     Int?               @map("image")
+  lines       Line[]             @relation("Linecontest")
 
   @@index([imageId])
 }
@@ -85,4 +85,10 @@ enum ChoiceSelectionEnum {
   UNDER
   AWAY
   HOME
+}
+
+enum ContestStatusEnum {
+  OPEN
+  IN_PROGRESS
+  COMPLETE
 }
