@@ -2697,8 +2697,8 @@
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "ContestStatusType",
               "ofType": null
             },
             "isDeprecated": false,
@@ -2966,8 +2966,8 @@
             "name": "status",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "ContestStatusType",
               "ofType": null
             },
             "defaultValue": null,
@@ -3075,6 +3075,35 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "ContestStatusType",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "OPEN",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "IN_PROGRESS",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "COMPLETE",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
         "name": "ContestUpdateInput",
         "description": null,
@@ -3108,8 +3137,8 @@
             "name": "status",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "ContestStatusType",
               "ofType": null
             },
             "defaultValue": null,
@@ -3751,8 +3780,8 @@
             "name": "status",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "ContestStatusType",
               "ofType": null
             },
             "defaultValue": null,
@@ -3763,8 +3792,8 @@
             "name": "status_not",
             "description": null,
             "type": {
-              "kind": "SCALAR",
-              "name": "String",
+              "kind": "ENUM",
+              "name": "ContestStatusType",
               "ofType": null
             },
             "defaultValue": null,
@@ -3778,8 +3807,8 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "ContestStatusType",
                 "ofType": null
               }
             },
@@ -3794,8 +3823,8 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "String",
+                "kind": "ENUM",
+                "name": "ContestStatusType",
                 "ofType": null
               }
             },

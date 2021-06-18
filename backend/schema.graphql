@@ -194,6 +194,12 @@ input ChoicesCreateInput {
   data: ChoiceCreateInput
 }
 
+enum ContestStatusType {
+  OPEN
+  IN_PROGRESS
+  COMPLETE
+}
+
 input CloudImageRelateToOneInput {
   create: CloudImageCreateInput
   connect: CloudImageWhereUniqueInput
@@ -215,7 +221,7 @@ type Contest {
   id: ID!
   name: String
   description: String
-  status: String
+  status: ContestStatusType
   entryFee: Int
   image: CloudImage
   lines(
@@ -283,10 +289,10 @@ input ContestWhereInput {
   description_not_ends_with_i: String
   description_in: [String]
   description_not_in: [String]
-  status: String
-  status_not: String
-  status_in: [String]
-  status_not_in: [String]
+  status: ContestStatusType
+  status_not: ContestStatusType
+  status_in: [ContestStatusType]
+  status_not_in: [ContestStatusType]
   entryFee: Int
   entryFee_not: Int
   entryFee_lt: Int
@@ -338,7 +344,7 @@ enum SortContestsBy {
 input ContestUpdateInput {
   name: String
   description: String
-  status: String
+  status: ContestStatusType
   entryFee: Int
   image: CloudImageRelateToOneInput
   lines: LineRelateToManyInput
@@ -352,7 +358,7 @@ input ContestsUpdateInput {
 input ContestCreateInput {
   name: String
   description: String
-  status: String
+  status: ContestStatusType
   entryFee: Int
   image: CloudImageRelateToOneInput
   lines: LineRelateToManyInput

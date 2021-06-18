@@ -317,7 +317,7 @@ export type Contest = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
+  status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<CloudImage>;
   lines: Array<Line>;
@@ -349,7 +349,7 @@ export type Contest_LinesMetaArgs = {
 export type ContestCreateInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
+  status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
@@ -362,10 +362,16 @@ export type ContestRelateToOneInput = {
   disconnectAll?: Maybe<Scalars['Boolean']>;
 };
 
+export enum ContestStatusType {
+  Open = 'OPEN',
+  InProgress = 'IN_PROGRESS',
+  Complete = 'COMPLETE'
+}
+
 export type ContestUpdateInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  status?: Maybe<Scalars['String']>;
+  status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
@@ -418,10 +424,10 @@ export type ContestWhereInput = {
   description_not_ends_with_i?: Maybe<Scalars['String']>;
   description_in?: Maybe<Array<Maybe<Scalars['String']>>>;
   description_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  status?: Maybe<Scalars['String']>;
-  status_not?: Maybe<Scalars['String']>;
-  status_in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  status_not_in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  status?: Maybe<ContestStatusType>;
+  status_not?: Maybe<ContestStatusType>;
+  status_in?: Maybe<Array<Maybe<ContestStatusType>>>;
+  status_not_in?: Maybe<Array<Maybe<ContestStatusType>>>;
   entryFee?: Maybe<Scalars['Int']>;
   entryFee_not?: Maybe<Scalars['Int']>;
   entryFee_lt?: Maybe<Scalars['Int']>;
@@ -1672,23 +1678,58 @@ export type CurrentUserQuery = (
   )> }
 );
 
-export type All_Contests_QueryVariables = Exact<{ [key: string]: never; }>;
+export type AllContestsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type All_Contests_Query = (
+export type AllContestsQuery = (
   { __typename?: 'Query' }
   & { allContests?: Maybe<Array<Maybe<(
     { __typename?: 'Contest' }
-    & Pick<Contest, 'id' | 'name' | 'description' | 'status'>
-    & { image?: Maybe<(
+    & Pick<Contest, 'id' | 'name' | 'description' | 'status' | 'entryFee'>
+    & { lines: Array<(
+      { __typename?: 'Line' }
+      & Pick<Line, 'id'>
+      & { choices: Array<(
+        { __typename?: 'Choice' }
+        & Pick<Choice, 'id'>
+      )> }
+    )>, image?: Maybe<(
       { __typename?: 'CloudImage' }
-      & Pick<CloudImage, 'id'>
+      & Pick<CloudImage, 'altText'>
       & { image?: Maybe<(
         { __typename?: 'CloudinaryImage_File' }
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
       )> }
     )> }
   )>>> }
+);
+
+export type ContestByIdQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ContestByIdQuery = (
+  { __typename?: 'Query' }
+  & { Contest?: Maybe<(
+    { __typename?: 'Contest' }
+    & Pick<Contest, 'id' | 'name' | 'description' | 'status' | 'entryFee'>
+    & { lines: Array<(
+      { __typename?: 'Line' }
+      & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
+      & { choices: Array<(
+        { __typename?: 'Choice' }
+        & Pick<Choice, 'id' | 'selection' | 'isWin'>
+      )> }
+    )>, image?: Maybe<(
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'altText'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudinaryImage_File' }
+        & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )> }
+  )> }
 );
 
 
@@ -2115,46 +2156,109 @@ export function useCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
 export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
 export type CurrentUserQueryResult = Apollo.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
-export const All_Contests_QueryDocument = gql`
-    query ALL_CONTESTS_QUERY {
+export const AllContestsDocument = gql`
+    query AllContests {
   allContests {
     id
     name
     description
     status
-    image {
+    entryFee
+    lines {
       id
+      choices {
+        id
+      }
+    }
+    image {
       image {
         publicUrlTransformed
       }
+      altText
     }
   }
 }
     `;
 
 /**
- * __useAll_Contests_QueryQuery__
+ * __useAllContestsQuery__
  *
- * To run a query within a React component, call `useAll_Contests_QueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useAll_Contests_QueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useAllContestsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllContestsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useAll_Contests_QueryQuery({
+ * const { data, loading, error } = useAllContestsQuery({
  *   variables: {
  *   },
  * });
  */
-export function useAll_Contests_QueryQuery(baseOptions?: Apollo.QueryHookOptions<All_Contests_Query, All_Contests_QueryVariables>) {
+export function useAllContestsQuery(baseOptions?: Apollo.QueryHookOptions<AllContestsQuery, AllContestsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<All_Contests_Query, All_Contests_QueryVariables>(All_Contests_QueryDocument, options);
+        return Apollo.useQuery<AllContestsQuery, AllContestsQueryVariables>(AllContestsDocument, options);
       }
-export function useAll_Contests_QueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<All_Contests_Query, All_Contests_QueryVariables>) {
+export function useAllContestsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllContestsQuery, AllContestsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<All_Contests_Query, All_Contests_QueryVariables>(All_Contests_QueryDocument, options);
+          return Apollo.useLazyQuery<AllContestsQuery, AllContestsQueryVariables>(AllContestsDocument, options);
         }
-export type All_Contests_QueryQueryHookResult = ReturnType<typeof useAll_Contests_QueryQuery>;
-export type All_Contests_QueryLazyQueryHookResult = ReturnType<typeof useAll_Contests_QueryLazyQuery>;
-export type All_Contests_QueryQueryResult = Apollo.QueryResult<All_Contests_Query, All_Contests_QueryVariables>;
+export type AllContestsQueryHookResult = ReturnType<typeof useAllContestsQuery>;
+export type AllContestsLazyQueryHookResult = ReturnType<typeof useAllContestsLazyQuery>;
+export type AllContestsQueryResult = Apollo.QueryResult<AllContestsQuery, AllContestsQueryVariables>;
+export const ContestByIdDocument = gql`
+    query ContestById($id: ID!) {
+  Contest(where: {id: $id}) {
+    id
+    name
+    description
+    status
+    entryFee
+    lines {
+      id
+      benchmark
+      closingTime
+      title
+      choices {
+        id
+        selection
+        isWin
+      }
+    }
+    image {
+      image {
+        publicUrlTransformed
+      }
+      altText
+    }
+  }
+}
+    `;
+
+/**
+ * __useContestByIdQuery__
+ *
+ * To run a query within a React component, call `useContestByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useContestByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useContestByIdQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useContestByIdQuery(baseOptions: Apollo.QueryHookOptions<ContestByIdQuery, ContestByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<ContestByIdQuery, ContestByIdQueryVariables>(ContestByIdDocument, options);
+      }
+export function useContestByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ContestByIdQuery, ContestByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<ContestByIdQuery, ContestByIdQueryVariables>(ContestByIdDocument, options);
+        }
+export type ContestByIdQueryHookResult = ReturnType<typeof useContestByIdQuery>;
+export type ContestByIdLazyQueryHookResult = ReturnType<typeof useContestByIdLazyQuery>;
+export type ContestByIdQueryResult = Apollo.QueryResult<ContestByIdQuery, ContestByIdQueryVariables>;
