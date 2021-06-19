@@ -1984,6 +1984,19 @@ export type ContestRegistrationMutation = (
   )> }
 );
 
+export type DeleteContestRegistrationMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteContestRegistrationMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteRegistration?: Maybe<(
+    { __typename?: 'Registration' }
+    & Pick<Registration, 'id'>
+  )> }
+);
+
 
 export const CheckIfEmailAvailableDocument = gql`
     query CheckIfEmailAvailable($email: String!) {
@@ -2565,3 +2578,36 @@ export function useContestRegistrationMutation(baseOptions?: Apollo.MutationHook
 export type ContestRegistrationMutationHookResult = ReturnType<typeof useContestRegistrationMutation>;
 export type ContestRegistrationMutationResult = Apollo.MutationResult<ContestRegistrationMutation>;
 export type ContestRegistrationMutationOptions = Apollo.BaseMutationOptions<ContestRegistrationMutation, ContestRegistrationMutationVariables>;
+export const DeleteContestRegistrationDocument = gql`
+    mutation DeleteContestRegistration($id: ID!) {
+  deleteRegistration(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteContestRegistrationMutationFn = Apollo.MutationFunction<DeleteContestRegistrationMutation, DeleteContestRegistrationMutationVariables>;
+
+/**
+ * __useDeleteContestRegistrationMutation__
+ *
+ * To run a mutation, you first call `useDeleteContestRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteContestRegistrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteContestRegistrationMutation, { data, loading, error }] = useDeleteContestRegistrationMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteContestRegistrationMutation(baseOptions?: Apollo.MutationHookOptions<DeleteContestRegistrationMutation, DeleteContestRegistrationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteContestRegistrationMutation, DeleteContestRegistrationMutationVariables>(DeleteContestRegistrationDocument, options);
+      }
+export type DeleteContestRegistrationMutationHookResult = ReturnType<typeof useDeleteContestRegistrationMutation>;
+export type DeleteContestRegistrationMutationResult = Apollo.MutationResult<DeleteContestRegistrationMutation>;
+export type DeleteContestRegistrationMutationOptions = Apollo.BaseMutationOptions<DeleteContestRegistrationMutation, DeleteContestRegistrationMutationVariables>;

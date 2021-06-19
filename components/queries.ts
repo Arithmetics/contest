@@ -97,3 +97,11 @@ export const CONTEST_REGISTRATION_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_CONTEST_REGISTRATIN_MUTATION = gql`
+  mutation DeleteContestRegistration($id: ID!) {
+    deleteRegistration(id: $id) {
+      id
+    }
+  }
+`;

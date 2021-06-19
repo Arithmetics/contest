@@ -13,13 +13,13 @@ import {
 import ContestNav from '../../components/nav/ContestNav';
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
 
-import { useContestByIdQuery, Line } from '../../generated/graphql-types';
+import { useContestByIdQuery, Line, Contest } from '../../generated/graphql-types';
 
 type ContestProps = {
   id?: string;
 };
 
-export default function Contest({ id }: ContestProps): JSX.Element {
+export default function ContestUI({ id }: ContestProps): JSX.Element {
   const { isOpen: isAvailableOpen, onToggle: onAvailableToggle } = useDisclosure({
     defaultIsOpen: true,
   });
@@ -56,9 +56,12 @@ export default function Contest({ id }: ContestProps): JSX.Element {
 
   if (!lines || lines.length === 0) {
     return (
-      <Center marginTop={'30vh'}>
-        <Text fontSize="2xl">No lines set for this contest.</Text>
-      </Center>
+      <>
+        <ContestNav contest={data.Contest as Contest} />
+        <Center marginTop={'30vh'}>
+          <Text fontSize="2xl">No lines set for this contest.</Text>
+        </Center>
+      </>
     );
   }
 
@@ -68,8 +71,7 @@ export default function Contest({ id }: ContestProps): JSX.Element {
 
   return (
     <>
-      <ContestNav />
-      <Text fontSize="3xl">{data?.Contest?.name}</Text>
+      <ContestNav contest={data.Contest as Contest} />
 
       {availableLines.length !== 0 ? (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
