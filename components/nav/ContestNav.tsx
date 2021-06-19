@@ -23,7 +23,6 @@ import {
   useCurrentUserQuery,
   ContestStatusType,
   useDeleteContestRegistrationMutation,
-  Registration,
 } from '../../generated/graphql-types';
 import { CONTEST_BY_ID_QUERY } from '../queries';
 
