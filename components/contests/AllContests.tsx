@@ -9,39 +9,97 @@ import {
   Badge,
   HStack,
   Spinner,
+  Stat,
+  StatLabel,
+  StatNumber,
   Center,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 
-import { useAllContestsQuery, Contest, ContestStatusType } from '../../generated/graphql-types';
+import {
+  useAllContestsQuery,
+  Contest,
+  ContestStatusType,
+  useCurrentUserQuery,
+  useContestRegistrationMutation,
+} from '../../generated/graphql-types';
 
 import ButtonLink from '../ButtonLink';
 import { Routes } from '../../constants';
 
 export default function AllContest(): JSX.Element {
   const { data, loading } = useAllContestsQuery();
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
 
-  if (loading) {
+  if (loading || getUserLoading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" />
+        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
       </Center>
     );
   }
+
+  const userId = userData?.authenticatedItem?.id;
+
   return (
     <Flex justifyContent="center">
-      {data?.allContests?.map((contest) =>
-        contest ? <ContestCard key={contest.id} contest={contest as Contest} /> : null
-      )}
+      {data?.allContests
+        ?.slice()
+        .sort((a, b) => {
+          const order = [
+            ContestStatusType.Open,
+            ContestStatusType.InProgress,
+            ContestStatusType.Complete,
+            '',
+          ];
+          const aStatus = a?.status || '';
+          const bStatus = b?.status || '';
+
+          return order.indexOf(aStatus) - order.indexOf(bStatus);
+        })
+        .map((contest) =>
+          contest ? (
+            <ContestCard key={contest.id} contest={contest as Contest} userId={userId} />
+          ) : null
+        )}
     </Flex>
   );
 }
 
 type ContestCardProps = {
   contest: Contest;
+  userId?: string;
 };
 
-function ContestCard({ contest }: ContestCardProps): JSX.Element {
+function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
+  const router = useRouter();
+  const toast = useToast();
+  const [registerForContest, { loading }] = useContestRegistrationMutation();
+
+  const userHasEntered = contest.registrations.some((r) => r.user?.id === userId);
+
+  const showEnterContestButton =
+    !userHasEntered && userId && contest.status === ContestStatusType.Open;
+
+  const enterContest = async (): Promise<void> => {
+    const res = await registerForContest({
+      variables: { userId: userId || '', contestId: contest.id },
+    });
+
+    if (res.data?.createRegistration?.id) {
+      toast({
+        title: 'Registered for contest!',
+        description: `Welcome to ${contest.name}`,
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      router.push(`/${Routes.CONTESTS}/${contest.id}`);
+    }
+  };
+
   return (
     <Box
       maxW={'500px'}
@@ -72,22 +130,22 @@ function ContestCard({ contest }: ContestCardProps): JSX.Element {
         </Stack>
 
         <Stack direction={'row'} justify={'center'} spacing={6}>
-          <Stack spacing={0} align={'center'}>
-            <Text fontWeight={600}>23</Text>
-            <Text fontSize={'sm'} color={'gray.500'}>
-              Entrants
-            </Text>
-          </Stack>
-          <Stack spacing={0} align={'center'}>
-            <Text fontWeight={600}>${contest.entryFee}</Text>
-            <Text fontSize={'sm'} color={'gray.500'}>
-              Entry Fee
-            </Text>
-          </Stack>
+          <Stat textAlign="center">
+            <StatLabel>Entrants</StatLabel>
+            <StatNumber>{contest.registrations.length}</StatNumber>
+          </Stat>
+
+          <Stat textAlign="center">
+            <StatLabel>Entry Fee</StatLabel>
+            <StatNumber>${contest.entryFee}</StatNumber>
+          </Stat>
         </Stack>
         <HStack display="flex" spacing={3} marginTop={6} justifyContent="center">
-          {contest.status === ContestStatusType.Open ? (
+          {showEnterContestButton ? (
             <Button
+              onClick={enterContest}
+              disabled={loading}
+              isLoading={loading}
               flexGrow={1}
               variant="outline"
               bg="teal.500"
@@ -120,12 +178,11 @@ type ContestCardBadgeProps = {
 };
 
 function ContestCardBadge({ status }: ContestCardBadgeProps): JSX.Element | null {
-  console.log(status);
   if (status === ContestStatusType.Complete) {
     return <Badge colorScheme="red">Complete</Badge>;
   }
   if (status === ContestStatusType.InProgress) {
-    <Badge colorScheme="yellow">In Progress</Badge>;
+    return <Badge colorScheme="yellow">In Progress</Badge>;
   }
   if (status === ContestStatusType.Open) {
     return <Badge colorScheme="green">Open</Badge>;

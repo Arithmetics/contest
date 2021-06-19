@@ -322,6 +322,8 @@ export type Contest = {
   image?: Maybe<CloudImage>;
   lines: Array<Line>;
   _linesMeta?: Maybe<_QueryMeta>;
+  registrations: Array<Registration>;
+  _registrationsMeta?: Maybe<_QueryMeta>;
 };
 
 
@@ -346,6 +348,28 @@ export type Contest_LinesMetaArgs = {
   skip?: Maybe<Scalars['Int']>;
 };
 
+
+/** A keystone list */
+export type ContestRegistrationsArgs = {
+  where?: Maybe<RegistrationWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRegistrationsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+/** A keystone list */
+export type Contest_RegistrationsMetaArgs = {
+  where?: Maybe<RegistrationWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRegistrationsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
 export type ContestCreateInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
@@ -353,6 +377,7 @@ export type ContestCreateInput = {
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
+  registrations?: Maybe<RegistrationRelateToManyInput>;
 };
 
 export type ContestRelateToOneInput = {
@@ -375,6 +400,7 @@ export type ContestUpdateInput = {
   entryFee?: Maybe<Scalars['Int']>;
   image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
+  registrations?: Maybe<RegistrationRelateToManyInput>;
 };
 
 export type ContestWhereInput = {
@@ -444,6 +470,12 @@ export type ContestWhereInput = {
   lines_some?: Maybe<LineWhereInput>;
   /** condition must be false for all nodes */
   lines_none?: Maybe<LineWhereInput>;
+  /** condition must be true for all nodes */
+  registrations_every?: Maybe<RegistrationWhereInput>;
+  /** condition must be true for at least 1 node */
+  registrations_some?: Maybe<RegistrationWhereInput>;
+  /** condition must be false for all nodes */
+  registrations_none?: Maybe<RegistrationWhereInput>;
 };
 
 export type ContestWhereUniqueInput = {
@@ -572,6 +604,7 @@ export type Line = {
   title?: Maybe<Scalars['String']>;
   closingTime?: Maybe<Scalars['String']>;
   benchmark?: Maybe<Scalars['Float']>;
+  image?: Maybe<CloudImage>;
   contest?: Maybe<Contest>;
   choices: Array<Choice>;
   _choicesMeta?: Maybe<_QueryMeta>;
@@ -603,6 +636,7 @@ export type LineCreateInput = {
   title?: Maybe<Scalars['String']>;
   closingTime?: Maybe<Scalars['String']>;
   benchmark?: Maybe<Scalars['Float']>;
+  image?: Maybe<CloudImageRelateToOneInput>;
   contest?: Maybe<ContestRelateToOneInput>;
   choices?: Maybe<ChoiceRelateToManyInput>;
 };
@@ -625,6 +659,7 @@ export type LineUpdateInput = {
   title?: Maybe<Scalars['String']>;
   closingTime?: Maybe<Scalars['String']>;
   benchmark?: Maybe<Scalars['Float']>;
+  image?: Maybe<CloudImageRelateToOneInput>;
   contest?: Maybe<ContestRelateToOneInput>;
   choices?: Maybe<ChoiceRelateToManyInput>;
 };
@@ -674,6 +709,8 @@ export type LineWhereInput = {
   benchmark_gte?: Maybe<Scalars['Float']>;
   benchmark_in?: Maybe<Array<Maybe<Scalars['Float']>>>;
   benchmark_not_in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  image?: Maybe<CloudImageWhereInput>;
+  image_is_null?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<ContestWhereInput>;
   contest_is_null?: Maybe<Scalars['Boolean']>;
   /** condition must be true for all nodes */
@@ -771,6 +808,18 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   /** Delete multiple User items by ID. */
   deleteUsers?: Maybe<Array<Maybe<User>>>;
+  /** Create a single Registration item. */
+  createRegistration?: Maybe<Registration>;
+  /** Create multiple Registration items. */
+  createRegistrations?: Maybe<Array<Maybe<Registration>>>;
+  /** Update a single Registration item by ID. */
+  updateRegistration?: Maybe<Registration>;
+  /** Update multiple Registration items by ID. */
+  updateRegistrations?: Maybe<Array<Maybe<Registration>>>;
+  /** Delete a single Registration item by ID. */
+  deleteRegistration?: Maybe<Registration>;
+  /** Delete multiple Registration items by ID. */
+  deleteRegistrations?: Maybe<Array<Maybe<Registration>>>;
   authenticateUserWithPassword: UserAuthenticationWithPasswordResult;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
   sendUserPasswordResetLink?: Maybe<SendUserPasswordResetLinkResult>;
@@ -965,6 +1014,37 @@ export type MutationDeleteUsersArgs = {
 };
 
 
+export type MutationCreateRegistrationArgs = {
+  data?: Maybe<RegistrationCreateInput>;
+};
+
+
+export type MutationCreateRegistrationsArgs = {
+  data?: Maybe<Array<Maybe<RegistrationsCreateInput>>>;
+};
+
+
+export type MutationUpdateRegistrationArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<RegistrationUpdateInput>;
+};
+
+
+export type MutationUpdateRegistrationsArgs = {
+  data?: Maybe<Array<Maybe<RegistrationsUpdateInput>>>;
+};
+
+
+export type MutationDeleteRegistrationArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteRegistrationsArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
 export type MutationAuthenticateUserWithPasswordArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
@@ -1048,6 +1128,12 @@ export type Query = {
   User?: Maybe<User>;
   /** Perform a meta-query on all User items which match the where clause. */
   _allUsersMeta?: Maybe<_QueryMeta>;
+  /** Search for all Registration items which match the where clause. */
+  allRegistrations?: Maybe<Array<Maybe<Registration>>>;
+  /** Search for the Registration item with the matching ID. */
+  Registration?: Maybe<Registration>;
+  /** Perform a meta-query on all Registration items which match the where clause. */
+  _allRegistrationsMeta?: Maybe<_QueryMeta>;
   authenticatedItem?: Maybe<AuthenticatedItem>;
   validateUserPasswordResetToken?: Maybe<ValidateUserPasswordResetTokenResult>;
   keystone: KeystoneMeta;
@@ -1204,6 +1290,31 @@ export type Query_AllUsersMetaArgs = {
 };
 
 
+export type QueryAllRegistrationsArgs = {
+  where?: Maybe<RegistrationWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRegistrationsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryRegistrationArgs = {
+  where: RegistrationWhereUniqueInput;
+};
+
+
+export type Query_AllRegistrationsMetaArgs = {
+  where?: Maybe<RegistrationWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRegistrationsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
 export type QueryValidateUserPasswordResetTokenArgs = {
   email: Scalars['String'];
   token: Scalars['String'];
@@ -1213,6 +1324,66 @@ export type RedeemUserPasswordResetTokenResult = {
   __typename?: 'RedeemUserPasswordResetTokenResult';
   code: PasswordResetRedemptionErrorCode;
   message: Scalars['String'];
+};
+
+/** A keystone list */
+export type Registration = {
+  __typename?: 'Registration';
+  id: Scalars['ID'];
+  hasPaid?: Maybe<Scalars['Boolean']>;
+  contest?: Maybe<Contest>;
+  user?: Maybe<User>;
+};
+
+export type RegistrationCreateInput = {
+  hasPaid?: Maybe<Scalars['Boolean']>;
+  contest?: Maybe<ContestRelateToOneInput>;
+  user?: Maybe<UserRelateToOneInput>;
+};
+
+export type RegistrationRelateToManyInput = {
+  create?: Maybe<Array<Maybe<RegistrationCreateInput>>>;
+  connect?: Maybe<Array<Maybe<RegistrationWhereUniqueInput>>>;
+  disconnect?: Maybe<Array<Maybe<RegistrationWhereUniqueInput>>>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type RegistrationUpdateInput = {
+  hasPaid?: Maybe<Scalars['Boolean']>;
+  contest?: Maybe<ContestRelateToOneInput>;
+  user?: Maybe<UserRelateToOneInput>;
+};
+
+export type RegistrationWhereInput = {
+  AND?: Maybe<Array<Maybe<RegistrationWhereInput>>>;
+  OR?: Maybe<Array<Maybe<RegistrationWhereInput>>>;
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  hasPaid?: Maybe<Scalars['Boolean']>;
+  hasPaid_not?: Maybe<Scalars['Boolean']>;
+  contest?: Maybe<ContestWhereInput>;
+  contest_is_null?: Maybe<Scalars['Boolean']>;
+  user?: Maybe<UserWhereInput>;
+  user_is_null?: Maybe<Scalars['Boolean']>;
+};
+
+export type RegistrationWhereUniqueInput = {
+  id: Scalars['ID'];
+};
+
+export type RegistrationsCreateInput = {
+  data?: Maybe<RegistrationCreateInput>;
+};
+
+export type RegistrationsUpdateInput = {
+  id: Scalars['ID'];
+  data?: Maybe<RegistrationUpdateInput>;
 };
 
 export type SendUserPasswordResetLinkResult = {
@@ -1264,7 +1435,9 @@ export enum SortContestsBy {
   ImageAsc = 'image_ASC',
   ImageDesc = 'image_DESC',
   LinesAsc = 'lines_ASC',
-  LinesDesc = 'lines_DESC'
+  LinesDesc = 'lines_DESC',
+  RegistrationsAsc = 'registrations_ASC',
+  RegistrationsDesc = 'registrations_DESC'
 }
 
 export enum SortLinesBy {
@@ -1276,10 +1449,23 @@ export enum SortLinesBy {
   ClosingTimeDesc = 'closingTime_DESC',
   BenchmarkAsc = 'benchmark_ASC',
   BenchmarkDesc = 'benchmark_DESC',
+  ImageAsc = 'image_ASC',
+  ImageDesc = 'image_DESC',
   ContestAsc = 'contest_ASC',
   ContestDesc = 'contest_DESC',
   ChoicesAsc = 'choices_ASC',
   ChoicesDesc = 'choices_DESC'
+}
+
+export enum SortRegistrationsBy {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  HasPaidAsc = 'hasPaid_ASC',
+  HasPaidDesc = 'hasPaid_DESC',
+  ContestAsc = 'contest_ASC',
+  ContestDesc = 'contest_DESC',
+  UserAsc = 'user_ASC',
+  UserDesc = 'user_DESC'
 }
 
 export enum SortUsersBy {
@@ -1297,6 +1483,8 @@ export enum SortUsersBy {
   BetsDesc = 'bets_DESC',
   AvatarImageAsc = 'avatarImage_ASC',
   AvatarImageDesc = 'avatarImage_DESC',
+  RegistrationsAsc = 'registrations_ASC',
+  RegistrationsDesc = 'registrations_DESC',
   PasswordResetIssuedAtAsc = 'passwordResetIssuedAt_ASC',
   PasswordResetIssuedAtDesc = 'passwordResetIssuedAt_DESC',
   PasswordResetRedeemedAtAsc = 'passwordResetRedeemedAt_ASC',
@@ -1316,6 +1504,8 @@ export type User = {
   bets: Array<Bet>;
   _betsMeta?: Maybe<_QueryMeta>;
   avatarImage?: Maybe<CloudImage>;
+  registrations: Array<Registration>;
+  _registrationsMeta?: Maybe<_QueryMeta>;
   passwordResetToken_is_set?: Maybe<Scalars['Boolean']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
@@ -1343,6 +1533,28 @@ export type User_BetsMetaArgs = {
   skip?: Maybe<Scalars['Int']>;
 };
 
+
+/** A keystone list */
+export type UserRegistrationsArgs = {
+  where?: Maybe<RegistrationWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRegistrationsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+/** A keystone list */
+export type User_RegistrationsMetaArgs = {
+  where?: Maybe<RegistrationWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRegistrationsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
 export type UserAuthenticationWithPasswordFailure = {
   __typename?: 'UserAuthenticationWithPasswordFailure';
   code: PasswordAuthErrorCode;
@@ -1365,6 +1577,7 @@ export type UserCreateInput = {
   isAdmin?: Maybe<Scalars['Boolean']>;
   bets?: Maybe<BetRelateToManyInput>;
   avatarImage?: Maybe<CloudImageRelateToOneInput>;
+  registrations?: Maybe<RegistrationRelateToManyInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
@@ -1385,6 +1598,7 @@ export type UserUpdateInput = {
   isAdmin?: Maybe<Scalars['Boolean']>;
   bets?: Maybe<BetRelateToManyInput>;
   avatarImage?: Maybe<CloudImageRelateToOneInput>;
+  registrations?: Maybe<RegistrationRelateToManyInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
@@ -1466,6 +1680,12 @@ export type UserWhereInput = {
   bets_none?: Maybe<BetWhereInput>;
   avatarImage?: Maybe<CloudImageWhereInput>;
   avatarImage_is_null?: Maybe<Scalars['Boolean']>;
+  /** condition must be true for all nodes */
+  registrations_every?: Maybe<RegistrationWhereInput>;
+  /** condition must be true for at least 1 node */
+  registrations_some?: Maybe<RegistrationWhereInput>;
+  /** condition must be false for all nodes */
+  registrations_none?: Maybe<RegistrationWhereInput>;
   passwordResetToken_is_set?: Maybe<Scalars['Boolean']>;
   passwordResetIssuedAt?: Maybe<Scalars['String']>;
   passwordResetIssuedAt_not?: Maybe<Scalars['String']>;
@@ -1693,6 +1913,13 @@ export type AllContestsQuery = (
         { __typename?: 'Choice' }
         & Pick<Choice, 'id'>
       )> }
+    )>, registrations: Array<(
+      { __typename?: 'Registration' }
+      & Pick<Registration, 'id'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id'>
+      )> }
     )>, image?: Maybe<(
       { __typename?: 'CloudImage' }
       & Pick<CloudImage, 'altText'>
@@ -1720,6 +1947,17 @@ export type ContestByIdQuery = (
       & { choices: Array<(
         { __typename?: 'Choice' }
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
+        & { bets: Array<(
+          { __typename?: 'Bet' }
+          & Pick<Bet, 'id'>
+        )> }
+      )> }
+    )>, registrations: Array<(
+      { __typename?: 'Registration' }
+      & Pick<Registration, 'id'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id'>
       )> }
     )>, image?: Maybe<(
       { __typename?: 'CloudImage' }
@@ -1729,6 +1967,20 @@ export type ContestByIdQuery = (
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
       )> }
     )> }
+  )> }
+);
+
+export type ContestRegistrationMutationVariables = Exact<{
+  userId: Scalars['ID'];
+  contestId: Scalars['ID'];
+}>;
+
+
+export type ContestRegistrationMutation = (
+  { __typename?: 'Mutation' }
+  & { createRegistration?: Maybe<(
+    { __typename?: 'Registration' }
+    & Pick<Registration, 'id'>
   )> }
 );
 
@@ -2170,6 +2422,12 @@ export const AllContestsDocument = gql`
         id
       }
     }
+    registrations {
+      id
+      user {
+        id
+      }
+    }
     image {
       image {
         publicUrlTransformed
@@ -2223,6 +2481,15 @@ export const ContestByIdDocument = gql`
         id
         selection
         isWin
+        bets {
+          id
+        }
+      }
+    }
+    registrations {
+      id
+      user {
+        id
       }
     }
     image {
@@ -2262,3 +2529,39 @@ export function useContestByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ContestByIdQueryHookResult = ReturnType<typeof useContestByIdQuery>;
 export type ContestByIdLazyQueryHookResult = ReturnType<typeof useContestByIdLazyQuery>;
 export type ContestByIdQueryResult = Apollo.QueryResult<ContestByIdQuery, ContestByIdQueryVariables>;
+export const ContestRegistrationDocument = gql`
+    mutation ContestRegistration($userId: ID!, $contestId: ID!) {
+  createRegistration(
+    data: {user: {connect: {id: $userId}}, contest: {connect: {id: $contestId}}}
+  ) {
+    id
+  }
+}
+    `;
+export type ContestRegistrationMutationFn = Apollo.MutationFunction<ContestRegistrationMutation, ContestRegistrationMutationVariables>;
+
+/**
+ * __useContestRegistrationMutation__
+ *
+ * To run a mutation, you first call `useContestRegistrationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useContestRegistrationMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [contestRegistrationMutation, { data, loading, error }] = useContestRegistrationMutation({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useContestRegistrationMutation(baseOptions?: Apollo.MutationHookOptions<ContestRegistrationMutation, ContestRegistrationMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ContestRegistrationMutation, ContestRegistrationMutationVariables>(ContestRegistrationDocument, options);
+      }
+export type ContestRegistrationMutationHookResult = ReturnType<typeof useContestRegistrationMutation>;
+export type ContestRegistrationMutationResult = Apollo.MutationResult<ContestRegistrationMutation>;
+export type ContestRegistrationMutationOptions = Apollo.BaseMutationOptions<ContestRegistrationMutation, ContestRegistrationMutationVariables>;

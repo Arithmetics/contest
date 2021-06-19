@@ -23,6 +23,7 @@ export const Contest = list({
         { label: 'In Progress', value: 'IN_PROGRESS' },
         { label: 'Complete', value: 'COMPLETE' },
       ],
+      isRequired: true,
       defaultValue: 'OPEN',
       ui: {
         displayMode: 'segmented-control',

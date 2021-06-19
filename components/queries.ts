@@ -34,6 +34,12 @@ export const ALL_CONTESTS_QUERY = gql`
           id
         }
       }
+      registrations {
+        id
+        user {
+          id
+        }
+      }
       image {
         image {
           publicUrlTransformed
@@ -61,6 +67,15 @@ export const CONTEST_BY_ID_QUERY = gql`
           id
           selection
           isWin
+          bets {
+            id
+          }
+        }
+      }
+      registrations {
+        id
+        user {
+          id
         }
       }
       image {
@@ -69,6 +84,16 @@ export const CONTEST_BY_ID_QUERY = gql`
         }
         altText
       }
+    }
+  }
+`;
+
+export const CONTEST_REGISTRATION_MUTATION = gql`
+  mutation ContestRegistration($userId: ID!, $contestId: ID!) {
+    createRegistration(
+      data: { user: { connect: { id: $userId } }, contest: { connect: { id: $contestId } } }
+    ) {
+      id
     }
   }
 `;
