@@ -23,6 +23,7 @@ import {
   useCurrentUserQuery,
   ContestStatusType,
   useDeleteContestRegistrationMutation,
+  Registration,
 } from '../../generated/graphql-types';
 import { CONTEST_BY_ID_QUERY } from '../queries';
 
@@ -166,6 +167,15 @@ function DeleteRegistrationConfirmModal({
   const toast = useToast();
   const [deleteRegistration, { loading }] = useDeleteContestRegistrationMutation({
     refetchQueries: [{ query: CONTEST_BY_ID_QUERY, variables: { id: contestId } }],
+    update: (cache, payload) => {
+      return cache.evict({
+        id:
+          cache.identify({
+            __typename: 'Registration',
+            id: payload.data?.deleteRegistration?.id || '',
+          }) || '',
+      });
+    },
   });
 
   const onClick = async (): Promise<void> => {
