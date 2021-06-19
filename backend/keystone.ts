@@ -12,6 +12,7 @@ import { CloudImage } from './schemas/CloudImage';
 import { Line } from './schemas/Line';
 import { Choice } from './schemas/Choices';
 import { Bet } from './schemas/Bet';
+import { Registration } from './schemas/Registration';
 
 let sessionSecret = process.env.SESSION_SECRET;
 
@@ -74,6 +75,7 @@ export default auth.withAuth(
       CloudImage,
       Line,
       User,
+      Registration,
     }),
     session: withItemData(
       statelessSessions({

@@ -29,6 +29,7 @@ export const User = list({
         inlineEdit: { fields: ['image', 'altText'] },
       },
     }),
+    registrations: relationship({ ref: 'Registration.user', many: true }),
   },
   ui: {
     listView: {

@@ -39,5 +39,6 @@ export const Contest = list({
       },
     }),
     lines: relationship({ ref: 'Line.contest', many: true }),
+    registrations: relationship({ ref: 'Registration.contest', many: true }),
   },
 });

@@ -31,14 +31,15 @@ model Choice {
 }
 
 model Contest {
-  id          Int                @id @default(autoincrement())
-  name        String?
-  description String?
-  status      ContestStatusEnum?
-  entryFee    Int?
-  image       CloudImage?        @relation("Contestimage", fields: [imageId], references: [id])
-  imageId     Int?               @map("image")
-  lines       Line[]             @relation("Linecontest")
+  id            Int                @id @default(autoincrement())
+  name          String?
+  description   String?
+  status        ContestStatusEnum?
+  entryFee      Int?
+  image         CloudImage?        @relation("Contestimage", fields: [imageId], references: [id])
+  imageId       Int?               @map("image")
+  lines         Line[]             @relation("Linecontest")
+  registrations Registration[]     @relation("Registrationcontest")
 
   @@index([imageId])
 }
@@ -48,36 +49,53 @@ model CloudImage {
   image                 Json?
   altText               String?
   from_Contest_image    Contest[] @relation("Contestimage")
+  from_Line_image       Line[]    @relation("Lineimage")
   from_User_avatarImage User[]    @relation("UseravatarImage")
 }
 
 model Line {
-  id          Int       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   title       String?
   closingTime DateTime?
   benchmark   Float?
-  contest     Contest?  @relation("Linecontest", fields: [contestId], references: [id])
-  contestId   Int?      @map("contest")
-  choices     Choice[]  @relation("Choiceline")
+  image       CloudImage? @relation("Lineimage", fields: [imageId], references: [id])
+  imageId     Int?        @map("image")
+  contest     Contest?    @relation("Linecontest", fields: [contestId], references: [id])
+  contestId   Int?        @map("contest")
+  choices     Choice[]    @relation("Choiceline")
 
+  @@index([imageId])
   @@index([contestId])
 }
 
 model User {
-  id                      Int         @id @default(autoincrement())
-  email                   String?     @unique
+  id                      Int            @id @default(autoincrement())
+  email                   String?        @unique
   name                    String?
-  userName                String?     @unique
+  userName                String?        @unique
   password                String?
   isAdmin                 Boolean?
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
-  bets                    Bet[]       @relation("Betuser")
-  avatarImage             CloudImage? @relation("UseravatarImage", fields: [avatarImageId], references: [id])
-  avatarImageId           Int?        @map("avatarImage")
+  bets                    Bet[]          @relation("Betuser")
+  avatarImage             CloudImage?    @relation("UseravatarImage", fields: [avatarImageId], references: [id])
+  avatarImageId           Int?           @map("avatarImage")
+  registrations           Registration[] @relation("Registrationuser")
 
   @@index([avatarImageId])
+}
+
+model Registration {
+  id        Int      @id @default(autoincrement())
+  hasPaid   Boolean?
+  contest   Contest? @relation("Registrationcontest", fields: [contestId], references: [id])
+  contestId Int?     @map("contest")
+  user      User?    @relation("Registrationuser", fields: [userId], references: [id])
+  userId    Int?     @map("user")
+
+  @@index([contestId])
+  @@index([userId])
 }
 
 enum ChoiceSelectionEnum {
