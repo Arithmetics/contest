@@ -94,6 +94,9 @@ export const CONTEST_REGISTRATION_MUTATION = gql`
       data: { user: { connect: { id: $userId } }, contest: { connect: { id: $contestId } } }
     ) {
       id
+      contest {
+        id
+      }
       user {
         id
       }

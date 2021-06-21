@@ -30,6 +30,7 @@ export const Registration = list({
 
       const session = context.session as AugKeystoneSession;
 
+      // RULE: only can create for yourself
       if (resolvedData.user !== session.data?.id) {
         addValidationError('Can only create registration for own account');
       }

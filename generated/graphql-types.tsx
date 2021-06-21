@@ -1981,7 +1981,10 @@ export type ContestRegistrationMutation = (
   & { createRegistration?: Maybe<(
     { __typename?: 'Registration' }
     & Pick<Registration, 'id'>
-    & { user?: Maybe<(
+    & { contest?: Maybe<(
+      { __typename?: 'Contest' }
+      & Pick<Contest, 'id'>
+    )>, user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
     )> }
@@ -1996,12 +1999,8 @@ export type DeleteContestRegistrationMutationVariables = Exact<{
 export type DeleteContestRegistrationMutation = (
   { __typename?: 'Mutation' }
   & { deleteRegistration?: Maybe<(
-    { __typename: 'Registration' }
+    { __typename?: 'Registration' }
     & Pick<Registration, 'id'>
-    & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    )> }
   )> }
 );
 
@@ -2556,6 +2555,9 @@ export const ContestRegistrationDocument = gql`
     data: {user: {connect: {id: $userId}}, contest: {connect: {id: $contestId}}}
   ) {
     id
+    contest {
+      id
+    }
     user {
       id
     }
@@ -2593,10 +2595,6 @@ export const DeleteContestRegistrationDocument = gql`
     mutation DeleteContestRegistration($id: ID!) {
   deleteRegistration(id: $id) {
     id
-    __typename
-    user {
-      id
-    }
   }
 }
     `;
