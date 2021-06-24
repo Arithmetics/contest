@@ -1950,6 +1950,10 @@ export type ContestByIdQuery = (
         & { bets: Array<(
           { __typename?: 'Bet' }
           & Pick<Bet, 'id'>
+          & { user?: Maybe<(
+            { __typename?: 'User' }
+            & Pick<User, 'id'>
+          )> }
         )> }
       )> }
     )>, registrations: Array<(
@@ -2001,6 +2005,66 @@ export type DeleteContestRegistrationMutation = (
   & { deleteRegistration?: Maybe<(
     { __typename?: 'Registration' }
     & Pick<Registration, 'id'>
+  )> }
+);
+
+export type MakeBetMutationVariables = Exact<{
+  choiceId: Scalars['ID'];
+  userId: Scalars['ID'];
+}>;
+
+
+export type MakeBetMutation = (
+  { __typename?: 'Mutation' }
+  & { createBet?: Maybe<(
+    { __typename?: 'Bet' }
+    & Pick<Bet, 'id'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    )>, choice?: Maybe<(
+      { __typename?: 'Choice' }
+      & Pick<Choice, 'id'>
+      & { bets: Array<(
+        { __typename?: 'Bet' }
+        & Pick<Bet, 'id'>
+        & { user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'id'>
+        )> }
+      )>, line?: Maybe<(
+        { __typename?: 'Line' }
+        & Pick<Line, 'id'>
+      )> }
+    )> }
+  )> }
+);
+
+export type DeleteBetMutationVariables = Exact<{
+  betId: Scalars['ID'];
+}>;
+
+
+export type DeleteBetMutation = (
+  { __typename?: 'Mutation' }
+  & { deleteBet?: Maybe<(
+    { __typename?: 'Bet' }
+    & Pick<Bet, 'id'>
+    & { choice?: Maybe<(
+      { __typename?: 'Choice' }
+      & Pick<Choice, 'id'>
+      & { bets: Array<(
+        { __typename?: 'Bet' }
+        & Pick<Bet, 'id'>
+        & { user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'id'>
+        )> }
+      )> }
+    )>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id'>
+    )> }
   )> }
 );
 
@@ -2503,6 +2567,9 @@ export const ContestByIdDocument = gql`
         isWin
         bets {
           id
+          user {
+            id
+          }
         }
       }
     }
@@ -2624,3 +2691,99 @@ export function useDeleteContestRegistrationMutation(baseOptions?: Apollo.Mutati
 export type DeleteContestRegistrationMutationHookResult = ReturnType<typeof useDeleteContestRegistrationMutation>;
 export type DeleteContestRegistrationMutationResult = Apollo.MutationResult<DeleteContestRegistrationMutation>;
 export type DeleteContestRegistrationMutationOptions = Apollo.BaseMutationOptions<DeleteContestRegistrationMutation, DeleteContestRegistrationMutationVariables>;
+export const MakeBetDocument = gql`
+    mutation MakeBet($choiceId: ID!, $userId: ID!) {
+  createBet(
+    data: {user: {connect: {id: $userId}}, choice: {connect: {id: $choiceId}}}
+  ) {
+    id
+    user {
+      id
+    }
+    choice {
+      id
+      bets {
+        id
+        user {
+          id
+        }
+      }
+      line {
+        id
+      }
+    }
+  }
+}
+    `;
+export type MakeBetMutationFn = Apollo.MutationFunction<MakeBetMutation, MakeBetMutationVariables>;
+
+/**
+ * __useMakeBetMutation__
+ *
+ * To run a mutation, you first call `useMakeBetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMakeBetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [makeBetMutation, { data, loading, error }] = useMakeBetMutation({
+ *   variables: {
+ *      choiceId: // value for 'choiceId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useMakeBetMutation(baseOptions?: Apollo.MutationHookOptions<MakeBetMutation, MakeBetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<MakeBetMutation, MakeBetMutationVariables>(MakeBetDocument, options);
+      }
+export type MakeBetMutationHookResult = ReturnType<typeof useMakeBetMutation>;
+export type MakeBetMutationResult = Apollo.MutationResult<MakeBetMutation>;
+export type MakeBetMutationOptions = Apollo.BaseMutationOptions<MakeBetMutation, MakeBetMutationVariables>;
+export const DeleteBetDocument = gql`
+    mutation DeleteBet($betId: ID!) {
+  deleteBet(id: $betId) {
+    id
+    choice {
+      id
+      bets {
+        id
+        user {
+          id
+        }
+      }
+    }
+    user {
+      id
+    }
+  }
+}
+    `;
+export type DeleteBetMutationFn = Apollo.MutationFunction<DeleteBetMutation, DeleteBetMutationVariables>;
+
+/**
+ * __useDeleteBetMutation__
+ *
+ * To run a mutation, you first call `useDeleteBetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBetMutation, { data, loading, error }] = useDeleteBetMutation({
+ *   variables: {
+ *      betId: // value for 'betId'
+ *   },
+ * });
+ */
+export function useDeleteBetMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBetMutation, DeleteBetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBetMutation, DeleteBetMutationVariables>(DeleteBetDocument, options);
+      }
+export type DeleteBetMutationHookResult = ReturnType<typeof useDeleteBetMutation>;
+export type DeleteBetMutationResult = Apollo.MutationResult<DeleteBetMutation>;
+export type DeleteBetMutationOptions = Apollo.BaseMutationOptions<DeleteBetMutation, DeleteBetMutationVariables>;

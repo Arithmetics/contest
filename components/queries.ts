@@ -69,6 +69,9 @@ export const CONTEST_BY_ID_QUERY = gql`
           isWin
           bets {
             id
+            user {
+              id
+            }
           }
         }
       }
@@ -108,6 +111,51 @@ export const DELETE_CONTEST_REGISTRATIN_MUTATION = gql`
   mutation DeleteContestRegistration($id: ID!) {
     deleteRegistration(id: $id) {
       id
+    }
+  }
+`;
+
+export const MAKE_BET_MUTATION = gql`
+  mutation MakeBet($choiceId: ID!, $userId: ID!) {
+    createBet(
+      data: { user: { connect: { id: $userId } }, choice: { connect: { id: $choiceId } } }
+    ) {
+      id
+      user {
+        id
+      }
+      choice {
+        id
+        bets {
+          id
+          user {
+            id
+          }
+        }
+        line {
+          id
+        }
+      }
+    }
+  }
+`;
+
+export const DELETE_BET_MUTATION = gql`
+  mutation DeleteBet($betId: ID!) {
+    deleteBet(id: $betId) {
+      id
+      choice {
+        id
+        bets {
+          id
+          user {
+            id
+          }
+        }
+      }
+      user {
+        id
+      }
     }
   }
 `;
