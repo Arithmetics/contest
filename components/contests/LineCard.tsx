@@ -15,6 +15,7 @@ import {
   Text,
   ColorProps,
   StatHelpText,
+  StatArrow,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -207,6 +208,27 @@ export default function LineCard({ line, userId }: LineCardProps): JSX.Element {
                   Delete Bet
                 </Button>
               )}
+            </HStack>
+          </>
+        )}
+        {lineClosed && (
+          <>
+            <Divider orientation="horizontal" paddingTop={3} />
+            <HStack justifyContent="space-evenly" paddingTop={3}>
+              <Stat textAlign="center">
+                <StatLabel>Correct Picks</StatLabel>
+                <StatNumber>
+                  <StatArrow type="increase" />
+                  44
+                </StatNumber>
+              </Stat>
+              <Stat textAlign="center">
+                <StatLabel>Incorrect Picks</StatLabel>
+                <StatNumber>
+                  <StatArrow type="decrease" />
+                  22
+                </StatNumber>
+              </Stat>
             </HStack>
           </>
         )}

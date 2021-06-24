@@ -1,5 +1,7 @@
 import { checkbox, select, relationship, virtual } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
+import { KeystoneListsAPI } from '@keystone-next/types';
+import { KeystoneListsTypeInfo } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 
 export const Choice = list({
@@ -25,10 +27,22 @@ export const Choice = list({
     line: relationship({ ref: 'Line.choices', many: false }),
     bets: relationship({ ref: 'Bet.choice', many: true }),
     labelName: virtual({
-      resolver: (item) => {
-        // console.log(item, args, context, info);
-        // todo: come back and get the line title from context
-        return `${item.lineId} - ${item.selection}`;
+      resolver: async (item, _args, context) => {
+        const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
+        const graphql = String.raw;
+        const requestedLine = await lists.Line.findOne({
+          where: { id: item.lineId || '' },
+          query: graphql`
+              id
+              title
+              benchmark
+            `,
+        });
+
+        const title = requestedLine?.title || '??';
+        const benchmark = requestedLine?.benchmark || '??';
+
+        return `${title} - ${benchmark} - ${item.selection}`;
       },
     }),
   },
