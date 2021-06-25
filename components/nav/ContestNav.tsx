@@ -138,7 +138,7 @@ export default function ContestNav({
         >
           <TabList>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              Picks
+              Bets
             </Tab>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
               Leaderboard
