@@ -50,6 +50,9 @@ export default function ContestNav({
     !userHasEntered && userId && contest?.status === ContestStatusType.Open;
   const showLeaveContestButton =
     userHasEntered && userId && contest?.status == ContestStatusType.Open;
+  const registeredText = userHasEntered
+    ? 'You are registered for this contest'
+    : 'You are not registered for this contest';
   const registrationId = contest?.registrations.find((r) => r.user?.id === userId)?.id;
 
   const enterContest = async (): Promise<void> => {
@@ -88,9 +91,16 @@ export default function ContestNav({
         registrationId={registrationId}
       />
       {contest ? (
-        <Text fontSize="3xl" textAlign="center">
-          {contest.name}
-        </Text>
+        <>
+          <Text fontSize="3xl" textAlign="center">
+            {contest.name}
+          </Text>
+          {contest?.status !== ContestStatusType.Open && (
+            <Text fontSize="xl" textAlign="center">
+              {registeredText}
+            </Text>
+          )}
+        </>
       ) : undefined}
 
       {showEnterContestButton ? (

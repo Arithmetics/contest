@@ -75,7 +75,7 @@ export default function Nav(): JSX.Element {
                   onClick={mobileNav.onClose}
                 />
                 <ButtonLink
-                  title="NFL ATS"
+                  title="NFL Playoff ATS"
                   leftIcon={<GiAmericanFootballBall />}
                   href={`/${Routes.CONTESTS}/nflPlayoffATS`}
                   buttonTheme={{ variant: 'ghost' }}
@@ -102,7 +102,7 @@ export default function Nav(): JSX.Element {
 
             <HStack spacing={3} display={{ base: 'none', md: 'inline-flex' }}>
               <ButtonLink
-                title="NFL ATS"
+                title="NFL Playoff ATS"
                 leftIcon={<GiAmericanFootballBall />}
                 href={`/${Routes.CONTESTS}/nflPlayoffATS`}
                 buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nflPlayoffATS`)}

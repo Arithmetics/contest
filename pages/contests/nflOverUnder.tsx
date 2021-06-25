@@ -1,10 +1,9 @@
-import ContestNav from '../../components/nav/ContestNav';
+import { Center, Text } from '@chakra-ui/react';
 
 export default function NFLOverUnder(): JSX.Element {
   return (
-    <>
-      <ContestNav />
-      <p>NFL Over Under Page</p>
-    </>
+    <Center marginTop={'30vh'}>
+      <Text fontSize="2xl">Coming soon!</Text>
+    </Center>
   );
 }

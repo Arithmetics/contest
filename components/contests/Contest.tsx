@@ -13,7 +13,12 @@ import {
 import ContestNav from '../../components/nav/ContestNav';
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
 
-import { useContestByIdQuery, Line, Contest } from '../../generated/graphql-types';
+import {
+  useContestByIdQuery,
+  Line,
+  Contest,
+  useCurrentUserQuery,
+} from '../../generated/graphql-types';
 
 type ContestProps = {
   id?: string;
@@ -30,6 +35,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
     defaultIsOpen: true,
   });
 
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
   const { data, loading } = useContestByIdQuery({
     variables: {
       id: id || '',
@@ -44,7 +50,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
     );
   }
 
-  if (loading) {
+  if (loading || getUserLoading) {
     return (
       <Center marginTop={'30vh'}>
         <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
@@ -68,7 +74,8 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
   const availableLines = lines.filter((l) => !hasLineClosed(l as Line));
   const pendingLines = lines.filter((l) => hasLineClosed(l as Line) && !lineHasWinner(l as Line));
   const settledLines = lines.filter((l) => lineHasWinner(l as Line));
-
+  const userId = userData?.authenticatedItem?.id;
+  const userHasEntered = data?.Contest?.registrations.some((r) => r.user?.id === userId);
   return (
     <>
       <ContestNav contest={data.Contest as Contest} />
@@ -84,7 +91,14 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
           <Collapse in={isAvailableOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {availableLines.map((line) => {
-                return <LineCard key={line.id} line={line as Line} />;
+                return (
+                  <LineCard
+                    key={line.id}
+                    line={line as Line}
+                    userId={userId}
+                    userHasEntered={userHasEntered}
+                  />
+                );
               })}
             </Flex>
           </Collapse>
@@ -101,7 +115,14 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
           <Collapse in={isPendingOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {pendingLines.map((line) => {
-                return <LineCard key={line.id} line={line as Line} />;
+                return (
+                  <LineCard
+                    key={line.id}
+                    line={line as Line}
+                    userId={userId}
+                    userHasEntered={userHasEntered}
+                  />
+                );
               })}
             </Flex>
           </Collapse>
@@ -118,7 +139,14 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
           <Collapse in={isSettledOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {settledLines.map((line) => {
-                return <LineCard key={line.id} line={line as Line} />;
+                return (
+                  <LineCard
+                    key={line.id}
+                    line={line as Line}
+                    userId={userId}
+                    userHasEntered={userHasEntered}
+                  />
+                );
               })}
             </Flex>
           </Collapse>
