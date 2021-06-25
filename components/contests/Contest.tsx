@@ -75,6 +75,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
   const pendingLines = lines.filter((l) => hasLineClosed(l as Line) && !lineHasWinner(l as Line));
   const settledLines = lines.filter((l) => lineHasWinner(l as Line));
   const userId = userData?.authenticatedItem?.id;
+  const userHasEntered = data?.Contest?.registrations.some((r) => r.user?.id === userId);
   return (
     <>
       <ContestNav contest={data.Contest as Contest} />
@@ -90,7 +91,14 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
           <Collapse in={isAvailableOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {availableLines.map((line) => {
-                return <LineCard key={line.id} line={line as Line} userId={userId} />;
+                return (
+                  <LineCard
+                    key={line.id}
+                    line={line as Line}
+                    userId={userId}
+                    userHasEntered={userHasEntered}
+                  />
+                );
               })}
             </Flex>
           </Collapse>
@@ -107,7 +115,14 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
           <Collapse in={isPendingOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {pendingLines.map((line) => {
-                return <LineCard key={line.id} line={line as Line} userId={userId} />;
+                return (
+                  <LineCard
+                    key={line.id}
+                    line={line as Line}
+                    userId={userId}
+                    userHasEntered={userHasEntered}
+                  />
+                );
               })}
             </Flex>
           </Collapse>
@@ -124,7 +139,14 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
           <Collapse in={isSettledOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {settledLines.map((line) => {
-                return <LineCard key={line.id} line={line as Line} userId={userId} />;
+                return (
+                  <LineCard
+                    key={line.id}
+                    line={line as Line}
+                    userId={userId}
+                    userHasEntered={userHasEntered}
+                  />
+                );
               })}
             </Flex>
           </Collapse>

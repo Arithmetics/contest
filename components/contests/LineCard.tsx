@@ -48,9 +48,10 @@ function formatLineDate(line: Line): string {
 type LineCardProps = {
   line: Line;
   userId?: string;
+  userHasEntered?: boolean;
 };
 
-export default function LineCard({ line, userId }: LineCardProps): JSX.Element {
+export default function LineCard({ line, userId, userHasEntered }: LineCardProps): JSX.Element {
   const [makeBet, { loading: makeBetLoading }] = useMakeBetMutation();
   const [deleteBet, { loading: deleteBetLoading }] = useDeleteBetMutation({
     update: (cache, payload) => {
@@ -81,11 +82,18 @@ export default function LineCard({ line, userId }: LineCardProps): JSX.Element {
   const superPickAvailable = false;
 
   const radioTextColor = (choiceId: string): ColorProps => {
+    if (!lineClosed && !userHasEntered) {
+      return {
+        color: 'whiteAlpha.500',
+      };
+    }
     if (!lineClosed) {
       return {};
     }
     if (!winningChoice?.id) {
-      return {};
+      return {
+        color: 'whiteAlpha.500',
+      };
     }
     return {
       color: winningChoice?.id === choiceId ? 'green.400' : 'red.400',
@@ -149,7 +157,7 @@ export default function LineCard({ line, userId }: LineCardProps): JSX.Element {
                 <Radio
                   key={choice.id}
                   value={choice.id}
-                  disabled={lineClosed || !!selectedChoice}
+                  disabled={lineClosed || !!selectedChoice || !userHasEntered}
                   colorScheme="teal"
                   size="lg"
                 >
@@ -171,7 +179,7 @@ export default function LineCard({ line, userId }: LineCardProps): JSX.Element {
             </Checkbox>
           </Center>
         </RadioGroup>
-        {!lineClosed && (
+        {userHasEntered && !lineClosed && (
           <>
             <Divider orientation="horizontal" paddingTop={3} />
             <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
@@ -205,25 +213,40 @@ export default function LineCard({ line, userId }: LineCardProps): JSX.Element {
                     boxShadow: 'lg',
                   }}
                 >
-                  Delete Bet
+                  Remove Bet
                 </Button>
               )}
             </HStack>
           </>
         )}
-        {lineClosed && (
+        {lineClosed && !winningChoice && (
           <>
             <Divider orientation="horizontal" paddingTop={3} />
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
-                <StatLabel>Correct Picks</StatLabel>
+                <StatLabel>Bet Volume</StatLabel>
+                <StatNumber>44</StatNumber>
+              </Stat>
+              <Stat textAlign="center">
+                <StatLabel>Bet Volume</StatLabel>
+                <StatNumber>22</StatNumber>
+              </Stat>
+            </HStack>
+          </>
+        )}
+        {lineClosed && winningChoice && (
+          <>
+            <Divider orientation="horizontal" paddingTop={3} />
+            <HStack justifyContent="space-evenly" paddingTop={3}>
+              <Stat textAlign="center">
+                <StatLabel>Correct Bet Volume</StatLabel>
                 <StatNumber>
                   <StatArrow type="increase" />
                   44
                 </StatNumber>
               </Stat>
               <Stat textAlign="center">
-                <StatLabel>Incorrect Picks</StatLabel>
+                <StatLabel>Incorrect Bet Volume</StatLabel>
                 <StatNumber>
                   <StatArrow type="decrease" />
                   22
