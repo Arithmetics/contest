@@ -1,6 +1,6 @@
 import { Text, Spinner, Center } from '@chakra-ui/react';
-import { useState } from 'react';
-import ContestNav from '../../components/nav/ContestNav';
+import { useRouter } from 'next/router';
+import ContestNav, { ContestTabs } from '../../components/nav/ContestNav';
 import {
   useContestByIdQuery,
   User,
@@ -13,33 +13,14 @@ import HistoryTab from './HistoryTab';
 import TrackerTab from './TrackerTab';
 import RulesTab from './RulesTab';
 
-export enum ContestTabs {
-  BETS = 'bets',
-  LEADERBOARD = 'leaderboard',
-  RULES = 'rules',
-  TRACKER = 'tracker',
-  HISTORY = 'history',
-}
-
-const tabIndices: Record<number, ContestTabs> = {
-  0: ContestTabs.BETS,
-  1: ContestTabs.LEADERBOARD,
-  2: ContestTabs.RULES,
-  3: ContestTabs.TRACKER,
-  4: ContestTabs.HISTORY,
-};
-
 type ContestProps = {
   id?: string;
 };
 
 export default function ContestUI({ id }: ContestProps): JSX.Element {
-  //ui
-  const [selectedTab, setSelectedTab] = useState(0);
-
-  const handleTabsChange = (index: number): void => {
-    setSelectedTab(index);
-  };
+  const router = useRouter();
+  const { contestNav } = router.query;
+  const typedContestNav = contestNav as ContestTabs;
 
   // data
   const { data, loading } = useContestByIdQuery({
@@ -66,33 +47,29 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
     );
   }
 
-  const activeTab = (tab: number): JSX.Element | undefined => {
+  const activeTab = (): JSX.Element | undefined => {
     const contest = data.Contest as Contest;
-    if (tabIndices[tab] === ContestTabs.BETS) {
+    if (typedContestNav === ContestTabs.BETS) {
       return <BetsTab contest={contest} user={userData?.authenticatedItem as User} />;
     }
-    if (tabIndices[tab] === ContestTabs.LEADERBOARD) {
+    if (typedContestNav === ContestTabs.LEADERBOARD) {
       return <LeaderboardTab contest={contest} />;
     }
-    if (tabIndices[tab] === ContestTabs.RULES) {
+    if (typedContestNav === ContestTabs.RULES) {
       return <RulesTab />;
     }
-    if (tabIndices[tab] === ContestTabs.TRACKER) {
+    if (typedContestNav === ContestTabs.TRACKER) {
       return <TrackerTab />;
     }
-    if (tabIndices[tab] === ContestTabs.HISTORY) {
+    if (typedContestNav === ContestTabs.HISTORY) {
       return <HistoryTab />;
     }
   };
 
   return (
     <>
-      <ContestNav
-        contest={data.Contest as Contest}
-        selectedTab={selectedTab}
-        handleTabsChange={handleTabsChange}
-      />
-      {activeTab(selectedTab)}
+      <ContestNav contest={data.Contest as Contest} selectedTab={contestNav as ContestTabs} />
+      {activeTab()}
     </>
   );
 }

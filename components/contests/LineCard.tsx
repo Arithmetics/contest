@@ -101,7 +101,6 @@ export default function LineCard({ line, userId, userHasEntered }: LineCardProps
   };
 
   const onClickMakeBet = async (): Promise<void> => {
-    console.log(userId, formSelectedChoiceId.toString());
     try {
       await makeBet({
         variables: { userId: userId || '', choiceId: formSelectedChoiceId.toString() },

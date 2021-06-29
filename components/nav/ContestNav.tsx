@@ -17,6 +17,7 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import {
   Contest,
   useContestRegistrationMutation,
@@ -26,18 +27,38 @@ import {
 } from '../../generated/graphql-types';
 import { CONTEST_BY_ID_QUERY } from '../queries';
 
-type ContestNavProps = {
-  contest?: Contest;
-  selectedTab?: number;
-  handleTabsChange?: (arg0: number) => void;
+export enum ContestTabs {
+  BETS = 'bets',
+  LEADERBOARD = 'leaderboard',
+  RULES = 'rules',
+  TRACKER = 'tracker',
+  HISTORY = 'history',
+}
+
+const tabIndices: Record<number, ContestTabs> = {
+  0: ContestTabs.BETS,
+  1: ContestTabs.LEADERBOARD,
+  2: ContestTabs.RULES,
+  3: ContestTabs.TRACKER,
+  4: ContestTabs.HISTORY,
 };
 
-export default function ContestNav({
-  selectedTab,
-  handleTabsChange,
-  contest,
-}: ContestNavProps): JSX.Element {
+const indexedTabs: Record<string, number> = {
+  [ContestTabs.BETS]: 0,
+  [ContestTabs.LEADERBOARD]: 1,
+  [ContestTabs.RULES]: 2,
+  [ContestTabs.TRACKER]: 3,
+  [ContestTabs.HISTORY]: 4,
+};
+
+type ContestNavProps = {
+  contest?: Contest;
+  selectedTab?: ContestTabs;
+};
+
+export default function ContestNav({ selectedTab, contest }: ContestNavProps): JSX.Element {
   const toast = useToast();
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
   const [registerForContest, { loading: registerLoading }] = useContestRegistrationMutation({
@@ -77,6 +98,17 @@ export default function ContestNav({
         isClosable: true,
       });
     }
+  };
+
+  const updateUrl = (index: number): void => {
+    router.push(
+      {
+        pathname: `${router.pathname}`,
+        query: { ...router.query, contestNav: tabIndices[index] },
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   return (
@@ -129,10 +161,10 @@ export default function ContestNav({
 
       <Flex alignItems="center" justifyContent="center" mx={2} borderWidth={0} overflowX="auto">
         <Tabs
-          index={selectedTab}
+          index={indexedTabs[selectedTab || ContestTabs.BETS]}
           borderBottomColor="transparent"
           colorScheme="teal"
-          onChange={handleTabsChange}
+          onChange={updateUrl}
         >
           <TabList>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
