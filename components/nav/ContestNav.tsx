@@ -50,9 +50,7 @@ export default function ContestNav({
     !userHasEntered && userId && contest?.status === ContestStatusType.Open;
   const showLeaveContestButton =
     userHasEntered && userId && contest?.status == ContestStatusType.Open;
-  const registeredText = userHasEntered
-    ? 'You are registered for this contest'
-    : 'You are not registered for this contest';
+
   const registrationId = contest?.registrations.find((r) => r.user?.id === userId)?.id;
 
   const enterContest = async (): Promise<void> => {
@@ -82,7 +80,7 @@ export default function ContestNav({
   };
 
   return (
-    <Box overflow="hidden" padding={6} m={6}>
+    <Box overflow="hidden" m={6}>
       <DeleteRegistrationConfirmModal
         onOpen={onOpen}
         onClose={onClose}
@@ -92,12 +90,12 @@ export default function ContestNav({
       />
       {contest ? (
         <>
-          <Text fontSize="3xl" textAlign="center">
+          <Text fontSize="4xl" textAlign="center">
             {contest.name}
           </Text>
           {contest?.status !== ContestStatusType.Open && (
-            <Text fontSize="xl" textAlign="center">
-              {registeredText}
+            <Text fontSize="lg" textAlign="center">
+              {contest?.description}
             </Text>
           )}
         </>

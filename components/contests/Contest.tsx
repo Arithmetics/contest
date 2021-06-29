@@ -67,13 +67,12 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
   }
 
   const activeTab = (tab: number): JSX.Element | undefined => {
+    const contest = data.Contest as Contest;
     if (tabIndices[tab] === ContestTabs.BETS) {
-      return (
-        <BetsTab contest={data.Contest as Contest} user={userData?.authenticatedItem as User} />
-      );
+      return <BetsTab contest={contest} user={userData?.authenticatedItem as User} />;
     }
     if (tabIndices[tab] === ContestTabs.LEADERBOARD) {
-      return <LeaderboardTab />;
+      return <LeaderboardTab contest={contest} />;
     }
     if (tabIndices[tab] === ContestTabs.RULES) {
       return <RulesTab />;

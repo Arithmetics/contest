@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
-
+import BetsStatusLine from './BetsStatusLine';
 import { Line, Contest, User } from '../../generated/graphql-types';
 
 export enum ContestTabs {
@@ -56,6 +56,7 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
   const userHasEntered = contest?.registrations.some((r) => r.user?.id === userId);
   return (
     <>
+      <BetsStatusLine />
       {availableLines.length !== 0 ? (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
           <Heading as="h3" size="lg">

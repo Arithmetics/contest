@@ -79,6 +79,14 @@ export const CONTEST_BY_ID_QUERY = gql`
         id
         user {
           id
+          userName
+          # other stuff
+          avatarImage {
+            altText
+            image {
+              publicUrlTransformed
+            }
+          }
         }
       }
       image {
