@@ -56,7 +56,7 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
   const userHasEntered = contest?.registrations.some((r) => r.user?.id === userId);
   return (
     <>
-      <BetsStatusLine />
+      {userHasEntered ? <BetsStatusLine /> : undefined}
       {availableLines.length !== 0 ? (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
           <Heading as="h3" size="lg">
