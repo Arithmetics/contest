@@ -17,6 +17,7 @@ import {
   ModalCloseButton,
   useDisclosure,
 } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import {
   Contest,
   useContestRegistrationMutation,
@@ -26,18 +27,38 @@ import {
 } from '../../generated/graphql-types';
 import { CONTEST_BY_ID_QUERY } from '../queries';
 
-type ContestNavProps = {
-  contest?: Contest;
-  selectedTab?: number;
-  handleTabsChange?: (arg0: number) => void;
+export enum ContestTabs {
+  BETS = 'bets',
+  LEADERBOARD = 'leaderboard',
+  RULES = 'rules',
+  TRACKER = 'tracker',
+  HISTORY = 'history',
+}
+
+const tabIndices: Record<number, ContestTabs> = {
+  0: ContestTabs.BETS,
+  1: ContestTabs.LEADERBOARD,
+  2: ContestTabs.RULES,
+  3: ContestTabs.TRACKER,
+  4: ContestTabs.HISTORY,
 };
 
-export default function ContestNav({
-  selectedTab,
-  handleTabsChange,
-  contest,
-}: ContestNavProps): JSX.Element {
+const indexedTabs: Record<string, number> = {
+  [ContestTabs.BETS]: 0,
+  [ContestTabs.LEADERBOARD]: 1,
+  [ContestTabs.RULES]: 2,
+  [ContestTabs.TRACKER]: 3,
+  [ContestTabs.HISTORY]: 4,
+};
+
+type ContestNavProps = {
+  contest?: Contest;
+  selectedTab?: ContestTabs;
+};
+
+export default function ContestNav({ selectedTab, contest }: ContestNavProps): JSX.Element {
   const toast = useToast();
+  const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
   const [registerForContest, { loading: registerLoading }] = useContestRegistrationMutation({
@@ -50,9 +71,7 @@ export default function ContestNav({
     !userHasEntered && userId && contest?.status === ContestStatusType.Open;
   const showLeaveContestButton =
     userHasEntered && userId && contest?.status == ContestStatusType.Open;
-  const registeredText = userHasEntered
-    ? 'You are registered for this contest'
-    : 'You are not registered for this contest';
+
   const registrationId = contest?.registrations.find((r) => r.user?.id === userId)?.id;
 
   const enterContest = async (): Promise<void> => {
@@ -81,8 +100,19 @@ export default function ContestNav({
     }
   };
 
+  const updateUrl = (index: number): void => {
+    router.push(
+      {
+        pathname: `${router.pathname}`,
+        query: { ...router.query, contestNav: tabIndices[index] },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
   return (
-    <Box overflow="hidden" padding={6} m={6}>
+    <Box overflow="hidden" m={6}>
       <DeleteRegistrationConfirmModal
         onOpen={onOpen}
         onClose={onClose}
@@ -92,12 +122,12 @@ export default function ContestNav({
       />
       {contest ? (
         <>
-          <Text fontSize="3xl" textAlign="center">
+          <Text fontSize="4xl" textAlign="center">
             {contest.name}
           </Text>
           {contest?.status !== ContestStatusType.Open && (
-            <Text fontSize="xl" textAlign="center">
-              {registeredText}
+            <Text fontSize="lg" textAlign="center">
+              {contest?.description}
             </Text>
           )}
         </>
@@ -131,14 +161,14 @@ export default function ContestNav({
 
       <Flex alignItems="center" justifyContent="center" mx={2} borderWidth={0} overflowX="auto">
         <Tabs
-          index={selectedTab}
+          index={indexedTabs[selectedTab || ContestTabs.BETS]}
           borderBottomColor="transparent"
           colorScheme="teal"
-          onChange={handleTabsChange}
+          onChange={updateUrl}
         >
           <TabList>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
-              Picks
+              Bets
             </Tab>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
               Leaderboard

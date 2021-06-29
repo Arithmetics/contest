@@ -72,7 +72,7 @@ export default function LineCard({ line, userId, userHasEntered }: LineCardProps
     selectedChoice?.id || '0'
   );
 
-  const [superPickSelected, setSuperPickSelected] = useState<boolean>(false);
+  const [superBetSelected, setSuperBetSelected] = useState<boolean>(false);
 
   const lineClosed = hasLineClosed(line);
   const winningChoice = line.choices.find((c) => c.isWin);
@@ -101,7 +101,6 @@ export default function LineCard({ line, userId, userHasEntered }: LineCardProps
   };
 
   const onClickMakeBet = async (): Promise<void> => {
-    console.log(userId, formSelectedChoiceId.toString());
     try {
       await makeBet({
         variables: { userId: userId || '', choiceId: formSelectedChoiceId.toString() },
@@ -168,8 +167,8 @@ export default function LineCard({ line, userId, userHasEntered }: LineCardProps
           </HStack>
           <Center>
             <Checkbox
-              onChange={() => setSuperPickSelected(!superPickSelected)}
-              isChecked={superPickSelected}
+              onChange={() => setSuperBetSelected(!superBetSelected)}
+              isChecked={superBetSelected}
               marginTop={4}
               isDisabled={lineClosed || !superPickAvailable}
               colorScheme="teal"

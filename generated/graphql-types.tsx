@@ -1961,7 +1961,15 @@ export type ContestByIdQuery = (
       & Pick<Registration, 'id'>
       & { user?: Maybe<(
         { __typename?: 'User' }
-        & Pick<User, 'id'>
+        & Pick<User, 'id' | 'userName'>
+        & { avatarImage?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )> }
       )> }
     )>, image?: Maybe<(
       { __typename?: 'CloudImage' }
@@ -2577,6 +2585,13 @@ export const ContestByIdDocument = gql`
       id
       user {
         id
+        userName
+        avatarImage {
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
       }
     }
     image {

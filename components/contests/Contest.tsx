@@ -1,46 +1,35 @@
-import {
-  Button,
-  Collapse,
-  Box,
-  Flex,
-  Heading,
-  Text,
-  Spinner,
-  Center,
-  useDisclosure,
-} from '@chakra-ui/react';
-
-import ContestNav from '../../components/nav/ContestNav';
-import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
-
+import { Text, Spinner, Center } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import ContestNav, { ContestTabs } from '../../components/nav/ContestNav';
 import {
   useContestByIdQuery,
-  Line,
+  User,
   Contest,
   useCurrentUserQuery,
 } from '../../generated/graphql-types';
+import BetsTab from './BetsTab';
+import LeaderboardTab from './LeaderboardTab';
+import HistoryTab from './HistoryTab';
+import TrackerTab from './TrackerTab';
+import RulesTab from './RulesTab';
 
 type ContestProps = {
   id?: string;
 };
 
 export default function ContestUI({ id }: ContestProps): JSX.Element {
-  const { isOpen: isAvailableOpen, onToggle: onAvailableToggle } = useDisclosure({
-    defaultIsOpen: true,
-  });
-  const { isOpen: isPendingOpen, onToggle: onPendingToggle } = useDisclosure({
-    defaultIsOpen: true,
-  });
-  const { isOpen: isSettledOpen, onToggle: onSettledToggle } = useDisclosure({
-    defaultIsOpen: true,
-  });
+  const router = useRouter();
+  const { contestNav } = router.query;
+  const typedContestNav = contestNav as ContestTabs;
 
-  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
+  // data
   const { data, loading } = useContestByIdQuery({
     variables: {
       id: id || '',
     },
   });
+
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
 
   if (!data?.Contest) {
     return (
@@ -58,100 +47,29 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
     );
   }
 
-  const lines = data?.Contest?.lines;
+  const activeTab = (): JSX.Element | undefined => {
+    const contest = data.Contest as Contest;
+    if (typedContestNav === ContestTabs.BETS) {
+      return <BetsTab contest={contest} user={userData?.authenticatedItem as User} />;
+    }
+    if (typedContestNav === ContestTabs.LEADERBOARD) {
+      return <LeaderboardTab contest={contest} />;
+    }
+    if (typedContestNav === ContestTabs.RULES) {
+      return <RulesTab />;
+    }
+    if (typedContestNav === ContestTabs.TRACKER) {
+      return <TrackerTab />;
+    }
+    if (typedContestNav === ContestTabs.HISTORY) {
+      return <HistoryTab />;
+    }
+  };
 
-  if (!lines || lines.length === 0) {
-    return (
-      <>
-        <ContestNav contest={data.Contest as Contest} />
-        <Center marginTop={'30vh'}>
-          <Text fontSize="2xl">No lines set for this contest.</Text>
-        </Center>
-      </>
-    );
-  }
-
-  const availableLines = lines.filter((l) => !hasLineClosed(l as Line));
-  const pendingLines = lines.filter((l) => hasLineClosed(l as Line) && !lineHasWinner(l as Line));
-  const settledLines = lines.filter((l) => lineHasWinner(l as Line));
-  const userId = userData?.authenticatedItem?.id;
-  const userHasEntered = data?.Contest?.registrations.some((r) => r.user?.id === userId);
   return (
     <>
-      <ContestNav contest={data.Contest as Contest} />
-
-      {availableLines.length !== 0 ? (
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
-          <Heading as="h3" size="lg">
-            Available Lines
-          </Heading>
-          <Button marginTop={2} onClick={onAvailableToggle}>
-            {isAvailableOpen ? 'Hide' : 'Reveal'}
-          </Button>
-          <Collapse in={isAvailableOpen} animateOpacity>
-            <Flex justifyContent="center" flexWrap="wrap">
-              {availableLines.map((line) => {
-                return (
-                  <LineCard
-                    key={line.id}
-                    line={line as Line}
-                    userId={userId}
-                    userHasEntered={userHasEntered}
-                  />
-                );
-              })}
-            </Flex>
-          </Collapse>
-        </Box>
-      ) : undefined}
-      {pendingLines.length !== 0 ? (
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
-          <Heading as="h3" size="lg">
-            Pending Lines
-          </Heading>
-          <Button marginTop={2} onClick={onPendingToggle}>
-            {isPendingOpen ? 'Hide' : 'Reveal'}
-          </Button>
-          <Collapse in={isPendingOpen} animateOpacity>
-            <Flex justifyContent="center" flexWrap="wrap">
-              {pendingLines.map((line) => {
-                return (
-                  <LineCard
-                    key={line.id}
-                    line={line as Line}
-                    userId={userId}
-                    userHasEntered={userHasEntered}
-                  />
-                );
-              })}
-            </Flex>
-          </Collapse>
-        </Box>
-      ) : undefined}
-      {settledLines.length !== 0 ? (
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
-          <Heading as="h3" size="lg">
-            Settled Lines
-          </Heading>
-          <Button marginTop={2} onClick={onSettledToggle}>
-            {isSettledOpen ? 'Hide' : 'Reveal'}
-          </Button>
-          <Collapse in={isSettledOpen} animateOpacity>
-            <Flex justifyContent="center" flexWrap="wrap">
-              {settledLines.map((line) => {
-                return (
-                  <LineCard
-                    key={line.id}
-                    line={line as Line}
-                    userId={userId}
-                    userHasEntered={userHasEntered}
-                  />
-                );
-              })}
-            </Flex>
-          </Collapse>
-        </Box>
-      ) : undefined}
+      <ContestNav contest={data.Contest as Contest} selectedTab={contestNav as ContestTabs} />
+      {activeTab()}
     </>
   );
 }
