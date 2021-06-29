@@ -24,5 +24,6 @@ export const Line = list({
     }),
     contest: relationship({ ref: 'Contest.lines', many: false }),
     choices: relationship({ ref: 'Choice.line', many: true }),
+    standings: relationship({ ref: 'Standing.line', many: true }),
   },
 });

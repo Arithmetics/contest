@@ -1,17 +1,20 @@
 import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
-import { users, contests } from './mockData';
+import { contests, users } from './mockData';
 
 export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<void> {
   const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = keyStoneContext.lists;
 
   const { prisma } = keyStoneContext;
 
-  await prisma.user.deleteMany({});
+  await prisma.bet.deleteMany({});
+  await prisma.choice.deleteMany({});
+  await prisma.cloudImage.deleteMany({});
   await prisma.contest.deleteMany({});
   await prisma.line.deleteMany({});
-  await prisma.choice.deleteMany({});
-  await prisma.bet.deleteMany({});
+  await prisma.registration.deleteMany({});
+  await prisma.standing.deleteMany({});
+  await prisma.user.deleteMany({});
 
   console.log(`🌱 Inserting Seed Data: ${users.length} Users`);
   for (const user of users) {

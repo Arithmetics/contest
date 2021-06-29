@@ -167,3 +167,26 @@ export const DELETE_BET_MUTATION = gql`
     }
   }
 `;
+
+export const TRACKER_STATUS_QUERY = gql`
+  query TrackerStatus($contestId: ID!) {
+    allLines(where: { contest: { id: $contestId } }) {
+      id
+      title
+      benchmark
+      image {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+      standings {
+        id
+        wins
+        gamesPlayed
+        totalGames
+      }
+    }
+  }
+`;

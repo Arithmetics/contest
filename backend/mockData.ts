@@ -1,4 +1,9 @@
-import { ChoiceCreateInput, ContestCreateInput, UserCreateInput } from '.keystone/types';
+import {
+  ChoiceCreateInput,
+  ContestCreateInput,
+  StandingCreateInput,
+  UserCreateInput,
+} from '.keystone/types';
 
 const defaultOverUnderSelections: ChoiceCreateInput[] = [
   {
@@ -19,6 +24,52 @@ const overWinningOverUnderSelections: ChoiceCreateInput[] = [
   {
     selection: 'UNDER',
     isWin: false,
+  },
+];
+
+const standingsSetA: StandingCreateInput[] = [
+  {
+    gamesPlayed: 1,
+    wins: 1,
+    totalGames: 17,
+  },
+  {
+    gamesPlayed: 2,
+    wins: 1,
+    totalGames: 17,
+  },
+  {
+    gamesPlayed: 3,
+    wins: 2,
+    totalGames: 17,
+  },
+  {
+    gamesPlayed: 4,
+    wins: 3,
+    totalGames: 17,
+  },
+];
+
+const standingsSetB: StandingCreateInput[] = [
+  {
+    gamesPlayed: 1,
+    wins: 0,
+    totalGames: 17,
+  },
+  {
+    gamesPlayed: 2,
+    wins: 1,
+    totalGames: 17,
+  },
+  {
+    gamesPlayed: 3,
+    wins: 1,
+    totalGames: 17,
+  },
+  {
+    gamesPlayed: 4,
+    wins: 2,
+    totalGames: 17,
   },
 ];
 
@@ -115,6 +166,9 @@ export const contests: ContestCreateInput[] = [
           choices: {
             create: [...defaultOverUnderSelections],
           },
+          standings: {
+            create: [...standingsSetA],
+          },
         },
         {
           title: 'Tampa Bay Buccaneers',
@@ -122,6 +176,9 @@ export const contests: ContestCreateInput[] = [
           benchmark: 6.5,
           choices: {
             create: [...defaultOverUnderSelections],
+          },
+          standings: {
+            create: [...standingsSetB],
           },
         },
       ],

@@ -608,6 +608,8 @@ export type Line = {
   contest?: Maybe<Contest>;
   choices: Array<Choice>;
   _choicesMeta?: Maybe<_QueryMeta>;
+  standings: Array<Standing>;
+  _standingsMeta?: Maybe<_QueryMeta>;
 };
 
 
@@ -632,6 +634,28 @@ export type Line_ChoicesMetaArgs = {
   skip?: Maybe<Scalars['Int']>;
 };
 
+
+/** A keystone list */
+export type LineStandingsArgs = {
+  where?: Maybe<StandingWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortStandingsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+/** A keystone list */
+export type Line_StandingsMetaArgs = {
+  where?: Maybe<StandingWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortStandingsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
 export type LineCreateInput = {
   title?: Maybe<Scalars['String']>;
   closingTime?: Maybe<Scalars['String']>;
@@ -639,6 +663,7 @@ export type LineCreateInput = {
   image?: Maybe<CloudImageRelateToOneInput>;
   contest?: Maybe<ContestRelateToOneInput>;
   choices?: Maybe<ChoiceRelateToManyInput>;
+  standings?: Maybe<StandingRelateToManyInput>;
 };
 
 export type LineRelateToManyInput = {
@@ -662,6 +687,7 @@ export type LineUpdateInput = {
   image?: Maybe<CloudImageRelateToOneInput>;
   contest?: Maybe<ContestRelateToOneInput>;
   choices?: Maybe<ChoiceRelateToManyInput>;
+  standings?: Maybe<StandingRelateToManyInput>;
 };
 
 export type LineWhereInput = {
@@ -719,6 +745,12 @@ export type LineWhereInput = {
   choices_some?: Maybe<ChoiceWhereInput>;
   /** condition must be false for all nodes */
   choices_none?: Maybe<ChoiceWhereInput>;
+  /** condition must be true for all nodes */
+  standings_every?: Maybe<StandingWhereInput>;
+  /** condition must be true for at least 1 node */
+  standings_some?: Maybe<StandingWhereInput>;
+  /** condition must be false for all nodes */
+  standings_none?: Maybe<StandingWhereInput>;
 };
 
 export type LineWhereUniqueInput = {
@@ -760,18 +792,6 @@ export type Mutation = {
   deleteChoice?: Maybe<Choice>;
   /** Delete multiple Choice items by ID. */
   deleteChoices?: Maybe<Array<Maybe<Choice>>>;
-  /** Create a single Contest item. */
-  createContest?: Maybe<Contest>;
-  /** Create multiple Contest items. */
-  createContests?: Maybe<Array<Maybe<Contest>>>;
-  /** Update a single Contest item by ID. */
-  updateContest?: Maybe<Contest>;
-  /** Update multiple Contest items by ID. */
-  updateContests?: Maybe<Array<Maybe<Contest>>>;
-  /** Delete a single Contest item by ID. */
-  deleteContest?: Maybe<Contest>;
-  /** Delete multiple Contest items by ID. */
-  deleteContests?: Maybe<Array<Maybe<Contest>>>;
   /** Create a single CloudImage item. */
   createCloudImage?: Maybe<CloudImage>;
   /** Create multiple CloudImage items. */
@@ -784,6 +804,18 @@ export type Mutation = {
   deleteCloudImage?: Maybe<CloudImage>;
   /** Delete multiple CloudImage items by ID. */
   deleteCloudImages?: Maybe<Array<Maybe<CloudImage>>>;
+  /** Create a single Contest item. */
+  createContest?: Maybe<Contest>;
+  /** Create multiple Contest items. */
+  createContests?: Maybe<Array<Maybe<Contest>>>;
+  /** Update a single Contest item by ID. */
+  updateContest?: Maybe<Contest>;
+  /** Update multiple Contest items by ID. */
+  updateContests?: Maybe<Array<Maybe<Contest>>>;
+  /** Delete a single Contest item by ID. */
+  deleteContest?: Maybe<Contest>;
+  /** Delete multiple Contest items by ID. */
+  deleteContests?: Maybe<Array<Maybe<Contest>>>;
   /** Create a single Line item. */
   createLine?: Maybe<Line>;
   /** Create multiple Line items. */
@@ -796,18 +828,6 @@ export type Mutation = {
   deleteLine?: Maybe<Line>;
   /** Delete multiple Line items by ID. */
   deleteLines?: Maybe<Array<Maybe<Line>>>;
-  /** Create a single User item. */
-  createUser?: Maybe<User>;
-  /** Create multiple User items. */
-  createUsers?: Maybe<Array<Maybe<User>>>;
-  /** Update a single User item by ID. */
-  updateUser?: Maybe<User>;
-  /** Update multiple User items by ID. */
-  updateUsers?: Maybe<Array<Maybe<User>>>;
-  /** Delete a single User item by ID. */
-  deleteUser?: Maybe<User>;
-  /** Delete multiple User items by ID. */
-  deleteUsers?: Maybe<Array<Maybe<User>>>;
   /** Create a single Registration item. */
   createRegistration?: Maybe<Registration>;
   /** Create multiple Registration items. */
@@ -820,6 +840,30 @@ export type Mutation = {
   deleteRegistration?: Maybe<Registration>;
   /** Delete multiple Registration items by ID. */
   deleteRegistrations?: Maybe<Array<Maybe<Registration>>>;
+  /** Create a single Standing item. */
+  createStanding?: Maybe<Standing>;
+  /** Create multiple Standing items. */
+  createStandings?: Maybe<Array<Maybe<Standing>>>;
+  /** Update a single Standing item by ID. */
+  updateStanding?: Maybe<Standing>;
+  /** Update multiple Standing items by ID. */
+  updateStandings?: Maybe<Array<Maybe<Standing>>>;
+  /** Delete a single Standing item by ID. */
+  deleteStanding?: Maybe<Standing>;
+  /** Delete multiple Standing items by ID. */
+  deleteStandings?: Maybe<Array<Maybe<Standing>>>;
+  /** Create a single User item. */
+  createUser?: Maybe<User>;
+  /** Create multiple User items. */
+  createUsers?: Maybe<Array<Maybe<User>>>;
+  /** Update a single User item by ID. */
+  updateUser?: Maybe<User>;
+  /** Update multiple User items by ID. */
+  updateUsers?: Maybe<Array<Maybe<User>>>;
+  /** Delete a single User item by ID. */
+  deleteUser?: Maybe<User>;
+  /** Delete multiple User items by ID. */
+  deleteUsers?: Maybe<Array<Maybe<User>>>;
   authenticateUserWithPassword: UserAuthenticationWithPasswordResult;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
   sendUserPasswordResetLink?: Maybe<SendUserPasswordResetLinkResult>;
@@ -890,37 +934,6 @@ export type MutationDeleteChoicesArgs = {
 };
 
 
-export type MutationCreateContestArgs = {
-  data?: Maybe<ContestCreateInput>;
-};
-
-
-export type MutationCreateContestsArgs = {
-  data?: Maybe<Array<Maybe<ContestsCreateInput>>>;
-};
-
-
-export type MutationUpdateContestArgs = {
-  id: Scalars['ID'];
-  data?: Maybe<ContestUpdateInput>;
-};
-
-
-export type MutationUpdateContestsArgs = {
-  data?: Maybe<Array<Maybe<ContestsUpdateInput>>>;
-};
-
-
-export type MutationDeleteContestArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteContestsArgs = {
-  ids?: Maybe<Array<Scalars['ID']>>;
-};
-
-
 export type MutationCreateCloudImageArgs = {
   data?: Maybe<CloudImageCreateInput>;
 };
@@ -948,6 +961,37 @@ export type MutationDeleteCloudImageArgs = {
 
 
 export type MutationDeleteCloudImagesArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
+export type MutationCreateContestArgs = {
+  data?: Maybe<ContestCreateInput>;
+};
+
+
+export type MutationCreateContestsArgs = {
+  data?: Maybe<Array<Maybe<ContestsCreateInput>>>;
+};
+
+
+export type MutationUpdateContestArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<ContestUpdateInput>;
+};
+
+
+export type MutationUpdateContestsArgs = {
+  data?: Maybe<Array<Maybe<ContestsUpdateInput>>>;
+};
+
+
+export type MutationDeleteContestArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteContestsArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
 
@@ -983,37 +1027,6 @@ export type MutationDeleteLinesArgs = {
 };
 
 
-export type MutationCreateUserArgs = {
-  data?: Maybe<UserCreateInput>;
-};
-
-
-export type MutationCreateUsersArgs = {
-  data?: Maybe<Array<Maybe<UsersCreateInput>>>;
-};
-
-
-export type MutationUpdateUserArgs = {
-  id: Scalars['ID'];
-  data?: Maybe<UserUpdateInput>;
-};
-
-
-export type MutationUpdateUsersArgs = {
-  data?: Maybe<Array<Maybe<UsersUpdateInput>>>;
-};
-
-
-export type MutationDeleteUserArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type MutationDeleteUsersArgs = {
-  ids?: Maybe<Array<Scalars['ID']>>;
-};
-
-
 export type MutationCreateRegistrationArgs = {
   data?: Maybe<RegistrationCreateInput>;
 };
@@ -1041,6 +1054,68 @@ export type MutationDeleteRegistrationArgs = {
 
 
 export type MutationDeleteRegistrationsArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
+export type MutationCreateStandingArgs = {
+  data?: Maybe<StandingCreateInput>;
+};
+
+
+export type MutationCreateStandingsArgs = {
+  data?: Maybe<Array<Maybe<StandingsCreateInput>>>;
+};
+
+
+export type MutationUpdateStandingArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<StandingUpdateInput>;
+};
+
+
+export type MutationUpdateStandingsArgs = {
+  data?: Maybe<Array<Maybe<StandingsUpdateInput>>>;
+};
+
+
+export type MutationDeleteStandingArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteStandingsArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
+export type MutationCreateUserArgs = {
+  data?: Maybe<UserCreateInput>;
+};
+
+
+export type MutationCreateUsersArgs = {
+  data?: Maybe<Array<Maybe<UsersCreateInput>>>;
+};
+
+
+export type MutationUpdateUserArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<UserUpdateInput>;
+};
+
+
+export type MutationUpdateUsersArgs = {
+  data?: Maybe<Array<Maybe<UsersUpdateInput>>>;
+};
+
+
+export type MutationDeleteUserArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteUsersArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
 
@@ -1104,36 +1179,42 @@ export type Query = {
   Choice?: Maybe<Choice>;
   /** Perform a meta-query on all Choice items which match the where clause. */
   _allChoicesMeta?: Maybe<_QueryMeta>;
-  /** Search for all Contest items which match the where clause. */
-  allContests?: Maybe<Array<Maybe<Contest>>>;
-  /** Search for the Contest item with the matching ID. */
-  Contest?: Maybe<Contest>;
-  /** Perform a meta-query on all Contest items which match the where clause. */
-  _allContestsMeta?: Maybe<_QueryMeta>;
   /** Search for all CloudImage items which match the where clause. */
   allCloudImages?: Maybe<Array<Maybe<CloudImage>>>;
   /** Search for the CloudImage item with the matching ID. */
   CloudImage?: Maybe<CloudImage>;
   /** Perform a meta-query on all CloudImage items which match the where clause. */
   _allCloudImagesMeta?: Maybe<_QueryMeta>;
+  /** Search for all Contest items which match the where clause. */
+  allContests?: Maybe<Array<Maybe<Contest>>>;
+  /** Search for the Contest item with the matching ID. */
+  Contest?: Maybe<Contest>;
+  /** Perform a meta-query on all Contest items which match the where clause. */
+  _allContestsMeta?: Maybe<_QueryMeta>;
   /** Search for all Line items which match the where clause. */
   allLines?: Maybe<Array<Maybe<Line>>>;
   /** Search for the Line item with the matching ID. */
   Line?: Maybe<Line>;
   /** Perform a meta-query on all Line items which match the where clause. */
   _allLinesMeta?: Maybe<_QueryMeta>;
-  /** Search for all User items which match the where clause. */
-  allUsers?: Maybe<Array<Maybe<User>>>;
-  /** Search for the User item with the matching ID. */
-  User?: Maybe<User>;
-  /** Perform a meta-query on all User items which match the where clause. */
-  _allUsersMeta?: Maybe<_QueryMeta>;
   /** Search for all Registration items which match the where clause. */
   allRegistrations?: Maybe<Array<Maybe<Registration>>>;
   /** Search for the Registration item with the matching ID. */
   Registration?: Maybe<Registration>;
   /** Perform a meta-query on all Registration items which match the where clause. */
   _allRegistrationsMeta?: Maybe<_QueryMeta>;
+  /** Search for all Standing items which match the where clause. */
+  allStandings?: Maybe<Array<Maybe<Standing>>>;
+  /** Search for the Standing item with the matching ID. */
+  Standing?: Maybe<Standing>;
+  /** Perform a meta-query on all Standing items which match the where clause. */
+  _allStandingsMeta?: Maybe<_QueryMeta>;
+  /** Search for all User items which match the where clause. */
+  allUsers?: Maybe<Array<Maybe<User>>>;
+  /** Search for the User item with the matching ID. */
+  User?: Maybe<User>;
+  /** Perform a meta-query on all User items which match the where clause. */
+  _allUsersMeta?: Maybe<_QueryMeta>;
   authenticatedItem?: Maybe<AuthenticatedItem>;
   validateUserPasswordResetToken?: Maybe<ValidateUserPasswordResetTokenResult>;
   keystone: KeystoneMeta;
@@ -1190,31 +1271,6 @@ export type Query_AllChoicesMetaArgs = {
 };
 
 
-export type QueryAllContestsArgs = {
-  where?: Maybe<ContestWhereInput>;
-  search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortContestsBy>>;
-  orderBy?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  skip?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryContestArgs = {
-  where: ContestWhereUniqueInput;
-};
-
-
-export type Query_AllContestsMetaArgs = {
-  where?: Maybe<ContestWhereInput>;
-  search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortContestsBy>>;
-  orderBy?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  skip?: Maybe<Scalars['Int']>;
-};
-
-
 export type QueryAllCloudImagesArgs = {
   where?: Maybe<CloudImageWhereInput>;
   search?: Maybe<Scalars['String']>;
@@ -1234,6 +1290,31 @@ export type Query_AllCloudImagesMetaArgs = {
   where?: Maybe<CloudImageWhereInput>;
   search?: Maybe<Scalars['String']>;
   sortBy?: Maybe<Array<SortCloudImagesBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAllContestsArgs = {
+  where?: Maybe<ContestWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortContestsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryContestArgs = {
+  where: ContestWhereUniqueInput;
+};
+
+
+export type Query_AllContestsMetaArgs = {
+  where?: Maybe<ContestWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortContestsBy>>;
   orderBy?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
@@ -1265,31 +1346,6 @@ export type Query_AllLinesMetaArgs = {
 };
 
 
-export type QueryAllUsersArgs = {
-  where?: Maybe<UserWhereInput>;
-  search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortUsersBy>>;
-  orderBy?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  skip?: Maybe<Scalars['Int']>;
-};
-
-
-export type QueryUserArgs = {
-  where: UserWhereUniqueInput;
-};
-
-
-export type Query_AllUsersMetaArgs = {
-  where?: Maybe<UserWhereInput>;
-  search?: Maybe<Scalars['String']>;
-  sortBy?: Maybe<Array<SortUsersBy>>;
-  orderBy?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  skip?: Maybe<Scalars['Int']>;
-};
-
-
 export type QueryAllRegistrationsArgs = {
   where?: Maybe<RegistrationWhereInput>;
   search?: Maybe<Scalars['String']>;
@@ -1309,6 +1365,56 @@ export type Query_AllRegistrationsMetaArgs = {
   where?: Maybe<RegistrationWhereInput>;
   search?: Maybe<Scalars['String']>;
   sortBy?: Maybe<Array<SortRegistrationsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAllStandingsArgs = {
+  where?: Maybe<StandingWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortStandingsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryStandingArgs = {
+  where: StandingWhereUniqueInput;
+};
+
+
+export type Query_AllStandingsMetaArgs = {
+  where?: Maybe<StandingWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortStandingsBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryAllUsersArgs = {
+  where?: Maybe<UserWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortUsersBy>>;
+  orderBy?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryUserArgs = {
+  where: UserWhereUniqueInput;
+};
+
+
+export type Query_AllUsersMetaArgs = {
+  where?: Maybe<UserWhereInput>;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortUsersBy>>;
   orderBy?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   skip?: Maybe<Scalars['Int']>;
@@ -1454,7 +1560,9 @@ export enum SortLinesBy {
   ContestAsc = 'contest_ASC',
   ContestDesc = 'contest_DESC',
   ChoicesAsc = 'choices_ASC',
-  ChoicesDesc = 'choices_DESC'
+  ChoicesDesc = 'choices_DESC',
+  StandingsAsc = 'standings_ASC',
+  StandingsDesc = 'standings_DESC'
 }
 
 export enum SortRegistrationsBy {
@@ -1466,6 +1574,19 @@ export enum SortRegistrationsBy {
   ContestDesc = 'contest_DESC',
   UserAsc = 'user_ASC',
   UserDesc = 'user_DESC'
+}
+
+export enum SortStandingsBy {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  GamesPlayedAsc = 'gamesPlayed_ASC',
+  GamesPlayedDesc = 'gamesPlayed_DESC',
+  WinsAsc = 'wins_ASC',
+  WinsDesc = 'wins_DESC',
+  TotalGamesAsc = 'totalGames_ASC',
+  TotalGamesDesc = 'totalGames_DESC',
+  LineAsc = 'line_ASC',
+  LineDesc = 'line_DESC'
 }
 
 export enum SortUsersBy {
@@ -1490,6 +1611,89 @@ export enum SortUsersBy {
   PasswordResetRedeemedAtAsc = 'passwordResetRedeemedAt_ASC',
   PasswordResetRedeemedAtDesc = 'passwordResetRedeemedAt_DESC'
 }
+
+/** A keystone list */
+export type Standing = {
+  __typename?: 'Standing';
+  id: Scalars['ID'];
+  gamesPlayed?: Maybe<Scalars['Int']>;
+  wins?: Maybe<Scalars['Int']>;
+  totalGames?: Maybe<Scalars['Int']>;
+  line?: Maybe<Line>;
+};
+
+export type StandingCreateInput = {
+  gamesPlayed?: Maybe<Scalars['Int']>;
+  wins?: Maybe<Scalars['Int']>;
+  totalGames?: Maybe<Scalars['Int']>;
+  line?: Maybe<LineRelateToOneInput>;
+};
+
+export type StandingRelateToManyInput = {
+  create?: Maybe<Array<Maybe<StandingCreateInput>>>;
+  connect?: Maybe<Array<Maybe<StandingWhereUniqueInput>>>;
+  disconnect?: Maybe<Array<Maybe<StandingWhereUniqueInput>>>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type StandingUpdateInput = {
+  gamesPlayed?: Maybe<Scalars['Int']>;
+  wins?: Maybe<Scalars['Int']>;
+  totalGames?: Maybe<Scalars['Int']>;
+  line?: Maybe<LineRelateToOneInput>;
+};
+
+export type StandingWhereInput = {
+  AND?: Maybe<Array<Maybe<StandingWhereInput>>>;
+  OR?: Maybe<Array<Maybe<StandingWhereInput>>>;
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  id_not_in?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  gamesPlayed?: Maybe<Scalars['Int']>;
+  gamesPlayed_not?: Maybe<Scalars['Int']>;
+  gamesPlayed_lt?: Maybe<Scalars['Int']>;
+  gamesPlayed_lte?: Maybe<Scalars['Int']>;
+  gamesPlayed_gt?: Maybe<Scalars['Int']>;
+  gamesPlayed_gte?: Maybe<Scalars['Int']>;
+  gamesPlayed_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  gamesPlayed_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  wins?: Maybe<Scalars['Int']>;
+  wins_not?: Maybe<Scalars['Int']>;
+  wins_lt?: Maybe<Scalars['Int']>;
+  wins_lte?: Maybe<Scalars['Int']>;
+  wins_gt?: Maybe<Scalars['Int']>;
+  wins_gte?: Maybe<Scalars['Int']>;
+  wins_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  wins_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  totalGames?: Maybe<Scalars['Int']>;
+  totalGames_not?: Maybe<Scalars['Int']>;
+  totalGames_lt?: Maybe<Scalars['Int']>;
+  totalGames_lte?: Maybe<Scalars['Int']>;
+  totalGames_gt?: Maybe<Scalars['Int']>;
+  totalGames_gte?: Maybe<Scalars['Int']>;
+  totalGames_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  totalGames_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  line?: Maybe<LineWhereInput>;
+  line_is_null?: Maybe<Scalars['Boolean']>;
+};
+
+export type StandingWhereUniqueInput = {
+  id: Scalars['ID'];
+};
+
+export type StandingsCreateInput = {
+  data?: Maybe<StandingCreateInput>;
+};
+
+export type StandingsUpdateInput = {
+  id: Scalars['ID'];
+  data?: Maybe<StandingUpdateInput>;
+};
 
 
 /** A keystone list */
@@ -2074,6 +2278,30 @@ export type DeleteBetMutation = (
       & Pick<User, 'id'>
     )> }
   )> }
+);
+
+export type TrackerStatusQueryVariables = Exact<{
+  contestId: Scalars['ID'];
+}>;
+
+
+export type TrackerStatusQuery = (
+  { __typename?: 'Query' }
+  & { allLines?: Maybe<Array<Maybe<(
+    { __typename?: 'Line' }
+    & Pick<Line, 'id' | 'title' | 'benchmark'>
+    & { image?: Maybe<(
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'id' | 'altText'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudinaryImage_File' }
+        & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )>, standings: Array<(
+      { __typename?: 'Standing' }
+      & Pick<Standing, 'id' | 'wins' | 'gamesPlayed' | 'totalGames'>
+    )> }
+  )>>> }
 );
 
 
@@ -2802,3 +3030,53 @@ export function useDeleteBetMutation(baseOptions?: Apollo.MutationHookOptions<De
 export type DeleteBetMutationHookResult = ReturnType<typeof useDeleteBetMutation>;
 export type DeleteBetMutationResult = Apollo.MutationResult<DeleteBetMutation>;
 export type DeleteBetMutationOptions = Apollo.BaseMutationOptions<DeleteBetMutation, DeleteBetMutationVariables>;
+export const TrackerStatusDocument = gql`
+    query TrackerStatus($contestId: ID!) {
+  allLines(where: {contest: {id: $contestId}}) {
+    id
+    title
+    benchmark
+    image {
+      id
+      altText
+      image {
+        publicUrlTransformed
+      }
+    }
+    standings {
+      id
+      wins
+      gamesPlayed
+      totalGames
+    }
+  }
+}
+    `;
+
+/**
+ * __useTrackerStatusQuery__
+ *
+ * To run a query within a React component, call `useTrackerStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTrackerStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTrackerStatusQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useTrackerStatusQuery(baseOptions: Apollo.QueryHookOptions<TrackerStatusQuery, TrackerStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<TrackerStatusQuery, TrackerStatusQueryVariables>(TrackerStatusDocument, options);
+      }
+export function useTrackerStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TrackerStatusQuery, TrackerStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<TrackerStatusQuery, TrackerStatusQueryVariables>(TrackerStatusDocument, options);
+        }
+export type TrackerStatusQueryHookResult = ReturnType<typeof useTrackerStatusQuery>;
+export type TrackerStatusLazyQueryHookResult = ReturnType<typeof useTrackerStatusLazyQuery>;
+export type TrackerStatusQueryResult = Apollo.QueryResult<TrackerStatusQuery, TrackerStatusQueryVariables>;
