@@ -32,7 +32,7 @@ export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.El
             </Tr>
           </Thead>
           <Tbody>
-            {contest?.registrations.map((reg, i) => {
+            {contest?.registrations?.map((reg, i) => {
               const user = reg.user;
               const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 

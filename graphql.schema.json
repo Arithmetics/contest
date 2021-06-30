@@ -122,6 +122,29 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "BetOrderByInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "BetRelateToManyInput",
         "description": null,
         "fields": null,
@@ -249,9 +272,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "BetWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "BetWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -265,9 +292,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "BetWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "BetWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -353,9 +384,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -369,9 +404,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -441,13 +480,9 @@
             "name": "id",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -585,11 +620,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "BetWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -622,18 +661,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "BetOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -653,29 +704,29 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
             ],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Bet",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Bet",
+                  "ofType": null
                 }
               }
             },
@@ -690,11 +741,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "BetWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -727,18 +782,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "BetOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -758,11 +825,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -770,6 +841,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use betsCount instead."
+          },
+          {
+            "name": "betsCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -861,6 +961,53 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BetRelateToManyInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ChoiceOrderByInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "selection",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isWin",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
               "ofType": null
             },
             "defaultValue": null,
@@ -1109,9 +1256,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "ChoiceWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ChoiceWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -1125,9 +1276,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "ChoiceWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ChoiceWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -1213,9 +1368,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -1229,9 +1388,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -1393,13 +1556,9 @@
             "name": "id",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -1560,6 +1719,41 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "CloudImageOrderByInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "altText",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "CloudImageRelateToOneInput",
         "description": null,
         "fields": null,
@@ -1665,9 +1859,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "CloudImageWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "CloudImageWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -1681,9 +1879,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "CloudImageWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "CloudImageWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -1769,9 +1971,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -1785,9 +1991,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -2089,13 +2299,9 @@
             "name": "id",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -2545,18 +2751,6 @@
             "deprecationReason": null
           },
           {
-            "name": "path",
-            "description": null,
-            "args": [],
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
             "name": "filename",
             "description": null,
             "args": [],
@@ -2736,11 +2930,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "LineWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "LineWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -2773,18 +2971,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "LineOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -2804,29 +3014,29 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
             ],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Line",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Line",
+                  "ofType": null
                 }
               }
             },
@@ -2841,11 +3051,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "LineWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "LineWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -2878,18 +3092,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "LineOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -2909,11 +3135,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -2921,6 +3151,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use linesCount instead."
+          },
+          {
+            "name": "linesCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "LineWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -2934,11 +3193,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "RegistrationWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -2971,18 +3234,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "RegistrationOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -3002,29 +3277,29 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
             ],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Registration",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Registration",
+                  "ofType": null
                 }
               }
             },
@@ -3039,11 +3314,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "RegistrationWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -3076,18 +3355,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "RegistrationOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -3107,11 +3398,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -3119,6 +3414,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use registrationsCount instead."
+          },
+          {
+            "name": "registrationsCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -3214,6 +3538,77 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "RegistrationRelateToManyInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContestOrderByInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "description",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "status",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "entryFee",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
               "ofType": null
             },
             "defaultValue": null,
@@ -3421,9 +3816,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "ContestWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -3437,9 +3836,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "ContestWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "ContestWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -3525,9 +3928,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -3541,9 +3948,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -4269,13 +4680,9 @@
             "name": "id",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -4355,6 +4762,18 @@
         "fields": null,
         "inputFields": [
           {
+            "name": "email",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "name",
             "description": null,
             "type": {
@@ -4368,18 +4787,6 @@
           },
           {
             "name": "userName",
-            "description": null,
-            "type": {
-              "kind": "SCALAR",
-              "name": "String",
-              "ofType": null
-            },
-            "defaultValue": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "email",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -5286,11 +5693,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ChoiceWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ChoiceWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -5323,18 +5734,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ChoiceOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -5354,29 +5777,29 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
             ],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Choice",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Choice",
+                  "ofType": null
                 }
               }
             },
@@ -5391,11 +5814,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ChoiceWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ChoiceWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -5428,18 +5855,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ChoiceOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -5459,11 +5898,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -5471,6 +5914,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use choicesCount instead."
+          },
+          {
+            "name": "choicesCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ChoiceWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -5564,6 +6036,65 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "ChoiceRelateToManyInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "LineOrderByInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "title",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "closingTime",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "benchmark",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
               "ofType": null
             },
             "defaultValue": null,
@@ -5801,9 +6332,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "LineWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "LineWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -5817,9 +6352,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "LineWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "LineWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -5905,9 +6444,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -5921,9 +6464,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -6461,13 +7008,9 @@
             "name": "id",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -8127,6 +8670,29 @@
       },
       {
         "kind": "ENUM",
+        "name": "OrderDirection",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "asc",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "desc",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "ENUM",
         "name": "PasswordAuthErrorCode",
         "description": null,
         "fields": null,
@@ -8244,6 +8810,33 @@
       },
       {
         "kind": "OBJECT",
+        "name": "PasswordState",
+        "description": null,
+        "fields": [
+          {
+            "name": "isSet",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "Boolean",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "Query",
         "description": null,
         "fields": [
@@ -8255,11 +8848,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "BetWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8292,18 +8889,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "BetOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8323,11 +8932,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -8336,9 +8949,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Bet",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Bet",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -8381,11 +8998,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "BetWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8418,18 +9039,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "BetOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8449,11 +9082,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -8461,6 +9098,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use betsCount instead."
+          },
+          {
+            "name": "betsCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8474,11 +9140,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ChoiceWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ChoiceWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8511,18 +9181,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ChoiceOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8542,11 +9224,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -8555,9 +9241,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Choice",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Choice",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -8600,11 +9290,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ChoiceWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ChoiceWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8637,18 +9331,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ChoiceOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8668,11 +9374,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -8680,6 +9390,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use choicesCount instead."
+          },
+          {
+            "name": "choicesCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ChoiceWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8693,11 +9432,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ContestWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ContestWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8730,18 +9473,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ContestOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8761,11 +9516,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -8774,9 +9533,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Contest",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Contest",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -8819,11 +9582,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "ContestWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ContestWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8856,18 +9623,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "ContestOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8887,11 +9666,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -8899,6 +9682,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use contestsCount instead."
+          },
+          {
+            "name": "contestsCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "ContestWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -8912,11 +9724,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "CloudImageWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CloudImageWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8949,18 +9765,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "CloudImageOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -8980,11 +9808,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -8993,9 +9825,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "CloudImage",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "CloudImage",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -9038,11 +9874,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "CloudImageWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CloudImageWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9075,18 +9915,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "CloudImageOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9106,11 +9958,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -9118,6 +9974,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use cloudImagesCount instead."
+          },
+          {
+            "name": "cloudImagesCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "CloudImageWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9131,11 +10016,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "LineWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "LineWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9168,18 +10057,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "LineOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9199,11 +10100,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -9212,9 +10117,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Line",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Line",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -9257,11 +10166,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "LineWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "LineWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9294,18 +10207,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "LineOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9325,11 +10250,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -9337,6 +10266,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use linesCount instead."
+          },
+          {
+            "name": "linesCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "LineWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9350,11 +10308,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "UserWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UserWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9387,18 +10349,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "UserOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9418,11 +10392,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -9431,9 +10409,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "User",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "User",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -9476,11 +10458,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "UserWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UserWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9513,18 +10499,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "UserOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9544,11 +10542,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -9556,6 +10558,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use usersCount instead."
+          },
+          {
+            "name": "usersCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "UserWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -9569,11 +10600,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "RegistrationWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9606,18 +10641,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "RegistrationOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9637,11 +10684,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -9650,9 +10701,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "OBJECT",
-                "name": "Registration",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "OBJECT",
+                  "name": "Registration",
+                  "ofType": null
+                }
               }
             },
             "isDeprecated": false,
@@ -9695,11 +10750,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "RegistrationWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9732,18 +10791,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "RegistrationOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -9763,11 +10834,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -9775,6 +10850,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use registrationsCount instead."
+          },
+          {
+            "name": "registrationsCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -10014,6 +11118,41 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "RegistrationOrderByInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "hasPaid",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "RegistrationRelateToManyInput",
         "description": null,
         "fields": null,
@@ -10143,9 +11282,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "RegistrationWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "RegistrationWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -10159,9 +11302,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "RegistrationWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "RegistrationWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -10247,9 +11394,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -10263,9 +11414,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -10359,13 +11514,9 @@
             "name": "id",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
@@ -10500,30 +11651,6 @@
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "user_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "user_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "choice_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "choice_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -10568,30 +11695,6 @@
           },
           {
             "name": "isWin_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "line_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "line_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "bets_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "bets_DESC",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -10701,42 +11804,6 @@
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "image_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "image_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "lines_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "lines_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "registrations_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "registrations_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -10796,42 +11863,6 @@
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
-          },
-          {
-            "name": "image_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "image_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contest_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contest_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "choices_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "choices_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
           }
         ],
         "possibleTypes": null
@@ -10864,30 +11895,6 @@
           },
           {
             "name": "hasPaid_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contest_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "contest_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "user_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "user_DESC",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -10959,42 +11966,6 @@
           },
           {
             "name": "isAdmin_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "bets_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "bets_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "avatarImage_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "avatarImage_DESC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "registrations_ASC",
-            "description": null,
-            "isDeprecated": false,
-            "deprecationReason": null
-          },
-          {
-            "name": "registrations_DESC",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -11094,12 +12065,12 @@
             "deprecationReason": null
           },
           {
-            "name": "password_is_set",
+            "name": "password",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
+              "kind": "OBJECT",
+              "name": "PasswordState",
               "ofType": null
             },
             "isDeprecated": false,
@@ -11125,11 +12096,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "BetWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11162,18 +12137,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "BetOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11193,29 +12180,29 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
             ],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Bet",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Bet",
+                  "ofType": null
                 }
               }
             },
@@ -11230,11 +12217,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "BetWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11267,18 +12258,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "BetOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11298,11 +12301,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -11310,6 +12317,35 @@
             "type": {
               "kind": "OBJECT",
               "name": "_QueryMeta",
+              "ofType": null
+            },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use betsCount instead."
+          },
+          {
+            "name": "betsCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "BetWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "isDeprecated": false,
@@ -11335,11 +12371,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "RegistrationWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11372,18 +12412,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "RegistrationOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11403,29 +12455,29 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
             ],
             "type": {
-              "kind": "NON_NULL",
+              "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "LIST",
+                "kind": "NON_NULL",
                 "name": null,
                 "ofType": {
-                  "kind": "NON_NULL",
-                  "name": null,
-                  "ofType": {
-                    "kind": "OBJECT",
-                    "name": "Registration",
-                    "ofType": null
-                  }
+                  "kind": "OBJECT",
+                  "name": "Registration",
+                  "ofType": null
                 }
               }
             },
@@ -11440,11 +12492,15 @@
                 "name": "where",
                 "description": null,
                 "type": {
-                  "kind": "INPUT_OBJECT",
-                  "name": "RegistrationWhereInput",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "{}",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11477,18 +12533,30 @@
                   }
                 },
                 "defaultValue": null,
-                "isDeprecated": false,
-                "deprecationReason": null
+                "isDeprecated": true,
+                "deprecationReason": "sortBy has been deprecated in favour of orderBy"
               },
               {
                 "name": "orderBy",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "String",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "LIST",
+                    "name": null,
+                    "ofType": {
+                      "kind": "NON_NULL",
+                      "name": null,
+                      "ofType": {
+                        "kind": "INPUT_OBJECT",
+                        "name": "RegistrationOrderByInput",
+                        "ofType": null
+                      }
+                    }
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "[]",
                 "isDeprecated": false,
                 "deprecationReason": null
               },
@@ -11508,11 +12576,15 @@
                 "name": "skip",
                 "description": null,
                 "type": {
-                  "kind": "SCALAR",
-                  "name": "Int",
-                  "ofType": null
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "SCALAR",
+                    "name": "Int",
+                    "ofType": null
+                  }
                 },
-                "defaultValue": null,
+                "defaultValue": "0",
                 "isDeprecated": false,
                 "deprecationReason": null
               }
@@ -11522,16 +12594,45 @@
               "name": "_QueryMeta",
               "ofType": null
             },
+            "isDeprecated": true,
+            "deprecationReason": "This query will be removed in a future version. Please use registrationsCount instead."
+          },
+          {
+            "name": "registrationsCount",
+            "description": null,
+            "args": [
+              {
+                "name": "where",
+                "description": null,
+                "type": {
+                  "kind": "NON_NULL",
+                  "name": null,
+                  "ofType": {
+                    "kind": "INPUT_OBJECT",
+                    "name": "RegistrationWhereInput",
+                    "ofType": null
+                  }
+                },
+                "defaultValue": "{}",
+                "isDeprecated": false,
+                "deprecationReason": null
+              }
+            ],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
             "isDeprecated": false,
             "deprecationReason": null
           },
           {
-            "name": "passwordResetToken_is_set",
+            "name": "passwordResetToken",
             "description": null,
             "args": [],
             "type": {
-              "kind": "SCALAR",
-              "name": "Boolean",
+              "kind": "OBJECT",
+              "name": "PasswordState",
               "ofType": null
             },
             "isDeprecated": false,
@@ -11819,6 +12920,101 @@
       },
       {
         "kind": "INPUT_OBJECT",
+        "name": "UserOrderByInput",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "id",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "email",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "name",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userName",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isAdmin",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "passwordResetIssuedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "passwordResetRedeemedAt",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
         "name": "UserRelateToOneInput",
         "description": null,
         "fields": null,
@@ -12032,9 +13228,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "UserWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "UserWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -12048,9 +13248,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "INPUT_OBJECT",
-                "name": "UserWhereInput",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "INPUT_OBJECT",
+                  "name": "UserWhereInput",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -12136,9 +13340,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -12152,9 +13360,13 @@
               "kind": "LIST",
               "name": null,
               "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "SCALAR",
+                  "name": "ID",
+                  "ofType": null
+                }
               }
             },
             "defaultValue": null,
@@ -13200,13 +14412,33 @@
             "name": "id",
             "description": null,
             "type": {
-              "kind": "NON_NULL",
-              "name": null,
-              "ofType": {
-                "kind": "SCALAR",
-                "name": "ID",
-                "ofType": null
-              }
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "email",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "userName",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "String",
+              "ofType": null
             },
             "defaultValue": null,
             "isDeprecated": false,
