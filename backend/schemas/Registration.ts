@@ -25,7 +25,7 @@ export const Registration = list({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
+      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
@@ -61,7 +61,7 @@ export const Registration = list({
     },
     validateDelete: async (args) => {
       const { existingItem, addValidationError, context } = args;
-      const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
+      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;

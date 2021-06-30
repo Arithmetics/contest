@@ -9,103 +9,103 @@ generator client {
 }
 
 model Bet {
-  id       Int     @id @default(autoincrement())
-  user     User?   @relation("Betuser", fields: [userId], references: [id])
-  userId   Int?    @map("user")
-  choice   Choice? @relation("Betchoice", fields: [choiceId], references: [id])
-  choiceId Int?    @map("choice")
+  id       String  @id @default(cuid())
+  user     User?   @relation("Bet_user", fields: [userId], references: [id])
+  userId   String? @map("user")
+  choice   Choice? @relation("Bet_choice", fields: [choiceId], references: [id])
+  choiceId String? @map("choice")
 
   @@index([userId])
   @@index([choiceId])
 }
 
 model Choice {
-  id        Int                  @id @default(autoincrement())
-  selection ChoiceSelectionEnum?
+  id        String               @id @default(cuid())
+  selection ChoiceSelectionType?
   isWin     Boolean?
-  line      Line?                @relation("Choiceline", fields: [lineId], references: [id])
-  lineId    Int?                 @map("line")
-  bets      Bet[]                @relation("Betchoice")
+  line      Line?                @relation("Choice_line", fields: [lineId], references: [id])
+  lineId    String?              @map("line")
+  bets      Bet[]                @relation("Bet_choice")
 
   @@index([lineId])
 }
 
 model Contest {
-  id            Int                @id @default(autoincrement())
+  id            String             @id @default(cuid())
   name          String?
   description   String?
-  status        ContestStatusEnum?
+  status        ContestStatusType?
   entryFee      Int?
-  image         CloudImage?        @relation("Contestimage", fields: [imageId], references: [id])
-  imageId       Int?               @map("image")
-  lines         Line[]             @relation("Linecontest")
-  registrations Registration[]     @relation("Registrationcontest")
+  image         CloudImage?        @relation("Contest_image", fields: [imageId], references: [id])
+  imageId       String?            @map("image")
+  lines         Line[]             @relation("Line_contest")
+  registrations Registration[]     @relation("Registration_contest")
 
   @@index([imageId])
 }
 
 model CloudImage {
-  id                    Int       @id @default(autoincrement())
+  id                    String    @id @default(cuid())
   image                 Json?
   altText               String?
-  from_Contest_image    Contest[] @relation("Contestimage")
-  from_Line_image       Line[]    @relation("Lineimage")
-  from_User_avatarImage User[]    @relation("UseravatarImage")
+  from_Contest_image    Contest[] @relation("Contest_image")
+  from_Line_image       Line[]    @relation("Line_image")
+  from_User_avatarImage User[]    @relation("User_avatarImage")
 }
 
 model Line {
-  id          Int         @id @default(autoincrement())
+  id          String      @id @default(cuid())
   title       String?
   closingTime DateTime?
   benchmark   Float?
-  image       CloudImage? @relation("Lineimage", fields: [imageId], references: [id])
-  imageId     Int?        @map("image")
-  contest     Contest?    @relation("Linecontest", fields: [contestId], references: [id])
-  contestId   Int?        @map("contest")
-  choices     Choice[]    @relation("Choiceline")
+  image       CloudImage? @relation("Line_image", fields: [imageId], references: [id])
+  imageId     String?     @map("image")
+  contest     Contest?    @relation("Line_contest", fields: [contestId], references: [id])
+  contestId   String?     @map("contest")
+  choices     Choice[]    @relation("Choice_line")
 
   @@index([imageId])
   @@index([contestId])
 }
 
 model User {
-  id                      Int            @id @default(autoincrement())
+  id                      String         @id @default(cuid())
   email                   String?        @unique
   name                    String?
   userName                String?        @unique
   password                String?
   isAdmin                 Boolean?
+  bets                    Bet[]          @relation("Bet_user")
+  avatarImage             CloudImage?    @relation("User_avatarImage", fields: [avatarImageId], references: [id])
+  avatarImageId           String?        @map("avatarImage")
+  registrations           Registration[] @relation("Registration_user")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
-  bets                    Bet[]          @relation("Betuser")
-  avatarImage             CloudImage?    @relation("UseravatarImage", fields: [avatarImageId], references: [id])
-  avatarImageId           Int?           @map("avatarImage")
-  registrations           Registration[] @relation("Registrationuser")
 
   @@index([avatarImageId])
 }
 
 model Registration {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   hasPaid   Boolean?
-  contest   Contest? @relation("Registrationcontest", fields: [contestId], references: [id])
-  contestId Int?     @map("contest")
-  user      User?    @relation("Registrationuser", fields: [userId], references: [id])
-  userId    Int?     @map("user")
+  contest   Contest? @relation("Registration_contest", fields: [contestId], references: [id])
+  contestId String?  @map("contest")
+  user      User?    @relation("Registration_user", fields: [userId], references: [id])
+  userId    String?  @map("user")
 
   @@index([contestId])
   @@index([userId])
 }
 
-enum ChoiceSelectionEnum {
+enum ChoiceSelectionType {
   OVER
   UNDER
   AWAY
   HOME
 }
 
-enum ContestStatusEnum {
+enum ContestStatusType {
   OPEN
   IN_PROGRESS
   COMPLETE
