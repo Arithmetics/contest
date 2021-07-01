@@ -3200,7 +3200,7 @@ export const TrackerStatusDocument = gql`
         publicUrlTransformed
       }
     }
-    standings {
+    standings(orderBy: {gamesPlayed: asc}) {
       id
       wins
       gamesPlayed

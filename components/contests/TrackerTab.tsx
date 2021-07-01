@@ -10,8 +10,9 @@ import {
   StatNumber,
   VStack,
 } from '@chakra-ui/react';
-import { ResponsiveLine, Serie } from '@nivo/line';
+import { ResponsiveLine, Serie, PointTooltipProps } from '@nivo/line';
 import { Contest, Line, useTrackerStatusQuery } from '../../generated/graphql-types';
+import theme from '../../theme';
 
 type TrackerTabProps = {
   contest?: Contest;
@@ -87,20 +88,22 @@ function MyResponsiveLine({ data }: XX): JSX.Element {
     <ResponsiveLine
       data={data}
       theme={{
-        fontSize: 1,
+        fontSize: 10,
         textColor: '#fff',
       }}
-      margin={{ top: 50, right: 50, bottom: 60, left: 60 }}
-      xScale={{ type: 'linear', min: 0, max: 17 }}
+      colors={[theme.colors.red['400'], theme.colors.blue['500']]}
+      margin={{ top: 50, right: 100, bottom: 60, left: 60 }}
+      xScale={{ type: 'linear', min: 1, max: 17 }}
       yScale={{ type: 'linear', min: 0, max: 17, reverse: false }}
-      // yFormat=" >-.2f"
+      yFormat=" >-.2f"
+      xFormat=" >-.2f"
       axisTop={null}
       axisRight={null}
       axisBottom={{
         tickSize: 1,
         tickPadding: 5,
         tickRotation: 0,
-        legend: 'week',
+        legend: 'Game #',
         legendOffset: 36,
         legendPosition: 'middle',
       }}
@@ -113,29 +116,41 @@ function MyResponsiveLine({ data }: XX): JSX.Element {
         legendPosition: 'middle',
       }}
       pointSize={10}
-      pointColor={{ theme: 'background' }}
       pointBorderWidth={2}
-      pointBorderColor={{ from: 'serieColor' }}
       pointLabelYOffset={-12}
       useMesh={true}
-      // legends={[
-      //   {
-      //     anchor: 'bottom-right',
-      //     direction: 'column',
-      //     justify: false,
-      //     translateX: 100,
-      //     translateY: 0,
-      //     itemsSpacing: 0,
-      //     itemDirection: 'left-to-right',
-      //     itemWidth: 80,
-      //     itemHeight: 20,
-      //     itemOpacity: 0.75,
-      //     symbolSize: 12,
-      //     symbolShape: 'circle',
-      //     symbolBorderColor: 'rgba(0, 0, 0, .5)',
-      //     effects: [],
-      //   },
-      // ]}
+      legends={[
+        {
+          anchor: 'bottom-right',
+          direction: 'column',
+          justify: false,
+          translateX: 100,
+          translateY: 0,
+          itemsSpacing: 0,
+          itemDirection: 'left-to-right',
+          itemWidth: 80,
+          itemHeight: 20,
+          itemOpacity: 0.75,
+          symbolSize: 12,
+          symbolShape: 'circle',
+          symbolBorderColor: 'rgba(0, 0, 0, .5)',
+          effects: [],
+        },
+      ]}
+      tooltip={function ({ point }: PointTooltipProps): JSX.Element {
+        return (
+          <Box
+            padding={1}
+            border={1}
+            bg={'gray.700'}
+            borderColor={'teal.500'}
+            boxShadow={'dark-lg'}
+            rounded={'md'}
+          >
+            {point.serieId} game {point.data.x} - {point.data.y}
+          </Box>
+        );
+      }}
     />
   );
 }
@@ -146,12 +161,12 @@ function prepareLineStandingsForGraph(line: Line): Serie[] {
     return [];
   }
   const serieResults: Serie = {
-    id: 'standing',
+    id: 'Result',
     data: [],
   };
 
   const serieBenchmark: Serie = {
-    id: 'benchmark',
+    id: 'Benchmark',
     data: [],
   };
 

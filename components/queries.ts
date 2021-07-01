@@ -181,7 +181,7 @@ export const TRACKER_STATUS_QUERY = gql`
           publicUrlTransformed
         }
       }
-      standings {
+      standings(orderBy: { gamesPlayed: asc }) {
         id
         wins
         gamesPlayed
