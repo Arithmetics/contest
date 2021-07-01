@@ -3,7 +3,7 @@ import { KeystoneListsTypeInfo } from '.keystone/types';
 import { users, contests } from './mockData';
 
 export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<void> {
-  const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = keyStoneContext.lists;
+  const lists = keyStoneContext.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
 
   const { prisma } = keyStoneContext;
 

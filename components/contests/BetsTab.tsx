@@ -53,7 +53,7 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
   const pendingLines = lines.filter((l) => hasLineClosed(l as Line) && !lineHasWinner(l as Line));
   const settledLines = lines.filter((l) => lineHasWinner(l as Line));
   const userId = user?.id;
-  const userHasEntered = contest?.registrations.some((r) => r.user?.id === userId);
+  const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
   return (
     <>
       {userHasEntered ? <BetsStatusLine /> : undefined}

@@ -13,7 +13,7 @@ export const cloudinary = {
 export const CloudImage = list({
   access: {
     create: isSignedIn,
-    read: isSignedIn,
+    read: true,
     update: isAdmin,
     delete: isAdmin,
   },

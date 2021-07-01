@@ -22,7 +22,7 @@ export const Bet = list({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists: KeystoneListsAPI<KeystoneListsTypeInfo> = context.lists;
+      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
