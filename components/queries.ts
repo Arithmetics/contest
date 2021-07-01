@@ -187,6 +187,24 @@ export const TRACKER_STATUS_QUERY = gql`
         gamesPlayed
         totalGames
       }
+      choices {
+        id
+        selection
+        isWin
+        bets {
+          id
+          user {
+            id
+            userName
+            avatarImage {
+              altText
+              image {
+                publicUrlTransformed
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;

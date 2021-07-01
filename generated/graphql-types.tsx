@@ -2457,6 +2457,25 @@ export type TrackerStatusQuery = (
     )>, standings?: Maybe<Array<(
       { __typename?: 'Standing' }
       & Pick<Standing, 'id' | 'wins' | 'gamesPlayed' | 'totalGames'>
+    )>>, choices?: Maybe<Array<(
+      { __typename?: 'Choice' }
+      & Pick<Choice, 'id' | 'selection' | 'isWin'>
+      & { bets?: Maybe<Array<(
+        { __typename?: 'Bet' }
+        & Pick<Bet, 'id'>
+        & { user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'id' | 'userName'>
+          & { avatarImage?: Maybe<(
+            { __typename?: 'CloudImage' }
+            & Pick<CloudImage, 'altText'>
+            & { image?: Maybe<(
+              { __typename?: 'CloudinaryImage_File' }
+              & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+            )> }
+          )> }
+        )> }
+      )>> }
     )>> }
   )>> }
 );
@@ -3205,6 +3224,24 @@ export const TrackerStatusDocument = gql`
       wins
       gamesPlayed
       totalGames
+    }
+    choices {
+      id
+      selection
+      isWin
+      bets {
+        id
+        user {
+          id
+          userName
+          avatarImage {
+            altText
+            image {
+              publicUrlTransformed
+            }
+          }
+        }
+      }
     }
   }
 }
