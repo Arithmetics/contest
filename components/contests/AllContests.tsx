@@ -78,7 +78,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
   const toast = useToast();
   const [registerForContest, { loading }] = useContestRegistrationMutation();
 
-  const userHasEntered = contest.registrations.some((r) => r.user?.id === userId);
+  const userHasEntered = contest.registrations?.some((r) => r.user?.id === userId);
 
   const showEnterContestButton =
     !userHasEntered && userId && contest.status === ContestStatusType.Open;
@@ -132,7 +132,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
         <Stack direction={'row'} justify={'center'} spacing={6}>
           <Stat textAlign="center">
             <StatLabel>Entrants</StatLabel>
-            <StatNumber>{contest.registrations.length}</StatNumber>
+            <StatNumber>{contest.registrations?.length}</StatNumber>
           </Stat>
 
           <Stat textAlign="center">

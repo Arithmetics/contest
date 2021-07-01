@@ -1,3 +1,52 @@
+"""
+ A keystone list
+"""
+type Bet {
+  id: ID!
+  user: User
+  choice: Choice
+}
+
+input BetWhereInput {
+  AND: [BetWhereInput!]
+  OR: [BetWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  user: UserWhereInput
+  user_is_null: Boolean
+  choice: ChoiceWhereInput
+  choice_is_null: Boolean
+}
+
+input BetWhereUniqueInput {
+  id: ID
+}
+
+enum SortBetsBy {
+  id_ASC
+  id_DESC
+}
+
+input BetOrderByInput {
+  id: OrderDirection
+}
+
+enum OrderDirection {
+  asc
+  desc
+}
+
+input BetUpdateInput {
+  user: UserRelateToOneInput
+  choice: ChoiceRelateToOneInput
+}
+
 input UserRelateToOneInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
@@ -10,50 +59,6 @@ input ChoiceRelateToOneInput {
   connect: ChoiceWhereUniqueInput
   disconnect: ChoiceWhereUniqueInput
   disconnectAll: Boolean
-}
-
-"""
- A keystone list
-"""
-type Bet {
-  id: ID!
-  user: User
-  choice: Choice
-}
-
-input BetWhereInput {
-  AND: [BetWhereInput]
-  OR: [BetWhereInput]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
-  user: UserWhereInput
-  user_is_null: Boolean
-  choice: ChoiceWhereInput
-  choice_is_null: Boolean
-}
-
-input BetWhereUniqueInput {
-  id: ID!
-}
-
-enum SortBetsBy {
-  id_ASC
-  id_DESC
-  user_ASC
-  user_DESC
-  choice_ASC
-  choice_DESC
-}
-
-input BetUpdateInput {
-  user: UserRelateToOneInput
-  choice: ChoiceRelateToOneInput
 }
 
 input BetsUpdateInput {
@@ -70,27 +75,6 @@ input BetsCreateInput {
   data: BetCreateInput
 }
 
-enum ChoiceSelectionType {
-  OVER
-  UNDER
-  AWAY
-  HOME
-}
-
-input LineRelateToOneInput {
-  create: LineCreateInput
-  connect: LineWhereUniqueInput
-  disconnect: LineWhereUniqueInput
-  disconnectAll: Boolean
-}
-
-input BetRelateToManyInput {
-  create: [BetCreateInput]
-  connect: [BetWhereUniqueInput]
-  disconnect: [BetWhereUniqueInput]
-  disconnectAll: Boolean
-}
-
 """
  A keystone list
 """
@@ -100,35 +84,52 @@ type Choice {
   isWin: Boolean
   line: Line
   bets(
-    where: BetWhereInput
+    where: BetWhereInput! = {}
     search: String
     sortBy: [SortBetsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [BetOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Bet!]!
+    skip: Int! = 0
+  ): [Bet!]
   _betsMeta(
-    where: BetWhereInput
+    where: BetWhereInput! = {}
     search: String
     sortBy: [SortBetsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [BetOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use betsCount instead."
+    )
+  betsCount(where: BetWhereInput! = {}): Int
   labelName: String
 }
 
+enum ChoiceSelectionType {
+  OVER
+  UNDER
+  AWAY
+  HOME
+}
+
+type _QueryMeta {
+  count: Int
+}
+
 input ChoiceWhereInput {
-  AND: [ChoiceWhereInput]
-  OR: [ChoiceWhereInput]
+  AND: [ChoiceWhereInput!]
+  OR: [ChoiceWhereInput!]
   id: ID
   id_not: ID
   id_lt: ID
   id_lte: ID
   id_gt: ID
   id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
+  id_in: [ID!]
+  id_not_in: [ID!]
   selection: ChoiceSelectionType
   selection_not: ChoiceSelectionType
   selection_in: [ChoiceSelectionType]
@@ -155,7 +156,7 @@ input ChoiceWhereInput {
 }
 
 input ChoiceWhereUniqueInput {
-  id: ID!
+  id: ID
 }
 
 enum SortChoicesBy {
@@ -165,10 +166,12 @@ enum SortChoicesBy {
   selection_DESC
   isWin_ASC
   isWin_DESC
-  line_ASC
-  line_DESC
-  bets_ASC
-  bets_DESC
+}
+
+input ChoiceOrderByInput {
+  id: OrderDirection
+  selection: OrderDirection
+  isWin: OrderDirection
 }
 
 input ChoiceUpdateInput {
@@ -176,6 +179,20 @@ input ChoiceUpdateInput {
   isWin: Boolean
   line: LineRelateToOneInput
   bets: BetRelateToManyInput
+}
+
+input LineRelateToOneInput {
+  create: LineCreateInput
+  connect: LineWhereUniqueInput
+  disconnect: LineWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+input BetRelateToManyInput {
+  create: [BetCreateInput]
+  connect: [BetWhereUniqueInput]
+  disconnect: [BetWhereUniqueInput]
+  disconnectAll: Boolean
 }
 
 input ChoicesUpdateInput {
@@ -194,9 +211,17 @@ input ChoicesCreateInput {
   data: ChoiceCreateInput
 }
 
+"""
+ A keystone list
+"""
+type CloudImage {
+  id: ID!
+  image: CloudinaryImage_File
+  altText: String
+}
+
 type CloudinaryImage_File {
   id: ID
-  path: String
   filename: String
   originalFilename: String
   mimetype: String
@@ -244,26 +269,17 @@ input CloudinaryImageFormat {
   transformation: String
 }
 
-"""
- A keystone list
-"""
-type CloudImage {
-  id: ID!
-  image: CloudinaryImage_File
-  altText: String
-}
-
 input CloudImageWhereInput {
-  AND: [CloudImageWhereInput]
-  OR: [CloudImageWhereInput]
+  AND: [CloudImageWhereInput!]
+  OR: [CloudImageWhereInput!]
   id: ID
   id_not: ID
   id_lt: ID
   id_lte: ID
   id_gt: ID
   id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
+  id_in: [ID!]
+  id_not_in: [ID!]
   image: String
   image_not: String
   image_in: [String]
@@ -289,7 +305,7 @@ input CloudImageWhereInput {
 }
 
 input CloudImageWhereUniqueInput {
-  id: ID!
+  id: ID
 }
 
 enum SortCloudImagesBy {
@@ -299,10 +315,20 @@ enum SortCloudImagesBy {
   altText_DESC
 }
 
+input CloudImageOrderByInput {
+  id: OrderDirection
+  altText: OrderDirection
+}
+
 input CloudImageUpdateInput {
   image: Upload
   altText: String
 }
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
 
 input CloudImagesUpdateInput {
   id: ID!
@@ -318,33 +344,6 @@ input CloudImagesCreateInput {
   data: CloudImageCreateInput
 }
 
-enum ContestStatusType {
-  OPEN
-  IN_PROGRESS
-  COMPLETE
-}
-
-input CloudImageRelateToOneInput {
-  create: CloudImageCreateInput
-  connect: CloudImageWhereUniqueInput
-  disconnect: CloudImageWhereUniqueInput
-  disconnectAll: Boolean
-}
-
-input LineRelateToManyInput {
-  create: [LineCreateInput]
-  connect: [LineWhereUniqueInput]
-  disconnect: [LineWhereUniqueInput]
-  disconnectAll: Boolean
-}
-
-input RegistrationRelateToManyInput {
-  create: [RegistrationCreateInput]
-  connect: [RegistrationWhereUniqueInput]
-  disconnect: [RegistrationWhereUniqueInput]
-  disconnectAll: Boolean
-}
-
 """
  A keystone list
 """
@@ -356,50 +355,68 @@ type Contest {
   entryFee: Int
   image: CloudImage
   lines(
-    where: LineWhereInput
+    where: LineWhereInput! = {}
     search: String
     sortBy: [SortLinesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [LineOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Line!]!
+    skip: Int! = 0
+  ): [Line!]
   _linesMeta(
-    where: LineWhereInput
+    where: LineWhereInput! = {}
     search: String
     sortBy: [SortLinesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [LineOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use linesCount instead."
+    )
+  linesCount(where: LineWhereInput! = {}): Int
   registrations(
-    where: RegistrationWhereInput
+    where: RegistrationWhereInput! = {}
     search: String
     sortBy: [SortRegistrationsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RegistrationOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Registration!]!
+    skip: Int! = 0
+  ): [Registration!]
   _registrationsMeta(
-    where: RegistrationWhereInput
+    where: RegistrationWhereInput! = {}
     search: String
     sortBy: [SortRegistrationsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RegistrationOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use registrationsCount instead."
+    )
+  registrationsCount(where: RegistrationWhereInput! = {}): Int
+}
+
+enum ContestStatusType {
+  OPEN
+  IN_PROGRESS
+  COMPLETE
 }
 
 input ContestWhereInput {
-  AND: [ContestWhereInput]
-  OR: [ContestWhereInput]
+  AND: [ContestWhereInput!]
+  OR: [ContestWhereInput!]
   id: ID
   id_not: ID
   id_lt: ID
   id_lte: ID
   id_gt: ID
   id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
+  id_in: [ID!]
+  id_not_in: [ID!]
   name: String
   name_not: String
   name_contains: String
@@ -483,7 +500,7 @@ input ContestWhereInput {
 }
 
 input ContestWhereUniqueInput {
-  id: ID!
+  id: ID
 }
 
 enum SortContestsBy {
@@ -497,12 +514,14 @@ enum SortContestsBy {
   status_DESC
   entryFee_ASC
   entryFee_DESC
-  image_ASC
-  image_DESC
-  lines_ASC
-  lines_DESC
-  registrations_ASC
-  registrations_DESC
+}
+
+input ContestOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+  description: OrderDirection
+  status: OrderDirection
+  entryFee: OrderDirection
 }
 
 input ContestUpdateInput {
@@ -513,6 +532,27 @@ input ContestUpdateInput {
   image: CloudImageRelateToOneInput
   lines: LineRelateToManyInput
   registrations: RegistrationRelateToManyInput
+}
+
+input CloudImageRelateToOneInput {
+  create: CloudImageCreateInput
+  connect: CloudImageWhereUniqueInput
+  disconnect: CloudImageWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+input LineRelateToManyInput {
+  create: [LineCreateInput]
+  connect: [LineWhereUniqueInput]
+  disconnect: [LineWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input RegistrationRelateToManyInput {
+  create: [RegistrationCreateInput]
+  connect: [RegistrationWhereUniqueInput]
+  disconnect: [RegistrationWhereUniqueInput]
+  disconnectAll: Boolean
 }
 
 input ContestsUpdateInput {
@@ -534,27 +574,6 @@ input ContestsCreateInput {
   data: ContestCreateInput
 }
 
-input ContestRelateToOneInput {
-  create: ContestCreateInput
-  connect: ContestWhereUniqueInput
-  disconnect: ContestWhereUniqueInput
-  disconnectAll: Boolean
-}
-
-input ChoiceRelateToManyInput {
-  create: [ChoiceCreateInput]
-  connect: [ChoiceWhereUniqueInput]
-  disconnect: [ChoiceWhereUniqueInput]
-  disconnectAll: Boolean
-}
-
-input StandingRelateToManyInput {
-  create: [StandingCreateInput]
-  connect: [StandingWhereUniqueInput]
-  disconnect: [StandingWhereUniqueInput]
-  disconnectAll: Boolean
-}
-
 """
  A keystone list
 """
@@ -566,50 +585,62 @@ type Line {
   image: CloudImage
   contest: Contest
   choices(
-    where: ChoiceWhereInput
+    where: ChoiceWhereInput! = {}
     search: String
     sortBy: [SortChoicesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ChoiceOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Choice!]!
+    skip: Int! = 0
+  ): [Choice!]
   _choicesMeta(
-    where: ChoiceWhereInput
+    where: ChoiceWhereInput! = {}
     search: String
     sortBy: [SortChoicesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ChoiceOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use choicesCount instead."
+    )
+  choicesCount(where: ChoiceWhereInput! = {}): Int
   standings(
-    where: StandingWhereInput
+    where: StandingWhereInput! = {}
     search: String
     sortBy: [SortStandingsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Standing!]!
+    skip: Int! = 0
+  ): [Standing!]
   _standingsMeta(
-    where: StandingWhereInput
+    where: StandingWhereInput! = {}
     search: String
     sortBy: [SortStandingsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use standingsCount instead."
+    )
+  standingsCount(where: StandingWhereInput! = {}): Int
 }
 
 input LineWhereInput {
-  AND: [LineWhereInput]
-  OR: [LineWhereInput]
+  AND: [LineWhereInput!]
+  OR: [LineWhereInput!]
   id: ID
   id_not: ID
   id_lt: ID
   id_lte: ID
   id_gt: ID
   id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
+  id_in: [ID!]
+  id_not_in: [ID!]
   title: String
   title_not: String
   title_contains: String
@@ -681,7 +712,7 @@ input LineWhereInput {
 }
 
 input LineWhereUniqueInput {
-  id: ID!
+  id: ID
 }
 
 enum SortLinesBy {
@@ -693,14 +724,13 @@ enum SortLinesBy {
   closingTime_DESC
   benchmark_ASC
   benchmark_DESC
-  image_ASC
-  image_DESC
-  contest_ASC
-  contest_DESC
-  choices_ASC
-  choices_DESC
-  standings_ASC
-  standings_DESC
+}
+
+input LineOrderByInput {
+  id: OrderDirection
+  title: OrderDirection
+  closingTime: OrderDirection
+  benchmark: OrderDirection
 }
 
 input LineUpdateInput {
@@ -711,6 +741,27 @@ input LineUpdateInput {
   contest: ContestRelateToOneInput
   choices: ChoiceRelateToManyInput
   standings: StandingRelateToManyInput
+}
+
+input ContestRelateToOneInput {
+  create: ContestCreateInput
+  connect: ContestWhereUniqueInput
+  disconnect: ContestWhereUniqueInput
+  disconnectAll: Boolean
+}
+
+input ChoiceRelateToManyInput {
+  create: [ChoiceCreateInput]
+  connect: [ChoiceWhereUniqueInput]
+  disconnect: [ChoiceWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
+input StandingRelateToManyInput {
+  create: [StandingCreateInput]
+  connect: [StandingWhereUniqueInput]
+  disconnect: [StandingWhereUniqueInput]
+  disconnectAll: Boolean
 }
 
 input LinesUpdateInput {
@@ -743,16 +794,16 @@ type Registration {
 }
 
 input RegistrationWhereInput {
-  AND: [RegistrationWhereInput]
-  OR: [RegistrationWhereInput]
+  AND: [RegistrationWhereInput!]
+  OR: [RegistrationWhereInput!]
   id: ID
   id_not: ID
   id_lt: ID
   id_lte: ID
   id_gt: ID
   id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
+  id_in: [ID!]
+  id_not_in: [ID!]
   hasPaid: Boolean
   hasPaid_not: Boolean
   contest: ContestWhereInput
@@ -762,7 +813,7 @@ input RegistrationWhereInput {
 }
 
 input RegistrationWhereUniqueInput {
-  id: ID!
+  id: ID
 }
 
 enum SortRegistrationsBy {
@@ -770,10 +821,11 @@ enum SortRegistrationsBy {
   id_DESC
   hasPaid_ASC
   hasPaid_DESC
-  contest_ASC
-  contest_DESC
-  user_ASC
-  user_DESC
+}
+
+input RegistrationOrderByInput {
+  id: OrderDirection
+  hasPaid: OrderDirection
 }
 
 input RegistrationUpdateInput {
@@ -809,16 +861,16 @@ type Standing {
 }
 
 input StandingWhereInput {
-  AND: [StandingWhereInput]
-  OR: [StandingWhereInput]
+  AND: [StandingWhereInput!]
+  OR: [StandingWhereInput!]
   id: ID
   id_not: ID
   id_lt: ID
   id_lte: ID
   id_gt: ID
   id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
+  id_in: [ID!]
+  id_not_in: [ID!]
   gamesPlayed: Int
   gamesPlayed_not: Int
   gamesPlayed_lt: Int
@@ -848,7 +900,7 @@ input StandingWhereInput {
 }
 
 input StandingWhereUniqueInput {
-  id: ID!
+  id: ID
 }
 
 enum SortStandingsBy {
@@ -860,8 +912,13 @@ enum SortStandingsBy {
   wins_DESC
   totalGames_ASC
   totalGames_DESC
-  line_ASC
-  line_DESC
+}
+
+input StandingOrderByInput {
+  id: OrderDirection
+  gamesPlayed: OrderDirection
+  wins: OrderDirection
+  totalGames: OrderDirection
 }
 
 input StandingUpdateInput {
@@ -895,57 +952,73 @@ type User {
   email: String
   name: String
   userName: String
-  password_is_set: Boolean
+  password: PasswordState
   isAdmin: Boolean
   bets(
-    where: BetWhereInput
+    where: BetWhereInput! = {}
     search: String
     sortBy: [SortBetsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [BetOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Bet!]!
+    skip: Int! = 0
+  ): [Bet!]
   _betsMeta(
-    where: BetWhereInput
+    where: BetWhereInput! = {}
     search: String
     sortBy: [SortBetsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [BetOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use betsCount instead."
+    )
+  betsCount(where: BetWhereInput! = {}): Int
   avatarImage: CloudImage
   registrations(
-    where: RegistrationWhereInput
+    where: RegistrationWhereInput! = {}
     search: String
     sortBy: [SortRegistrationsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RegistrationOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Registration!]!
+    skip: Int! = 0
+  ): [Registration!]
   _registrationsMeta(
-    where: RegistrationWhereInput
+    where: RegistrationWhereInput! = {}
     search: String
     sortBy: [SortRegistrationsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RegistrationOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
-  passwordResetToken_is_set: Boolean
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use registrationsCount instead."
+    )
+  registrationsCount(where: RegistrationWhereInput! = {}): Int
+  passwordResetToken: PasswordState
   passwordResetIssuedAt: String
   passwordResetRedeemedAt: String
 }
 
+type PasswordState {
+  isSet: Boolean!
+}
+
 input UserWhereInput {
-  AND: [UserWhereInput]
-  OR: [UserWhereInput]
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
   id: ID
   id_not: ID
   id_lt: ID
   id_lte: ID
   id_gt: ID
   id_gte: ID
-  id_in: [ID]
-  id_not_in: [ID]
+  id_in: [ID!]
+  id_not_in: [ID!]
   email: String
   email_not: String
   email_contains: String
@@ -1055,7 +1128,9 @@ input UserWhereInput {
 }
 
 input UserWhereUniqueInput {
-  id: ID!
+  id: ID
+  email: String
+  userName: String
 }
 
 enum SortUsersBy {
@@ -1069,16 +1144,20 @@ enum SortUsersBy {
   userName_DESC
   isAdmin_ASC
   isAdmin_DESC
-  bets_ASC
-  bets_DESC
-  avatarImage_ASC
-  avatarImage_DESC
-  registrations_ASC
-  registrations_DESC
   passwordResetIssuedAt_ASC
   passwordResetIssuedAt_DESC
   passwordResetRedeemedAt_ASC
   passwordResetRedeemedAt_DESC
+}
+
+input UserOrderByInput {
+  id: OrderDirection
+  email: OrderDirection
+  name: OrderDirection
+  userName: OrderDirection
+  isAdmin: OrderDirection
+  passwordResetIssuedAt: OrderDirection
+  passwordResetRedeemedAt: OrderDirection
 }
 
 input UserUpdateInput {
@@ -1125,10 +1204,6 @@ scalar JSON
   @specifiedBy(
     url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
   )
-
-type _QueryMeta {
-  count: Int
-}
 
 type Mutation {
   """
@@ -1386,11 +1461,6 @@ type Mutation {
   endSession: Boolean!
 }
 
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar Upload
-
 union AuthenticatedItem = User
 
 union UserAuthenticationWithPasswordResult =
@@ -1416,9 +1486,9 @@ enum PasswordAuthErrorCode {
 }
 
 input CreateInitialUserInput {
+  email: String
   name: String
   userName: String
-  email: String
   password: String
 }
 
@@ -1457,13 +1527,14 @@ type Query {
    Search for all Bet items which match the where clause.
   """
   allBets(
-    where: BetWhereInput
+    where: BetWhereInput! = {}
     search: String
     sortBy: [SortBetsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [BetOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Bet]
+    skip: Int! = 0
+  ): [Bet!]
 
   """
    Search for the Bet item with the matching ID.
@@ -1474,25 +1545,31 @@ type Query {
    Perform a meta-query on all Bet items which match the where clause.
   """
   _allBetsMeta(
-    where: BetWhereInput
+    where: BetWhereInput! = {}
     search: String
     sortBy: [SortBetsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [BetOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use betsCount instead."
+    )
+  betsCount(where: BetWhereInput! = {}): Int
 
   """
    Search for all Choice items which match the where clause.
   """
   allChoices(
-    where: ChoiceWhereInput
+    where: ChoiceWhereInput! = {}
     search: String
     sortBy: [SortChoicesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ChoiceOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Choice]
+    skip: Int! = 0
+  ): [Choice!]
 
   """
    Search for the Choice item with the matching ID.
@@ -1503,25 +1580,31 @@ type Query {
    Perform a meta-query on all Choice items which match the where clause.
   """
   _allChoicesMeta(
-    where: ChoiceWhereInput
+    where: ChoiceWhereInput! = {}
     search: String
     sortBy: [SortChoicesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ChoiceOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use choicesCount instead."
+    )
+  choicesCount(where: ChoiceWhereInput! = {}): Int
 
   """
    Search for all CloudImage items which match the where clause.
   """
   allCloudImages(
-    where: CloudImageWhereInput
+    where: CloudImageWhereInput! = {}
     search: String
     sortBy: [SortCloudImagesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [CloudImageOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [CloudImage]
+    skip: Int! = 0
+  ): [CloudImage!]
 
   """
    Search for the CloudImage item with the matching ID.
@@ -1532,25 +1615,31 @@ type Query {
    Perform a meta-query on all CloudImage items which match the where clause.
   """
   _allCloudImagesMeta(
-    where: CloudImageWhereInput
+    where: CloudImageWhereInput! = {}
     search: String
     sortBy: [SortCloudImagesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [CloudImageOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use cloudImagesCount instead."
+    )
+  cloudImagesCount(where: CloudImageWhereInput! = {}): Int
 
   """
    Search for all Contest items which match the where clause.
   """
   allContests(
-    where: ContestWhereInput
+    where: ContestWhereInput! = {}
     search: String
     sortBy: [SortContestsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ContestOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Contest]
+    skip: Int! = 0
+  ): [Contest!]
 
   """
    Search for the Contest item with the matching ID.
@@ -1561,25 +1650,31 @@ type Query {
    Perform a meta-query on all Contest items which match the where clause.
   """
   _allContestsMeta(
-    where: ContestWhereInput
+    where: ContestWhereInput! = {}
     search: String
     sortBy: [SortContestsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ContestOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use contestsCount instead."
+    )
+  contestsCount(where: ContestWhereInput! = {}): Int
 
   """
    Search for all Line items which match the where clause.
   """
   allLines(
-    where: LineWhereInput
+    where: LineWhereInput! = {}
     search: String
     sortBy: [SortLinesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [LineOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Line]
+    skip: Int! = 0
+  ): [Line!]
 
   """
    Search for the Line item with the matching ID.
@@ -1590,25 +1685,31 @@ type Query {
    Perform a meta-query on all Line items which match the where clause.
   """
   _allLinesMeta(
-    where: LineWhereInput
+    where: LineWhereInput! = {}
     search: String
     sortBy: [SortLinesBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [LineOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use linesCount instead."
+    )
+  linesCount(where: LineWhereInput! = {}): Int
 
   """
    Search for all Registration items which match the where clause.
   """
   allRegistrations(
-    where: RegistrationWhereInput
+    where: RegistrationWhereInput! = {}
     search: String
     sortBy: [SortRegistrationsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RegistrationOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Registration]
+    skip: Int! = 0
+  ): [Registration!]
 
   """
    Search for the Registration item with the matching ID.
@@ -1619,25 +1720,31 @@ type Query {
    Perform a meta-query on all Registration items which match the where clause.
   """
   _allRegistrationsMeta(
-    where: RegistrationWhereInput
+    where: RegistrationWhereInput! = {}
     search: String
     sortBy: [SortRegistrationsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RegistrationOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use registrationsCount instead."
+    )
+  registrationsCount(where: RegistrationWhereInput! = {}): Int
 
   """
    Search for all Standing items which match the where clause.
   """
   allStandings(
-    where: StandingWhereInput
+    where: StandingWhereInput! = {}
     search: String
     sortBy: [SortStandingsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [Standing]
+    skip: Int! = 0
+  ): [Standing!]
 
   """
    Search for the Standing item with the matching ID.
@@ -1648,25 +1755,31 @@ type Query {
    Perform a meta-query on all Standing items which match the where clause.
   """
   _allStandingsMeta(
-    where: StandingWhereInput
+    where: StandingWhereInput! = {}
     search: String
     sortBy: [SortStandingsBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use standingsCount instead."
+    )
+  standingsCount(where: StandingWhereInput! = {}): Int
 
   """
    Search for all User items which match the where clause.
   """
   allUsers(
-    where: UserWhereInput
+    where: UserWhereInput! = {}
     search: String
     sortBy: [SortUsersBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [UserOrderByInput!]! = []
     first: Int
-    skip: Int
-  ): [User]
+    skip: Int! = 0
+  ): [User!]
 
   """
    Search for the User item with the matching ID.
@@ -1677,13 +1790,18 @@ type Query {
    Perform a meta-query on all User items which match the where clause.
   """
   _allUsersMeta(
-    where: UserWhereInput
+    where: UserWhereInput! = {}
     search: String
     sortBy: [SortUsersBy!]
-    orderBy: String
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [UserOrderByInput!]! = []
     first: Int
-    skip: Int
+    skip: Int! = 0
   ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use usersCount instead."
+    )
+  usersCount(where: UserWhereInput! = {}): Int
   authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(
     email: String!

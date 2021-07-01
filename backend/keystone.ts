@@ -1,5 +1,5 @@
 import { config } from '@keystone-next/keystone/schema';
-import { statelessSessions, withItemData } from '@keystone-next/keystone/session';
+import { statelessSessions } from '@keystone-next/keystone/session';
 import { createAuth } from '@keystone-next/auth';
 import { createSchema } from '@keystone-next/keystone/schema';
 import 'dotenv/config';
@@ -31,6 +31,7 @@ const auth = createAuth({
   listKey: 'User',
   identityField: 'email',
   secretField: 'password',
+  sessionData: `id isAdmin`,
   initFirstItem: {
     fields: ['name', 'userName', 'email', 'password'],
   },
@@ -79,12 +80,9 @@ export default auth.withAuth(
       Standing,
       User,
     }),
-    session: withItemData(
-      statelessSessions({
-        maxAge: sessionMaxAge,
-        secret: sessionSecret,
-      }),
-      { User: `id isAdmin` }
-    ),
+    session: statelessSessions({
+      maxAge: sessionMaxAge,
+      secret: sessionSecret,
+    }),
   })
 );

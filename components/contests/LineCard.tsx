@@ -65,8 +65,8 @@ export default function LineCard({ line, userId, userHasEntered }: LineCardProps
     },
   });
 
-  const selectedChoice = line.choices.find((c) => c.bets.some((b) => b.user?.id === userId));
-  const usersBet = selectedChoice?.bets.find((b) => b.user?.id === userId);
+  const selectedChoice = line.choices?.find((c) => c.bets?.some((b) => b.user?.id === userId));
+  const usersBet = selectedChoice?.bets?.find((b) => b.user?.id === userId);
 
   const [formSelectedChoiceId, setFormSelectedChoiceId] = useState<string | number>(
     selectedChoice?.id || '0'
@@ -75,7 +75,7 @@ export default function LineCard({ line, userId, userHasEntered }: LineCardProps
   const [superBetSelected, setSuperBetSelected] = useState<boolean>(false);
 
   const lineClosed = hasLineClosed(line);
-  const winningChoice = line.choices.find((c) => c.isWin);
+  const winningChoice = line.choices?.find((c) => c.isWin);
 
   // rules for later
   const pickAvailable = true;
@@ -151,7 +151,7 @@ export default function LineCard({ line, userId, userHasEntered }: LineCardProps
       <Stack spacing={0} align={'left'} paddingTop={3}>
         <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
           <HStack justifyContent="center" spacing={6}>
-            {line.choices.map((choice) => {
+            {line.choices?.map((choice) => {
               return (
                 <Radio
                   key={choice.id}

@@ -155,7 +155,7 @@ function prepareLineStandingsForGraph(line: Line): Serie[] {
     data: [],
   };
 
-  line.standings.forEach((standing) => {
+  standings?.forEach((standing) => {
     serieResults.data.push({ x: standing.gamesPlayed, y: standing.wins });
     serieBenchmark.data.push({ x: standing.gamesPlayed, y: line.benchmark });
   });

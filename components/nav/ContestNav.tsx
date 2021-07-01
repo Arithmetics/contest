@@ -66,13 +66,13 @@ export default function ContestNav({ selectedTab, contest }: ContestNavProps): J
   });
 
   const userId = userData?.authenticatedItem?.id;
-  const userHasEntered = contest?.registrations.some((r) => r.user?.id === userId);
+  const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
   const showEnterContestButton =
     !userHasEntered && userId && contest?.status === ContestStatusType.Open;
   const showLeaveContestButton =
     userHasEntered && userId && contest?.status == ContestStatusType.Open;
 
-  const registrationId = contest?.registrations.find((r) => r.user?.id === userId)?.id;
+  const registrationId = contest?.registrations?.find((r) => r.user?.id === userId)?.id;
 
   const enterContest = async (): Promise<void> => {
     try {
