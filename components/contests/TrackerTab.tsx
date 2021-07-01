@@ -8,7 +8,6 @@ import {
   Divider,
   StatLabel,
   StatNumber,
-  VStack,
 } from '@chakra-ui/react';
 import { ResponsiveLine, Serie, PointTooltipProps } from '@nivo/line';
 import { Contest, Line, useTrackerStatusQuery } from '../../generated/graphql-types';
@@ -28,14 +27,14 @@ export default function TrackerTab({ contest }: TrackerTabProps): JSX.Element {
       </Center>
     );
   }
-  console.log(data);
+
   return (
     <Center>
-      <VStack>
+      <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'center'}>
         {data?.allLines?.map((line) => {
           return <TrackerGraphCard key={line?.id} line={line as Line} />;
         })}
-      </VStack>
+      </Box>
     </Center>
   );
 }
@@ -83,7 +82,6 @@ type XX = {
 };
 
 function MyResponsiveLine({ data }: XX): JSX.Element {
-  console.log(data);
   return (
     <ResponsiveLine
       data={data}
@@ -91,15 +89,22 @@ function MyResponsiveLine({ data }: XX): JSX.Element {
         fontSize: 10,
         textColor: '#fff',
       }}
-      colors={[theme.colors.red['400'], theme.colors.blue['500']]}
-      margin={{ top: 50, right: 100, bottom: 60, left: 60 }}
+      colors={[
+        theme.colors.red['400'],
+        theme.colors.blue['500'],
+        theme.colors.green['400'],
+        theme.colors.yellow['400'],
+        theme.colors.cyan['400'],
+      ]}
+      margin={{ top: 50, right: 110, bottom: 60, left: 60 }}
       xScale={{ type: 'linear', min: 1, max: 17 }}
-      yScale={{ type: 'linear', min: 0, max: 17, reverse: false }}
+      yScale={{ type: 'linear', min: 0, max: 1, reverse: false }}
       yFormat=" >-.2f"
       xFormat=" >-.2f"
       axisTop={null}
       axisRight={null}
       axisBottom={{
+        tickValues: 17,
         tickSize: 1,
         tickPadding: 5,
         tickRotation: 0,
@@ -128,7 +133,7 @@ function MyResponsiveLine({ data }: XX): JSX.Element {
           translateY: 0,
           itemsSpacing: 0,
           itemDirection: 'left-to-right',
-          itemWidth: 80,
+          itemWidth: 85,
           itemHeight: 20,
           itemOpacity: 0.75,
           symbolSize: 12,
@@ -155,6 +160,10 @@ function MyResponsiveLine({ data }: XX): JSX.Element {
   );
 }
 
+function formatDivide(x?: number | null, y?: number | null): string {
+  return ((x || 0) / (y || 1)).toFixed(3);
+}
+
 function prepareLineStandingsForGraph(line: Line): Serie[] {
   const standings = line?.standings;
   if (!standings || standings.length === 0) {
@@ -170,10 +179,33 @@ function prepareLineStandingsForGraph(line: Line): Serie[] {
     data: [],
   };
 
-  standings?.forEach((standing) => {
-    serieResults.data.push({ x: standing.gamesPlayed, y: standing.wins });
-    serieBenchmark.data.push({ x: standing.gamesPlayed, y: line.benchmark });
+  const bestPossible: Serie = {
+    id: 'Best possible',
+    data: [],
+  };
+
+  const worstPossible: Serie = {
+    id: 'Worst possible',
+    data: [],
+  };
+
+  standings?.forEach((standing, i) => {
+    const { gamesPlayed, wins, totalGames } = standing;
+    const winPerResults = formatDivide(wins, gamesPlayed);
+    const winPerBenchmark = formatDivide(line.benchmark, totalGames);
+    // normal data
+    serieResults.data.push({ x: gamesPlayed, y: winPerResults });
+    serieBenchmark.data.push({ x: gamesPlayed, y: winPerBenchmark });
+    // if last standing in list
+    if (i === standings.length - 1) {
+      const gamesRemaining = (totalGames || 1) - (gamesPlayed || 1);
+      const potentialWins = gamesRemaining + (wins || 0);
+      const potentialWinPer = formatDivide(potentialWins, totalGames);
+      const potentialLossPer = formatDivide(wins, totalGames);
+      bestPossible.data.push({ x: totalGames, y: potentialWinPer });
+      worstPossible.data.push({ x: totalGames, y: potentialLossPer });
+    }
   });
 
-  return [serieResults, serieBenchmark];
+  return [worstPossible, bestPossible, serieBenchmark, serieResults];
 }
