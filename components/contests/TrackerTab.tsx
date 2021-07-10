@@ -30,7 +30,6 @@ function winsForOver(line?: Line): number {
   }
 
   const { gamesPlayed, wins, totalGames } = standings[standings.length - 1];
-  console.log({ line, gamesPlayed, wins, totalGames });
 
   const winsNeeded = Math.ceil((benchmark || 0) - (wins || 0));
   const gamesRemaining = (totalGames || 0) - (gamesPlayed || 0);

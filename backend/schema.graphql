@@ -800,6 +800,13 @@ type Registration {
   hasPaid: Boolean
   contest: Contest
   user: User
+  counts: PointCounts
+}
+
+type PointCounts {
+  locked: Int
+  likely: Int
+  possible: Int
 }
 
 input RegistrationWhereInput {

@@ -10,14 +10,32 @@ import {
   HStack,
   Center,
   Box,
+  Spinner,
 } from '@chakra-ui/react';
-import { Contest } from '../../generated/graphql-types';
+import { Contest, useLeaderboardQuery } from '../../generated/graphql-types';
 
 type LeaderboardTabProps = {
   contest?: Contest;
 };
 
 export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.Element {
+  const { data, loading } = useLeaderboardQuery({ variables: { contestId: contest?.id || '' } });
+
+  const sortedLeaderboard = data?.allRegistrations?.sort((a, b) => {
+    if ((a.counts?.likely || 0) > (b.counts?.likely || 0)) {
+      return 1;
+    }
+    return -1;
+  });
+
+  if (loading) {
+    return (
+      <Center marginTop={'30vh'}>
+        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      </Center>
+    );
+  }
+
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
       <Center>
@@ -32,7 +50,7 @@ export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.El
             </Tr>
           </Thead>
           <Tbody>
-            {contest?.registrations?.map((reg, i) => {
+            {sortedLeaderboard?.map((reg, i) => {
               const user = reg.user;
               const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
@@ -45,9 +63,9 @@ export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.El
                       <Text>{user?.userName}</Text>
                     </HStack>
                   </Td>
-                  <Td isNumeric>25</Td>
-                  <Td isNumeric>56</Td>
-                  <Td isNumeric>199</Td>
+                  <Td isNumeric>{reg.counts?.locked}</Td>
+                  <Td isNumeric>{reg.counts?.likely}</Td>
+                  <Td isNumeric>{reg.counts?.possible}</Td>
                 </Tr>
               );
             })}

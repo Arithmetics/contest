@@ -208,3 +208,27 @@ export const TRACKER_STATUS_QUERY = gql`
     }
   }
 `;
+
+export const LEADERBOARD_QUERY = gql`
+  query Leaderboard($contestId: ID!) {
+    allRegistrations(where: { contest: { id: $contestId } }) {
+      id
+      user {
+        id
+        userName
+        # other stuff
+        avatarImage {
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
+      counts {
+        locked
+        likely
+        possible
+      }
+    }
+  }
+`;

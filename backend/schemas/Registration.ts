@@ -1,8 +1,9 @@
-import { checkbox, relationship } from '@keystone-next/fields';
+import { checkbox, relationship, virtual } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
-import { KeystoneListsAPI } from '@keystone-next/types';
+import { KeystoneListsAPI, schema } from '@keystone-next/types';
 import { KeystoneListsTypeInfo, ContestStatusType } from '.keystone/types';
 import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
+import { ChoiceStatus, Line } from '../../generated/graphql-types';
 
 export const Registration = list({
   access: {
@@ -21,6 +22,80 @@ export const Registration = list({
     }),
     contest: relationship({ ref: 'Contest.registrations', many: false }),
     user: relationship({ ref: 'User.registrations', many: false }),
+
+    counts: virtual({
+      field: schema.field({
+        type: schema.object<{
+          locked: number;
+          likely: number;
+          possible: number;
+        }>()({
+          name: 'PointCounts',
+          fields: {
+            locked: schema.field({ type: schema.Int }),
+            likely: schema.field({ type: schema.Int }),
+            possible: schema.field({ type: schema.Int }),
+          },
+        }),
+        async resolve(item, _args, context) {
+          const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const graphql = String.raw;
+
+          const contestLines = (await lists.Line.findMany({
+            where: { contest: { id: (item.contestId as string) || '' } },
+            query: graphql`
+              id
+              title
+              choices {
+                selection
+                status
+                bets {
+                  id
+                  user {
+                    id
+                  }
+                }
+              }
+            `,
+          })) as Line[] | null;
+
+          let locked = 0;
+          let likely = 0;
+          let possible = 0;
+
+          contestLines?.forEach((line) => {
+            line.choices?.forEach((choice) => {
+              // only add points if user has a bet on the choice
+              const usersBet = choice.bets?.find((bet) => bet?.user?.id === item.userId);
+              if (usersBet) {
+                if (choice.status === ChoiceStatus.Won) {
+                  locked += 1;
+                  likely += 1;
+                  possible += 1;
+                }
+                if (choice.status === ChoiceStatus.Winning) {
+                  likely += 1;
+                  possible += 1;
+                }
+                if (choice.status === ChoiceStatus.Losing) {
+                  possible += 1;
+                }
+                if (choice.status === ChoiceStatus.NotStarted) {
+                  possible += 1;
+                }
+              }
+            });
+          });
+
+          return {
+            locked,
+            likely,
+            possible,
+          };
+        },
+      }),
+      graphQLReturnFragment: '{ locked likely possible }',
+    }),
   },
   hooks: {
     validateInput: async (args) => {

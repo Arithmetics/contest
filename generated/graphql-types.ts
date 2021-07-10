@@ -1253,6 +1253,13 @@ export type PasswordState = {
   isSet: Scalars['Boolean'];
 };
 
+export type PointCounts = {
+  __typename?: 'PointCounts';
+  locked?: Maybe<Scalars['Int']>;
+  likely?: Maybe<Scalars['Int']>;
+  possible?: Maybe<Scalars['Int']>;
+};
+
 export type Query = {
   __typename?: 'Query';
   /** Search for all Bet items which match the where clause. */
@@ -1599,6 +1606,7 @@ export type Registration = {
   hasPaid?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<Contest>;
   user?: Maybe<User>;
+  counts?: Maybe<PointCounts>;
 };
 
 export type RegistrationCreateInput = {
@@ -2489,6 +2497,34 @@ export type TrackerStatusQuery = (
   )>> }
 );
 
+export type LeaderboardQueryVariables = Exact<{
+  contestId: Scalars['ID'];
+}>;
+
+
+export type LeaderboardQuery = (
+  { __typename?: 'Query' }
+  & { allRegistrations?: Maybe<Array<(
+    { __typename?: 'Registration' }
+    & Pick<Registration, 'id'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'userName'>
+      & { avatarImage?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )> }
+    )>, counts?: Maybe<(
+      { __typename?: 'PointCounts' }
+      & Pick<PointCounts, 'locked' | 'likely' | 'possible'>
+    )> }
+  )>> }
+);
+
 
 export const CheckIfEmailAvailableDocument = gql`
     query CheckIfEmailAvailable($email: String!) {
@@ -3283,3 +3319,53 @@ export function useTrackerStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrackerStatusQueryHookResult = ReturnType<typeof useTrackerStatusQuery>;
 export type TrackerStatusLazyQueryHookResult = ReturnType<typeof useTrackerStatusLazyQuery>;
 export type TrackerStatusQueryResult = Apollo.QueryResult<TrackerStatusQuery, TrackerStatusQueryVariables>;
+export const LeaderboardDocument = gql`
+    query Leaderboard($contestId: ID!) {
+  allRegistrations(where: {contest: {id: $contestId}}) {
+    id
+    user {
+      id
+      userName
+      avatarImage {
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+    counts {
+      locked
+      likely
+      possible
+    }
+  }
+}
+    `;
+
+/**
+ * __useLeaderboardQuery__
+ *
+ * To run a query within a React component, call `useLeaderboardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLeaderboardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLeaderboardQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useLeaderboardQuery(baseOptions: Apollo.QueryHookOptions<LeaderboardQuery, LeaderboardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<LeaderboardQuery, LeaderboardQueryVariables>(LeaderboardDocument, options);
+      }
+export function useLeaderboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LeaderboardQuery, LeaderboardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<LeaderboardQuery, LeaderboardQueryVariables>(LeaderboardDocument, options);
+        }
+export type LeaderboardQueryHookResult = ReturnType<typeof useLeaderboardQuery>;
+export type LeaderboardLazyQueryHookResult = ReturnType<typeof useLeaderboardLazyQuery>;
+export type LeaderboardQueryResult = Apollo.QueryResult<LeaderboardQuery, LeaderboardQueryVariables>;
