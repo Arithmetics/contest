@@ -105,6 +105,7 @@ type Choice {
       reason: "This query will be removed in a future version. Please use betsCount instead."
     )
   betsCount(where: BetWhereInput! = {}): Int
+  status: ChoiceStatus
   labelName: String
 }
 
@@ -117,6 +118,14 @@ enum ChoiceSelectionType {
 
 type _QueryMeta {
   count: Int
+}
+
+enum ChoiceStatus {
+  NOT_STARTED
+  WINNING
+  LOSING
+  WON
+  LOST
 }
 
 input ChoiceWhereInput {

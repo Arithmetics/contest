@@ -90,6 +90,7 @@ export type Choice = {
   /** @deprecated This query will be removed in a future version. Please use betsCount instead. */
   _betsMeta?: Maybe<_QueryMeta>;
   betsCount?: Maybe<Scalars['Int']>;
+  status?: Maybe<ChoiceStatus>;
   labelName?: Maybe<Scalars['String']>;
 };
 
@@ -153,6 +154,14 @@ export enum ChoiceSelectionType {
   Under = 'UNDER',
   Away = 'AWAY',
   Home = 'HOME'
+}
+
+export enum ChoiceStatus {
+  NotStarted = 'NOT_STARTED',
+  Winning = 'WINNING',
+  Losing = 'LOSING',
+  Won = 'WON',
+  Lost = 'LOST'
 }
 
 export type ChoiceUpdateInput = {
