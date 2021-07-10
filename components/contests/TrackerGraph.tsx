@@ -17,9 +17,9 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
       }}
       colors={[
         theme.colors.red['400'],
-        theme.colors.blue['500'],
         theme.colors.green['400'],
         theme.colors.yellow['400'],
+        theme.colors.blue['200'],
         theme.colors.cyan['400'],
       ]}
       margin={{ top: 50, right: 110, bottom: 60, left: 60 }}
@@ -121,7 +121,10 @@ export function prepareLineStandingsForGraph(line: Line): Serie[] {
     const winPerBenchmark = formatDivide(line.benchmark, totalGames);
     // normal data
     serieResults.data.push({ x: gamesPlayed, y: winPerResults });
-    serieBenchmark.data.push({ x: gamesPlayed, y: winPerBenchmark });
+    // if first standing in list
+    if (i === 0) {
+      serieBenchmark.data.push({ x: gamesPlayed, y: winPerBenchmark });
+    }
     // if last standing in list
     if (i === standings.length - 1) {
       const gamesRemaining = (totalGames || 1) - (gamesPlayed || 1);
@@ -130,6 +133,8 @@ export function prepareLineStandingsForGraph(line: Line): Serie[] {
       const potentialLossPer = formatDivide(wins, totalGames);
       bestPossible.data.push({ x: totalGames, y: potentialWinPer });
       worstPossible.data.push({ x: totalGames, y: potentialLossPer });
+
+      serieBenchmark.data.push({ x: totalGames, y: winPerBenchmark });
     }
   });
 

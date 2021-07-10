@@ -22,6 +22,44 @@ import {
 } from '../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
 
+function winsForOver(line?: Line): number {
+  const standings = line?.standings;
+  const benchmark = line?.benchmark;
+  if (!standings || standings.length === 0) {
+    return -1;
+  }
+
+  const { gamesPlayed, wins, totalGames } = standings[standings.length - 1];
+  console.log({ line, gamesPlayed, wins, totalGames });
+
+  const winsNeeded = Math.ceil((benchmark || 0) - (wins || 0));
+  const gamesRemaining = (totalGames || 0) - (gamesPlayed || 0);
+  if (gamesRemaining < winsNeeded) {
+    return -1;
+  }
+  return Math.max(winsNeeded, 0);
+}
+
+function lossesForUnder(line?: Line): number {
+  const standings = line?.standings;
+  const benchmark = line?.benchmark;
+  if (!standings || standings.length === 0) {
+    return -1;
+  }
+
+  const { gamesPlayed, wins, totalGames } = standings[standings.length - 1];
+  const lossBenchmark = Math.ceil((totalGames || 0) - (benchmark || 0));
+
+  const losses = (gamesPlayed || 0) - (wins || 0);
+  const gamesRemaining = (totalGames || 0) - (gamesPlayed || 0);
+
+  const lossesNeeded = lossBenchmark - losses;
+  if (gamesRemaining < lossesNeeded) {
+    return -1;
+  }
+  return Math.max(lossesNeeded, 0);
+}
+
 type TrackerTabProps = {
   contest?: Contest;
 };
@@ -48,12 +86,11 @@ export default function TrackerTab({ contest }: TrackerTabProps): JSX.Element {
   );
 }
 
-type TrackerGraphCardProps = {
+type GenericLineProps = {
   line?: Line;
 };
 
-function TrackerGraphCard({ line }: TrackerGraphCardProps): JSX.Element {
-  console.log(line);
+function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
   return (
     <Box
       maxW={'100%'}
@@ -78,10 +115,7 @@ function TrackerGraphCard({ line }: TrackerGraphCardProps): JSX.Element {
           <StatLabel>{line?.title}</StatLabel>
           <StatNumber>{line?.benchmark} Wins</StatNumber>
         </Stat>
-        <Box>
-          <Text>X more wins to lock OVER</Text>
-          <Text>X more losses to lock UNDER</Text>
-        </Box>
+        <WinsLossesLeftSection line={line} />
       </HStack>
       <Divider orientation="horizontal" paddingTop={3} />
       <Box height={'300px'} width={'100%'}>
@@ -92,17 +126,8 @@ function TrackerGraphCard({ line }: TrackerGraphCardProps): JSX.Element {
           ?.filter((c) => c.selection === ChoiceSelectionType.Over)
           .map((choice) => {
             return (
-              <Box
-                key={choice.id}
-                bg={'gray.500'}
-                border={'1px'}
-                borderColor={'teal.500'}
-                rounded={'md'}
-                flexGrow={1}
-                marginX={2}
-                padding={2}
-              >
-                <Text>{ChoiceSelectionType.Over} Bets</Text>
+              <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
+                <Text paddingBottom={1}>{ChoiceSelectionType.Over} Bets</Text>
                 {choice.bets?.map((bet) => {
                   return (
                     <Box key={bet.user?.id}>
@@ -126,17 +151,8 @@ function TrackerGraphCard({ line }: TrackerGraphCardProps): JSX.Element {
           ?.filter((c) => c.selection === ChoiceSelectionType.Under)
           .map((choice) => {
             return (
-              <Box
-                key={choice.id}
-                bg={'gray.500'}
-                border={'1px'}
-                borderColor={'teal.500'}
-                rounded={'md'}
-                flexGrow={1}
-                marginX={2}
-                padding={2}
-              >
-                <Text>{ChoiceSelectionType.Under} Bets</Text>
+              <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
+                <Text paddingBottom={1}>{ChoiceSelectionType.Under} Bets</Text>
                 {choice.bets?.map((bet) => {
                   return (
                     <Box key={bet.user?.id}>
@@ -157,6 +173,32 @@ function TrackerGraphCard({ line }: TrackerGraphCardProps): JSX.Element {
             );
           })}
       </Flex>
+    </Box>
+  );
+}
+
+function WinsLossesLeftSection({ line }: GenericLineProps): JSX.Element {
+  const winsNeeded = winsForOver(line);
+  const lossesNeeded = lossesForUnder(line);
+
+  if (winsNeeded < 0) {
+    return (
+      <Box>
+        <Text>UNDER Locked</Text>
+      </Box>
+    );
+  }
+  if (lossesNeeded < 0) {
+    return (
+      <Box>
+        <Text>OVER Locked</Text>
+      </Box>
+    );
+  }
+  return (
+    <Box>
+      <Text>{winsNeeded} wins to lock OVER</Text>
+      <Text>{lossesNeeded} more losses to lock UNDER</Text>
     </Box>
   );
 }
