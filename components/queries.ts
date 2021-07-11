@@ -237,3 +237,11 @@ export const LEADERBOARD_QUERY = gql`
     }
   }
 `;
+
+export const USERS_BETS_QUERY = gql`
+  query UsersContestBets($contestId: ID!, $userId: ID!) {
+    allBets(where: { choice: { line: { contest: { id: $contestId } } }, user: { id: $userId } }) {
+      id
+    }
+  }
+`;

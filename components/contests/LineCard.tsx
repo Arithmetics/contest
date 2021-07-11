@@ -20,6 +20,7 @@ import {
 import { useState } from 'react';
 
 import { Line, useMakeBetMutation, useDeleteBetMutation } from '../../generated/graphql-types';
+import { LEADERBOARD_QUERY, USERS_BETS_QUERY } from '../queries';
 
 export function hasLineClosed(line: Line): boolean {
   if (!line.closingTime) {
@@ -48,11 +49,22 @@ function formatLineDate(line: Line): string {
 type LineCardProps = {
   line: Line;
   userId?: string;
+  contestId?: string;
   userHasEntered?: boolean;
 };
 
-export default function LineCard({ line, userId, userHasEntered }: LineCardProps): JSX.Element {
-  const [makeBet, { loading: makeBetLoading }] = useMakeBetMutation();
+export default function LineCard({
+  line,
+  userId,
+  contestId,
+  userHasEntered,
+}: LineCardProps): JSX.Element {
+  const [makeBet, { loading: makeBetLoading }] = useMakeBetMutation({
+    refetchQueries: [
+      { query: LEADERBOARD_QUERY, variables: { contestId: contestId || '' } },
+      { query: USERS_BETS_QUERY, variables: { contestId: contestId || '', userId: userId || '' } },
+    ],
+  });
   const [deleteBet, { loading: deleteBetLoading }] = useDeleteBetMutation({
     update: (cache, payload) => {
       return cache.evict({

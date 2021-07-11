@@ -15,6 +15,14 @@ import {
 import { firstBy } from 'thenby';
 import { Contest, useLeaderboardQuery, Registration } from '../../generated/graphql-types';
 
+export function sortLeaderboard(registrations: Registration[]): Registration[] {
+  return [...(registrations || [])].sort(
+    firstBy<Registration>((a, b) => (b.counts?.likely || 0) - (a.counts?.likely || 0))
+      .thenBy<Registration>((a, b) => (b.counts?.locked || 0) - (a.counts?.locked || 0))
+      .thenBy<Registration>((a, b) => (b.counts?.possible || 0) - (a.counts?.possible || 0))
+  );
+}
+
 type LeaderboardTabProps = {
   contest?: Contest;
 };
@@ -22,13 +30,7 @@ type LeaderboardTabProps = {
 export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.Element {
   const { data, loading } = useLeaderboardQuery({ variables: { contestId: contest?.id || '' } });
 
-  const unfroze = data?.allRegistrations;
-
-  const sortedLeaderboard = [...(unfroze || [])].sort(
-    firstBy<Registration>((a, b) => (b.counts?.likely || 0) - (a.counts?.likely || 0))
-      .thenBy<Registration>((a, b) => (b.counts?.locked || 0) - (a.counts?.locked || 0))
-      .thenBy<Registration>((a, b) => (b.counts?.possible || 0) - (a.counts?.possible || 0))
-  );
+  const sortedLeaderboard = sortLeaderboard(data?.allRegistrations || []);
 
   if (loading) {
     return (

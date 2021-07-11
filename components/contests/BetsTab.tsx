@@ -73,6 +73,7 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
                     key={line.id}
                     line={line as Line}
                     userId={userId}
+                    contestId={contest?.id}
                     userHasEntered={userHasEntered}
                   />
                 );
@@ -97,6 +98,7 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
                     key={line.id}
                     line={line as Line}
                     userId={userId}
+                    contestId={contest?.id}
                     userHasEntered={userHasEntered}
                   />
                 );
@@ -121,6 +123,7 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
                     key={line.id}
                     line={line as Line}
                     userId={userId}
+                    contestId={contest?.id}
                     userHasEntered={userHasEntered}
                   />
                 );

@@ -2717,6 +2717,20 @@ export type LeaderboardQuery = (
   )>> }
 );
 
+export type UsersContestBetsQueryVariables = Exact<{
+  contestId: Scalars['ID'];
+  userId: Scalars['ID'];
+}>;
+
+
+export type UsersContestBetsQuery = (
+  { __typename?: 'Query' }
+  & { allBets?: Maybe<Array<(
+    { __typename?: 'Bet' }
+    & Pick<Bet, 'id'>
+  )>> }
+);
+
 
 export const CheckIfEmailAvailableDocument = gql`
     query CheckIfEmailAvailable($email: String!) {
@@ -3566,3 +3580,41 @@ export function useLeaderboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type LeaderboardQueryHookResult = ReturnType<typeof useLeaderboardQuery>;
 export type LeaderboardLazyQueryHookResult = ReturnType<typeof useLeaderboardLazyQuery>;
 export type LeaderboardQueryResult = Apollo.QueryResult<LeaderboardQuery, LeaderboardQueryVariables>;
+export const UsersContestBetsDocument = gql`
+    query UsersContestBets($contestId: ID!, $userId: ID!) {
+  allBets(
+    where: {choice: {line: {contest: {id: $contestId}}}, user: {id: $userId}}
+  ) {
+    id
+  }
+}
+    `;
+
+/**
+ * __useUsersContestBetsQuery__
+ *
+ * To run a query within a React component, call `useUsersContestBetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersContestBetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersContestBetsQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUsersContestBetsQuery(baseOptions: Apollo.QueryHookOptions<UsersContestBetsQuery, UsersContestBetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersContestBetsQuery, UsersContestBetsQueryVariables>(UsersContestBetsDocument, options);
+      }
+export function useUsersContestBetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersContestBetsQuery, UsersContestBetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersContestBetsQuery, UsersContestBetsQueryVariables>(UsersContestBetsDocument, options);
+        }
+export type UsersContestBetsQueryHookResult = ReturnType<typeof useUsersContestBetsQuery>;
+export type UsersContestBetsLazyQueryHookResult = ReturnType<typeof useUsersContestBetsLazyQuery>;
+export type UsersContestBetsQueryResult = Apollo.QueryResult<UsersContestBetsQuery, UsersContestBetsQueryVariables>;
