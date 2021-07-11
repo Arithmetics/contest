@@ -167,3 +167,68 @@ export const DELETE_BET_MUTATION = gql`
     }
   }
 `;
+
+export const TRACKER_STATUS_QUERY = gql`
+  query TrackerStatus($contestId: ID!) {
+    allLines(where: { contest: { id: $contestId } }) {
+      id
+      title
+      benchmark
+      image {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+      standings(orderBy: { gamesPlayed: asc }) {
+        id
+        wins
+        gamesPlayed
+        totalGames
+      }
+      choices {
+        id
+        selection
+        isWin
+        bets {
+          id
+          user {
+            id
+            userName
+            avatarImage {
+              altText
+              image {
+                publicUrlTransformed
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const LEADERBOARD_QUERY = gql`
+  query Leaderboard($contestId: ID!) {
+    allRegistrations(where: { contest: { id: $contestId } }) {
+      id
+      user {
+        id
+        userName
+        # other stuff
+        avatarImage {
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
+      counts {
+        locked
+        likely
+        possible
+      }
+    }
+  }
+`;

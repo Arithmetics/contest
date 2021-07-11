@@ -1,43 +1,6 @@
-import { ChoiceCreateInput, ContestCreateInput, UserCreateInput } from '.keystone/types';
-
-const defaultOverUnderSelections: ChoiceCreateInput[] = [
-  {
-    selection: 'OVER',
-    isWin: false,
-  },
-  {
-    selection: 'UNDER',
-    isWin: false,
-  },
-];
-
-const overWinningOverUnderSelections: ChoiceCreateInput[] = [
-  {
-    selection: 'OVER',
-    isWin: true,
-  },
-  {
-    selection: 'UNDER',
-    isWin: false,
-  },
-];
-
-export const users: UserCreateInput[] = [
-  {
-    email: 'brock.m.tillotson@gmail.com',
-    name: 'brock t',
-    userName: 'arithmetics',
-    password: 'password',
-    isAdmin: true,
-  },
-  {
-    email: 'yo@yo.com',
-    name: 'yo yo',
-    userName: 'yoyoyoy',
-    password: 'password',
-    isAdmin: false,
-  },
-];
+import { ContestCreateInput } from '.keystone/types';
+import { standingsSetA, standingsSetB, standingsSetC } from './standings';
+import { defaultOverUnderSelections, overWinningOverUnderSelections } from './choices';
 
 export const contests: ContestCreateInput[] = [
   {
@@ -115,6 +78,9 @@ export const contests: ContestCreateInput[] = [
           choices: {
             create: [...defaultOverUnderSelections],
           },
+          standings: {
+            create: [...standingsSetA],
+          },
         },
         {
           title: 'Tampa Bay Buccaneers',
@@ -122,6 +88,20 @@ export const contests: ContestCreateInput[] = [
           benchmark: 6.5,
           choices: {
             create: [...defaultOverUnderSelections],
+          },
+          standings: {
+            create: [...standingsSetB],
+          },
+        },
+        {
+          title: 'Los Angeles Rams',
+          closingTime: '2020-09-01T00:00:00.000Z',
+          benchmark: 2.5,
+          choices: {
+            create: [...defaultOverUnderSelections],
+          },
+          standings: {
+            create: [...standingsSetC],
           },
         },
       ],

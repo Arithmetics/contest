@@ -13,6 +13,7 @@ import { Line } from './schemas/Line';
 import { Choice } from './schemas/Choices';
 import { Bet } from './schemas/Bet';
 import { Registration } from './schemas/Registration';
+import { Standing } from './schemas/Standing';
 
 let sessionSecret = process.env.SESSION_SECRET;
 
@@ -72,11 +73,12 @@ export default auth.withAuth(
     lists: createSchema({
       Bet,
       Choice,
-      Contest,
       CloudImage,
+      Contest,
       Line,
-      User,
       Registration,
+      Standing,
+      User,
     }),
     session: statelessSessions({
       maxAge: sessionMaxAge,

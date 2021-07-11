@@ -105,6 +105,7 @@ type Choice {
       reason: "This query will be removed in a future version. Please use betsCount instead."
     )
   betsCount(where: BetWhereInput! = {}): Int
+  status: ChoiceStatus
   labelName: String
 }
 
@@ -117,6 +118,14 @@ enum ChoiceSelectionType {
 
 type _QueryMeta {
   count: Int
+}
+
+enum ChoiceStatus {
+  NOT_STARTED
+  WINNING
+  LOSING
+  WON
+  LOST
 }
 
 input ChoiceWhereInput {
@@ -209,6 +218,139 @@ input ChoiceCreateInput {
 
 input ChoicesCreateInput {
   data: ChoiceCreateInput
+}
+
+"""
+ A keystone list
+"""
+type CloudImage {
+  id: ID!
+  image: CloudinaryImage_File
+  altText: String
+}
+
+type CloudinaryImage_File {
+  id: ID
+  filename: String
+  originalFilename: String
+  mimetype: String
+  encoding: String
+  publicUrl: String
+  publicUrlTransformed(transformation: CloudinaryImageFormat): String
+}
+
+"""
+Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/documentation/image_transformation_reference).
+All options are strings as they ultimately end up in a URL.
+"""
+input CloudinaryImageFormat {
+  """
+   Rewrites the filename to be this pretty string. Do not include `/` or `.`
+  """
+  prettyName: String
+  width: String
+  height: String
+  crop: String
+  aspect_ratio: String
+  gravity: String
+  zoom: String
+  x: String
+  y: String
+  format: String
+  fetch_format: String
+  quality: String
+  radius: String
+  angle: String
+  effect: String
+  opacity: String
+  border: String
+  background: String
+  overlay: String
+  underlay: String
+  default_image: String
+  delay: String
+  color: String
+  color_space: String
+  dpr: String
+  page: String
+  density: String
+  flags: String
+  transformation: String
+}
+
+input CloudImageWhereInput {
+  AND: [CloudImageWhereInput!]
+  OR: [CloudImageWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  image: String
+  image_not: String
+  image_in: [String]
+  image_not_in: [String]
+  altText: String
+  altText_not: String
+  altText_contains: String
+  altText_not_contains: String
+  altText_starts_with: String
+  altText_not_starts_with: String
+  altText_ends_with: String
+  altText_not_ends_with: String
+  altText_i: String
+  altText_not_i: String
+  altText_contains_i: String
+  altText_not_contains_i: String
+  altText_starts_with_i: String
+  altText_not_starts_with_i: String
+  altText_ends_with_i: String
+  altText_not_ends_with_i: String
+  altText_in: [String]
+  altText_not_in: [String]
+}
+
+input CloudImageWhereUniqueInput {
+  id: ID
+}
+
+enum SortCloudImagesBy {
+  id_ASC
+  id_DESC
+  altText_ASC
+  altText_DESC
+}
+
+input CloudImageOrderByInput {
+  id: OrderDirection
+  altText: OrderDirection
+}
+
+input CloudImageUpdateInput {
+  image: Upload
+  altText: String
+}
+
+"""
+The `Upload` scalar type represents a file upload.
+"""
+scalar Upload
+
+input CloudImagesUpdateInput {
+  id: ID!
+  data: CloudImageUpdateInput
+}
+
+input CloudImageCreateInput {
+  image: Upload
+  altText: String
+}
+
+input CloudImagesCreateInput {
+  data: CloudImageCreateInput
 }
 
 """
@@ -444,139 +586,6 @@ input ContestsCreateInput {
 """
  A keystone list
 """
-type CloudImage {
-  id: ID!
-  image: CloudinaryImage_File
-  altText: String
-}
-
-type CloudinaryImage_File {
-  id: ID
-  filename: String
-  originalFilename: String
-  mimetype: String
-  encoding: String
-  publicUrl: String
-  publicUrlTransformed(transformation: CloudinaryImageFormat): String
-}
-
-"""
-Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/documentation/image_transformation_reference).
-All options are strings as they ultimately end up in a URL.
-"""
-input CloudinaryImageFormat {
-  """
-   Rewrites the filename to be this pretty string. Do not include `/` or `.`
-  """
-  prettyName: String
-  width: String
-  height: String
-  crop: String
-  aspect_ratio: String
-  gravity: String
-  zoom: String
-  x: String
-  y: String
-  format: String
-  fetch_format: String
-  quality: String
-  radius: String
-  angle: String
-  effect: String
-  opacity: String
-  border: String
-  background: String
-  overlay: String
-  underlay: String
-  default_image: String
-  delay: String
-  color: String
-  color_space: String
-  dpr: String
-  page: String
-  density: String
-  flags: String
-  transformation: String
-}
-
-input CloudImageWhereInput {
-  AND: [CloudImageWhereInput!]
-  OR: [CloudImageWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  image: String
-  image_not: String
-  image_in: [String]
-  image_not_in: [String]
-  altText: String
-  altText_not: String
-  altText_contains: String
-  altText_not_contains: String
-  altText_starts_with: String
-  altText_not_starts_with: String
-  altText_ends_with: String
-  altText_not_ends_with: String
-  altText_i: String
-  altText_not_i: String
-  altText_contains_i: String
-  altText_not_contains_i: String
-  altText_starts_with_i: String
-  altText_not_starts_with_i: String
-  altText_ends_with_i: String
-  altText_not_ends_with_i: String
-  altText_in: [String]
-  altText_not_in: [String]
-}
-
-input CloudImageWhereUniqueInput {
-  id: ID
-}
-
-enum SortCloudImagesBy {
-  id_ASC
-  id_DESC
-  altText_ASC
-  altText_DESC
-}
-
-input CloudImageOrderByInput {
-  id: OrderDirection
-  altText: OrderDirection
-}
-
-input CloudImageUpdateInput {
-  image: Upload
-  altText: String
-}
-
-"""
-The `Upload` scalar type represents a file upload.
-"""
-scalar Upload
-
-input CloudImagesUpdateInput {
-  id: ID!
-  data: CloudImageUpdateInput
-}
-
-input CloudImageCreateInput {
-  image: Upload
-  altText: String
-}
-
-input CloudImagesCreateInput {
-  data: CloudImageCreateInput
-}
-
-"""
- A keystone list
-"""
 type Line {
   id: ID!
   title: String
@@ -606,6 +615,28 @@ type Line {
       reason: "This query will be removed in a future version. Please use choicesCount instead."
     )
   choicesCount(where: ChoiceWhereInput! = {}): Int
+  standings(
+    where: StandingWhereInput! = {}
+    search: String
+    sortBy: [SortStandingsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Standing!]
+  _standingsMeta(
+    where: StandingWhereInput! = {}
+    search: String
+    sortBy: [SortStandingsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use standingsCount instead."
+    )
+  standingsCount(where: StandingWhereInput! = {}): Int
 }
 
 input LineWhereInput {
@@ -672,6 +703,21 @@ input LineWhereInput {
    condition must be false for all nodes
   """
   choices_none: ChoiceWhereInput
+
+  """
+   condition must be true for all nodes
+  """
+  standings_every: StandingWhereInput
+
+  """
+   condition must be true for at least 1 node
+  """
+  standings_some: StandingWhereInput
+
+  """
+   condition must be false for all nodes
+  """
+  standings_none: StandingWhereInput
 }
 
 input LineWhereUniqueInput {
@@ -703,6 +749,7 @@ input LineUpdateInput {
   image: CloudImageRelateToOneInput
   contest: ContestRelateToOneInput
   choices: ChoiceRelateToManyInput
+  standings: StandingRelateToManyInput
 }
 
 input ContestRelateToOneInput {
@@ -719,6 +766,13 @@ input ChoiceRelateToManyInput {
   disconnectAll: Boolean
 }
 
+input StandingRelateToManyInput {
+  create: [StandingCreateInput]
+  connect: [StandingWhereUniqueInput]
+  disconnect: [StandingWhereUniqueInput]
+  disconnectAll: Boolean
+}
+
 input LinesUpdateInput {
   id: ID!
   data: LineUpdateInput
@@ -731,10 +785,179 @@ input LineCreateInput {
   image: CloudImageRelateToOneInput
   contest: ContestRelateToOneInput
   choices: ChoiceRelateToManyInput
+  standings: StandingRelateToManyInput
 }
 
 input LinesCreateInput {
   data: LineCreateInput
+}
+
+"""
+ A keystone list
+"""
+type Registration {
+  id: ID!
+  hasPaid: Boolean
+  contest: Contest
+  user: User
+  counts: PointCounts
+}
+
+type PointCounts {
+  locked: Int
+  likely: Int
+  possible: Int
+}
+
+input RegistrationWhereInput {
+  AND: [RegistrationWhereInput!]
+  OR: [RegistrationWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  hasPaid: Boolean
+  hasPaid_not: Boolean
+  contest: ContestWhereInput
+  contest_is_null: Boolean
+  user: UserWhereInput
+  user_is_null: Boolean
+}
+
+input RegistrationWhereUniqueInput {
+  id: ID
+}
+
+enum SortRegistrationsBy {
+  id_ASC
+  id_DESC
+  hasPaid_ASC
+  hasPaid_DESC
+}
+
+input RegistrationOrderByInput {
+  id: OrderDirection
+  hasPaid: OrderDirection
+}
+
+input RegistrationUpdateInput {
+  hasPaid: Boolean
+  contest: ContestRelateToOneInput
+  user: UserRelateToOneInput
+}
+
+input RegistrationsUpdateInput {
+  id: ID!
+  data: RegistrationUpdateInput
+}
+
+input RegistrationCreateInput {
+  hasPaid: Boolean
+  contest: ContestRelateToOneInput
+  user: UserRelateToOneInput
+}
+
+input RegistrationsCreateInput {
+  data: RegistrationCreateInput
+}
+
+"""
+ A keystone list
+"""
+type Standing {
+  id: ID!
+  gamesPlayed: Int
+  wins: Int
+  totalGames: Int
+  line: Line
+}
+
+input StandingWhereInput {
+  AND: [StandingWhereInput!]
+  OR: [StandingWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  gamesPlayed: Int
+  gamesPlayed_not: Int
+  gamesPlayed_lt: Int
+  gamesPlayed_lte: Int
+  gamesPlayed_gt: Int
+  gamesPlayed_gte: Int
+  gamesPlayed_in: [Int]
+  gamesPlayed_not_in: [Int]
+  wins: Int
+  wins_not: Int
+  wins_lt: Int
+  wins_lte: Int
+  wins_gt: Int
+  wins_gte: Int
+  wins_in: [Int]
+  wins_not_in: [Int]
+  totalGames: Int
+  totalGames_not: Int
+  totalGames_lt: Int
+  totalGames_lte: Int
+  totalGames_gt: Int
+  totalGames_gte: Int
+  totalGames_in: [Int]
+  totalGames_not_in: [Int]
+  line: LineWhereInput
+  line_is_null: Boolean
+}
+
+input StandingWhereUniqueInput {
+  id: ID
+}
+
+enum SortStandingsBy {
+  id_ASC
+  id_DESC
+  gamesPlayed_ASC
+  gamesPlayed_DESC
+  wins_ASC
+  wins_DESC
+  totalGames_ASC
+  totalGames_DESC
+}
+
+input StandingOrderByInput {
+  id: OrderDirection
+  gamesPlayed: OrderDirection
+  wins: OrderDirection
+  totalGames: OrderDirection
+}
+
+input StandingUpdateInput {
+  gamesPlayed: Int
+  wins: Int
+  totalGames: Int
+  line: LineRelateToOneInput
+}
+
+input StandingsUpdateInput {
+  id: ID!
+  data: StandingUpdateInput
+}
+
+input StandingCreateInput {
+  gamesPlayed: Int
+  wins: Int
+  totalGames: Int
+  line: LineRelateToOneInput
+}
+
+input StandingsCreateInput {
+  data: StandingCreateInput
 }
 
 """
@@ -991,72 +1214,6 @@ input UsersCreateInput {
 }
 
 """
- A keystone list
-"""
-type Registration {
-  id: ID!
-  hasPaid: Boolean
-  contest: Contest
-  user: User
-}
-
-input RegistrationWhereInput {
-  AND: [RegistrationWhereInput!]
-  OR: [RegistrationWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  hasPaid: Boolean
-  hasPaid_not: Boolean
-  contest: ContestWhereInput
-  contest_is_null: Boolean
-  user: UserWhereInput
-  user_is_null: Boolean
-}
-
-input RegistrationWhereUniqueInput {
-  id: ID
-}
-
-enum SortRegistrationsBy {
-  id_ASC
-  id_DESC
-  hasPaid_ASC
-  hasPaid_DESC
-}
-
-input RegistrationOrderByInput {
-  id: OrderDirection
-  hasPaid: OrderDirection
-}
-
-input RegistrationUpdateInput {
-  hasPaid: Boolean
-  contest: ContestRelateToOneInput
-  user: UserRelateToOneInput
-}
-
-input RegistrationsUpdateInput {
-  id: ID!
-  data: RegistrationUpdateInput
-}
-
-input RegistrationCreateInput {
-  hasPaid: Boolean
-  contest: ContestRelateToOneInput
-  user: UserRelateToOneInput
-}
-
-input RegistrationsCreateInput {
-  data: RegistrationCreateInput
-}
-
-"""
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
 scalar JSON
@@ -1126,36 +1283,6 @@ type Mutation {
   deleteChoices(ids: [ID!]): [Choice]
 
   """
-   Create a single Contest item.
-  """
-  createContest(data: ContestCreateInput): Contest
-
-  """
-   Create multiple Contest items.
-  """
-  createContests(data: [ContestsCreateInput]): [Contest]
-
-  """
-   Update a single Contest item by ID.
-  """
-  updateContest(id: ID!, data: ContestUpdateInput): Contest
-
-  """
-   Update multiple Contest items by ID.
-  """
-  updateContests(data: [ContestsUpdateInput]): [Contest]
-
-  """
-   Delete a single Contest item by ID.
-  """
-  deleteContest(id: ID!): Contest
-
-  """
-   Delete multiple Contest items by ID.
-  """
-  deleteContests(ids: [ID!]): [Contest]
-
-  """
    Create a single CloudImage item.
   """
   createCloudImage(data: CloudImageCreateInput): CloudImage
@@ -1184,6 +1311,36 @@ type Mutation {
    Delete multiple CloudImage items by ID.
   """
   deleteCloudImages(ids: [ID!]): [CloudImage]
+
+  """
+   Create a single Contest item.
+  """
+  createContest(data: ContestCreateInput): Contest
+
+  """
+   Create multiple Contest items.
+  """
+  createContests(data: [ContestsCreateInput]): [Contest]
+
+  """
+   Update a single Contest item by ID.
+  """
+  updateContest(id: ID!, data: ContestUpdateInput): Contest
+
+  """
+   Update multiple Contest items by ID.
+  """
+  updateContests(data: [ContestsUpdateInput]): [Contest]
+
+  """
+   Delete a single Contest item by ID.
+  """
+  deleteContest(id: ID!): Contest
+
+  """
+   Delete multiple Contest items by ID.
+  """
+  deleteContests(ids: [ID!]): [Contest]
 
   """
    Create a single Line item.
@@ -1216,36 +1373,6 @@ type Mutation {
   deleteLines(ids: [ID!]): [Line]
 
   """
-   Create a single User item.
-  """
-  createUser(data: UserCreateInput): User
-
-  """
-   Create multiple User items.
-  """
-  createUsers(data: [UsersCreateInput]): [User]
-
-  """
-   Update a single User item by ID.
-  """
-  updateUser(id: ID!, data: UserUpdateInput): User
-
-  """
-   Update multiple User items by ID.
-  """
-  updateUsers(data: [UsersUpdateInput]): [User]
-
-  """
-   Delete a single User item by ID.
-  """
-  deleteUser(id: ID!): User
-
-  """
-   Delete multiple User items by ID.
-  """
-  deleteUsers(ids: [ID!]): [User]
-
-  """
    Create a single Registration item.
   """
   createRegistration(data: RegistrationCreateInput): Registration
@@ -1274,6 +1401,66 @@ type Mutation {
    Delete multiple Registration items by ID.
   """
   deleteRegistrations(ids: [ID!]): [Registration]
+
+  """
+   Create a single Standing item.
+  """
+  createStanding(data: StandingCreateInput): Standing
+
+  """
+   Create multiple Standing items.
+  """
+  createStandings(data: [StandingsCreateInput]): [Standing]
+
+  """
+   Update a single Standing item by ID.
+  """
+  updateStanding(id: ID!, data: StandingUpdateInput): Standing
+
+  """
+   Update multiple Standing items by ID.
+  """
+  updateStandings(data: [StandingsUpdateInput]): [Standing]
+
+  """
+   Delete a single Standing item by ID.
+  """
+  deleteStanding(id: ID!): Standing
+
+  """
+   Delete multiple Standing items by ID.
+  """
+  deleteStandings(ids: [ID!]): [Standing]
+
+  """
+   Create a single User item.
+  """
+  createUser(data: UserCreateInput): User
+
+  """
+   Create multiple User items.
+  """
+  createUsers(data: [UsersCreateInput]): [User]
+
+  """
+   Update a single User item by ID.
+  """
+  updateUser(id: ID!, data: UserUpdateInput): User
+
+  """
+   Update multiple User items by ID.
+  """
+  updateUsers(data: [UsersUpdateInput]): [User]
+
+  """
+   Delete a single User item by ID.
+  """
+  deleteUser(id: ID!): User
+
+  """
+   Delete multiple User items by ID.
+  """
+  deleteUsers(ids: [ID!]): [User]
   authenticateUserWithPassword(
     email: String!
     password: String!
@@ -1423,41 +1610,6 @@ type Query {
   choicesCount(where: ChoiceWhereInput! = {}): Int
 
   """
-   Search for all Contest items which match the where clause.
-  """
-  allContests(
-    where: ContestWhereInput! = {}
-    search: String
-    sortBy: [SortContestsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [ContestOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [Contest!]
-
-  """
-   Search for the Contest item with the matching ID.
-  """
-  Contest(where: ContestWhereUniqueInput!): Contest
-
-  """
-   Perform a meta-query on all Contest items which match the where clause.
-  """
-  _allContestsMeta(
-    where: ContestWhereInput! = {}
-    search: String
-    sortBy: [SortContestsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [ContestOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use contestsCount instead."
-    )
-  contestsCount(where: ContestWhereInput! = {}): Int
-
-  """
    Search for all CloudImage items which match the where clause.
   """
   allCloudImages(
@@ -1491,6 +1643,41 @@ type Query {
       reason: "This query will be removed in a future version. Please use cloudImagesCount instead."
     )
   cloudImagesCount(where: CloudImageWhereInput! = {}): Int
+
+  """
+   Search for all Contest items which match the where clause.
+  """
+  allContests(
+    where: ContestWhereInput! = {}
+    search: String
+    sortBy: [SortContestsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ContestOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Contest!]
+
+  """
+   Search for the Contest item with the matching ID.
+  """
+  Contest(where: ContestWhereUniqueInput!): Contest
+
+  """
+   Perform a meta-query on all Contest items which match the where clause.
+  """
+  _allContestsMeta(
+    where: ContestWhereInput! = {}
+    search: String
+    sortBy: [SortContestsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [ContestOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use contestsCount instead."
+    )
+  contestsCount(where: ContestWhereInput! = {}): Int
 
   """
    Search for all Line items which match the where clause.
@@ -1528,41 +1715,6 @@ type Query {
   linesCount(where: LineWhereInput! = {}): Int
 
   """
-   Search for all User items which match the where clause.
-  """
-  allUsers(
-    where: UserWhereInput! = {}
-    search: String
-    sortBy: [SortUsersBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [UserOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [User!]
-
-  """
-   Search for the User item with the matching ID.
-  """
-  User(where: UserWhereUniqueInput!): User
-
-  """
-   Perform a meta-query on all User items which match the where clause.
-  """
-  _allUsersMeta(
-    where: UserWhereInput! = {}
-    search: String
-    sortBy: [SortUsersBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [UserOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use usersCount instead."
-    )
-  usersCount(where: UserWhereInput! = {}): Int
-
-  """
    Search for all Registration items which match the where clause.
   """
   allRegistrations(
@@ -1596,6 +1748,76 @@ type Query {
       reason: "This query will be removed in a future version. Please use registrationsCount instead."
     )
   registrationsCount(where: RegistrationWhereInput! = {}): Int
+
+  """
+   Search for all Standing items which match the where clause.
+  """
+  allStandings(
+    where: StandingWhereInput! = {}
+    search: String
+    sortBy: [SortStandingsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [Standing!]
+
+  """
+   Search for the Standing item with the matching ID.
+  """
+  Standing(where: StandingWhereUniqueInput!): Standing
+
+  """
+   Perform a meta-query on all Standing items which match the where clause.
+  """
+  _allStandingsMeta(
+    where: StandingWhereInput! = {}
+    search: String
+    sortBy: [SortStandingsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [StandingOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use standingsCount instead."
+    )
+  standingsCount(where: StandingWhereInput! = {}): Int
+
+  """
+   Search for all User items which match the where clause.
+  """
+  allUsers(
+    where: UserWhereInput! = {}
+    search: String
+    sortBy: [SortUsersBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [UserOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [User!]
+
+  """
+   Search for the User item with the matching ID.
+  """
+  User(where: UserWhereUniqueInput!): User
+
+  """
+   Perform a meta-query on all User items which match the where clause.
+  """
+  _allUsersMeta(
+    where: UserWhereInput! = {}
+    search: String
+    sortBy: [SortUsersBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [UserOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use usersCount instead."
+    )
+  usersCount(where: UserWhereInput! = {}): Int
   authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(
     email: String!

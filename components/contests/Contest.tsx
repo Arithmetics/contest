@@ -59,7 +59,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
       return <RulesTab />;
     }
     if (typedContestNav === ContestTabs.TRACKER) {
-      return <TrackerTab />;
+      return <TrackerTab contest={contest} />;
     }
     if (typedContestNav === ContestTabs.HISTORY) {
       return <HistoryTab />;
