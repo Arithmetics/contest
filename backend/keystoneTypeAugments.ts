@@ -74,6 +74,14 @@ export async function canReadBet(accessArgs: AugListAccessArgs): Promise<boolean
   const userId = session?.data?.id;
   const now = new Date().toISOString();
 
+  if (!userId) {
+    return {
+      choice: {
+        line: { closingTime_lt: now },
+      },
+    };
+  }
+
   // owns bet OR line is closed
   const betOwnerOrLineClosed: BetWhereInput = {
     OR: [

@@ -20,9 +20,8 @@ type ContestProps = {
 export default function ContestUI({ id }: ContestProps): JSX.Element {
   const router = useRouter();
   const { contestNav } = router.query;
-  const typedContestNav = contestNav as ContestTabs;
+  const typedContestNav = contestNav as ContestTabs | undefined;
 
-  // data
   const { data, loading } = useContestByIdQuery({
     variables: {
       id: id || '',
@@ -49,7 +48,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
 
   const activeTab = (): JSX.Element | undefined => {
     const contest = data.Contest as Contest;
-    if (typedContestNav === ContestTabs.BETS) {
+    if (!typedContestNav || typedContestNav === ContestTabs.BETS) {
       return <BetsTab contest={contest} user={userData?.authenticatedItem as User} />;
     }
     if (typedContestNav === ContestTabs.LEADERBOARD) {

@@ -2,12 +2,24 @@ import { Box, Stat, StatLabel, StatNumber, Avatar, HStack } from '@chakra-ui/rea
 import { BsLightning } from 'react-icons/bs';
 import { RiCoinLine } from 'react-icons/ri';
 import { AiOutlineOrderedList } from 'react-icons/ai';
+import { Contest, User } from '../../generated/graphql-types';
 
-export default function BetStatusLine(): JSX.Element {
+type BetStatusLineProps = {
+  contest?: Contest;
+  user?: User;
+};
+
+export default function BetStatusLine({ contest, user }: BetStatusLineProps): JSX.Element {
+  console.log(contest, user);
+  const betsLeft = (contest?.ruleSet?.maxBets || 0) - (user?.betsCount || 0);
   return (
     <Box overflow="hidden" m={6}>
       <HStack alignItems="center" justifyContent="center">
-        <StatusCard icon={<RiCoinLine fontSize="1.5rem" />} statLabel="Bets Left" statNumber="3" />
+        <StatusCard
+          icon={<RiCoinLine fontSize="1.5rem" />}
+          statLabel="Bets Left"
+          statNumber={betsLeft.toString()}
+        />
         <StatusCard
           icon={<BsLightning fontSize="1.5rem" />}
           statLabel="Super Bets Left"

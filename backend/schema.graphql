@@ -407,6 +407,7 @@ type Contest {
       reason: "This query will be removed in a future version. Please use registrationsCount instead."
     )
   registrationsCount(where: RegistrationWhereInput! = {}): Int
+  ruleSet: RuleSet
 }
 
 enum ContestStatusType {
@@ -506,6 +507,8 @@ input ContestWhereInput {
    condition must be false for all nodes
   """
   registrations_none: RegistrationWhereInput
+  ruleSet: RuleSetWhereInput
+  ruleSet_is_null: Boolean
 }
 
 input ContestWhereUniqueInput {
@@ -541,6 +544,7 @@ input ContestUpdateInput {
   image: CloudImageRelateToOneInput
   lines: LineRelateToManyInput
   registrations: RegistrationRelateToManyInput
+  ruleSet: RuleSetRelateToOneInput
 }
 
 input CloudImageRelateToOneInput {
@@ -564,6 +568,13 @@ input RegistrationRelateToManyInput {
   disconnectAll: Boolean
 }
 
+input RuleSetRelateToOneInput {
+  create: RuleSetCreateInput
+  connect: RuleSetWhereUniqueInput
+  disconnect: RuleSetWhereUniqueInput
+  disconnectAll: Boolean
+}
+
 input ContestsUpdateInput {
   id: ID!
   data: ContestUpdateInput
@@ -577,6 +588,7 @@ input ContestCreateInput {
   image: CloudImageRelateToOneInput
   lines: LineRelateToManyInput
   registrations: RegistrationRelateToManyInput
+  ruleSet: RuleSetRelateToOneInput
 }
 
 input ContestsCreateInput {
@@ -863,6 +875,101 @@ input RegistrationCreateInput {
 
 input RegistrationsCreateInput {
   data: RegistrationCreateInput
+}
+
+"""
+ A keystone list
+"""
+type RuleSet {
+  id: ID!
+  maxBets: Int
+  maxSuperBets: Int
+  superBetPointCount: Int
+  contest: Contest
+}
+
+input RuleSetWhereInput {
+  AND: [RuleSetWhereInput!]
+  OR: [RuleSetWhereInput!]
+  id: ID
+  id_not: ID
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  maxBets: Int
+  maxBets_not: Int
+  maxBets_lt: Int
+  maxBets_lte: Int
+  maxBets_gt: Int
+  maxBets_gte: Int
+  maxBets_in: [Int]
+  maxBets_not_in: [Int]
+  maxSuperBets: Int
+  maxSuperBets_not: Int
+  maxSuperBets_lt: Int
+  maxSuperBets_lte: Int
+  maxSuperBets_gt: Int
+  maxSuperBets_gte: Int
+  maxSuperBets_in: [Int]
+  maxSuperBets_not_in: [Int]
+  superBetPointCount: Int
+  superBetPointCount_not: Int
+  superBetPointCount_lt: Int
+  superBetPointCount_lte: Int
+  superBetPointCount_gt: Int
+  superBetPointCount_gte: Int
+  superBetPointCount_in: [Int]
+  superBetPointCount_not_in: [Int]
+  contest: ContestWhereInput
+  contest_is_null: Boolean
+}
+
+input RuleSetWhereUniqueInput {
+  id: ID
+}
+
+enum SortRuleSetsBy {
+  id_ASC
+  id_DESC
+  maxBets_ASC
+  maxBets_DESC
+  maxSuperBets_ASC
+  maxSuperBets_DESC
+  superBetPointCount_ASC
+  superBetPointCount_DESC
+}
+
+input RuleSetOrderByInput {
+  id: OrderDirection
+  maxBets: OrderDirection
+  maxSuperBets: OrderDirection
+  superBetPointCount: OrderDirection
+}
+
+input RuleSetUpdateInput {
+  maxBets: Int
+  maxSuperBets: Int
+  superBetPointCount: Int
+  contest: ContestRelateToOneInput
+}
+
+input RuleSetsUpdateInput {
+  id: ID!
+  data: RuleSetUpdateInput
+}
+
+input RuleSetCreateInput {
+  maxBets: Int
+  maxSuperBets: Int
+  superBetPointCount: Int
+  contest: ContestRelateToOneInput
+}
+
+input RuleSetsCreateInput {
+  data: RuleSetCreateInput
 }
 
 """
@@ -1403,6 +1510,36 @@ type Mutation {
   deleteRegistrations(ids: [ID!]): [Registration]
 
   """
+   Create a single RuleSet item.
+  """
+  createRuleSet(data: RuleSetCreateInput): RuleSet
+
+  """
+   Create multiple RuleSet items.
+  """
+  createRuleSets(data: [RuleSetsCreateInput]): [RuleSet]
+
+  """
+   Update a single RuleSet item by ID.
+  """
+  updateRuleSet(id: ID!, data: RuleSetUpdateInput): RuleSet
+
+  """
+   Update multiple RuleSet items by ID.
+  """
+  updateRuleSets(data: [RuleSetsUpdateInput]): [RuleSet]
+
+  """
+   Delete a single RuleSet item by ID.
+  """
+  deleteRuleSet(id: ID!): RuleSet
+
+  """
+   Delete multiple RuleSet items by ID.
+  """
+  deleteRuleSets(ids: [ID!]): [RuleSet]
+
+  """
    Create a single Standing item.
   """
   createStanding(data: StandingCreateInput): Standing
@@ -1748,6 +1885,41 @@ type Query {
       reason: "This query will be removed in a future version. Please use registrationsCount instead."
     )
   registrationsCount(where: RegistrationWhereInput! = {}): Int
+
+  """
+   Search for all RuleSet items which match the where clause.
+  """
+  allRuleSets(
+    where: RuleSetWhereInput! = {}
+    search: String
+    sortBy: [SortRuleSetsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RuleSetOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): [RuleSet!]
+
+  """
+   Search for the RuleSet item with the matching ID.
+  """
+  RuleSet(where: RuleSetWhereUniqueInput!): RuleSet
+
+  """
+   Perform a meta-query on all RuleSet items which match the where clause.
+  """
+  _allRuleSetsMeta(
+    where: RuleSetWhereInput! = {}
+    search: String
+    sortBy: [SortRuleSetsBy!]
+      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
+    orderBy: [RuleSetOrderByInput!]! = []
+    first: Int
+    skip: Int! = 0
+  ): _QueryMeta
+    @deprecated(
+      reason: "This query will be removed in a future version. Please use ruleSetsCount instead."
+    )
+  ruleSetsCount(where: RuleSetWhereInput! = {}): Int
 
   """
    Search for all Standing items which match the where clause.

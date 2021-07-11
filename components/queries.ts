@@ -58,6 +58,11 @@ export const CONTEST_BY_ID_QUERY = gql`
       description
       status
       entryFee
+      ruleSet {
+        maxBets
+        maxSuperBets
+        superBetPointCount
+      }
       lines {
         id
         benchmark

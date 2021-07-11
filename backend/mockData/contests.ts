@@ -8,6 +8,13 @@ export const contests: ContestCreateInput[] = [
     description: 'Pick over under team totals',
     status: 'OPEN',
     entryFee: 25,
+    ruleSet: {
+      create: {
+        maxBets: 10,
+        maxSuperBets: 5,
+        superBetPointCount: 2,
+      },
+    },
     lines: {
       create: [
         // open
@@ -69,6 +76,13 @@ export const contests: ContestCreateInput[] = [
     description: 'Pick over under team totals',
     status: 'COMPLETE',
     entryFee: 25,
+    ruleSet: {
+      create: {
+        maxBets: 10,
+        maxSuperBets: 5,
+        superBetPointCount: 2,
+      },
+    },
     lines: {
       create: [
         {

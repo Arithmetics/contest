@@ -10,9 +10,10 @@ import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
 import { CloudImage } from './schemas/CloudImage';
 import { Line } from './schemas/Line';
-import { Choice } from './schemas/Choices';
+import { Choice } from './schemas/Choice';
 import { Bet } from './schemas/Bet';
 import { Registration } from './schemas/Registration';
+import { RuleSet } from './schemas/RuleSet';
 import { Standing } from './schemas/Standing';
 
 let sessionSecret = process.env.SESSION_SECRET;
@@ -77,6 +78,7 @@ export default auth.withAuth(
       Contest,
       Line,
       Registration,
+      RuleSet,
       Standing,
       User,
     }),
