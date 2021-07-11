@@ -27,8 +27,12 @@ export const Bet = list({
 
       const session = context.session as AugKeystoneSession;
 
+      if (session.data.isAdmin) {
+        return;
+      }
+
       const requestedChoice = await lists.Choice.findOne({
-        where: { id: resolvedData.choice },
+        where: { id: resolvedData.choice.connect.id },
         query: graphql`
             id
             line {

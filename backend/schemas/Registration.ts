@@ -105,13 +105,17 @@ export const Registration = list({
 
       const session = context.session as AugKeystoneSession;
 
+      if (session.data.isAdmin) {
+        return;
+      }
+
       // RULE: only can create for yourself
-      if (resolvedData.user !== session.data?.id) {
+      if (resolvedData.user !== session?.data?.id) {
         addValidationError('Can only create registration for own account');
       }
 
       const requestedContest = await lists.Contest.findOne({
-        where: { id: resolvedData.contest },
+        where: { id: resolvedData.contest.connect.id },
         query: graphql`
             id
             status
@@ -124,7 +128,10 @@ export const Registration = list({
 
       // RULE: only one registration per user per contest
       const duplicateRegistrations = await lists.Registration.findMany({
-        where: { contest: { id: resolvedData.contest }, user: { id: session.data?.id } },
+        where: {
+          contest: { id: resolvedData.contest.connect.id },
+          user: { id: session?.data?.id },
+        },
         query: graphql`
             id
           `,
@@ -141,12 +148,16 @@ export const Registration = list({
 
       const session = context.session as AugKeystoneSession;
 
+      if (session.data.isAdmin) {
+        return;
+      }
+
       if (existingItem.userId.toString() !== session.data?.id) {
         addValidationError('Can only delete your own contest');
       }
 
       const requestedContest = await lists.Contest.findOne({
-        where: { id: existingItem.contestId },
+        where: { id: existingItem.contestId.connect.id },
         query: graphql`
             id
             status

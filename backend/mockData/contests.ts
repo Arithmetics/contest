@@ -1,94 +1,6 @@
-import {
-  ChoiceCreateInput,
-  ContestCreateInput,
-  StandingCreateInput,
-  UserCreateInput,
-} from '.keystone/types';
-
-const defaultOverUnderSelections: ChoiceCreateInput[] = [
-  {
-    selection: 'OVER',
-    isWin: false,
-  },
-  {
-    selection: 'UNDER',
-    isWin: false,
-  },
-];
-
-const overWinningOverUnderSelections: ChoiceCreateInput[] = [
-  {
-    selection: 'OVER',
-    isWin: true,
-  },
-  {
-    selection: 'UNDER',
-    isWin: false,
-  },
-];
-
-const standingsSetA: StandingCreateInput[] = [
-  {
-    gamesPlayed: 1,
-    wins: 1,
-    totalGames: 17,
-  },
-  {
-    gamesPlayed: 2,
-    wins: 1,
-    totalGames: 17,
-  },
-  {
-    gamesPlayed: 3,
-    wins: 2,
-    totalGames: 17,
-  },
-  {
-    gamesPlayed: 4,
-    wins: 3,
-    totalGames: 17,
-  },
-];
-
-const standingsSetB: StandingCreateInput[] = [
-  {
-    gamesPlayed: 1,
-    wins: 0,
-    totalGames: 17,
-  },
-  {
-    gamesPlayed: 2,
-    wins: 1,
-    totalGames: 17,
-  },
-  {
-    gamesPlayed: 3,
-    wins: 1,
-    totalGames: 17,
-  },
-  {
-    gamesPlayed: 4,
-    wins: 2,
-    totalGames: 17,
-  },
-];
-
-export const users: UserCreateInput[] = [
-  {
-    email: 'brock.m.tillotson@gmail.com',
-    name: 'brock t',
-    userName: 'arithmetics',
-    password: 'password',
-    isAdmin: true,
-  },
-  {
-    email: 'yo@yo.com',
-    name: 'yo yo',
-    userName: 'yoyoyoy',
-    password: 'password',
-    isAdmin: false,
-  },
-];
+import { ContestCreateInput } from '.keystone/types';
+import { standingsSetA, standingsSetB, standingsSetC } from './standings';
+import { defaultOverUnderSelections, overWinningOverUnderSelections } from './choices';
 
 export const contests: ContestCreateInput[] = [
   {
@@ -179,6 +91,17 @@ export const contests: ContestCreateInput[] = [
           },
           standings: {
             create: [...standingsSetB],
+          },
+        },
+        {
+          title: 'Los Angeles Rams',
+          closingTime: '2020-09-01T00:00:00.000Z',
+          benchmark: 2.5,
+          choices: {
+            create: [...defaultOverUnderSelections],
+          },
+          standings: {
+            create: [...standingsSetC],
           },
         },
       ],
