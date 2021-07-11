@@ -21,11 +21,13 @@ type LeaderboardTabProps = {
 export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.Element {
   const { data, loading } = useLeaderboardQuery({ variables: { contestId: contest?.id || '' } });
 
-  const sortedLeaderboard = data?.allRegistrations?.sort((a, b) => {
+  const unfroze = data?.allRegistrations;
+
+  const sortedLeaderboard = [...(unfroze || [])].sort((a, b) => {
     if ((a.counts?.likely || 0) > (b.counts?.likely || 0)) {
-      return 1;
+      return -1;
     }
-    return -1;
+    return 1;
   });
 
   if (loading) {

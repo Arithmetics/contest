@@ -127,22 +127,24 @@ function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
             return (
               <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
                 <Text paddingBottom={1}>{ChoiceSelectionType.Over} Bets</Text>
-                {choice.bets?.map((bet) => {
-                  return (
-                    <Box key={bet.user?.id}>
-                      <Tooltip label={bet.user?.userName}>
-                        <Avatar
-                          size="sm"
-                          name={bet.user?.userName || ''}
-                          src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
-                        >
-                          {/* for super bets */}
-                          <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize="1.25em" />
-                        </Avatar>
-                      </Tooltip>
-                    </Box>
-                  );
-                })}
+                <Box display={'flex'} flexWrap={'wrap'}>
+                  {choice.bets?.map((bet) => {
+                    return (
+                      <Box key={bet.user?.id}>
+                        <Tooltip label={bet.user?.userName}>
+                          <Avatar
+                            size="sm"
+                            name={bet.user?.userName || ''}
+                            src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
+                          >
+                            {/* for super bets */}
+                            <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize="1.25em" />
+                          </Avatar>
+                        </Tooltip>
+                      </Box>
+                    );
+                  })}
+                </Box>
               </Box>
             );
           })}
@@ -152,22 +154,24 @@ function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
             return (
               <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
                 <Text paddingBottom={1}>{ChoiceSelectionType.Under} Bets</Text>
-                {choice.bets?.map((bet) => {
-                  return (
-                    <Box key={bet.user?.id}>
-                      <Tooltip label={bet.user?.userName}>
-                        <Avatar
-                          size="sm"
-                          name={bet.user?.userName || ''}
-                          src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
-                        >
-                          {/* for super bets */}
-                          <AvatarBadge borderColor="papayawhip" bg={'teal.500'} boxSize="1.25em" />
-                        </Avatar>
-                      </Tooltip>
-                    </Box>
-                  );
-                })}
+                <Box display={'flex'} flexWrap={'wrap'}>
+                  {choice.bets?.map((bet) => {
+                    return (
+                      <Box key={bet.user?.id}>
+                        <Tooltip label={bet.user?.userName}>
+                          <Avatar
+                            size="sm"
+                            name={bet.user?.userName || ''}
+                            src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
+                          >
+                            {/* for super bets */}
+                            <AvatarBadge bg={'teal.500'} boxSize="1.25em" />
+                          </Avatar>
+                        </Tooltip>
+                      </Box>
+                    );
+                  })}
+                </Box>
               </Box>
             );
           })}

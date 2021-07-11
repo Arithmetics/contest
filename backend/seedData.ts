@@ -4,7 +4,13 @@ import { contests } from './mockData/contests';
 import { users } from './mockData/users';
 // import { generaterateRegistrations } from './mockData/registrations';
 
-import { User, Contest } from '../generated/graphql-types';
+import {
+  User,
+  Contest,
+  BetCreateInput,
+  Choice,
+  ChoiceSelectionType,
+} from '../generated/graphql-types';
 
 export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<void> {
   const lists = keyStoneContext
@@ -95,6 +101,54 @@ export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<
   });
   console.log(`✏️ Inserted Seed Data: 4 Registrations`);
 
+  // BETS PROGRAMATIC CREATE
+  const nfl2020 = allCreatedContests[1];
+  const graphql = String.raw;
+  const nfl2020Choices = (await lists.Choice.findMany({
+    where: { line: { contest: { id: nfl2020.id } } },
+    query: graphql`
+      id
+      selection
+    `,
+  })) as Choice[];
+
+  const betsToMake: { data: BetCreateInput }[] = [];
+
+  nfl2020Choices.forEach((choice) => {
+    if (choice.selection === ChoiceSelectionType.Over) {
+      betsToMake.push({
+        data: {
+          user: { connect: { id: createdUsers[0].id } },
+          choice: { connect: { id: choice.id } },
+        },
+      });
+      betsToMake.push({
+        data: {
+          user: { connect: { id: createdUsers[1].id } },
+          choice: { connect: { id: choice.id } },
+        },
+      });
+    }
+    if (choice.selection === ChoiceSelectionType.Under) {
+      betsToMake.push({
+        data: {
+          user: { connect: { id: createdUsers[2].id } },
+          choice: { connect: { id: choice.id } },
+        },
+      });
+      betsToMake.push({
+        data: {
+          user: { connect: { id: createdUsers[3].id } },
+          choice: { connect: { id: choice.id } },
+        },
+      });
+    }
+  });
+  console.log('doing bets');
+  await lists.Bet.createMany({
+    data: betsToMake,
+  });
+  console.log('bets done');
   console.log(`👋 Please start the process with \`npm run dev\``);
   process.exit();
 }
