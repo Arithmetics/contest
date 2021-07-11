@@ -120,67 +120,23 @@ function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
       <Box height={'300px'} width={'100%'}>
         <TrackerGraph data={prepareLineStandingsForGraph(line as Line)} />
       </Box>
-      <Flex justifyContent={'center'}>
-        {line?.choices
-          ?.filter((c) => c.selection === ChoiceSelectionType.Over)
-          .map((choice) => {
-            return (
-              <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
-                <Text paddingBottom={1}>{ChoiceSelectionType.Over} Bets</Text>
-                <Box display={'flex'} flexWrap={'wrap'}>
-                  {choice.bets?.map((bet) => {
-                    return (
-                      <Box key={bet.user?.id}>
-                        <Tooltip label={bet.user?.userName}>
-                          <Avatar
-                            size="sm"
-                            name={bet.user?.userName || ''}
-                            src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
-                          >
-                            {/* for super bets */}
-                            <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize="1.25em" />
-                          </Avatar>
-                        </Tooltip>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </Box>
-            );
-          })}
-        {line?.choices
-          ?.filter((c) => c.selection === ChoiceSelectionType.Under)
-          .map((choice) => {
-            return (
-              <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
-                <Text paddingBottom={1}>{ChoiceSelectionType.Under} Bets</Text>
-                <Box display={'flex'} flexWrap={'wrap'}>
-                  {choice.bets?.map((bet) => {
-                    return (
-                      <Box key={bet.user?.id}>
-                        <Tooltip label={bet.user?.userName}>
-                          <Avatar
-                            size="sm"
-                            name={bet.user?.userName || ''}
-                            src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
-                          >
-                            {/* for super bets */}
-                            <AvatarBadge bg={'teal.500'} boxSize="1.25em" />
-                          </Avatar>
-                        </Tooltip>
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </Box>
-            );
-          })}
+      <Divider orientation="horizontal" paddingY={2} />
+      <Flex justifyContent={'center'} marginTop={2}>
+        <UserBetGroup line={line} choiceType={ChoiceSelectionType.Over} />
+        <UserBetGroup line={line} choiceType={ChoiceSelectionType.Under} />
       </Flex>
     </Box>
   );
 }
 
 function WinsLossesLeftSection({ line }: GenericLineProps): JSX.Element {
+  if (!line?.standings || line.standings.length === 0) {
+    return (
+      <Box>
+        <Text>Not Started</Text>
+      </Box>
+    );
+  }
   const winsNeeded = winsForOver(line);
   const lossesNeeded = lossesForUnder(line);
 
@@ -200,8 +156,52 @@ function WinsLossesLeftSection({ line }: GenericLineProps): JSX.Element {
   }
   return (
     <Box>
-      <Text>{winsNeeded} wins to lock OVER</Text>
-      <Text>{lossesNeeded} more losses to lock UNDER</Text>
+      <Text>
+        {winsNeeded} {winsNeeded === 1 ? 'win' : 'wins'} from OVER
+      </Text>
+      <Text>
+        {lossesNeeded} more {lossesNeeded === 1 ? 'loss' : 'losses'} from UNDER
+      </Text>
     </Box>
+  );
+}
+
+type UserBetGroupProps = {
+  line?: Line;
+  choiceType: ChoiceSelectionType;
+};
+
+function UserBetGroup({ line, choiceType }: UserBetGroupProps): JSX.Element {
+  return (
+    <>
+      {line?.choices
+        ?.filter((c) => c.selection === choiceType)
+        .map((choice) => {
+          return (
+            <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
+              <Text paddingBottom={1}>{choiceType} Bets</Text>
+              <Box display={'flex'} flexWrap={'wrap'}>
+                {!choice.bets || choice.bets?.length === 0 ? <Text>---</Text> : undefined}
+                {choice.bets?.map((bet) => {
+                  return (
+                    <Box key={bet.user?.id} marginX={1}>
+                      <Tooltip label={bet.user?.userName}>
+                        <Avatar
+                          size="sm"
+                          name={bet.user?.userName || ''}
+                          src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
+                        >
+                          {/* for super bets */}
+                          <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize="1.25em" />
+                        </Avatar>
+                      </Tooltip>
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Box>
+          );
+        })}{' '}
+    </>
   );
 }

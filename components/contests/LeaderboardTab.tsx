@@ -12,7 +12,8 @@ import {
   Box,
   Spinner,
 } from '@chakra-ui/react';
-import { Contest, useLeaderboardQuery } from '../../generated/graphql-types';
+import { firstBy } from 'thenby';
+import { Contest, useLeaderboardQuery, Registration } from '../../generated/graphql-types';
 
 type LeaderboardTabProps = {
   contest?: Contest;
@@ -23,12 +24,11 @@ export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.El
 
   const unfroze = data?.allRegistrations;
 
-  const sortedLeaderboard = [...(unfroze || [])].sort((a, b) => {
-    if ((a.counts?.likely || 0) > (b.counts?.likely || 0)) {
-      return -1;
-    }
-    return 1;
-  });
+  const sortedLeaderboard = [...(unfroze || [])].sort(
+    firstBy<Registration>((a, b) => (b.counts?.likely || 0) - (a.counts?.likely || 0))
+      .thenBy<Registration>((a, b) => (b.counts?.locked || 0) - (a.counts?.locked || 0))
+      .thenBy<Registration>((a, b) => (b.counts?.possible || 0) - (a.counts?.possible || 0))
+  );
 
   if (loading) {
     return (

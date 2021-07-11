@@ -87,7 +87,7 @@ export const Choice = list({
           }
 
           // LOST if selected UNDER and wins + gamesRemaining less than loss benchmark
-          if (item.selection === 'OVER' && losses + gamesRemaining < lossBenchmark) {
+          if (item.selection === 'UNDER' && losses + gamesRemaining < lossBenchmark) {
             return ChoiceStatus.Lost;
           }
 
