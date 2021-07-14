@@ -16,6 +16,7 @@ import {
   ColorProps,
   StatHelpText,
   StatArrow,
+  Badge,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -104,6 +105,10 @@ export default function LineCard({
 
   const lineClosed = hasLineClosed(line);
   const winningChoice = line.choices?.find((c) => c.isWin);
+  const losingChoice = line.choices?.find((c) => !c.isWin);
+
+  const winningBetCount = winningChoice?.bets?.length || 0;
+  const losingBetCount = losingChoice?.bets?.length || 0;
 
   const pickAvailable = !usersBetsLoading && betsRemaining(usersBetsData?.allBets, ruleSet) > 0;
   const superPickAvailable =
@@ -198,38 +203,81 @@ export default function LineCard({
       </HStack>
       <Divider orientation="horizontal" paddingTop={3} />
       <Stack spacing={0} align={'left'} paddingTop={3}>
-        <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
-          <HStack justifyContent="center" spacing={6}>
-            {line.choices?.map((choice) => {
-              return (
-                <Radio
-                  key={choice.id}
-                  value={choice.id}
-                  disabled={formDisabled}
-                  colorScheme="teal"
-                  size="lg"
-                >
-                  <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
-                </Radio>
-              );
-            })}
-          </HStack>
-          <Center>
-            <Checkbox
-              onChange={() => setSuperBetSelected(!superBetSelected)}
-              isChecked={superBetSelected}
-              marginTop={4}
-              isDisabled={formDisabled || !superPickAvailable}
-              colorScheme="teal"
-              size="lg"
-            >
-              Super Pick
-            </Checkbox>
-          </Center>
-        </RadioGroup>
+        {/* Form starts here */}
+        {!lineClosed && (
+          <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
+            <HStack justifyContent="center" spacing={6}>
+              {line.choices?.map((choice) => {
+                return (
+                  <Radio
+                    key={choice.id}
+                    value={choice.id}
+                    disabled={formDisabled}
+                    colorScheme="teal"
+                    size="lg"
+                  >
+                    <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
+                  </Radio>
+                );
+              })}
+            </HStack>
+            <Center>
+              <Checkbox
+                onChange={() => setSuperBetSelected(!superBetSelected)}
+                isChecked={superBetSelected}
+                marginTop={4}
+                isDisabled={formDisabled || !superPickAvailable}
+                colorScheme="teal"
+                size="lg"
+              >
+                Super Pick
+              </Checkbox>
+            </Center>
+          </RadioGroup>
+        )}
+        {lineClosed && (
+          <>
+            <Center>
+              {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
+              {usersBet && (
+                <HStack>
+                  <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
+                  <Text fontSize="2xl">{selectedChoice?.selection}</Text>
+                </HStack>
+              )}
+              {superBetSelected && (
+                <Badge marginLeft={2} colorScheme="purple">
+                  Super Bet
+                </Badge>
+              )}
+            </Center>
+
+            {lineHasWinner(line) && (
+              <>
+                {usersBet && (
+                  <Center>
+                    <HStack>
+                      <Text color={'whiteAlpha.600'}>Your result:</Text>
+                      {selectedChoice?.isWin ? (
+                        <Badge marginLeft={2} colorScheme="green">
+                          Win
+                        </Badge>
+                      ) : (
+                        <Badge marginLeft={2} colorScheme="red">
+                          Loss
+                        </Badge>
+                      )}
+                    </HStack>
+                  </Center>
+                )}
+              </>
+            )}
+          </>
+        )}
+        {/* Footer starts here */}
+        <Divider orientation="horizontal" paddingTop={3} />
         {userHasEntered && !lineClosed && (
           <>
-            <Divider orientation="horizontal" paddingTop={3} />
             <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
               {!selectedChoice ? (
                 <Button
@@ -252,7 +300,7 @@ export default function LineCard({
                   onClick={onClickDeleteBet}
                   disabled={deleteBetLoading}
                   isLoading={deleteBetLoading}
-                  // flexGrow={1}
+                  // flexGrow
                   variant="outline"
                   bg="red.500"
                   color={'white'}
@@ -269,7 +317,6 @@ export default function LineCard({
         )}
         {lineClosed && !winningChoice && (
           <>
-            <Divider orientation="horizontal" paddingTop={3} />
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
                 <StatLabel>Bet Volume</StatLabel>
@@ -284,20 +331,19 @@ export default function LineCard({
         )}
         {lineClosed && winningChoice && (
           <>
-            <Divider orientation="horizontal" paddingTop={3} />
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
                 <StatLabel>Correct Bet Volume</StatLabel>
                 <StatNumber>
                   <StatArrow type="increase" />
-                  44
+                  {winningBetCount}
                 </StatNumber>
               </Stat>
               <Stat textAlign="center">
                 <StatLabel>Incorrect Bet Volume</StatLabel>
                 <StatNumber>
                   <StatArrow type="decrease" />
-                  22
+                  {losingBetCount}
                 </StatNumber>
               </Stat>
             </HStack>
