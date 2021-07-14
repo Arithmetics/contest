@@ -120,12 +120,14 @@ export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<
         data: {
           user: { connect: { id: createdUsers[0].id } },
           choice: { connect: { id: choice.id } },
+          isSuper: false,
         },
       });
       betsToMake.push({
         data: {
           user: { connect: { id: createdUsers[1].id } },
           choice: { connect: { id: choice.id } },
+          isSuper: false,
         },
       });
     }
@@ -134,12 +136,14 @@ export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<
         data: {
           user: { connect: { id: createdUsers[2].id } },
           choice: { connect: { id: choice.id } },
+          isSuper: false,
         },
       });
       betsToMake.push({
         data: {
           user: { connect: { id: createdUsers[3].id } },
           choice: { connect: { id: choice.id } },
+          isSuper: false,
         },
       });
     }

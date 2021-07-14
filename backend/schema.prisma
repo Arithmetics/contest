@@ -9,11 +9,12 @@ generator client {
 }
 
 model Bet {
-  id       String  @id @default(cuid())
-  user     User?   @relation("Bet_user", fields: [userId], references: [id])
-  userId   String? @map("user")
-  choice   Choice? @relation("Bet_choice", fields: [choiceId], references: [id])
-  choiceId String? @map("choice")
+  id       String   @id @default(cuid())
+  user     User?    @relation("Bet_user", fields: [userId], references: [id])
+  userId   String?  @map("user")
+  choice   Choice?  @relation("Bet_choice", fields: [choiceId], references: [id])
+  choiceId String?  @map("choice")
+  isSuper  Boolean?
 
   @@index([userId])
   @@index([choiceId])
@@ -49,6 +50,8 @@ model Contest {
   imageId       String?            @map("image")
   lines         Line[]             @relation("Line_contest")
   registrations Registration[]     @relation("Registration_contest")
+  ruleSet       RuleSet?           @relation("Contest_ruleSet", fields: [ruleSetId], references: [id])
+  ruleSetId     String?            @unique @map("ruleSet")
 
   @@index([imageId])
 }
@@ -79,6 +82,14 @@ model Registration {
 
   @@index([contestId])
   @@index([userId])
+}
+
+model RuleSet {
+  id                 String   @id @default(cuid())
+  maxBets            Int?
+  maxSuperBets       Int?
+  superBetPointCount Int?
+  contest            Contest? @relation("Contest_ruleSet")
 }
 
 model Standing {

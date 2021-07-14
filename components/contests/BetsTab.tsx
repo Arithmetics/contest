@@ -6,12 +6,18 @@ import {
   Heading,
   Text,
   Center,
+  Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
-
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
 import BetsStatusLine from './BetsStatusLine';
-import { Line, Contest, User } from '../../generated/graphql-types';
+import {
+  Line,
+  Contest,
+  User,
+  useContestByIdQuery,
+  useCurrentUserQuery,
+} from '../../generated/graphql-types';
 
 export enum ContestTabs {
   BETS = 'bets',
@@ -22,11 +28,10 @@ export enum ContestTabs {
 }
 
 type BetsTabProps = {
-  contest?: Contest;
-  user?: User;
+  contestId?: string;
 };
 
-export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
+export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const { isOpen: isAvailableOpen, onToggle: onAvailableToggle } = useDisclosure({
     defaultIsOpen: true,
   });
@@ -37,7 +42,25 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
     defaultIsOpen: true,
   });
 
-  const lines = contest?.lines;
+  const { data: contestData, loading: getContestLoading } = useContestByIdQuery({
+    variables: {
+      id: contestId || '',
+    },
+  });
+
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
+
+  const contest = contestData?.Contest as Contest | undefined;
+  const lines = contest?.lines as Line[] | undefined;
+  const user = userData?.authenticatedItem as User | undefined;
+
+  if (getContestLoading || getUserLoading) {
+    return (
+      <Center marginTop={'30vh'}>
+        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      </Center>
+    );
+  }
 
   if (!lines || lines.length === 0) {
     return (
@@ -56,7 +79,7 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
   return (
     <>
-      {userHasEntered ? <BetsStatusLine /> : undefined}
+      {userHasEntered ? <BetsStatusLine contest={contest} user={user} /> : undefined}
       {availableLines.length !== 0 ? (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
           <Heading as="h3" size="lg">
@@ -73,7 +96,9 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
                     key={line.id}
                     line={line as Line}
                     userId={userId}
+                    contestId={contest?.id}
                     userHasEntered={userHasEntered}
+                    ruleSet={contest?.ruleSet || undefined}
                   />
                 );
               })}
@@ -97,7 +122,9 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
                     key={line.id}
                     line={line as Line}
                     userId={userId}
+                    contestId={contest?.id}
                     userHasEntered={userHasEntered}
+                    ruleSet={contest?.ruleSet || undefined}
                   />
                 );
               })}
@@ -121,7 +148,9 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
                     key={line.id}
                     line={line as Line}
                     userId={userId}
+                    contestId={contest?.id}
                     userHasEntered={userHasEntered}
+                    ruleSet={contest?.ruleSet || undefined}
                   />
                 );
               })}

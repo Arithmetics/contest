@@ -24,8 +24,9 @@ import {
   useCurrentUserQuery,
   ContestStatusType,
   useDeleteContestRegistrationMutation,
+  useContestByIdQuery,
 } from '../../generated/graphql-types';
-import { CONTEST_BY_ID_QUERY } from '../queries';
+import { CONTEST_BY_ID_QUERY, LEADERBOARD_QUERY } from '../queries';
 
 export enum ContestTabs {
   BETS = 'bets',
@@ -52,19 +53,28 @@ const indexedTabs: Record<string, number> = {
 };
 
 type ContestNavProps = {
-  contest?: Contest;
+  contestId?: string;
   selectedTab?: ContestTabs;
 };
 
-export default function ContestNav({ selectedTab, contest }: ContestNavProps): JSX.Element {
+export default function ContestNav({ selectedTab, contestId }: ContestNavProps): JSX.Element {
   const toast = useToast();
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
   const [registerForContest, { loading: registerLoading }] = useContestRegistrationMutation({
-    refetchQueries: [{ query: CONTEST_BY_ID_QUERY, variables: { id: contest?.id } }],
+    refetchQueries: [
+      { query: CONTEST_BY_ID_QUERY, variables: { id: contestId } },
+      { query: LEADERBOARD_QUERY, variables: { contestId } },
+    ],
+  });
+  const { data: contestData, loading: getContestLoading } = useContestByIdQuery({
+    variables: {
+      id: contestId || '',
+    },
   });
 
+  const contest = contestData?.Contest as Contest | undefined;
   const userId = userData?.authenticatedItem?.id;
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
   const showEnterContestButton =
@@ -133,7 +143,7 @@ export default function ContestNav({ selectedTab, contest }: ContestNavProps): J
         </>
       ) : undefined}
 
-      {showEnterContestButton ? (
+      {!getContestLoading && showEnterContestButton ? (
         <Center padding={2}>
           <Button
             onClick={enterContest}
@@ -151,7 +161,7 @@ export default function ContestNav({ selectedTab, contest }: ContestNavProps): J
           </Button>
         </Center>
       ) : undefined}
-      {showLeaveContestButton ? (
+      {!getContestLoading && showLeaveContestButton ? (
         <Center padding={2}>
           <Button onClick={onOpen} variant="red-gradient">
             Leave Contest

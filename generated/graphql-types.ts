@@ -26,15 +26,18 @@ export type Bet = {
   id: Scalars['ID'];
   user?: Maybe<User>;
   choice?: Maybe<Choice>;
+  isSuper?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetCreateInput = {
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
+  isSuper?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetOrderByInput = {
   id?: Maybe<OrderDirection>;
+  isSuper?: Maybe<OrderDirection>;
 };
 
 export type BetRelateToManyInput = {
@@ -47,6 +50,7 @@ export type BetRelateToManyInput = {
 export type BetUpdateInput = {
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
+  isSuper?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetWhereInput = {
@@ -64,6 +68,8 @@ export type BetWhereInput = {
   user_is_null?: Maybe<Scalars['Boolean']>;
   choice?: Maybe<ChoiceWhereInput>;
   choice_is_null?: Maybe<Scalars['Boolean']>;
+  isSuper?: Maybe<Scalars['Boolean']>;
+  isSuper_not?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetWhereUniqueInput = {
@@ -359,6 +365,7 @@ export type Contest = {
   /** @deprecated This query will be removed in a future version. Please use registrationsCount instead. */
   _registrationsMeta?: Maybe<_QueryMeta>;
   registrationsCount?: Maybe<Scalars['Int']>;
+  ruleSet?: Maybe<RuleSet>;
 };
 
 
@@ -425,6 +432,7 @@ export type ContestCreateInput = {
   image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
   registrations?: Maybe<RegistrationRelateToManyInput>;
+  ruleSet?: Maybe<RuleSetRelateToOneInput>;
 };
 
 export type ContestOrderByInput = {
@@ -456,6 +464,7 @@ export type ContestUpdateInput = {
   image?: Maybe<CloudImageRelateToOneInput>;
   lines?: Maybe<LineRelateToManyInput>;
   registrations?: Maybe<RegistrationRelateToManyInput>;
+  ruleSet?: Maybe<RuleSetRelateToOneInput>;
 };
 
 export type ContestWhereInput = {
@@ -531,6 +540,8 @@ export type ContestWhereInput = {
   registrations_some?: Maybe<RegistrationWhereInput>;
   /** condition must be false for all nodes */
   registrations_none?: Maybe<RegistrationWhereInput>;
+  ruleSet?: Maybe<RuleSetWhereInput>;
+  ruleSet_is_null?: Maybe<Scalars['Boolean']>;
 };
 
 export type ContestWhereUniqueInput = {
@@ -918,6 +929,18 @@ export type Mutation = {
   deleteRegistration?: Maybe<Registration>;
   /** Delete multiple Registration items by ID. */
   deleteRegistrations?: Maybe<Array<Maybe<Registration>>>;
+  /** Create a single RuleSet item. */
+  createRuleSet?: Maybe<RuleSet>;
+  /** Create multiple RuleSet items. */
+  createRuleSets?: Maybe<Array<Maybe<RuleSet>>>;
+  /** Update a single RuleSet item by ID. */
+  updateRuleSet?: Maybe<RuleSet>;
+  /** Update multiple RuleSet items by ID. */
+  updateRuleSets?: Maybe<Array<Maybe<RuleSet>>>;
+  /** Delete a single RuleSet item by ID. */
+  deleteRuleSet?: Maybe<RuleSet>;
+  /** Delete multiple RuleSet items by ID. */
+  deleteRuleSets?: Maybe<Array<Maybe<RuleSet>>>;
   /** Create a single Standing item. */
   createStanding?: Maybe<Standing>;
   /** Create multiple Standing items. */
@@ -1136,6 +1159,37 @@ export type MutationDeleteRegistrationsArgs = {
 };
 
 
+export type MutationCreateRuleSetArgs = {
+  data?: Maybe<RuleSetCreateInput>;
+};
+
+
+export type MutationCreateRuleSetsArgs = {
+  data?: Maybe<Array<Maybe<RuleSetsCreateInput>>>;
+};
+
+
+export type MutationUpdateRuleSetArgs = {
+  id: Scalars['ID'];
+  data?: Maybe<RuleSetUpdateInput>;
+};
+
+
+export type MutationUpdateRuleSetsArgs = {
+  data?: Maybe<Array<Maybe<RuleSetsUpdateInput>>>;
+};
+
+
+export type MutationDeleteRuleSetArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type MutationDeleteRuleSetsArgs = {
+  ids?: Maybe<Array<Scalars['ID']>>;
+};
+
+
 export type MutationCreateStandingArgs = {
   data?: Maybe<StandingCreateInput>;
 };
@@ -1322,6 +1376,16 @@ export type Query = {
    */
   _allRegistrationsMeta?: Maybe<_QueryMeta>;
   registrationsCount?: Maybe<Scalars['Int']>;
+  /** Search for all RuleSet items which match the where clause. */
+  allRuleSets?: Maybe<Array<RuleSet>>;
+  /** Search for the RuleSet item with the matching ID. */
+  RuleSet?: Maybe<RuleSet>;
+  /**
+   * Perform a meta-query on all RuleSet items which match the where clause.
+   * @deprecated This query will be removed in a future version. Please use ruleSetsCount instead.
+   */
+  _allRuleSetsMeta?: Maybe<_QueryMeta>;
+  ruleSetsCount?: Maybe<Scalars['Int']>;
   /** Search for all Standing items which match the where clause. */
   allStandings?: Maybe<Array<Standing>>;
   /** Search for the Standing item with the matching ID. */
@@ -1528,6 +1592,36 @@ export type QueryRegistrationsCountArgs = {
 };
 
 
+export type QueryAllRuleSetsArgs = {
+  where?: RuleSetWhereInput;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRuleSetsBy>>;
+  orderBy?: Array<RuleSetOrderByInput>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Scalars['Int'];
+};
+
+
+export type QueryRuleSetArgs = {
+  where: RuleSetWhereUniqueInput;
+};
+
+
+export type Query_AllRuleSetsMetaArgs = {
+  where?: RuleSetWhereInput;
+  search?: Maybe<Scalars['String']>;
+  sortBy?: Maybe<Array<SortRuleSetsBy>>;
+  orderBy?: Array<RuleSetOrderByInput>;
+  first?: Maybe<Scalars['Int']>;
+  skip?: Scalars['Int'];
+};
+
+
+export type QueryRuleSetsCountArgs = {
+  where?: RuleSetWhereInput;
+};
+
+
 export type QueryAllStandingsArgs = {
   where?: StandingWhereInput;
   search?: Maybe<Scalars['String']>;
@@ -1665,6 +1759,96 @@ export type RegistrationsUpdateInput = {
   data?: Maybe<RegistrationUpdateInput>;
 };
 
+/** A keystone list */
+export type RuleSet = {
+  __typename?: 'RuleSet';
+  id: Scalars['ID'];
+  maxBets?: Maybe<Scalars['Int']>;
+  maxSuperBets?: Maybe<Scalars['Int']>;
+  superBetPointCount?: Maybe<Scalars['Int']>;
+  contest?: Maybe<Contest>;
+};
+
+export type RuleSetCreateInput = {
+  maxBets?: Maybe<Scalars['Int']>;
+  maxSuperBets?: Maybe<Scalars['Int']>;
+  superBetPointCount?: Maybe<Scalars['Int']>;
+  contest?: Maybe<ContestRelateToOneInput>;
+};
+
+export type RuleSetOrderByInput = {
+  id?: Maybe<OrderDirection>;
+  maxBets?: Maybe<OrderDirection>;
+  maxSuperBets?: Maybe<OrderDirection>;
+  superBetPointCount?: Maybe<OrderDirection>;
+};
+
+export type RuleSetRelateToOneInput = {
+  create?: Maybe<RuleSetCreateInput>;
+  connect?: Maybe<RuleSetWhereUniqueInput>;
+  disconnect?: Maybe<RuleSetWhereUniqueInput>;
+  disconnectAll?: Maybe<Scalars['Boolean']>;
+};
+
+export type RuleSetUpdateInput = {
+  maxBets?: Maybe<Scalars['Int']>;
+  maxSuperBets?: Maybe<Scalars['Int']>;
+  superBetPointCount?: Maybe<Scalars['Int']>;
+  contest?: Maybe<ContestRelateToOneInput>;
+};
+
+export type RuleSetWhereInput = {
+  AND?: Maybe<Array<RuleSetWhereInput>>;
+  OR?: Maybe<Array<RuleSetWhereInput>>;
+  id?: Maybe<Scalars['ID']>;
+  id_not?: Maybe<Scalars['ID']>;
+  id_lt?: Maybe<Scalars['ID']>;
+  id_lte?: Maybe<Scalars['ID']>;
+  id_gt?: Maybe<Scalars['ID']>;
+  id_gte?: Maybe<Scalars['ID']>;
+  id_in?: Maybe<Array<Scalars['ID']>>;
+  id_not_in?: Maybe<Array<Scalars['ID']>>;
+  maxBets?: Maybe<Scalars['Int']>;
+  maxBets_not?: Maybe<Scalars['Int']>;
+  maxBets_lt?: Maybe<Scalars['Int']>;
+  maxBets_lte?: Maybe<Scalars['Int']>;
+  maxBets_gt?: Maybe<Scalars['Int']>;
+  maxBets_gte?: Maybe<Scalars['Int']>;
+  maxBets_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  maxBets_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  maxSuperBets?: Maybe<Scalars['Int']>;
+  maxSuperBets_not?: Maybe<Scalars['Int']>;
+  maxSuperBets_lt?: Maybe<Scalars['Int']>;
+  maxSuperBets_lte?: Maybe<Scalars['Int']>;
+  maxSuperBets_gt?: Maybe<Scalars['Int']>;
+  maxSuperBets_gte?: Maybe<Scalars['Int']>;
+  maxSuperBets_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  maxSuperBets_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  superBetPointCount?: Maybe<Scalars['Int']>;
+  superBetPointCount_not?: Maybe<Scalars['Int']>;
+  superBetPointCount_lt?: Maybe<Scalars['Int']>;
+  superBetPointCount_lte?: Maybe<Scalars['Int']>;
+  superBetPointCount_gt?: Maybe<Scalars['Int']>;
+  superBetPointCount_gte?: Maybe<Scalars['Int']>;
+  superBetPointCount_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  superBetPointCount_not_in?: Maybe<Array<Maybe<Scalars['Int']>>>;
+  contest?: Maybe<ContestWhereInput>;
+  contest_is_null?: Maybe<Scalars['Boolean']>;
+};
+
+export type RuleSetWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>;
+};
+
+export type RuleSetsCreateInput = {
+  data?: Maybe<RuleSetCreateInput>;
+};
+
+export type RuleSetsUpdateInput = {
+  id: Scalars['ID'];
+  data?: Maybe<RuleSetUpdateInput>;
+};
+
 export type SendUserPasswordResetLinkResult = {
   __typename?: 'SendUserPasswordResetLinkResult';
   code: PasswordResetRequestErrorCode;
@@ -1673,7 +1857,9 @@ export type SendUserPasswordResetLinkResult = {
 
 export enum SortBetsBy {
   IdAsc = 'id_ASC',
-  IdDesc = 'id_DESC'
+  IdDesc = 'id_DESC',
+  IsSuperAsc = 'isSuper_ASC',
+  IsSuperDesc = 'isSuper_DESC'
 }
 
 export enum SortChoicesBy {
@@ -1721,6 +1907,17 @@ export enum SortRegistrationsBy {
   IdDesc = 'id_DESC',
   HasPaidAsc = 'hasPaid_ASC',
   HasPaidDesc = 'hasPaid_DESC'
+}
+
+export enum SortRuleSetsBy {
+  IdAsc = 'id_ASC',
+  IdDesc = 'id_DESC',
+  MaxBetsAsc = 'maxBets_ASC',
+  MaxBetsDesc = 'maxBets_DESC',
+  MaxSuperBetsAsc = 'maxSuperBets_ASC',
+  MaxSuperBetsDesc = 'maxSuperBets_DESC',
+  SuperBetPointCountAsc = 'superBetPointCount_ASC',
+  SuperBetPointCountDesc = 'superBetPointCount_DESC'
 }
 
 export enum SortStandingsBy {
@@ -2319,7 +2516,10 @@ export type ContestByIdQuery = (
   & { Contest?: Maybe<(
     { __typename?: 'Contest' }
     & Pick<Contest, 'id' | 'name' | 'description' | 'status' | 'entryFee'>
-    & { lines?: Maybe<Array<(
+    & { ruleSet?: Maybe<(
+      { __typename?: 'RuleSet' }
+      & Pick<RuleSet, 'maxBets' | 'maxSuperBets' | 'superBetPointCount'>
+    )>, lines?: Maybe<Array<(
       { __typename?: 'Line' }
       & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
       & { choices?: Maybe<Array<(
@@ -2327,7 +2527,7 @@ export type ContestByIdQuery = (
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
         & { bets?: Maybe<Array<(
           { __typename?: 'Bet' }
-          & Pick<Bet, 'id'>
+          & Pick<Bet, 'id' | 'isSuper'>
           & { user?: Maybe<(
             { __typename?: 'User' }
             & Pick<User, 'id'>
@@ -2397,6 +2597,7 @@ export type DeleteContestRegistrationMutation = (
 export type MakeBetMutationVariables = Exact<{
   choiceId: Scalars['ID'];
   userId: Scalars['ID'];
+  isSuper: Scalars['Boolean'];
 }>;
 
 
@@ -2413,7 +2614,7 @@ export type MakeBetMutation = (
       & Pick<Choice, 'id'>
       & { bets?: Maybe<Array<(
         { __typename?: 'Bet' }
-        & Pick<Bet, 'id'>
+        & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
           & Pick<User, 'id'>
@@ -2441,7 +2642,7 @@ export type DeleteBetMutation = (
       & Pick<Choice, 'id'>
       & { bets?: Maybe<Array<(
         { __typename?: 'Bet' }
-        & Pick<Bet, 'id'>
+        & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
           & Pick<User, 'id'>
@@ -2479,7 +2680,7 @@ export type TrackerStatusQuery = (
       & Pick<Choice, 'id' | 'selection' | 'isWin'>
       & { bets?: Maybe<Array<(
         { __typename?: 'Bet' }
-        & Pick<Bet, 'id'>
+        & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
           & Pick<User, 'id' | 'userName'>
@@ -2522,6 +2723,20 @@ export type LeaderboardQuery = (
       { __typename?: 'PointCounts' }
       & Pick<PointCounts, 'locked' | 'likely' | 'possible'>
     )> }
+  )>> }
+);
+
+export type UsersContestBetsQueryVariables = Exact<{
+  contestId: Scalars['ID'];
+  userId: Scalars['ID'];
+}>;
+
+
+export type UsersContestBetsQuery = (
+  { __typename?: 'Query' }
+  & { allBets?: Maybe<Array<(
+    { __typename?: 'Bet' }
+    & Pick<Bet, 'id' | 'isSuper'>
   )>> }
 );
 
@@ -3013,6 +3228,11 @@ export const ContestByIdDocument = gql`
     description
     status
     entryFee
+    ruleSet {
+      maxBets
+      maxSuperBets
+      superBetPointCount
+    }
     lines {
       id
       benchmark
@@ -3024,6 +3244,7 @@ export const ContestByIdDocument = gql`
         isWin
         bets {
           id
+          isSuper
           user {
             id
           }
@@ -3156,9 +3377,9 @@ export type DeleteContestRegistrationMutationHookResult = ReturnType<typeof useD
 export type DeleteContestRegistrationMutationResult = Apollo.MutationResult<DeleteContestRegistrationMutation>;
 export type DeleteContestRegistrationMutationOptions = Apollo.BaseMutationOptions<DeleteContestRegistrationMutation, DeleteContestRegistrationMutationVariables>;
 export const MakeBetDocument = gql`
-    mutation MakeBet($choiceId: ID!, $userId: ID!) {
+    mutation MakeBet($choiceId: ID!, $userId: ID!, $isSuper: Boolean!) {
   createBet(
-    data: {user: {connect: {id: $userId}}, choice: {connect: {id: $choiceId}}}
+    data: {user: {connect: {id: $userId}}, choice: {connect: {id: $choiceId}}, isSuper: $isSuper}
   ) {
     id
     user {
@@ -3168,6 +3389,7 @@ export const MakeBetDocument = gql`
       id
       bets {
         id
+        isSuper
         user {
           id
         }
@@ -3196,6 +3418,7 @@ export type MakeBetMutationFn = Apollo.MutationFunction<MakeBetMutation, MakeBet
  *   variables: {
  *      choiceId: // value for 'choiceId'
  *      userId: // value for 'userId'
+ *      isSuper: // value for 'isSuper'
  *   },
  * });
  */
@@ -3214,6 +3437,7 @@ export const DeleteBetDocument = gql`
       id
       bets {
         id
+        isSuper
         user {
           id
         }
@@ -3276,6 +3500,7 @@ export const TrackerStatusDocument = gql`
       isWin
       bets {
         id
+        isSuper
         user {
           id
           userName
@@ -3369,3 +3594,42 @@ export function useLeaderboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type LeaderboardQueryHookResult = ReturnType<typeof useLeaderboardQuery>;
 export type LeaderboardLazyQueryHookResult = ReturnType<typeof useLeaderboardLazyQuery>;
 export type LeaderboardQueryResult = Apollo.QueryResult<LeaderboardQuery, LeaderboardQueryVariables>;
+export const UsersContestBetsDocument = gql`
+    query UsersContestBets($contestId: ID!, $userId: ID!) {
+  allBets(
+    where: {choice: {line: {contest: {id: $contestId}}}, user: {id: $userId}}
+  ) {
+    id
+    isSuper
+  }
+}
+    `;
+
+/**
+ * __useUsersContestBetsQuery__
+ *
+ * To run a query within a React component, call `useUsersContestBetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUsersContestBetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUsersContestBetsQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUsersContestBetsQuery(baseOptions: Apollo.QueryHookOptions<UsersContestBetsQuery, UsersContestBetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UsersContestBetsQuery, UsersContestBetsQueryVariables>(UsersContestBetsDocument, options);
+      }
+export function useUsersContestBetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersContestBetsQuery, UsersContestBetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UsersContestBetsQuery, UsersContestBetsQueryVariables>(UsersContestBetsDocument, options);
+        }
+export type UsersContestBetsQueryHookResult = ReturnType<typeof useUsersContestBetsQuery>;
+export type UsersContestBetsLazyQueryHookResult = ReturnType<typeof useUsersContestBetsLazyQuery>;
+export type UsersContestBetsQueryResult = Apollo.QueryResult<UsersContestBetsQuery, UsersContestBetsQueryVariables>;

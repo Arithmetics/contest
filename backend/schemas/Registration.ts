@@ -110,7 +110,7 @@ export const Registration = list({
       }
 
       // RULE: only can create for yourself
-      if (resolvedData.user !== session?.data?.id) {
+      if (resolvedData.user.connect.id !== session?.data?.id) {
         addValidationError('Can only create registration for own account');
       }
 
