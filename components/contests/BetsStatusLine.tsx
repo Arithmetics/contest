@@ -3,13 +3,27 @@ import { BsLightning } from 'react-icons/bs';
 import { RiCoinLine } from 'react-icons/ri';
 import { AiOutlineOrderedList } from 'react-icons/ai';
 import {
+  Bet,
   Contest,
   User,
   useLeaderboardQuery,
   useUsersContestBetsQuery,
+  RuleSet,
 } from '../../generated/graphql-types';
 
 import { sortLeaderboard } from './LeaderboardTab';
+
+export function betsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | null): number {
+  const maxSuperBets = ruleSet?.maxSuperBets || 0;
+  const usersSuperBetCount = userBets?.length || 0;
+  return maxSuperBets - usersSuperBetCount;
+}
+
+export function superBetsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | null): number {
+  const maxSuperBets = ruleSet?.maxSuperBets || 0;
+  const usersSuperBetCount = userBets?.filter((b) => b.isSuper).length || 0;
+  return maxSuperBets - usersSuperBetCount;
+}
 
 type BetStatusLineProps = {
   contest?: Contest;
@@ -25,10 +39,11 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
     variables: { contestId: contest?.id || '', userId: user?.id || '' },
   });
 
-  //  maxSuperBets, superBetPointCount
-  const maxBets = contest?.ruleSet?.maxBets || 0;
-  const usersBetCount = usersBetsData?.allBets?.length || 0;
-  const betsLeft = (maxBets - usersBetCount).toString();
+  const betsLeft = betsRemaining(usersBetsData?.allBets || [], contest?.ruleSet).toString();
+  const superBetsLeft = superBetsRemaining(
+    usersBetsData?.allBets || [],
+    contest?.ruleSet
+  ).toString();
 
   const sortedLeaderboard = sortLeaderboard(leaderboardData?.allRegistrations || []);
   const position =
@@ -38,7 +53,7 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
     <Box overflow="hidden" m={6}>
       <HStack alignItems="center" justifyContent="center">
         {usersBetsLoading ? (
-          <Spinner />
+          <StatusCard icon={<Spinner />} statLabel="Bets Left" statNumber="--" />
         ) : (
           <StatusCard
             icon={<RiCoinLine fontSize="1.5rem" />}
@@ -47,12 +62,12 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
           />
         )}
         {usersBetsLoading ? (
-          <Spinner />
+          <StatusCard icon={<Spinner />} statLabel="Super Bets Left" statNumber="--" />
         ) : (
           <StatusCard
             icon={<BsLightning fontSize="1.5rem" />}
             statLabel="Super Bets Left"
-            statNumber="5"
+            statNumber={superBetsLeft}
           />
         )}
         {leaderboardLoading ? (

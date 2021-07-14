@@ -13,7 +13,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { firstBy } from 'thenby';
-import { Contest, useLeaderboardQuery, Registration } from '../../generated/graphql-types';
+import { useLeaderboardQuery, Registration } from '../../generated/graphql-types';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(
@@ -24,11 +24,11 @@ export function sortLeaderboard(registrations: Registration[]): Registration[] {
 }
 
 type LeaderboardTabProps = {
-  contest?: Contest;
+  contestId?: string;
 };
 
-export default function LeaderboardTab({ contest }: LeaderboardTabProps): JSX.Element {
-  const { data, loading } = useLeaderboardQuery({ variables: { contestId: contest?.id || '' } });
+export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.Element {
+  const { data, loading } = useLeaderboardQuery({ variables: { contestId: contestId || '' } });
 
   const sortedLeaderboard = sortLeaderboard(data?.allRegistrations || []);
 

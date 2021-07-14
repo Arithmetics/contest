@@ -91,7 +91,7 @@ export default function LineCard({
 
   // rules for later
   const pickAvailable = true;
-  const superPickAvailable = false;
+  const superPickAvailable = true;
 
   const radioTextColor = (choiceId: string): ColorProps => {
     if (!lineClosed && !userHasEntered) {
@@ -115,7 +115,11 @@ export default function LineCard({
   const onClickMakeBet = async (): Promise<void> => {
     try {
       await makeBet({
-        variables: { userId: userId || '', choiceId: formSelectedChoiceId.toString() },
+        variables: {
+          userId: userId || '',
+          choiceId: formSelectedChoiceId.toString(),
+          isSuper: superBetSelected,
+        },
       });
     } catch (e) {
       console.log('no bet', e);
@@ -168,7 +172,7 @@ export default function LineCard({
                 <Radio
                   key={choice.id}
                   value={choice.id}
-                  disabled={lineClosed || !!selectedChoice || !userHasEntered}
+                  disabled={lineClosed || !!selectedChoice || !userHasEntered || !pickAvailable}
                   colorScheme="teal"
                   size="lg"
                 >
@@ -182,7 +186,7 @@ export default function LineCard({
               onChange={() => setSuperBetSelected(!superBetSelected)}
               isChecked={superBetSelected}
               marginTop={4}
-              isDisabled={lineClosed || !superPickAvailable}
+              isDisabled={lineClosed || !!selectedChoice || !userHasEntered || !superPickAvailable}
               colorScheme="teal"
               size="lg"
             >

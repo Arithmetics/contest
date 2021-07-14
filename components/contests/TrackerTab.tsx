@@ -14,12 +14,7 @@ import {
   Tooltip,
   AvatarBadge,
 } from '@chakra-ui/react';
-import {
-  Contest,
-  ChoiceSelectionType,
-  Line,
-  useTrackerStatusQuery,
-} from '../../generated/graphql-types';
+import { ChoiceSelectionType, Line, useTrackerStatusQuery } from '../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
 
 function winsForOver(line?: Line): number {
@@ -60,11 +55,11 @@ function lossesForUnder(line?: Line): number {
 }
 
 type TrackerTabProps = {
-  contest?: Contest;
+  contestId?: string;
 };
 
-export default function TrackerTab({ contest }: TrackerTabProps): JSX.Element {
-  const { data, loading } = useTrackerStatusQuery({ variables: { contestId: contest?.id || '' } });
+export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element {
+  const { data, loading } = useTrackerStatusQuery({ variables: { contestId: contestId || '' } });
 
   if (loading) {
     return (

@@ -6,12 +6,19 @@ import {
   Heading,
   Text,
   Center,
+  Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
 
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
 import BetsStatusLine from './BetsStatusLine';
-import { Line, Contest, User } from '../../generated/graphql-types';
+import {
+  Line,
+  Contest,
+  User,
+  useContestByIdQuery,
+  useCurrentUserQuery,
+} from '../../generated/graphql-types';
 
 export enum ContestTabs {
   BETS = 'bets',
@@ -22,11 +29,10 @@ export enum ContestTabs {
 }
 
 type BetsTabProps = {
-  contest?: Contest;
-  user?: User;
+  contestId?: string;
 };
 
-export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
+export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const { isOpen: isAvailableOpen, onToggle: onAvailableToggle } = useDisclosure({
     defaultIsOpen: true,
   });
@@ -37,7 +43,25 @@ export default function BetsTab({ contest, user }: BetsTabProps): JSX.Element {
     defaultIsOpen: true,
   });
 
-  const lines = contest?.lines;
+  const { data: contestData, loading: getContestLoading } = useContestByIdQuery({
+    variables: {
+      id: contestId || '',
+    },
+  });
+
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
+
+  const contest = contestData?.Contest as Contest | undefined;
+  const lines = contest?.lines as Line[] | undefined;
+  const user = userData?.authenticatedItem as User | undefined;
+
+  if (getContestLoading || getUserLoading) {
+    return (
+      <Center marginTop={'30vh'}>
+        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      </Center>
+    );
+  }
 
   if (!lines || lines.length === 0) {
     return (

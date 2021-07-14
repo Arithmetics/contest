@@ -1,4 +1,4 @@
-import { relationship } from '@keystone-next/fields';
+import { checkbox, relationship } from '@keystone-next/fields';
 import { list } from '@keystone-next/keystone/schema';
 import { KeystoneListsAPI } from '@keystone-next/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
@@ -18,6 +18,7 @@ export const Bet = list({
   fields: {
     user: relationship({ ref: 'User.bets', many: false }),
     choice: relationship({ ref: 'Choice.bets', many: false }),
+    isSuper: checkbox({ isRequired: true, defaultValue: false }),
   },
   hooks: {
     validateInput: async (args) => {
@@ -62,10 +63,10 @@ export const Bet = list({
       });
 
       // RULE: only one bet per user per line
-      const betIdsWithUsersId: number[] = [resolvedData.user];
+      const betIdsWithUsersId: number[] = [resolvedData.user.connect.id];
 
       requestedChoice?.line?.choices
-        .filter((c: { id: string }) => c.id !== resolvedData.choice)
+        .filter((c: { id: string }) => c.id !== resolvedData.choice.connect.id)
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         .forEach((choice: { bets: any[] }) => {
           choice.bets.forEach((bet) => {
@@ -88,7 +89,7 @@ export const Bet = list({
       }
 
       // RULE: user can only create bets for themselves
-      if (resolvedData.user !== session.data?.id) {
+      if (resolvedData.user.connect.id !== session.data?.id) {
         addValidationError('Can only create bet for own account');
       }
 

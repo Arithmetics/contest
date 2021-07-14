@@ -26,15 +26,18 @@ export type Bet = {
   id: Scalars['ID'];
   user?: Maybe<User>;
   choice?: Maybe<Choice>;
+  isSuper?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetCreateInput = {
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
+  isSuper?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetOrderByInput = {
   id?: Maybe<OrderDirection>;
+  isSuper?: Maybe<OrderDirection>;
 };
 
 export type BetRelateToManyInput = {
@@ -47,6 +50,7 @@ export type BetRelateToManyInput = {
 export type BetUpdateInput = {
   user?: Maybe<UserRelateToOneInput>;
   choice?: Maybe<ChoiceRelateToOneInput>;
+  isSuper?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetWhereInput = {
@@ -64,6 +68,8 @@ export type BetWhereInput = {
   user_is_null?: Maybe<Scalars['Boolean']>;
   choice?: Maybe<ChoiceWhereInput>;
   choice_is_null?: Maybe<Scalars['Boolean']>;
+  isSuper?: Maybe<Scalars['Boolean']>;
+  isSuper_not?: Maybe<Scalars['Boolean']>;
 };
 
 export type BetWhereUniqueInput = {
@@ -1851,7 +1857,9 @@ export type SendUserPasswordResetLinkResult = {
 
 export enum SortBetsBy {
   IdAsc = 'id_ASC',
-  IdDesc = 'id_DESC'
+  IdDesc = 'id_DESC',
+  IsSuperAsc = 'isSuper_ASC',
+  IsSuperDesc = 'isSuper_DESC'
 }
 
 export enum SortChoicesBy {
@@ -2519,7 +2527,7 @@ export type ContestByIdQuery = (
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
         & { bets?: Maybe<Array<(
           { __typename?: 'Bet' }
-          & Pick<Bet, 'id'>
+          & Pick<Bet, 'id' | 'isSuper'>
           & { user?: Maybe<(
             { __typename?: 'User' }
             & Pick<User, 'id'>
@@ -2589,6 +2597,7 @@ export type DeleteContestRegistrationMutation = (
 export type MakeBetMutationVariables = Exact<{
   choiceId: Scalars['ID'];
   userId: Scalars['ID'];
+  isSuper: Scalars['Boolean'];
 }>;
 
 
@@ -2605,7 +2614,7 @@ export type MakeBetMutation = (
       & Pick<Choice, 'id'>
       & { bets?: Maybe<Array<(
         { __typename?: 'Bet' }
-        & Pick<Bet, 'id'>
+        & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
           & Pick<User, 'id'>
@@ -2727,7 +2736,7 @@ export type UsersContestBetsQuery = (
   { __typename?: 'Query' }
   & { allBets?: Maybe<Array<(
     { __typename?: 'Bet' }
-    & Pick<Bet, 'id'>
+    & Pick<Bet, 'id' | 'isSuper'>
   )>> }
 );
 
@@ -3235,6 +3244,7 @@ export const ContestByIdDocument = gql`
         isWin
         bets {
           id
+          isSuper
           user {
             id
           }
@@ -3367,9 +3377,9 @@ export type DeleteContestRegistrationMutationHookResult = ReturnType<typeof useD
 export type DeleteContestRegistrationMutationResult = Apollo.MutationResult<DeleteContestRegistrationMutation>;
 export type DeleteContestRegistrationMutationOptions = Apollo.BaseMutationOptions<DeleteContestRegistrationMutation, DeleteContestRegistrationMutationVariables>;
 export const MakeBetDocument = gql`
-    mutation MakeBet($choiceId: ID!, $userId: ID!) {
+    mutation MakeBet($choiceId: ID!, $userId: ID!, $isSuper: Boolean!) {
   createBet(
-    data: {user: {connect: {id: $userId}}, choice: {connect: {id: $choiceId}}}
+    data: {user: {connect: {id: $userId}}, choice: {connect: {id: $choiceId}}, isSuper: $isSuper}
   ) {
     id
     user {
@@ -3379,6 +3389,7 @@ export const MakeBetDocument = gql`
       id
       bets {
         id
+        isSuper
         user {
           id
         }
@@ -3407,6 +3418,7 @@ export type MakeBetMutationFn = Apollo.MutationFunction<MakeBetMutation, MakeBet
  *   variables: {
  *      choiceId: // value for 'choiceId'
  *      userId: // value for 'userId'
+ *      isSuper: // value for 'isSuper'
  *   },
  * });
  */
@@ -3586,6 +3598,7 @@ export const UsersContestBetsDocument = gql`
     where: {choice: {line: {contest: {id: $contestId}}}, user: {id: $userId}}
   ) {
     id
+    isSuper
   }
 }
     `;

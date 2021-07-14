@@ -5,6 +5,7 @@ type Bet {
   id: ID!
   user: User
   choice: Choice
+  isSuper: Boolean
 }
 
 input BetWhereInput {
@@ -22,6 +23,8 @@ input BetWhereInput {
   user_is_null: Boolean
   choice: ChoiceWhereInput
   choice_is_null: Boolean
+  isSuper: Boolean
+  isSuper_not: Boolean
 }
 
 input BetWhereUniqueInput {
@@ -31,10 +34,13 @@ input BetWhereUniqueInput {
 enum SortBetsBy {
   id_ASC
   id_DESC
+  isSuper_ASC
+  isSuper_DESC
 }
 
 input BetOrderByInput {
   id: OrderDirection
+  isSuper: OrderDirection
 }
 
 enum OrderDirection {
@@ -45,6 +51,7 @@ enum OrderDirection {
 input BetUpdateInput {
   user: UserRelateToOneInput
   choice: ChoiceRelateToOneInput
+  isSuper: Boolean
 }
 
 input UserRelateToOneInput {
@@ -69,6 +76,7 @@ input BetsUpdateInput {
 input BetCreateInput {
   user: UserRelateToOneInput
   choice: ChoiceRelateToOneInput
+  isSuper: Boolean
 }
 
 input BetsCreateInput {

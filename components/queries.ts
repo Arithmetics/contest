@@ -74,6 +74,7 @@ export const CONTEST_BY_ID_QUERY = gql`
           isWin
           bets {
             id
+            isSuper
             user {
               id
             }
@@ -129,9 +130,13 @@ export const DELETE_CONTEST_REGISTRATIN_MUTATION = gql`
 `;
 
 export const MAKE_BET_MUTATION = gql`
-  mutation MakeBet($choiceId: ID!, $userId: ID!) {
+  mutation MakeBet($choiceId: ID!, $userId: ID!, $isSuper: Boolean!) {
     createBet(
-      data: { user: { connect: { id: $userId } }, choice: { connect: { id: $choiceId } } }
+      data: {
+        user: { connect: { id: $userId } }
+        choice: { connect: { id: $choiceId } }
+        isSuper: $isSuper
+      }
     ) {
       id
       user {
@@ -141,6 +146,7 @@ export const MAKE_BET_MUTATION = gql`
         id
         bets {
           id
+          isSuper
           user {
             id
           }
@@ -242,6 +248,7 @@ export const USERS_BETS_QUERY = gql`
   query UsersContestBets($contestId: ID!, $userId: ID!) {
     allBets(where: { choice: { line: { contest: { id: $contestId } } }, user: { id: $userId } }) {
       id
+      isSuper
     }
   }
 `;
