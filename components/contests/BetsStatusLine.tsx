@@ -14,9 +14,9 @@ import {
 import { sortLeaderboard } from './LeaderboardTab';
 
 export function betsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | null): number {
-  const maxSuperBets = ruleSet?.maxSuperBets || 0;
+  const maxBets = ruleSet?.maxBets || 0;
   const usersSuperBetCount = userBets?.length || 0;
-  return maxSuperBets - usersSuperBetCount;
+  return maxBets - usersSuperBetCount;
 }
 
 export function superBetsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | null): number {

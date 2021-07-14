@@ -9,7 +9,6 @@ import {
   Spinner,
   useDisclosure,
 } from '@chakra-ui/react';
-
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
 import BetsStatusLine from './BetsStatusLine';
 import {
@@ -99,6 +98,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
                     userId={userId}
                     contestId={contest?.id}
                     userHasEntered={userHasEntered}
+                    ruleSet={contest?.ruleSet || undefined}
                   />
                 );
               })}
@@ -124,6 +124,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
                     userId={userId}
                     contestId={contest?.id}
                     userHasEntered={userHasEntered}
+                    ruleSet={contest?.ruleSet || undefined}
                   />
                 );
               })}
@@ -149,6 +150,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
                     userId={userId}
                     contestId={contest?.id}
                     userHasEntered={userHasEntered}
+                    ruleSet={contest?.ruleSet || undefined}
                   />
                 );
               })}

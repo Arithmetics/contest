@@ -19,8 +19,17 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
-import { Line, useMakeBetMutation, useDeleteBetMutation } from '../../generated/graphql-types';
+import {
+  ChoiceSelectionType,
+  Line,
+  RuleSet,
+  useMakeBetMutation,
+  useDeleteBetMutation,
+  useUsersContestBetsQuery,
+} from '../../generated/graphql-types';
 import { LEADERBOARD_QUERY, USERS_BETS_QUERY } from '../queries';
+
+import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
 
 export function hasLineClosed(line: Line): boolean {
   if (!line.closingTime) {
@@ -51,6 +60,7 @@ type LineCardProps = {
   userId?: string;
   contestId?: string;
   userHasEntered?: boolean;
+  ruleSet?: RuleSet;
 };
 
 export default function LineCard({
@@ -58,7 +68,12 @@ export default function LineCard({
   userId,
   contestId,
   userHasEntered,
+  ruleSet,
 }: LineCardProps): JSX.Element {
+  const { data: usersBetsData, loading: usersBetsLoading } = useUsersContestBetsQuery({
+    variables: { contestId: contestId || '', userId: userId || '' },
+  });
+
   const [makeBet, { loading: makeBetLoading }] = useMakeBetMutation({
     refetchQueries: [
       { query: LEADERBOARD_QUERY, variables: { contestId: contestId || '' } },
@@ -84,17 +99,34 @@ export default function LineCard({
     selectedChoice?.id || '0'
   );
 
-  const [superBetSelected, setSuperBetSelected] = useState<boolean>(false);
+  console.log(selectedChoice);
+  const [superBetSelected, setSuperBetSelected] = useState<boolean>(usersBet?.isSuper || false);
 
   const lineClosed = hasLineClosed(line);
   const winningChoice = line.choices?.find((c) => c.isWin);
 
-  // rules for later
-  const pickAvailable = true;
-  const superPickAvailable = true;
+  const pickAvailable = !usersBetsLoading && betsRemaining(usersBetsData?.allBets, ruleSet) > 0;
+  const superPickAvailable =
+    !usersBetsLoading && superBetsRemaining(usersBetsData?.allBets, ruleSet) > 0;
+
+  const formDisabled = lineClosed || !!selectedChoice || !userHasEntered || !pickAvailable;
+
+  const overBetVolume = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Over)
+    .reduce((acc, c) => {
+      const overCount = c.bets?.length;
+      return acc + (overCount || 0);
+    }, 0);
+
+  const underBetVolume = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Under)
+    .reduce((acc, c) => {
+      const overCount = c.bets?.length;
+      return acc + (overCount || 0);
+    }, 0);
 
   const radioTextColor = (choiceId: string): ColorProps => {
-    if (!lineClosed && !userHasEntered) {
+    if ((!lineClosed && !userHasEntered) || formDisabled) {
       return {
         color: 'whiteAlpha.500',
       };
@@ -132,6 +164,7 @@ export default function LineCard({
         variables: { betId: usersBet?.id || '' },
       });
       setFormSelectedChoiceId('0');
+      setSuperBetSelected(false);
     } catch (e) {
       console.log('no bet', e);
     }
@@ -172,7 +205,7 @@ export default function LineCard({
                 <Radio
                   key={choice.id}
                   value={choice.id}
-                  disabled={lineClosed || !!selectedChoice || !userHasEntered || !pickAvailable}
+                  disabled={formDisabled}
                   colorScheme="teal"
                   size="lg"
                 >
@@ -186,7 +219,7 @@ export default function LineCard({
               onChange={() => setSuperBetSelected(!superBetSelected)}
               isChecked={superBetSelected}
               marginTop={4}
-              isDisabled={lineClosed || !!selectedChoice || !userHasEntered || !superPickAvailable}
+              isDisabled={formDisabled || !superPickAvailable}
               colorScheme="teal"
               size="lg"
             >
@@ -240,11 +273,11 @@ export default function LineCard({
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
                 <StatLabel>Bet Volume</StatLabel>
-                <StatNumber>44</StatNumber>
+                <StatNumber>{overBetVolume}</StatNumber>
               </Stat>
               <Stat textAlign="center">
                 <StatLabel>Bet Volume</StatLabel>
-                <StatNumber>22</StatNumber>
+                <StatNumber>{underBetVolume}</StatNumber>
               </Stat>
             </HStack>
           </>
