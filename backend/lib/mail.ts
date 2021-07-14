@@ -1,6 +1,7 @@
 import { createTransport, getTestMessageUrl } from 'nodemailer';
+import nodemailerSendgrid from 'nodemailer-sendgrid';
 
-const transport = createTransport({
+const testTransport = createTransport({
   host: process.env.MAIL_HOST || '',
   port: Number(process.env.MAIL_PORT),
   auth: {
@@ -8,6 +9,12 @@ const transport = createTransport({
     pass: process.env.MAIL_PASS,
   },
 });
+
+const prodTransport = createTransport(
+  nodemailerSendgrid({
+    apiKey: process.env.SENDGRID_API_KEY || '',
+  })
+);
 
 function makeANiceEmail(text: string): string {
   return `
@@ -43,16 +50,19 @@ export interface Envelope {
 export async function sendPasswordResetEmail(resetToken: string, to: string): Promise<void> {
   // email the user a token
 
-  const info = (await transport.sendMail({
+  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
+  console.log(`heres the sendgrid key: ${process.env.SENDGRID_API_KEY}`);
+
+  const info = (await usedTransport.sendMail({
     to,
-    from: 'wes@wesbos.com',
+    from: 'no-reply@btbets.ml',
     subject: 'Your password reset token!',
     html: makeANiceEmail(`Your Password Reset Token is here!
       <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
       `),
   })) as MailResponse;
 
-  if (process.env.MAIL_USER?.includes('ethereal.email')) {
+  if (!process.env.SENDGRID_API_KEY) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
