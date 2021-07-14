@@ -100,7 +100,6 @@ export default function LineCard({
     selectedChoice?.id || '0'
   );
 
-  console.log(selectedChoice);
   const [superBetSelected, setSuperBetSelected] = useState<boolean>(usersBet?.isSuper || false);
 
   const lineClosed = hasLineClosed(line);
