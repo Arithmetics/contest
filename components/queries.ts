@@ -167,6 +167,7 @@ export const DELETE_BET_MUTATION = gql`
         id
         bets {
           id
+          isSuper
           user {
             id
           }
@@ -204,6 +205,7 @@ export const TRACKER_STATUS_QUERY = gql`
         isWin
         bets {
           id
+          isSuper
           user {
             id
             userName

@@ -2642,7 +2642,7 @@ export type DeleteBetMutation = (
       & Pick<Choice, 'id'>
       & { bets?: Maybe<Array<(
         { __typename?: 'Bet' }
-        & Pick<Bet, 'id'>
+        & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
           & Pick<User, 'id'>
@@ -2680,7 +2680,7 @@ export type TrackerStatusQuery = (
       & Pick<Choice, 'id' | 'selection' | 'isWin'>
       & { bets?: Maybe<Array<(
         { __typename?: 'Bet' }
-        & Pick<Bet, 'id'>
+        & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
           & Pick<User, 'id' | 'userName'>
@@ -3437,6 +3437,7 @@ export const DeleteBetDocument = gql`
       id
       bets {
         id
+        isSuper
         user {
           id
         }
@@ -3499,6 +3500,7 @@ export const TrackerStatusDocument = gql`
       isWin
       bets {
         id
+        isSuper
         user {
           id
           userName

@@ -13,6 +13,7 @@ import {
   Flex,
   Tooltip,
   AvatarBadge,
+  Badge,
 } from '@chakra-ui/react';
 import { ChoiceSelectionType, Line, useTrackerStatusQuery } from '../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
@@ -128,7 +129,9 @@ function WinsLossesLeftSection({ line }: GenericLineProps): JSX.Element {
   if (!line?.standings || line.standings.length === 0) {
     return (
       <Box>
-        <Text>Not Started</Text>
+        <Badge marginLeft={2} colorScheme="grey">
+          Not Started
+        </Badge>
       </Box>
     );
   }
@@ -155,7 +158,7 @@ function WinsLossesLeftSection({ line }: GenericLineProps): JSX.Element {
         {winsNeeded} {winsNeeded === 1 ? 'win' : 'wins'} from OVER
       </Text>
       <Text>
-        {lossesNeeded} more {lossesNeeded === 1 ? 'loss' : 'losses'} from UNDER
+        {lossesNeeded} {lossesNeeded === 1 ? 'loss' : 'losses'} from UNDER
       </Text>
     </Box>
   );
@@ -186,8 +189,15 @@ function UserBetGroup({ line, choiceType }: UserBetGroupProps): JSX.Element {
                           name={bet.user?.userName || ''}
                           src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
                         >
-                          {/* for super bets */}
-                          <AvatarBadge borderColor="papayawhip" bg="tomato" boxSize="1.25em" />
+                          {bet.isSuper && (
+                            <Tooltip label="Super Bet">
+                              <AvatarBadge
+                                borderColor={'cyan.200'}
+                                bg={'blue.400'}
+                                boxSize="1.25em"
+                              />
+                            </Tooltip>
+                          )}
                         </Avatar>
                       </Tooltip>
                     </Box>
