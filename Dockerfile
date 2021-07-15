@@ -60,7 +60,7 @@ FROM base
 
 # Copy over everything we've built from the previous image.
 COPY --chown=node:node --from=builder /var/service /var/service
-
+ 
 # Switch to the `node` user.
 USER node
 
