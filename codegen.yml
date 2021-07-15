@@ -12,6 +12,14 @@ generates:
       - 'typescript'
       - 'typescript-operations'
       - 'typescript-react-apollo'
+  backend/codegen/graphql-types.ts:
+    config:
+      dedupeOperationSuffix: true
+      withHooks: false
+      withComponent: false
+      withHOC: false
+    plugins:
+      - 'typescript'
   ./graphql.schema.json:
     plugins:
       - 'introspection'

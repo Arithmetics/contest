@@ -3,7 +3,7 @@ import { list } from '@keystone-next/keystone/schema';
 import { KeystoneListsAPI, schema } from '@keystone-next/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
-import { ChoiceStatus, Line } from '../../generated/graphql-types';
+import { ChoiceStatus, Line } from '../codegen/graphql-types';
 
 export const Choice = list({
   access: {
