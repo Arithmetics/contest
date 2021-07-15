@@ -1,5 +1,5 @@
 import { RegistrationCreateInput } from '.keystone/types';
-import { User, Contest } from '../../generated/graphql-types';
+import { User, Contest } from '../codegen/graphql-types';
 
 export function generaterateRegistrations(
   users: User[],

@@ -2,15 +2,13 @@ import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { contests } from './mockData/contests';
 import { users } from './mockData/users';
-// import { generaterateRegistrations } from './mockData/registrations';
-
 import {
   User,
   Contest,
   BetCreateInput,
   Choice,
   ChoiceSelectionType,
-} from '../generated/graphql-types';
+} from './codegen/graphql-types';
 
 export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<void> {
   const lists = keyStoneContext
