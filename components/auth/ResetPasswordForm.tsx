@@ -19,6 +19,34 @@ import { Routes } from '../../constants';
 import PasswordInput from './PasswordInput';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
+function generatePasswordResetErrorText(code?: PasswordResetRedemptionErrorCode): string {
+  if (code === PasswordResetRedemptionErrorCode.Failure) {
+    return 'Password reset failure. Please try again';
+  }
+  if (code === PasswordResetRedemptionErrorCode.IdentityNotFound) {
+    return 'Could not find that email address in the system.';
+  }
+  if (code === PasswordResetRedemptionErrorCode.MultipleIdentityMatches) {
+    return 'Multiple matches for that email. Something weird is going on.';
+  }
+  if (code === PasswordResetRedemptionErrorCode.TokenNotSet) {
+    return 'No token found for password reset. Please request a new email and click the link inside.';
+  }
+  if (code === PasswordResetRedemptionErrorCode.TokenMismatch) {
+    return 'Token doesn`t match. Please request a new email and click the link inside.';
+  }
+  if (code === PasswordResetRedemptionErrorCode.TokenExpired) {
+    return 'Token is expired. Please request a new email and click the link inside.';
+  }
+  if (code === PasswordResetRedemptionErrorCode.TokenRedeemed) {
+    return 'Token already used. Please request a new email and click the link inside.';
+  }
+  if (code === PasswordResetRedemptionErrorCode.Failure) {
+    return 'Password reset failure. Please try again';
+  }
+  return 'Password reset failure. Please try again';
+}
+
 const schema = yup.object().shape({
   email: yup.string().email().required('Enter your email'),
   password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
@@ -45,11 +73,7 @@ export default function ResetPasswordForm(): JSX.Element {
     const res = await resetPassword({
       variables: { email: data.email, password: data.password, token: (token as string) || '' },
     });
-
-    if (
-      res.data?.redeemUserPasswordResetToken?.code ===
-      PasswordResetRedemptionErrorCode.TokenRedeemed
-    ) {
+    if (res.data?.redeemUserPasswordResetToken === null) {
       toast({
         title: 'Password reset',
         description: 'Go ahead and login with your new password',
@@ -60,9 +84,13 @@ export default function ResetPasswordForm(): JSX.Element {
       reset();
       router.push(`/${Routes.LOGIN}`);
     } else {
+      const errorText = generatePasswordResetErrorText(
+        res.data?.redeemUserPasswordResetToken?.code
+      );
+
       toast({
         title: 'Error',
-        description: 'Problem reseting that email address',
+        description: errorText,
         status: 'error',
         duration: 5000,
         isClosable: true,

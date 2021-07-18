@@ -6,7 +6,6 @@ import {
   FormErrorMessage,
   Heading,
   Input,
-  Link,
   Stack,
   useToast,
 } from '@chakra-ui/react';
@@ -22,6 +21,8 @@ import {
 } from '../../generated/graphql-types';
 
 import { CURRENT_USER_QUERY } from '../queries';
+import ChakraLink from '../ChakraLink';
+import { Routes } from '../../constants';
 
 const schema = yup.object().shape({
   email: yup.string().required('Enter your email'),
@@ -37,7 +38,7 @@ export default function ForgotPasswordForm(): JSX.Element {
   const router = useRouter();
   const toast = useToast();
 
-  const { register, handleSubmit, errors, reset } = useForm<LoginFormInputs>({
+  const { register, handleSubmit, errors } = useForm<LoginFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -48,7 +49,9 @@ export default function ForgotPasswordForm(): JSX.Element {
 
   const submitLogin = async (data: LoginFormInputs): Promise<void> => {
     try {
-      const res = await signin({ variables: { email: data.email, password: data.password } });
+      const res = await signin({
+        variables: { email: data.email.toLowerCase(), password: data.password },
+      });
 
       if ((res.data?.authenticateUserWithPassword as UserAuthenticationWithPasswordSuccess)?.item) {
         toast({
@@ -58,13 +61,14 @@ export default function ForgotPasswordForm(): JSX.Element {
           duration: 5000,
           isClosable: true,
         });
-        reset();
+        // reset();
         router.push('/');
       }
     } catch (e) {
       toast({
         title: 'Error',
-        description: 'There was an error on the backend. Email Brock',
+        description:
+          'There was an error on the backend. Try again and then Email Brock if it percists',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -123,7 +127,7 @@ export default function ForgotPasswordForm(): JSX.Element {
             {' '}
             Remember me
           </Checkbox>
-          <Link color={'blue.500'}>Forgot password?</Link>
+          <ChakraLink href={`/${Routes.FORGOT_PASSWORD}`} title="Forgot Password?" />
         </Stack>
         <FormLabel color={'red.500'}>
           {(data?.authenticateUserWithPassword as UserAuthenticationWithPasswordFailure)?.message}

@@ -28,6 +28,7 @@ export async function insertSeedData(keyStoneContext: KeystoneContext): Promise<
   await prisma.contest.deleteMany({});
   await prisma.line.deleteMany({});
   await prisma.registration.deleteMany({});
+  await prisma.ruleSet.deleteMany({});
   await prisma.standing.deleteMany({});
   await prisma.user.deleteMany({});
 

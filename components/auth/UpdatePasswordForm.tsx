@@ -49,6 +49,7 @@ export default function UpdatePasswordForm(): JSX.Element {
         reset();
       }
     } catch (e) {
+      console.error(e);
       toast({
         title: 'Error',
         description: 'Something went wrong updating your password. Refresh and try again.',
