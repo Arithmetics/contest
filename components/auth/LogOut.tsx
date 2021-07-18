@@ -7,6 +7,16 @@ export default function LogOut(): JSX.Element {
   const toast = useToast();
   const [signout] = useSignOutMutation({
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    update: (cache) => {
+      cache.evict({
+        id: 'ROOT_QUERY',
+        fieldName: 'Contest',
+      });
+      return cache.evict({
+        id: 'ROOT_QUERY',
+        fieldName: 'allBets',
+      });
+    },
   });
 
   const logout = async (): Promise<void> => {
