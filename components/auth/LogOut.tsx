@@ -9,9 +9,9 @@ export default function LogOut(): JSX.Element {
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
   });
 
-  const logout = (): void => {
+  const logout = async (): Promise<void> => {
     try {
-      signout();
+      await signout();
       toast({
         title: 'Logged out',
         description: 'Successfully logged out',
