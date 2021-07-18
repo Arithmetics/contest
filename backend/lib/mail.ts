@@ -27,7 +27,8 @@ function makeANiceEmail(text: string): string {
     ">
       <h2>Hello,</h2>
       <p>${text}</p>
-      <p>👍🏻, Brock/p>
+      <p>👍🏻,</p> 
+      <p>Brock</p>
     </div>
   `;
 }
@@ -51,13 +52,12 @@ export async function sendPasswordResetEmail(resetToken: string, to: string): Pr
   // email the user a token
 
   const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
-  console.log(`heres the sendgrid key: ${process.env.SENDGRID_API_KEY}`);
 
   const info = (await usedTransport.sendMail({
     to,
     from: 'no-reply@btbets.ml',
-    subject: 'Your password reset token!',
-    html: makeANiceEmail(`Your Password Reset Token is here!
+    subject: 'Your password reset token',
+    html: makeANiceEmail(`Your Password Reset Token is here ->
       <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
       `),
   })) as MailResponse;

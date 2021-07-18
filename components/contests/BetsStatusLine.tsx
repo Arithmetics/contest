@@ -71,7 +71,7 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
           />
         )}
         {leaderboardLoading ? (
-          <Spinner />
+          <StatusCard icon={<Spinner />} statLabel="Current Position" statNumber="--" />
         ) : (
           <StatusCard
             icon={<AiOutlineOrderedList fontSize="1.5rem" />}
