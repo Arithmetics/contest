@@ -176,9 +176,9 @@ export default function LineCard({
       boxShadow={usersBet ? 'dark-lg' : 'lg'}
       rounded={'md'}
       position={'relative'}
-      margin={4}
+      margin={3}
       marginTop={6}
-      p={4}
+      padding={3}
     >
       <LineCardHeader line={line} />
       <Divider orientation="horizontal" paddingTop={3} />

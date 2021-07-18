@@ -15,8 +15,15 @@ import {
   ModalBody,
   ModalFooter,
   ModalCloseButton,
+  Popover,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverContent,
+  PopoverBody,
+  PopoverTrigger,
   useDisclosure,
 } from '@chakra-ui/react';
+import { SettingsIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
 import {
   Contest,
@@ -134,12 +141,31 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
         <>
           <Text fontSize="4xl" textAlign="center">
             {contest.name}
+            {!getContestLoading && showLeaveContestButton ? (
+              <Popover>
+                <PopoverTrigger>
+                  <sup>
+                    <SettingsIcon width={10} padding={1} />
+                  </sup>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <PopoverArrow />
+                  <PopoverCloseButton />
+                  <PopoverBody>
+                    <Center padding={2}>
+                      <Button onClick={onOpen} variant="red-gradient">
+                        Leave Contest
+                      </Button>
+                    </Center>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
+            ) : undefined}
           </Text>
-          {contest?.status !== ContestStatusType.Open && (
-            <Text fontSize="lg" textAlign="center">
-              {contest?.description}
-            </Text>
-          )}
+
+          <Text fontSize="lg" textAlign="center">
+            {contest?.description}
+          </Text>
         </>
       ) : undefined}
 
@@ -158,13 +184,6 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
             }}
           >
             Enter Contest
-          </Button>
-        </Center>
-      ) : undefined}
-      {!getContestLoading && showLeaveContestButton ? (
-        <Center padding={2}>
-          <Button onClick={onOpen} variant="red-gradient">
-            Leave Contest
           </Button>
         </Center>
       ) : undefined}

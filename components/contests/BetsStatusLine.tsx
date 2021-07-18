@@ -35,10 +35,6 @@ export default function BetStatusLine({
     variables: { contestId: contest?.id || '' },
   });
 
-  // const { data: usersBetsData, loading: usersBetsLoading } = useUsersContestBetsQuery({
-  //   variables: { contestId: contest?.id || '', userId: user?.id || '' },
-  // });
-
   const betsLeft = betsRemaining(usersBets || [], contest?.ruleSet).toString();
   const superBetsLeft = superBetsRemaining(usersBets || [], contest?.ruleSet).toString();
 
