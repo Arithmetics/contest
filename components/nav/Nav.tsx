@@ -84,7 +84,8 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="NFL Over Under"
                   leftIcon={<GiAmericanFootballHelmet />}
-                  href={`/${Routes.CONTESTS}/nflOverUnder`}
+                  // href={`/${Routes.CONTESTS}/nflOverUnder`}
+                  href={`/`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
@@ -110,7 +111,8 @@ export default function Nav(): JSX.Element {
               <ButtonLink
                 title="NFL Over Under"
                 leftIcon={<GiAmericanFootballHelmet />}
-                href={`/${Routes.CONTESTS}/nflOverUnder`}
+                // href={`/${Routes.CONTESTS}/nflOverUnder`}
+                href={`/`}
                 buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nflOverUnder`)}
               />
               <ButtonLink

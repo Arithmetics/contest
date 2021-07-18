@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Image,
   Stack,
   Center,
   HStack,
@@ -14,7 +13,6 @@ import {
   StatNumber,
   Text,
   ColorProps,
-  StatHelpText,
   StatArrow,
   Badge,
 } from '@chakra-ui/react';
@@ -31,6 +29,7 @@ import {
 import { LEADERBOARD_QUERY, USERS_BETS_QUERY } from '../queries';
 
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
+import LineCardHeader from './LineCardHeader';
 
 export function hasLineClosed(line: Line): boolean {
   if (!line.closingTime) {
@@ -47,13 +46,6 @@ export function lineHasWinner(line: Line): boolean {
   }
 
   return line.choices.some((c) => c.isWin);
-}
-
-function formatLineDate(line: Line): string {
-  if (!line.closingTime) {
-    return 'No closing time set';
-  }
-  return new Date(line.closingTime).toLocaleString();
 }
 
 type LineCardProps = {
@@ -188,19 +180,9 @@ export default function LineCard({
       marginTop={6}
       p={4}
     >
-      <HStack>
-        <Stat>
-          <StatLabel>{line.title}</StatLabel>
-          <StatNumber>{line.benchmark} Wins</StatNumber>
-          <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
-        </Stat>
-        <Image
-          boxSize="75px"
-          bg={'gray.600'}
-          src="https://i.ibb.co/XZp4L8W/pngjoy-com-jacksonville-jaguars-jacksonville-jaguars-old-logo-png-png-6702266.png"
-        />
-      </HStack>
+      <LineCardHeader line={line} />
       <Divider orientation="horizontal" paddingTop={3} />
+      {/* middle form */}
       <Stack spacing={0} align={'left'} paddingTop={3}>
         {/* Form starts here */}
         {!lineClosed && (
@@ -273,8 +255,10 @@ export default function LineCard({
             )}
           </>
         )}
-        {/* Footer starts here */}
-        <Divider orientation="horizontal" paddingTop={3} />
+      </Stack>
+      {/* Footer starts here */}
+      <Divider orientation="horizontal" paddingTop={3} />
+      <Stack spacing={0} align={'left'}>
         {userHasEntered && !lineClosed && (
           <>
             <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
