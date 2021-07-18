@@ -251,6 +251,11 @@ export const USERS_BETS_QUERY = gql`
     allBets(where: { choice: { line: { contest: { id: $contestId } } }, user: { id: $userId } }) {
       id
       isSuper
+      choice {
+        id
+        selection
+        isWin
+      }
     }
   }
 `;
