@@ -2,14 +2,7 @@ import { Box, Stat, StatLabel, StatNumber, Avatar, HStack, Spinner } from '@chak
 import { BsLightning } from 'react-icons/bs';
 import { RiCoinLine } from 'react-icons/ri';
 import { AiOutlineOrderedList } from 'react-icons/ai';
-import {
-  Bet,
-  Contest,
-  User,
-  useLeaderboardQuery,
-  useUsersContestBetsQuery,
-  RuleSet,
-} from '../../generated/graphql-types';
+import { Bet, Contest, User, useLeaderboardQuery, RuleSet } from '../../generated/graphql-types';
 
 import { sortLeaderboard } from './LeaderboardTab';
 
@@ -28,22 +21,22 @@ export function superBetsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | 
 type BetStatusLineProps = {
   contest?: Contest;
   user?: User;
+  usersBets?: Bet[] | null;
+  usersBetsLoading: boolean;
 };
 
-export default function BetStatusLine({ contest, user }: BetStatusLineProps): JSX.Element {
+export default function BetStatusLine({
+  contest,
+  user,
+  usersBetsLoading,
+  usersBets,
+}: BetStatusLineProps): JSX.Element {
   const { data: leaderboardData, loading: leaderboardLoading } = useLeaderboardQuery({
     variables: { contestId: contest?.id || '' },
   });
 
-  const { data: usersBetsData, loading: usersBetsLoading } = useUsersContestBetsQuery({
-    variables: { contestId: contest?.id || '', userId: user?.id || '' },
-  });
-
-  const betsLeft = betsRemaining(usersBetsData?.allBets || [], contest?.ruleSet).toString();
-  const superBetsLeft = superBetsRemaining(
-    usersBetsData?.allBets || [],
-    contest?.ruleSet
-  ).toString();
+  const betsLeft = betsRemaining(usersBets || [], contest?.ruleSet).toString();
+  const superBetsLeft = superBetsRemaining(usersBets || [], contest?.ruleSet).toString();
 
   const sortedLeaderboard = sortLeaderboard(leaderboardData?.allRegistrations || []);
   const position =
@@ -51,7 +44,9 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
 
   return (
     <Box overflow="hidden" m={6}>
-      <HStack alignItems="center" justifyContent="center">
+      <HStack justifyContent="center" flexWrap={'wrap'}>
+        {/* bug fix span */}
+        <span></span>
         {usersBetsLoading ? (
           <StatusCard icon={<Spinner />} statLabel="Bets Left" statNumber="--" />
         ) : (
@@ -92,7 +87,15 @@ type StatusCardProps = {
 
 function StatusCard({ icon, statLabel, statNumber }: StatusCardProps): JSX.Element {
   return (
-    <HStack maxW={'200px'} width={'full'} bg={'gray.600'} rounded={'md'} p={4} marginX={4}>
+    <HStack
+      margin={3}
+      marginTop={3}
+      maxW={'300px'}
+      width={'full'}
+      bg={'gray.600'}
+      rounded={'md'}
+      p={3}
+    >
       <Stat>
         <StatLabel>{statLabel}</StatLabel>
         <StatNumber>{statNumber}</StatNumber>

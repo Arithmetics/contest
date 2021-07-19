@@ -9,6 +9,7 @@ import {
   IconButton,
   CloseButton,
   ThemingProps,
+  Image,
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';
@@ -84,7 +85,8 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="NFL Over Under"
                   leftIcon={<GiAmericanFootballHelmet />}
-                  href={`/${Routes.CONTESTS}/nflOverUnder`}
+                  // href={`/${Routes.CONTESTS}/nflOverUnder`}
+                  href={`/`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
@@ -98,7 +100,9 @@ export default function Nav(): JSX.Element {
               </VStack>
             </Box>
 
-            <ChakraLink href="/" title="LOGO" />
+            <ChakraLink href="/" title="LOGO">
+              <Image width="150px" bg={'gray.600'} src="/images/bt-bets-logo.png" />
+            </ChakraLink>
 
             <HStack spacing={3} display={{ base: 'none', md: 'inline-flex' }}>
               <ButtonLink
@@ -110,7 +114,8 @@ export default function Nav(): JSX.Element {
               <ButtonLink
                 title="NFL Over Under"
                 leftIcon={<GiAmericanFootballHelmet />}
-                href={`/${Routes.CONTESTS}/nflOverUnder`}
+                // href={`/${Routes.CONTESTS}/nflOverUnder`}
+                href={`/`}
                 buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nflOverUnder`)}
               />
               <ButtonLink

@@ -44,7 +44,7 @@ export default function AllContest(): JSX.Element {
   const userId = userData?.authenticatedItem?.id;
 
   return (
-    <Flex justifyContent="center">
+    <Flex justifyContent="center" flexWrap="wrap">
       {data?.allContests
         ?.slice()
         .sort((a, b) => {
@@ -119,6 +119,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
         w={'full'}
         src={contest.image?.image?.publicUrlTransformed || ''}
         objectFit={'cover'}
+        objectPosition={'top'}
       />
 
       <Box p={6}>

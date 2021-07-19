@@ -2737,6 +2737,10 @@ export type UsersContestBetsQuery = (
   & { allBets?: Maybe<Array<(
     { __typename?: 'Bet' }
     & Pick<Bet, 'id' | 'isSuper'>
+    & { choice?: Maybe<(
+      { __typename?: 'Choice' }
+      & Pick<Choice, 'id' | 'selection' | 'isWin'>
+    )> }
   )>> }
 );
 
@@ -3601,6 +3605,11 @@ export const UsersContestBetsDocument = gql`
   ) {
     id
     isSuper
+    choice {
+      id
+      selection
+      isWin
+    }
   }
 }
     `;

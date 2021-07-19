@@ -1,19 +1,57 @@
-import { Center, OrderedList, ListItem } from '@chakra-ui/react';
+import { Center, Flex, Stack, StackDivider, Icon, Text } from '@chakra-ui/react';
+import { FaDiceOne, FaDiceTwo, FaDiceThree, FaDiceFour, FaDiceFive } from 'react-icons/fa';
+interface FeatureProps {
+  text: string;
+  iconBg: string;
+  icon?: JSX.Element;
+}
+
+const Rule = ({ text, icon, iconBg }: FeatureProps): JSX.Element => {
+  return (
+    <Stack direction={'row'} alignItems={'center'}>
+      <Flex w={8} h={8} align={'center'} justify={'center'} rounded={'full'} bg={iconBg}>
+        {icon}
+      </Flex>
+      <Text fontWeight={600} maxWidth={700}>
+        {text}
+      </Text>
+    </Stack>
+  );
+};
 
 export default function Rules(): JSX.Element {
   return (
-    <Center>
-      <OrderedList>
-        <ListItem paddingTop={3}>Pick 10 over / under bets</ListItem>
-        <ListItem paddingTop={3}>
-          You get 5 &apos;super bets&apos; and 5 &apos;regular bets&apos;
-        </ListItem>
-        <ListItem paddingTop={3}>Regular bets are worth 1, super bets are worth 2</ListItem>
-        <ListItem paddingTop={3}>Tie breaker one is:</ListItem>
-        <ListItem paddingTop={3}>Tie breaker two is:</ListItem>
-        <ListItem paddingTop={3}>Tie breaker three is:</ListItem>
-        <ListItem paddingTop={3}>Winner takes 100% of the pot</ListItem>
-      </OrderedList>
+    <Center p={3}>
+      <Stack spacing={4} divider={<StackDivider borderColor={'gray.700'} />}>
+        <Rule
+          icon={<Icon as={FaDiceOne} color={'teal.500'} w={5} h={5} />}
+          iconBg={'gray.700'}
+          text={'Pick 10 over / under bets'}
+        />
+        <Rule
+          icon={<Icon as={FaDiceTwo} color={'teal.500'} w={5} h={5} />}
+          iconBg={'gray.700'}
+          text={'You get 5 super bets and 5 regular bets'}
+        />
+        <Rule
+          icon={<Icon as={FaDiceThree} color={'teal.500'} w={5} h={5} />}
+          iconBg={'gray.700'}
+          text={'Regular bets are worth 1 and super bets are worth 2'}
+        />
+        <Rule
+          icon={<Icon as={FaDiceFour} color={'teal.500'} w={5} h={5} />}
+          iconBg={'gray.700'}
+          text={
+            'Tie breaker is the sum of the differentials of your bets to the result. (Ex: you take over 8.5 and the team finishes with 10, your get +1.5. User with highest total score wins)'
+          }
+        />
+
+        <Rule
+          icon={<Icon as={FaDiceFive} color={'teal.500'} w={5} h={5} />}
+          iconBg={'gray.700'}
+          text={'Winner take all'}
+        />
+      </Stack>
     </Center>
   );
 }

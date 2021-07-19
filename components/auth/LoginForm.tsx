@@ -61,7 +61,6 @@ export default function ForgotPasswordForm(): JSX.Element {
           duration: 5000,
           isClosable: true,
         });
-        // reset();
         router.push('/');
       }
     } catch (e) {

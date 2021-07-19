@@ -97,6 +97,7 @@ export type Choice = {
   labelName?: Maybe<Scalars['String']>;
 };
 
+
 /** A keystone list */
 export type ChoiceBetsArgs = {
   where?: BetWhereInput;
@@ -107,6 +108,7 @@ export type ChoiceBetsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 /** A keystone list */
 export type Choice_BetsMetaArgs = {
   where?: BetWhereInput;
@@ -116,6 +118,7 @@ export type Choice_BetsMetaArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
 };
+
 
 /** A keystone list */
 export type ChoiceBetsCountArgs = {
@@ -153,7 +156,7 @@ export enum ChoiceSelectionType {
   Over = 'OVER',
   Under = 'UNDER',
   Away = 'AWAY',
-  Home = 'HOME',
+  Home = 'HOME'
 }
 
 export enum ChoiceStatus {
@@ -161,7 +164,7 @@ export enum ChoiceStatus {
   Winning = 'WINNING',
   Losing = 'LOSING',
   Won = 'WON',
-  Lost = 'LOST',
+  Lost = 'LOST'
 }
 
 export type ChoiceUpdateInput = {
@@ -337,6 +340,7 @@ export type CloudinaryImage_File = {
   publicUrlTransformed?: Maybe<Scalars['String']>;
 };
 
+
 export type CloudinaryImage_FilePublicUrlTransformedArgs = {
   transformation?: Maybe<CloudinaryImageFormat>;
 };
@@ -361,6 +365,7 @@ export type Contest = {
   ruleSet?: Maybe<RuleSet>;
 };
 
+
 /** A keystone list */
 export type ContestLinesArgs = {
   where?: LineWhereInput;
@@ -370,6 +375,7 @@ export type ContestLinesArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
 };
+
 
 /** A keystone list */
 export type Contest_LinesMetaArgs = {
@@ -381,10 +387,12 @@ export type Contest_LinesMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 /** A keystone list */
 export type ContestLinesCountArgs = {
   where?: LineWhereInput;
 };
+
 
 /** A keystone list */
 export type ContestRegistrationsArgs = {
@@ -396,6 +404,7 @@ export type ContestRegistrationsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 /** A keystone list */
 export type Contest_RegistrationsMetaArgs = {
   where?: RegistrationWhereInput;
@@ -405,6 +414,7 @@ export type Contest_RegistrationsMetaArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
 };
+
 
 /** A keystone list */
 export type ContestRegistrationsCountArgs = {
@@ -440,7 +450,7 @@ export type ContestRelateToOneInput = {
 export enum ContestStatusType {
   Open = 'OPEN',
   InProgress = 'IN_PROGRESS',
-  Complete = 'COMPLETE',
+  Complete = 'COMPLETE'
 }
 
 export type ContestUpdateInput = {
@@ -551,6 +561,7 @@ export type CreateInitialUserInput = {
   password?: Maybe<Scalars['String']>;
 };
 
+
 export type KeystoneAdminMeta = {
   __typename?: 'KeystoneAdminMeta';
   enableSignout: Scalars['Boolean'];
@@ -558,6 +569,7 @@ export type KeystoneAdminMeta = {
   lists: Array<KeystoneAdminUiListMeta>;
   list?: Maybe<KeystoneAdminUiListMeta>;
 };
+
 
 export type KeystoneAdminMetaListArgs = {
   key: Scalars['String'];
@@ -576,6 +588,7 @@ export type KeystoneAdminUiFieldMeta = {
   itemView?: Maybe<KeystoneAdminUiFieldMetaItemView>;
 };
 
+
 export type KeystoneAdminUiFieldMetaItemViewArgs = {
   id: Scalars['ID'];
 };
@@ -587,7 +600,7 @@ export type KeystoneAdminUiFieldMetaCreateView = {
 
 export enum KeystoneAdminUiFieldMetaCreateViewFieldMode {
   Edit = 'edit',
-  Hidden = 'hidden',
+  Hidden = 'hidden'
 }
 
 export type KeystoneAdminUiFieldMetaItemView = {
@@ -598,7 +611,7 @@ export type KeystoneAdminUiFieldMetaItemView = {
 export enum KeystoneAdminUiFieldMetaItemViewFieldMode {
   Edit = 'edit',
   Read = 'read',
-  Hidden = 'hidden',
+  Hidden = 'hidden'
 }
 
 export type KeystoneAdminUiFieldMetaListView = {
@@ -608,7 +621,7 @@ export type KeystoneAdminUiFieldMetaListView = {
 
 export enum KeystoneAdminUiFieldMetaListViewFieldMode {
   Read = 'read',
-  Hidden = 'hidden',
+  Hidden = 'hidden'
 }
 
 export type KeystoneAdminUiListMeta = {
@@ -639,7 +652,7 @@ export type KeystoneAdminUiSort = {
 
 export enum KeystoneAdminUiSortDirection {
   Asc = 'ASC',
-  Desc = 'DESC',
+  Desc = 'DESC'
 }
 
 export type KeystoneMeta = {
@@ -666,6 +679,7 @@ export type Line = {
   standingsCount?: Maybe<Scalars['Int']>;
 };
 
+
 /** A keystone list */
 export type LineChoicesArgs = {
   where?: ChoiceWhereInput;
@@ -675,6 +689,7 @@ export type LineChoicesArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
 };
+
 
 /** A keystone list */
 export type Line_ChoicesMetaArgs = {
@@ -686,10 +701,12 @@ export type Line_ChoicesMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 /** A keystone list */
 export type LineChoicesCountArgs = {
   where?: ChoiceWhereInput;
 };
+
 
 /** A keystone list */
 export type LineStandingsArgs = {
@@ -701,6 +718,7 @@ export type LineStandingsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 /** A keystone list */
 export type Line_StandingsMetaArgs = {
   where?: StandingWhereInput;
@@ -710,6 +728,7 @@ export type Line_StandingsMetaArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
 };
+
 
 /** A keystone list */
 export type LineStandingsCountArgs = {
@@ -950,243 +969,301 @@ export type Mutation = {
   endSession: Scalars['Boolean'];
 };
 
+
 export type MutationCreateBetArgs = {
   data?: Maybe<BetCreateInput>;
 };
 
+
 export type MutationCreateBetsArgs = {
   data?: Maybe<Array<Maybe<BetsCreateInput>>>;
 };
+
 
 export type MutationUpdateBetArgs = {
   id: Scalars['ID'];
   data?: Maybe<BetUpdateInput>;
 };
 
+
 export type MutationUpdateBetsArgs = {
   data?: Maybe<Array<Maybe<BetsUpdateInput>>>;
 };
+
 
 export type MutationDeleteBetArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteBetsArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateChoiceArgs = {
   data?: Maybe<ChoiceCreateInput>;
 };
 
+
 export type MutationCreateChoicesArgs = {
   data?: Maybe<Array<Maybe<ChoicesCreateInput>>>;
 };
+
 
 export type MutationUpdateChoiceArgs = {
   id: Scalars['ID'];
   data?: Maybe<ChoiceUpdateInput>;
 };
 
+
 export type MutationUpdateChoicesArgs = {
   data?: Maybe<Array<Maybe<ChoicesUpdateInput>>>;
 };
+
 
 export type MutationDeleteChoiceArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteChoicesArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateCloudImageArgs = {
   data?: Maybe<CloudImageCreateInput>;
 };
 
+
 export type MutationCreateCloudImagesArgs = {
   data?: Maybe<Array<Maybe<CloudImagesCreateInput>>>;
 };
+
 
 export type MutationUpdateCloudImageArgs = {
   id: Scalars['ID'];
   data?: Maybe<CloudImageUpdateInput>;
 };
 
+
 export type MutationUpdateCloudImagesArgs = {
   data?: Maybe<Array<Maybe<CloudImagesUpdateInput>>>;
 };
+
 
 export type MutationDeleteCloudImageArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteCloudImagesArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateContestArgs = {
   data?: Maybe<ContestCreateInput>;
 };
 
+
 export type MutationCreateContestsArgs = {
   data?: Maybe<Array<Maybe<ContestsCreateInput>>>;
 };
+
 
 export type MutationUpdateContestArgs = {
   id: Scalars['ID'];
   data?: Maybe<ContestUpdateInput>;
 };
 
+
 export type MutationUpdateContestsArgs = {
   data?: Maybe<Array<Maybe<ContestsUpdateInput>>>;
 };
+
 
 export type MutationDeleteContestArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteContestsArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateLineArgs = {
   data?: Maybe<LineCreateInput>;
 };
 
+
 export type MutationCreateLinesArgs = {
   data?: Maybe<Array<Maybe<LinesCreateInput>>>;
 };
+
 
 export type MutationUpdateLineArgs = {
   id: Scalars['ID'];
   data?: Maybe<LineUpdateInput>;
 };
 
+
 export type MutationUpdateLinesArgs = {
   data?: Maybe<Array<Maybe<LinesUpdateInput>>>;
 };
+
 
 export type MutationDeleteLineArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteLinesArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateRegistrationArgs = {
   data?: Maybe<RegistrationCreateInput>;
 };
 
+
 export type MutationCreateRegistrationsArgs = {
   data?: Maybe<Array<Maybe<RegistrationsCreateInput>>>;
 };
+
 
 export type MutationUpdateRegistrationArgs = {
   id: Scalars['ID'];
   data?: Maybe<RegistrationUpdateInput>;
 };
 
+
 export type MutationUpdateRegistrationsArgs = {
   data?: Maybe<Array<Maybe<RegistrationsUpdateInput>>>;
 };
+
 
 export type MutationDeleteRegistrationArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteRegistrationsArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateRuleSetArgs = {
   data?: Maybe<RuleSetCreateInput>;
 };
 
+
 export type MutationCreateRuleSetsArgs = {
   data?: Maybe<Array<Maybe<RuleSetsCreateInput>>>;
 };
+
 
 export type MutationUpdateRuleSetArgs = {
   id: Scalars['ID'];
   data?: Maybe<RuleSetUpdateInput>;
 };
 
+
 export type MutationUpdateRuleSetsArgs = {
   data?: Maybe<Array<Maybe<RuleSetsUpdateInput>>>;
 };
+
 
 export type MutationDeleteRuleSetArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteRuleSetsArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateStandingArgs = {
   data?: Maybe<StandingCreateInput>;
 };
 
+
 export type MutationCreateStandingsArgs = {
   data?: Maybe<Array<Maybe<StandingsCreateInput>>>;
 };
+
 
 export type MutationUpdateStandingArgs = {
   id: Scalars['ID'];
   data?: Maybe<StandingUpdateInput>;
 };
 
+
 export type MutationUpdateStandingsArgs = {
   data?: Maybe<Array<Maybe<StandingsUpdateInput>>>;
 };
+
 
 export type MutationDeleteStandingArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteStandingsArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationCreateUserArgs = {
   data?: Maybe<UserCreateInput>;
 };
 
+
 export type MutationCreateUsersArgs = {
   data?: Maybe<Array<Maybe<UsersCreateInput>>>;
 };
+
 
 export type MutationUpdateUserArgs = {
   id: Scalars['ID'];
   data?: Maybe<UserUpdateInput>;
 };
 
+
 export type MutationUpdateUsersArgs = {
   data?: Maybe<Array<Maybe<UsersUpdateInput>>>;
 };
+
 
 export type MutationDeleteUserArgs = {
   id: Scalars['ID'];
 };
 
+
 export type MutationDeleteUsersArgs = {
   ids?: Maybe<Array<Scalars['ID']>>;
 };
+
 
 export type MutationAuthenticateUserWithPasswordArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
 
+
 export type MutationCreateInitialUserArgs = {
   data: CreateInitialUserInput;
 };
 
+
 export type MutationSendUserPasswordResetLinkArgs = {
   email: Scalars['String'];
 };
+
 
 export type MutationRedeemUserPasswordResetTokenArgs = {
   email: Scalars['String'];
@@ -1196,7 +1273,7 @@ export type MutationRedeemUserPasswordResetTokenArgs = {
 
 export enum OrderDirection {
   Asc = 'asc',
-  Desc = 'desc',
+  Desc = 'desc'
 }
 
 export enum PasswordAuthErrorCode {
@@ -1204,7 +1281,7 @@ export enum PasswordAuthErrorCode {
   IdentityNotFound = 'IDENTITY_NOT_FOUND',
   SecretNotSet = 'SECRET_NOT_SET',
   MultipleIdentityMatches = 'MULTIPLE_IDENTITY_MATCHES',
-  SecretMismatch = 'SECRET_MISMATCH',
+  SecretMismatch = 'SECRET_MISMATCH'
 }
 
 export enum PasswordResetRedemptionErrorCode {
@@ -1214,12 +1291,12 @@ export enum PasswordResetRedemptionErrorCode {
   TokenNotSet = 'TOKEN_NOT_SET',
   TokenMismatch = 'TOKEN_MISMATCH',
   TokenExpired = 'TOKEN_EXPIRED',
-  TokenRedeemed = 'TOKEN_REDEEMED',
+  TokenRedeemed = 'TOKEN_REDEEMED'
 }
 
 export enum PasswordResetRequestErrorCode {
   IdentityNotFound = 'IDENTITY_NOT_FOUND',
-  MultipleIdentityMatches = 'MULTIPLE_IDENTITY_MATCHES',
+  MultipleIdentityMatches = 'MULTIPLE_IDENTITY_MATCHES'
 }
 
 export type PasswordState = {
@@ -1331,6 +1408,7 @@ export type Query = {
   keystone: KeystoneMeta;
 };
 
+
 export type QueryAllBetsArgs = {
   where?: BetWhereInput;
   search?: Maybe<Scalars['String']>;
@@ -1340,9 +1418,11 @@ export type QueryAllBetsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryBetArgs = {
   where: BetWhereUniqueInput;
 };
+
 
 export type Query_AllBetsMetaArgs = {
   where?: BetWhereInput;
@@ -1353,9 +1433,11 @@ export type Query_AllBetsMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryBetsCountArgs = {
   where?: BetWhereInput;
 };
+
 
 export type QueryAllChoicesArgs = {
   where?: ChoiceWhereInput;
@@ -1366,9 +1448,11 @@ export type QueryAllChoicesArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryChoiceArgs = {
   where: ChoiceWhereUniqueInput;
 };
+
 
 export type Query_AllChoicesMetaArgs = {
   where?: ChoiceWhereInput;
@@ -1379,9 +1463,11 @@ export type Query_AllChoicesMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryChoicesCountArgs = {
   where?: ChoiceWhereInput;
 };
+
 
 export type QueryAllCloudImagesArgs = {
   where?: CloudImageWhereInput;
@@ -1392,9 +1478,11 @@ export type QueryAllCloudImagesArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryCloudImageArgs = {
   where: CloudImageWhereUniqueInput;
 };
+
 
 export type Query_AllCloudImagesMetaArgs = {
   where?: CloudImageWhereInput;
@@ -1405,9 +1493,11 @@ export type Query_AllCloudImagesMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryCloudImagesCountArgs = {
   where?: CloudImageWhereInput;
 };
+
 
 export type QueryAllContestsArgs = {
   where?: ContestWhereInput;
@@ -1418,9 +1508,11 @@ export type QueryAllContestsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryContestArgs = {
   where: ContestWhereUniqueInput;
 };
+
 
 export type Query_AllContestsMetaArgs = {
   where?: ContestWhereInput;
@@ -1431,9 +1523,11 @@ export type Query_AllContestsMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryContestsCountArgs = {
   where?: ContestWhereInput;
 };
+
 
 export type QueryAllLinesArgs = {
   where?: LineWhereInput;
@@ -1444,9 +1538,11 @@ export type QueryAllLinesArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryLineArgs = {
   where: LineWhereUniqueInput;
 };
+
 
 export type Query_AllLinesMetaArgs = {
   where?: LineWhereInput;
@@ -1457,9 +1553,11 @@ export type Query_AllLinesMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryLinesCountArgs = {
   where?: LineWhereInput;
 };
+
 
 export type QueryAllRegistrationsArgs = {
   where?: RegistrationWhereInput;
@@ -1470,9 +1568,11 @@ export type QueryAllRegistrationsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryRegistrationArgs = {
   where: RegistrationWhereUniqueInput;
 };
+
 
 export type Query_AllRegistrationsMetaArgs = {
   where?: RegistrationWhereInput;
@@ -1483,9 +1583,11 @@ export type Query_AllRegistrationsMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryRegistrationsCountArgs = {
   where?: RegistrationWhereInput;
 };
+
 
 export type QueryAllRuleSetsArgs = {
   where?: RuleSetWhereInput;
@@ -1496,9 +1598,11 @@ export type QueryAllRuleSetsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryRuleSetArgs = {
   where: RuleSetWhereUniqueInput;
 };
+
 
 export type Query_AllRuleSetsMetaArgs = {
   where?: RuleSetWhereInput;
@@ -1509,9 +1613,11 @@ export type Query_AllRuleSetsMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryRuleSetsCountArgs = {
   where?: RuleSetWhereInput;
 };
+
 
 export type QueryAllStandingsArgs = {
   where?: StandingWhereInput;
@@ -1522,9 +1628,11 @@ export type QueryAllStandingsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryStandingArgs = {
   where: StandingWhereUniqueInput;
 };
+
 
 export type Query_AllStandingsMetaArgs = {
   where?: StandingWhereInput;
@@ -1535,9 +1643,11 @@ export type Query_AllStandingsMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryStandingsCountArgs = {
   where?: StandingWhereInput;
 };
+
 
 export type QueryAllUsersArgs = {
   where?: UserWhereInput;
@@ -1548,9 +1658,11 @@ export type QueryAllUsersArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryUserArgs = {
   where: UserWhereUniqueInput;
 };
+
 
 export type Query_AllUsersMetaArgs = {
   where?: UserWhereInput;
@@ -1561,9 +1673,11 @@ export type Query_AllUsersMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 export type QueryUsersCountArgs = {
   where?: UserWhereInput;
 };
+
 
 export type QueryValidateUserPasswordResetTokenArgs = {
   email: Scalars['String'];
@@ -1742,7 +1856,7 @@ export enum SortBetsBy {
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   IsSuperAsc = 'isSuper_ASC',
-  IsSuperDesc = 'isSuper_DESC',
+  IsSuperDesc = 'isSuper_DESC'
 }
 
 export enum SortChoicesBy {
@@ -1751,14 +1865,14 @@ export enum SortChoicesBy {
   SelectionAsc = 'selection_ASC',
   SelectionDesc = 'selection_DESC',
   IsWinAsc = 'isWin_ASC',
-  IsWinDesc = 'isWin_DESC',
+  IsWinDesc = 'isWin_DESC'
 }
 
 export enum SortCloudImagesBy {
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   AltTextAsc = 'altText_ASC',
-  AltTextDesc = 'altText_DESC',
+  AltTextDesc = 'altText_DESC'
 }
 
 export enum SortContestsBy {
@@ -1771,7 +1885,7 @@ export enum SortContestsBy {
   StatusAsc = 'status_ASC',
   StatusDesc = 'status_DESC',
   EntryFeeAsc = 'entryFee_ASC',
-  EntryFeeDesc = 'entryFee_DESC',
+  EntryFeeDesc = 'entryFee_DESC'
 }
 
 export enum SortLinesBy {
@@ -1782,14 +1896,14 @@ export enum SortLinesBy {
   ClosingTimeAsc = 'closingTime_ASC',
   ClosingTimeDesc = 'closingTime_DESC',
   BenchmarkAsc = 'benchmark_ASC',
-  BenchmarkDesc = 'benchmark_DESC',
+  BenchmarkDesc = 'benchmark_DESC'
 }
 
 export enum SortRegistrationsBy {
   IdAsc = 'id_ASC',
   IdDesc = 'id_DESC',
   HasPaidAsc = 'hasPaid_ASC',
-  HasPaidDesc = 'hasPaid_DESC',
+  HasPaidDesc = 'hasPaid_DESC'
 }
 
 export enum SortRuleSetsBy {
@@ -1800,7 +1914,7 @@ export enum SortRuleSetsBy {
   MaxSuperBetsAsc = 'maxSuperBets_ASC',
   MaxSuperBetsDesc = 'maxSuperBets_DESC',
   SuperBetPointCountAsc = 'superBetPointCount_ASC',
-  SuperBetPointCountDesc = 'superBetPointCount_DESC',
+  SuperBetPointCountDesc = 'superBetPointCount_DESC'
 }
 
 export enum SortStandingsBy {
@@ -1811,7 +1925,7 @@ export enum SortStandingsBy {
   WinsAsc = 'wins_ASC',
   WinsDesc = 'wins_DESC',
   TotalGamesAsc = 'totalGames_ASC',
-  TotalGamesDesc = 'totalGames_DESC',
+  TotalGamesDesc = 'totalGames_DESC'
 }
 
 export enum SortUsersBy {
@@ -1828,7 +1942,7 @@ export enum SortUsersBy {
   PasswordResetIssuedAtAsc = 'passwordResetIssuedAt_ASC',
   PasswordResetIssuedAtDesc = 'passwordResetIssuedAt_DESC',
   PasswordResetRedeemedAtAsc = 'passwordResetRedeemedAt_ASC',
-  PasswordResetRedeemedAtDesc = 'passwordResetRedeemedAt_DESC',
+  PasswordResetRedeemedAtDesc = 'passwordResetRedeemedAt_DESC'
 }
 
 /** A keystone list */
@@ -1921,6 +2035,7 @@ export type StandingsUpdateInput = {
   data?: Maybe<StandingUpdateInput>;
 };
 
+
 /** A keystone list */
 export type User = {
   __typename?: 'User';
@@ -1944,6 +2059,7 @@ export type User = {
   passwordResetRedeemedAt?: Maybe<Scalars['String']>;
 };
 
+
 /** A keystone list */
 export type UserBetsArgs = {
   where?: BetWhereInput;
@@ -1953,6 +2069,7 @@ export type UserBetsArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
 };
+
 
 /** A keystone list */
 export type User_BetsMetaArgs = {
@@ -1964,10 +2081,12 @@ export type User_BetsMetaArgs = {
   skip?: Scalars['Int'];
 };
 
+
 /** A keystone list */
 export type UserBetsCountArgs = {
   where?: BetWhereInput;
 };
+
 
 /** A keystone list */
 export type UserRegistrationsArgs = {
@@ -1979,6 +2098,7 @@ export type UserRegistrationsArgs = {
   skip?: Scalars['Int'];
 };
 
+
 /** A keystone list */
 export type User_RegistrationsMetaArgs = {
   where?: RegistrationWhereInput;
@@ -1988,6 +2108,7 @@ export type User_RegistrationsMetaArgs = {
   first?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
 };
+
 
 /** A keystone list */
 export type UserRegistrationsCountArgs = {
@@ -2000,9 +2121,7 @@ export type UserAuthenticationWithPasswordFailure = {
   message: Scalars['String'];
 };
 
-export type UserAuthenticationWithPasswordResult =
-  | UserAuthenticationWithPasswordSuccess
-  | UserAuthenticationWithPasswordFailure;
+export type UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure;
 
 export type UserAuthenticationWithPasswordSuccess = {
   __typename?: 'UserAuthenticationWithPasswordSuccess';
