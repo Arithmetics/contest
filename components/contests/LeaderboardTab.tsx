@@ -10,6 +10,7 @@ import {
   HStack,
   Center,
   Box,
+  useBreakpointValue,
   Spinner,
 } from '@chakra-ui/react';
 import { firstBy } from 'thenby';
@@ -32,6 +33,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
 
   const sortedLeaderboard = sortLeaderboard(data?.allRegistrations || []);
 
+  const marginBox = useBreakpointValue({ base: 1, sm: 2, md: 6 });
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
@@ -41,41 +43,39 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   }
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
-      <Center>
-        <Table variant="simple">
-          <Thead>
-            <Tr>
-              <Th>Place</Th>
-              <Th>User</Th>
-              <Th isNumeric>Total Locked Points</Th>
-              <Th isNumeric>Total Likely Points</Th>
-              <Th isNumeric>Total Possible Points</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {sortedLeaderboard?.map((reg, i) => {
-              const user = reg.user;
-              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+    <Box borderWidth="1px" borderRadius="lg" padding={marginBox} m={marginBox} overflowX="auto">
+      <Table variant="simple">
+        <Thead>
+          <Tr>
+            <Th>Place</Th>
+            <Th>User</Th>
+            <Th isNumeric>Total Locked Points</Th>
+            <Th isNumeric>Total Likely Points</Th>
+            <Th isNumeric>Total Possible Points</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {sortedLeaderboard?.map((reg, i) => {
+            const user = reg.user;
+            const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
-              return (
-                <Tr key={reg.id}>
-                  <Td>{i + 1}.</Td>
-                  <Td>
-                    <HStack>
-                      <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
-                      <Text>{user?.userName}</Text>
-                    </HStack>
-                  </Td>
-                  <Td isNumeric>{reg.counts?.locked}</Td>
-                  <Td isNumeric>{reg.counts?.likely}</Td>
-                  <Td isNumeric>{reg.counts?.possible}</Td>
-                </Tr>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </Center>
+            return (
+              <Tr key={reg.id}>
+                <Td>{i + 1}.</Td>
+                <Td>
+                  <HStack>
+                    <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
+                    <Text>{user?.userName}</Text>
+                  </HStack>
+                </Td>
+                <Td isNumeric>{reg.counts?.locked}</Td>
+                <Td isNumeric>{reg.counts?.likely}</Td>
+                <Td isNumeric>{reg.counts?.possible}</Td>
+              </Tr>
+            );
+          })}
+        </Tbody>
+      </Table>
     </Box>
   );
 }

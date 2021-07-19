@@ -44,7 +44,7 @@ export default function AllContest(): JSX.Element {
   const userId = userData?.authenticatedItem?.id;
 
   return (
-    <Flex justifyContent="center">
+    <Flex justifyContent="center" flexWrap="wrap">
       {data?.allContests
         ?.slice()
         .sort((a, b) => {
