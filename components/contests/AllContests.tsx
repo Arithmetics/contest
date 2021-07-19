@@ -119,6 +119,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
         w={'full'}
         src={contest.image?.image?.publicUrlTransformed || ''}
         objectFit={'cover'}
+        objectPosition={'top'}
       />
 
       <Box p={6}>
