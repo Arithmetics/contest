@@ -1,5 +1,6 @@
-import { Box } from '@chakra-ui/react';
+import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { ResponsiveLine, Serie, PointTooltipProps } from '@nivo/line';
+import { LegendAnchor } from '@nivo/legends';
 import { Line } from '../../generated/graphql-types';
 import theme from '../../theme';
 
@@ -8,6 +9,12 @@ type ResponsiveLineProps = {
 };
 
 export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element {
+  const marginRight = useBreakpointValue({ base: 20, md: 120 });
+  const marginBottom = useBreakpointValue({ base: 130, md: 60 });
+  const translateX = useBreakpointValue({ base: 0, md: 120 });
+  const translateY = useBreakpointValue({ base: 120, md: 0 });
+  const anchor = useBreakpointValue<LegendAnchor>({ base: 'bottom-left', md: 'bottom-right' });
+
   return (
     <ResponsiveLine
       data={data}
@@ -22,7 +29,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
         theme.colors.blue['200'],
         theme.colors.cyan['400'],
       ]}
-      margin={{ top: 50, right: 110, bottom: 60, left: 60 }}
+      margin={{ top: 50, right: marginRight, bottom: marginBottom, left: 60 }}
       xScale={{ type: 'linear', min: 1, max: 17 }}
       yScale={{ type: 'linear', min: 0, max: 1, reverse: false }}
       yFormat=" >-.2f"
@@ -52,11 +59,11 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
       useMesh={true}
       legends={[
         {
-          anchor: 'bottom-right',
+          anchor: anchor as LegendAnchor,
           direction: 'column',
           justify: false,
-          translateX: 100,
-          translateY: 0,
+          translateX: translateX,
+          translateY: translateY,
           itemsSpacing: 0,
           itemDirection: 'left-to-right',
           itemWidth: 85,

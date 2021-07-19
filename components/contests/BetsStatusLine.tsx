@@ -44,7 +44,9 @@ export default function BetStatusLine({
 
   return (
     <Box overflow="hidden" m={6}>
-      <HStack alignItems="center" justifyContent="center">
+      <HStack justifyContent="center" flexWrap={'wrap'}>
+        {/* bug fix span */}
+        <span></span>
         {usersBetsLoading ? (
           <StatusCard icon={<Spinner />} statLabel="Bets Left" statNumber="--" />
         ) : (
@@ -85,7 +87,15 @@ type StatusCardProps = {
 
 function StatusCard({ icon, statLabel, statNumber }: StatusCardProps): JSX.Element {
   return (
-    <HStack maxW={'200px'} width={'full'} bg={'gray.600'} rounded={'md'} p={4} marginX={4}>
+    <HStack
+      margin={3}
+      marginTop={3}
+      maxW={'300px'}
+      width={'full'}
+      bg={'gray.600'}
+      rounded={'md'}
+      p={3}
+    >
       <Stat>
         <StatLabel>{statLabel}</StatLabel>
         <StatNumber>{statNumber}</StatNumber>

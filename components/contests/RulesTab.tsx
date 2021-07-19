@@ -8,7 +8,7 @@ interface FeatureProps {
 
 const Rule = ({ text, icon, iconBg }: FeatureProps): JSX.Element => {
   return (
-    <Stack direction={'row'} align={'center'}>
+    <Stack direction={'row'} alignItems={'center'}>
       <Flex w={8} h={8} align={'center'} justify={'center'} rounded={'full'} bg={iconBg}>
         {icon}
       </Flex>
@@ -21,7 +21,7 @@ const Rule = ({ text, icon, iconBg }: FeatureProps): JSX.Element => {
 
 export default function Rules(): JSX.Element {
   return (
-    <Center>
+    <Center p={3}>
       <Stack spacing={4} divider={<StackDivider borderColor={'gray.700'} />}>
         <Rule
           icon={<Icon as={FaDiceOne} color={'teal.500'} w={5} h={5} />}

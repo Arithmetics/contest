@@ -89,7 +89,6 @@ function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
   return (
     <Box
       maxW={'100%'}
-      width={'700px'}
       bg={'gray.600'}
       border={'1px'}
       borderColor={'teal.500'}
@@ -100,7 +99,7 @@ function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
       marginTop={6}
       p={4}
     >
-      <HStack>
+      <HStack maxW={'100%'}>
         <Image
           boxSize="75px"
           bg={'gray.600'}
@@ -113,7 +112,7 @@ function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
         <WinsLossesLeftSection line={line} />
       </HStack>
       <Divider orientation="horizontal" paddingTop={3} />
-      <Box height={'300px'} width={'100%'}>
+      <Box height={'400px'} width={'700px'} maxW={'80vw'}>
         <TrackerGraph data={prepareLineStandingsForGraph(line as Line)} />
       </Box>
       <Divider orientation="horizontal" paddingY={2} />
