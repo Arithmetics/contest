@@ -22,6 +22,8 @@ import {
   PopoverBody,
   PopoverTrigger,
   useDisclosure,
+  useBreakpointValue,
+  HStack,
 } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
@@ -128,8 +130,11 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
     );
   };
 
+  const marginBox = useBreakpointValue({ base: 1, sm: 2, md: 6 });
+  const headerText = useBreakpointValue({ base: '2xl', sm: '2xl', md: '4xl' });
+
   return (
-    <Box overflow="hidden" m={6}>
+    <Box overflow="hidden" m={marginBox} marginTop={2}>
       <DeleteRegistrationConfirmModal
         onOpen={onOpen}
         onClose={onClose}
@@ -139,33 +144,38 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
       />
       {contest ? (
         <>
-          <Text fontSize="4xl" textAlign="center">
-            {contest.name}
-            {!getContestLoading && showLeaveContestButton ? (
-              <Popover>
-                <PopoverTrigger>
-                  <sup>
-                    <SettingsIcon width={10} padding={1} />
-                  </sup>
-                </PopoverTrigger>
-                <PopoverContent>
-                  <PopoverArrow />
-                  <PopoverCloseButton />
-                  <PopoverBody>
-                    <Center padding={2}>
-                      <Button onClick={onOpen} variant="red-gradient">
-                        Leave Contest
-                      </Button>
-                    </Center>
-                  </PopoverBody>
-                </PopoverContent>
-              </Popover>
-            ) : undefined}
-          </Text>
+          <Center>
+            <HStack>
+              <Text fontSize={headerText} textAlign="center">
+                {contest.name}
+              </Text>
 
-          <Text fontSize="lg" textAlign="center">
-            {contest?.description}
-          </Text>
+              {!getContestLoading && showLeaveContestButton ? (
+                <Popover>
+                  <PopoverTrigger>
+                    <SettingsIcon width={10} />
+                  </PopoverTrigger>
+                  <PopoverContent>
+                    <PopoverArrow />
+                    <PopoverCloseButton />
+                    <PopoverBody>
+                      <Center padding={2}>
+                        <Button onClick={onOpen} variant="red-gradient">
+                          Leave Contest
+                        </Button>
+                      </Center>
+                    </PopoverBody>
+                  </PopoverContent>
+                </Popover>
+              ) : undefined}
+            </HStack>
+          </Center>
+
+          <Center>
+            <Text fontSize="lg" textAlign="center">
+              {contest?.description}
+            </Text>
+          </Center>
         </>
       ) : undefined}
 
@@ -194,6 +204,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
           borderBottomColor="transparent"
           colorScheme="teal"
           onChange={updateUrl}
+          overflowX="auto"
         >
           <TabList>
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
