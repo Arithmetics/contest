@@ -10,6 +10,7 @@ export const CURRENT_USER_QUERY = gql`
         userName
         # other stuff
         avatarImage {
+          id
           altText
           image {
             publicUrlTransformed
@@ -72,13 +73,6 @@ export const CONTEST_BY_ID_QUERY = gql`
           id
           selection
           isWin
-          bets {
-            id
-            isSuper
-            user {
-              id
-            }
-          }
         }
       }
       registrations {
@@ -86,8 +80,8 @@ export const CONTEST_BY_ID_QUERY = gql`
         user {
           id
           userName
-          # other stuff
           avatarImage {
+            id
             altText
             image {
               publicUrlTransformed
@@ -139,21 +133,12 @@ export const MAKE_BET_MUTATION = gql`
       }
     ) {
       id
+      isSuper
       user {
         id
       }
       choice {
         id
-        bets {
-          id
-          isSuper
-          user {
-            id
-          }
-        }
-        line {
-          id
-        }
       }
     }
   }
@@ -163,19 +148,6 @@ export const DELETE_BET_MUTATION = gql`
   mutation DeleteBet($betId: ID!) {
     deleteBet(id: $betId) {
       id
-      choice {
-        id
-        bets {
-          id
-          isSuper
-          user {
-            id
-          }
-        }
-      }
-      user {
-        id
-      }
     }
   }
 `;
@@ -203,20 +175,6 @@ export const TRACKER_STATUS_QUERY = gql`
         id
         selection
         isWin
-        bets {
-          id
-          isSuper
-          user {
-            id
-            userName
-            avatarImage {
-              altText
-              image {
-                publicUrlTransformed
-              }
-            }
-          }
-        }
       }
     }
   }
@@ -231,6 +189,7 @@ export const LEADERBOARD_QUERY = gql`
         userName
         # other stuff
         avatarImage {
+          id
           altText
           image {
             publicUrlTransformed
@@ -246,15 +205,24 @@ export const LEADERBOARD_QUERY = gql`
   }
 `;
 
-export const USERS_BETS_QUERY = gql`
-  query UsersContestBets($contestId: ID!, $userId: ID!) {
-    allBets(where: { choice: { line: { contest: { id: $contestId } } }, user: { id: $userId } }) {
+export const CONTEST_BETS_QUERY = gql`
+  query ContestBets($contestId: ID!) {
+    allBets(where: { choice: { line: { contest: { id: $contestId } } } }) {
       id
       isSuper
       choice {
         id
-        selection
-        isWin
+      }
+      user {
+        id
+        userName
+        avatarImage {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
       }
     }
   }

@@ -2454,6 +2454,11 @@ export type UpdateUserAvatarMutation = (
   )> }
 );
 
+export type NewBetFragment = (
+  { __typename?: 'Bet' }
+  & Pick<Bet, 'id'>
+);
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2525,14 +2530,6 @@ export type ContestByIdQuery = (
       & { choices?: Maybe<Array<(
         { __typename?: 'Choice' }
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
-        & { bets?: Maybe<Array<(
-          { __typename?: 'Bet' }
-          & Pick<Bet, 'id' | 'isSuper'>
-          & { user?: Maybe<(
-            { __typename?: 'User' }
-            & Pick<User, 'id'>
-          )> }
-        )>> }
       )>> }
     )>>, registrations?: Maybe<Array<(
       { __typename?: 'Registration' }
@@ -2605,24 +2602,13 @@ export type MakeBetMutation = (
   { __typename?: 'Mutation' }
   & { createBet?: Maybe<(
     { __typename?: 'Bet' }
-    & Pick<Bet, 'id'>
+    & Pick<Bet, 'id' | 'isSuper'>
     & { user?: Maybe<(
       { __typename?: 'User' }
       & Pick<User, 'id'>
     )>, choice?: Maybe<(
       { __typename?: 'Choice' }
       & Pick<Choice, 'id'>
-      & { bets?: Maybe<Array<(
-        { __typename?: 'Bet' }
-        & Pick<Bet, 'id' | 'isSuper'>
-        & { user?: Maybe<(
-          { __typename?: 'User' }
-          & Pick<User, 'id'>
-        )> }
-      )>>, line?: Maybe<(
-        { __typename?: 'Line' }
-        & Pick<Line, 'id'>
-      )> }
     )> }
   )> }
 );
@@ -2637,21 +2623,6 @@ export type DeleteBetMutation = (
   & { deleteBet?: Maybe<(
     { __typename?: 'Bet' }
     & Pick<Bet, 'id'>
-    & { choice?: Maybe<(
-      { __typename?: 'Choice' }
-      & Pick<Choice, 'id'>
-      & { bets?: Maybe<Array<(
-        { __typename?: 'Bet' }
-        & Pick<Bet, 'id' | 'isSuper'>
-        & { user?: Maybe<(
-          { __typename?: 'User' }
-          & Pick<User, 'id'>
-        )> }
-      )>> }
-    )>, user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'id'>
-    )> }
   )> }
 );
 
@@ -2726,25 +2697,39 @@ export type LeaderboardQuery = (
   )>> }
 );
 
-export type UsersContestBetsQueryVariables = Exact<{
+export type ContestBetsQueryVariables = Exact<{
   contestId: Scalars['ID'];
-  userId: Scalars['ID'];
 }>;
 
 
-export type UsersContestBetsQuery = (
+export type ContestBetsQuery = (
   { __typename?: 'Query' }
   & { allBets?: Maybe<Array<(
     { __typename?: 'Bet' }
     & Pick<Bet, 'id' | 'isSuper'>
     & { choice?: Maybe<(
       { __typename?: 'Choice' }
-      & Pick<Choice, 'id' | 'selection' | 'isWin'>
+      & Pick<Choice, 'id'>
+    )>, user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'userName'>
+      & { avatarImage?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )> }
     )> }
   )>> }
 );
 
-
+export const NewBetFragmentDoc = gql`
+    fragment NewBet on Bet {
+  id
+}
+    `;
 export const CheckIfEmailAvailableDocument = gql`
     query CheckIfEmailAvailable($email: String!) {
   _allUsersMeta(where: {email: $email}) {
@@ -3246,13 +3231,6 @@ export const ContestByIdDocument = gql`
         id
         selection
         isWin
-        bets {
-          id
-          isSuper
-          user {
-            id
-          }
-        }
       }
     }
     registrations {
@@ -3386,21 +3364,12 @@ export const MakeBetDocument = gql`
     data: {user: {connect: {id: $userId}}, choice: {connect: {id: $choiceId}}, isSuper: $isSuper}
   ) {
     id
+    isSuper
     user {
       id
     }
     choice {
       id
-      bets {
-        id
-        isSuper
-        user {
-          id
-        }
-      }
-      line {
-        id
-      }
     }
   }
 }
@@ -3437,19 +3406,6 @@ export const DeleteBetDocument = gql`
     mutation DeleteBet($betId: ID!) {
   deleteBet(id: $betId) {
     id
-    choice {
-      id
-      bets {
-        id
-        isSuper
-        user {
-          id
-        }
-      }
-    }
-    user {
-      id
-    }
   }
 }
     `;
@@ -3598,47 +3554,52 @@ export function useLeaderboardLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type LeaderboardQueryHookResult = ReturnType<typeof useLeaderboardQuery>;
 export type LeaderboardLazyQueryHookResult = ReturnType<typeof useLeaderboardLazyQuery>;
 export type LeaderboardQueryResult = Apollo.QueryResult<LeaderboardQuery, LeaderboardQueryVariables>;
-export const UsersContestBetsDocument = gql`
-    query UsersContestBets($contestId: ID!, $userId: ID!) {
-  allBets(
-    where: {choice: {line: {contest: {id: $contestId}}}, user: {id: $userId}}
-  ) {
+export const ContestBetsDocument = gql`
+    query ContestBets($contestId: ID!) {
+  allBets(where: {choice: {line: {contest: {id: $contestId}}}}) {
     id
     isSuper
     choice {
       id
-      selection
-      isWin
+    }
+    user {
+      id
+      userName
+      avatarImage {
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
     }
   }
 }
     `;
 
 /**
- * __useUsersContestBetsQuery__
+ * __useContestBetsQuery__
  *
- * To run a query within a React component, call `useUsersContestBetsQuery` and pass it any options that fit your needs.
- * When your component renders, `useUsersContestBetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useContestBetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useContestBetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useUsersContestBetsQuery({
+ * const { data, loading, error } = useContestBetsQuery({
  *   variables: {
  *      contestId: // value for 'contestId'
- *      userId: // value for 'userId'
  *   },
  * });
  */
-export function useUsersContestBetsQuery(baseOptions: Apollo.QueryHookOptions<UsersContestBetsQuery, UsersContestBetsQueryVariables>) {
+export function useContestBetsQuery(baseOptions: Apollo.QueryHookOptions<ContestBetsQuery, ContestBetsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UsersContestBetsQuery, UsersContestBetsQueryVariables>(UsersContestBetsDocument, options);
+        return Apollo.useQuery<ContestBetsQuery, ContestBetsQueryVariables>(ContestBetsDocument, options);
       }
-export function useUsersContestBetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UsersContestBetsQuery, UsersContestBetsQueryVariables>) {
+export function useContestBetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ContestBetsQuery, ContestBetsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UsersContestBetsQuery, UsersContestBetsQueryVariables>(UsersContestBetsDocument, options);
+          return Apollo.useLazyQuery<ContestBetsQuery, ContestBetsQueryVariables>(ContestBetsDocument, options);
         }
-export type UsersContestBetsQueryHookResult = ReturnType<typeof useUsersContestBetsQuery>;
-export type UsersContestBetsLazyQueryHookResult = ReturnType<typeof useUsersContestBetsLazyQuery>;
-export type UsersContestBetsQueryResult = Apollo.QueryResult<UsersContestBetsQuery, UsersContestBetsQueryVariables>;
+export type ContestBetsQueryHookResult = ReturnType<typeof useContestBetsQuery>;
+export type ContestBetsLazyQueryHookResult = ReturnType<typeof useContestBetsLazyQuery>;
+export type ContestBetsQueryResult = Apollo.QueryResult<ContestBetsQuery, ContestBetsQueryVariables>;

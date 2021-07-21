@@ -16,7 +16,8 @@ import {
   StatArrow,
   Badge,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import gql from 'graphql-tag';
 
 import {
   ChoiceSelectionType,
@@ -24,9 +25,8 @@ import {
   RuleSet,
   useMakeBetMutation,
   useDeleteBetMutation,
-  useUsersContestBetsQuery,
+  useContestBetsQuery,
 } from '../../generated/graphql-types';
-import { LEADERBOARD_QUERY, USERS_BETS_QUERY } from '../queries';
 
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
 import LineCardHeader from './LineCardHeader';
@@ -63,36 +63,65 @@ export default function LineCard({
   userHasEntered,
   ruleSet,
 }: LineCardProps): JSX.Element {
-  const { data: usersBetsData, loading: usersBetsLoading } = useUsersContestBetsQuery({
-    variables: { contestId: contestId || '', userId: userId || '' },
+  const { data: contestBetsData, loading: contestBetsLoading } = useContestBetsQuery({
+    variables: { contestId: contestId || '' },
   });
 
   const [makeBet, { loading: makeBetLoading }] = useMakeBetMutation({
-    refetchQueries: [
-      { query: LEADERBOARD_QUERY, variables: { contestId: contestId || '' } },
-      { query: USERS_BETS_QUERY, variables: { contestId: contestId || '', userId: userId || '' } },
-    ],
+    update: (cache, payload) => {
+      return cache.modify({
+        fields: {
+          allBets(existingAllBets = []) {
+            const newBetRef = cache.writeFragment({
+              data: payload.data?.createBet,
+              fragment: gql`
+                fragment NewBet on Bet {
+                  id
+                }
+              `,
+            });
+            return [...existingAllBets, newBetRef];
+          },
+        },
+      });
+    },
   });
   const [deleteBet, { loading: deleteBetLoading }] = useDeleteBetMutation({
     update: (cache, payload) => {
       return cache.evict({
         id:
           cache.identify({
-            __typename: 'Bet',
+            __typename: payload.data?.deleteBet?.__typename || '',
             id: payload.data?.deleteBet?.id || '',
           }) || '',
       });
     },
   });
 
-  const selectedChoice = line.choices?.find((c) => c.bets?.some((b) => b.user?.id === userId));
-  const usersBet = selectedChoice?.bets?.find((b) => b.user?.id === userId);
+  const usersBets = contestBetsData?.allBets?.filter((bet) => bet?.user?.id === userId);
+
+  const selectedChoice = line.choices?.find((choice) =>
+    usersBets?.some((bet) => bet.choice?.id === choice.id)
+  );
+
+  const usersBet = usersBets?.find((bet) => bet.choice?.id === selectedChoice?.id);
 
   const [formSelectedChoiceId, setFormSelectedChoiceId] = useState<string | number>(
     selectedChoice?.id || '0'
   );
-
   const [superBetSelected, setSuperBetSelected] = useState<boolean>(usersBet?.isSuper || false);
+
+  useEffect(() => {
+    if (!selectedChoice) {
+      setFormSelectedChoiceId('0');
+    }
+  }, [selectedChoice]);
+
+  useEffect(() => {
+    if (!usersBet) {
+      setSuperBetSelected(false);
+    }
+  }, [usersBet]);
 
   const lineClosed = hasLineClosed(line);
   const winningChoice = line.choices?.find((c) => c.isWin);
@@ -101,9 +130,8 @@ export default function LineCard({
   const winningBetCount = winningChoice?.bets?.length || 0;
   const losingBetCount = losingChoice?.bets?.length || 0;
 
-  const pickAvailable = !usersBetsLoading && betsRemaining(usersBetsData?.allBets, ruleSet) > 0;
-  const superPickAvailable =
-    !usersBetsLoading && superBetsRemaining(usersBetsData?.allBets, ruleSet) > 0;
+  const pickAvailable = !contestBetsLoading && betsRemaining(usersBets, ruleSet) > 0;
+  const superPickAvailable = !contestBetsLoading && superBetsRemaining(usersBets, ruleSet) > 0;
 
   const formDisabled = lineClosed || !!selectedChoice || !userHasEntered || !pickAvailable;
 
