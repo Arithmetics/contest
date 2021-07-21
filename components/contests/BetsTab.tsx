@@ -17,6 +17,7 @@ import {
   User,
   useContestByIdQuery,
   useCurrentUserQuery,
+  useContestBetsQuery,
 } from '../../generated/graphql-types';
 
 export enum ContestTabs {
@@ -50,11 +51,15 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
 
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
 
+  const { loading: contestBetsLoading } = useContestBetsQuery({
+    variables: { contestId: contestId || '' },
+  });
+
   const contest = contestData?.Contest as Contest | undefined;
   const lines = contest?.lines as Line[] | undefined;
   const user = userData?.authenticatedItem as User | undefined;
 
-  if (getContestLoading || getUserLoading) {
+  if (getContestLoading || getUserLoading || contestBetsLoading) {
     return (
       <Center marginTop={'30vh'}>
         <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
