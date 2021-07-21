@@ -23,7 +23,8 @@ export default function LineCardHeader({ line }: LineCardHeaderProps): JSX.Eleme
       <Image
         boxSize="75px"
         bg={'gray.600'}
-        src="https://i.ibb.co/XZp4L8W/pngjoy-com-jacksonville-jaguars-jacksonville-jaguars-old-logo-png-png-6702266.png"
+        alt={line.image?.altText || 'unknown'}
+        src={line.image?.image?.publicUrlTransformed || ''}
       />
     </HStack>
   );

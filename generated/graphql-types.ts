@@ -2469,7 +2469,7 @@ export type CurrentUserQuery = (
     & Pick<User, 'id' | 'email' | 'name' | 'userName'>
     & { avatarImage?: Maybe<(
       { __typename?: 'CloudImage' }
-      & Pick<CloudImage, 'altText'>
+      & Pick<CloudImage, 'id' | 'altText'>
       & { image?: Maybe<(
         { __typename?: 'CloudinaryImage_File' }
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2527,7 +2527,14 @@ export type ContestByIdQuery = (
     )>, lines?: Maybe<Array<(
       { __typename?: 'Line' }
       & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
-      & { choices?: Maybe<Array<(
+      & { image?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )>, choices?: Maybe<Array<(
         { __typename?: 'Choice' }
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
       )>> }
@@ -2539,7 +2546,7 @@ export type ContestByIdQuery = (
         & Pick<User, 'id' | 'userName'>
         & { avatarImage?: Maybe<(
           { __typename?: 'CloudImage' }
-          & Pick<CloudImage, 'altText'>
+          & Pick<CloudImage, 'id' | 'altText'>
           & { image?: Maybe<(
             { __typename?: 'CloudinaryImage_File' }
             & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2649,22 +2656,6 @@ export type TrackerStatusQuery = (
     )>>, choices?: Maybe<Array<(
       { __typename?: 'Choice' }
       & Pick<Choice, 'id' | 'selection' | 'isWin'>
-      & { bets?: Maybe<Array<(
-        { __typename?: 'Bet' }
-        & Pick<Bet, 'id' | 'isSuper'>
-        & { user?: Maybe<(
-          { __typename?: 'User' }
-          & Pick<User, 'id' | 'userName'>
-          & { avatarImage?: Maybe<(
-            { __typename?: 'CloudImage' }
-            & Pick<CloudImage, 'altText'>
-            & { image?: Maybe<(
-              { __typename?: 'CloudinaryImage_File' }
-              & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
-            )> }
-          )> }
-        )> }
-      )>> }
     )>> }
   )>> }
 );
@@ -2684,7 +2675,7 @@ export type LeaderboardQuery = (
       & Pick<User, 'id' | 'userName'>
       & { avatarImage?: Maybe<(
         { __typename?: 'CloudImage' }
-        & Pick<CloudImage, 'altText'>
+        & Pick<CloudImage, 'id' | 'altText'>
         & { image?: Maybe<(
           { __typename?: 'CloudinaryImage_File' }
           & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2715,7 +2706,7 @@ export type ContestBetsQuery = (
       & Pick<User, 'id' | 'userName'>
       & { avatarImage?: Maybe<(
         { __typename?: 'CloudImage' }
-        & Pick<CloudImage, 'altText'>
+        & Pick<CloudImage, 'id' | 'altText'>
         & { image?: Maybe<(
           { __typename?: 'CloudinaryImage_File' }
           & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -3117,6 +3108,7 @@ export const CurrentUserDocument = gql`
       name
       userName
       avatarImage {
+        id
         altText
         image {
           publicUrlTransformed
@@ -3227,6 +3219,12 @@ export const ContestByIdDocument = gql`
       benchmark
       closingTime
       title
+      image {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
       choices {
         id
         selection
@@ -3239,6 +3237,7 @@ export const ContestByIdDocument = gql`
         id
         userName
         avatarImage {
+          id
           altText
           image {
             publicUrlTransformed
@@ -3458,20 +3457,6 @@ export const TrackerStatusDocument = gql`
       id
       selection
       isWin
-      bets {
-        id
-        isSuper
-        user {
-          id
-          userName
-          avatarImage {
-            altText
-            image {
-              publicUrlTransformed
-            }
-          }
-        }
-      }
     }
   }
 }
@@ -3512,6 +3497,7 @@ export const LeaderboardDocument = gql`
       id
       userName
       avatarImage {
+        id
         altText
         image {
           publicUrlTransformed
@@ -3566,6 +3552,7 @@ export const ContestBetsDocument = gql`
       id
       userName
       avatarImage {
+        id
         altText
         image {
           publicUrlTransformed

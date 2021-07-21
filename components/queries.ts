@@ -69,6 +69,12 @@ export const CONTEST_BY_ID_QUERY = gql`
         benchmark
         closingTime
         title
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
         choices {
           id
           selection
