@@ -3,10 +3,7 @@ import { list } from '@keystone-next/keystone/schema';
 import { KeystoneListsAPI } from '@keystone-next/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { canModifyBet, canReadBet, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
-
-function hasDuplicates(arr: number[]): boolean {
-  return new Set(arr).size !== arr.length;
-}
+import { Choice } from '../codegen/graphql-types';
 
 export const Bet = list({
   access: {
@@ -32,6 +29,9 @@ export const Bet = list({
         return;
       }
 
+      // use this or session id becuase we guard for mismatched userId
+      const userId = resolvedData.user.connect.id;
+
       const requestedChoice = await lists.Choice.findOne({
         where: { id: resolvedData.choice.connect.id },
         query: graphql`
@@ -52,6 +52,10 @@ export const Bet = list({
               contest {
                 id
                 name
+                ruleSet {
+                  maxBets
+                  maxSuperBets
+                }
                 registrations {
                   user {
                     id
@@ -62,26 +66,19 @@ export const Bet = list({
           `,
       });
 
-      // RULE: only one bet per user per line
-      const betIdsWithUsersId: number[] = [resolvedData.user.connect.id];
+      const typedChoice = requestedChoice as Choice;
 
-      requestedChoice?.line?.choices
-        .filter((c: { id: string }) => c.id !== resolvedData.choice.connect.id)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        .forEach((choice: { bets: any[] }) => {
-          choice.bets.forEach((bet) => {
-            betIdsWithUsersId.push(bet.user.id);
-          });
+      typedChoice.line?.choices?.forEach((choice) => {
+        choice.bets?.forEach((bet) => {
+          if (bet.user?.id === userId) {
+            addValidationError('User already has a bet on this line');
+          }
         });
-
-      if (hasDuplicates(betIdsWithUsersId)) {
-        addValidationError('User already has a bet on this line');
-      }
+      });
 
       // RULE: user must be registered for the contest
-      const usersRegistration = requestedChoice?.line?.contest?.registrations?.some(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (r: any) => r?.user?.id === session.data?.id
+      const usersRegistration = typedChoice?.line?.contest?.registrations?.some(
+        (r) => r?.user?.id === session.data?.id
       );
 
       if (!usersRegistration) {
@@ -89,13 +86,46 @@ export const Bet = list({
       }
 
       // RULE: user can only create bets for themselves
-      if (resolvedData.user.connect.id !== session.data?.id) {
+      if (userId !== session.data?.id) {
         addValidationError('Can only create bet for own account');
       }
 
       // RULE: line must be open
+      if (typedChoice.line?.closingTime) {
+        const lineCloses = Date.parse(typedChoice.line?.closingTime);
+        const now = Date.now();
+        if (lineCloses - now < 0) {
+          addValidationError('Line has closed. No more bets.');
+        }
+      }
 
-      // TODO: betting rules for contest
+      // RULE: user must have remaining bets according to the rules of the contest
+
+      const contest = typedChoice.line?.contest;
+
+      const usersBets = await lists.Bet.findMany({
+        where: { user: { id: userId }, choice: { line: { contest: { id: contest?.id } } } },
+        query: graphql`
+          id
+          isSuper
+        `,
+      });
+      // normal bets
+      const normalBetLimit = contest?.ruleSet?.maxBets || 0;
+      const usersCurrentBets = usersBets.length || 0;
+      if (usersCurrentBets === normalBetLimit || usersCurrentBets > normalBetLimit) {
+        addValidationError('User is out of bets.');
+      }
+
+      // super bets
+      const normalSuperBetLimt = contest?.ruleSet?.maxSuperBets || 0;
+      const usersCurrentSuperBets = usersBets.filter((b) => b.isSuper).length || 0;
+      if (
+        resolvedData.isSuper &&
+        (usersCurrentSuperBets === normalSuperBetLimt || usersCurrentSuperBets > normalSuperBetLimt)
+      ) {
+        addValidationError('User is out of super bets.');
+      }
     },
   },
 });
