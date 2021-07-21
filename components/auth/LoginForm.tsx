@@ -45,6 +45,12 @@ export default function ForgotPasswordForm(): JSX.Element {
 
   const [signin, { data, loading }] = useSignInMutation({
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
+    update: (cache) => {
+      return cache.evict({
+        id: 'ROOT_QUERY',
+        fieldName: 'allBets',
+      });
+    },
   });
 
   const submitLogin = async (data: LoginFormInputs): Promise<void> => {

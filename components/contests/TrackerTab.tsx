@@ -15,7 +15,12 @@ import {
   AvatarBadge,
   Badge,
 } from '@chakra-ui/react';
-import { ChoiceSelectionType, Line, useTrackerStatusQuery } from '../../generated/graphql-types';
+import {
+  ChoiceSelectionType,
+  Line,
+  useTrackerStatusQuery,
+  useContestBetsQuery,
+} from '../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
 
 function winsForOver(line?: Line): number {
@@ -74,7 +79,7 @@ export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element 
     <Center>
       <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'stretch'}>
         {data?.allLines?.map((line) => {
-          return <TrackerGraphCard key={line?.id} line={line as Line} />;
+          return <TrackerGraphCard key={line?.id} line={line as Line} contestId={contestId} />;
         })}
       </Box>
     </Center>
@@ -82,10 +87,11 @@ export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element 
 }
 
 type GenericLineProps = {
+  contestId?: string;
   line?: Line;
 };
 
-function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
+function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
   return (
     <Box
       maxW={'100%'}
@@ -117,8 +123,8 @@ function TrackerGraphCard({ line }: GenericLineProps): JSX.Element {
       </Box>
       <Divider orientation="horizontal" paddingY={2} />
       <Flex justifyContent={'center'} marginTop={2}>
-        <UserBetGroup line={line} choiceType={ChoiceSelectionType.Over} />
-        <UserBetGroup line={line} choiceType={ChoiceSelectionType.Under} />
+        <UserBetGroup line={line} choiceType={ChoiceSelectionType.Over} contestId={contestId} />
+        <UserBetGroup line={line} choiceType={ChoiceSelectionType.Under} contestId={contestId} />
       </Flex>
     </Box>
   );
@@ -164,11 +170,22 @@ function WinsLossesLeftSection({ line }: GenericLineProps): JSX.Element {
 }
 
 type UserBetGroupProps = {
+  contestId?: string;
   line?: Line;
   choiceType: ChoiceSelectionType;
 };
 
-function UserBetGroup({ line, choiceType }: UserBetGroupProps): JSX.Element {
+function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps): JSX.Element {
+  const { data: contestBetsData, loading: contestBetsLoading } = useContestBetsQuery({
+    variables: { contestId: contestId || '' },
+  });
+
+  const allBets = contestBetsData?.allBets || [];
+
+  const choice = line?.choices?.find((c) => c.selection === choiceType);
+
+  const choiceBets = allBets.filter((b) => b.choice?.id === choice?.id);
+
   return (
     <>
       {line?.choices
@@ -178,8 +195,10 @@ function UserBetGroup({ line, choiceType }: UserBetGroupProps): JSX.Element {
             <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
               <Text paddingBottom={1}>{choiceType} Bets</Text>
               <Box display={'flex'} flexWrap={'wrap'}>
-                {!choice.bets || choice.bets?.length === 0 ? <Text>---</Text> : undefined}
-                {choice.bets?.map((bet) => {
+                {!choiceBets || choiceBets.length === 0 || contestBetsLoading ? (
+                  <Text>---</Text>
+                ) : undefined}
+                {choiceBets.map((bet) => {
                   return (
                     <Box key={bet.user?.id} marginX={1}>
                       <Tooltip label={bet.user?.userName}>

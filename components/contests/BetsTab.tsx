@@ -17,7 +17,6 @@ import {
   User,
   useContestByIdQuery,
   useCurrentUserQuery,
-  useUsersContestBetsQuery,
 } from '../../generated/graphql-types';
 
 export enum ContestTabs {
@@ -47,7 +46,6 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
     variables: {
       id: contestId || '',
     },
-    fetchPolicy: 'network-only',
   });
 
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
@@ -55,11 +53,6 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const contest = contestData?.Contest as Contest | undefined;
   const lines = contest?.lines as Line[] | undefined;
   const user = userData?.authenticatedItem as User | undefined;
-
-  const { data: usersBetsData, loading: usersBetsLoading } = useUsersContestBetsQuery({
-    variables: { contestId: contest?.id || '', userId: user?.id || '' },
-    fetchPolicy: 'network-only',
-  });
 
   if (getContestLoading || getUserLoading) {
     return (
@@ -86,14 +79,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
   return (
     <>
-      {userHasEntered ? (
-        <BetsStatusLine
-          contest={contest}
-          user={user}
-          usersBetsLoading={usersBetsLoading}
-          usersBets={usersBetsData?.allBets}
-        />
-      ) : undefined}
+      {userHasEntered ? <BetsStatusLine contest={contest} user={user} /> : undefined}
       {availableLines.length !== 0 ? (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
           <Heading as="h3" size="lg">
