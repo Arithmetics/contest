@@ -152,12 +152,12 @@ export const Registration = list({
         return;
       }
 
-      if (existingItem.userId.toString() !== session.data?.id) {
+      if (existingItem.userId !== session.data?.id) {
         addValidationError('Can only delete your own contest');
       }
 
       const requestedContest = await lists.Contest.findOne({
-        where: { id: existingItem.contestId.connect.id },
+        where: { id: existingItem.contestId },
         query: graphql`
             id
             status
