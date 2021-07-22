@@ -72,6 +72,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
   const [registerForContest, { loading: registerLoading }] = useContestRegistrationMutation({
+    awaitRefetchQueries: true,
     refetchQueries: [
       { query: CONTEST_BY_ID_QUERY, variables: { id: contestId } },
       { query: LEADERBOARD_QUERY, variables: { contestId } },
@@ -183,7 +184,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
         <Center padding={2}>
           <Button
             onClick={enterContest}
-            disabled={registerLoading || getUserLoading}
+            disabled={registerLoading || getUserLoading || getContestLoading}
             isLoading={registerLoading}
             variant="outline"
             bg="teal.500"
