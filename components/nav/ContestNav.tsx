@@ -35,7 +35,7 @@ import {
   useDeleteContestRegistrationMutation,
   useContestByIdQuery,
 } from '../../generated/graphql-types';
-import { CONTEST_BY_ID_QUERY, LEADERBOARD_QUERY } from '../queries';
+import { CONTEST_BY_ID_QUERY } from '../queries';
 
 export enum ContestTabs {
   BETS = 'bets',
@@ -73,10 +73,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
   const [registerForContest, { loading: registerLoading }] = useContestRegistrationMutation({
     awaitRefetchQueries: true,
-    refetchQueries: [
-      { query: CONTEST_BY_ID_QUERY, variables: { id: contestId } },
-      { query: LEADERBOARD_QUERY, variables: { contestId } },
-    ],
+    refetchQueries: [{ query: CONTEST_BY_ID_QUERY, variables: { id: contestId } }],
   });
   const { data: contestData, loading: getContestLoading } = useContestByIdQuery({
     variables: {
