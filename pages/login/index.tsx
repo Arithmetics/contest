@@ -7,13 +7,12 @@ export default function LoginPage(): JSX.Element {
       <Flex p={8} flex={1} align={'center'} justify={'center'}>
         <LoginForm />
       </Flex>
-      <Flex flex={1}>
+      <Flex flex={1} align={'center'}>
         <Image
+          maxHeight={'700px'}
           alt={'Login Image'}
           objectFit={'cover'}
-          src={
-            'https://ftw.usatoday.com/wp-content/uploads/sites/90/2021/01/AP-APTOPIX-Buccaneers-Packers-Football.jpg?w=1000&h=600&crop=1'
-          }
+          src={'/images/zeke.png'}
         />
       </Flex>
     </Stack>
