@@ -1,5 +1,12 @@
 import { Center, Flex, Stack, StackDivider, Icon, Text } from '@chakra-ui/react';
-import { FaDiceOne, FaDiceTwo, FaDiceThree, FaDiceFour, FaDiceFive } from 'react-icons/fa';
+import {
+  FaDiceOne,
+  FaDiceTwo,
+  FaDiceThree,
+  FaDiceFour,
+  FaDiceFive,
+  FaDiceSix,
+} from 'react-icons/fa';
 interface FeatureProps {
   text: string;
   iconBg: string;
@@ -45,9 +52,15 @@ export default function Rules(): JSX.Element {
             'Tie breaker is the sum of the differentials of your bets to the result. (Ex: you take over 8.5 and the team finishes with 10, your get +1.5. User with highest total score wins)'
           }
         />
-
         <Rule
           icon={<Icon as={FaDiceFive} color={'teal.500'} w={5} h={5} />}
+          iconBg={'gray.700'}
+          text={
+            'If games are canceled, the win % of the final regular season record will be used to determine a win or loss grade'
+          }
+        />
+        <Rule
+          icon={<Icon as={FaDiceSix} color={'teal.500'} w={5} h={5} />}
           iconBg={'gray.700'}
           text={'Winner take all'}
         />
