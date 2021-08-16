@@ -2,14 +2,7 @@
 import { Client } from 'ts-postgres';
 import { Standing } from './codegen/graphql-types';
 
-type DBStanding = Omit<
-  Standing & {
-    lineId: string;
-  },
-  'line'
->;
-
-export default async function getDBStandings(): Promise<Record<string, DBStanding>> {
+export default async function getDBStandings(): Promise<Record<string, Standing>> {
   const client = new Client({
     host: 'localhost',
     port: 5432,
@@ -19,18 +12,23 @@ export default async function getDBStandings(): Promise<Record<string, DBStandin
   });
   await client.connect();
 
-  const allStandings: Array<DBStanding> = [];
+  const allStandings: Array<Standing> = [];
 
   try {
-    const resultIterator = client.query(`SELECT * FROM "Standing"`);
+    const standingsIterator = client.query(
+      `SELECT "Standing".id AS standingId, "Standing"."gamesPlayed", "Standing".wins, "Standing"."totalGames", "Line".id AS lineId, "Line".title FROM "Standing" LEFT JOIN "Line" ON "Standing".line = "Line".id;`
+    );
 
-    for await (const row of resultIterator) {
-      const parsedStanding: DBStanding = {
-        id: row.get('id') as string,
+    for await (const row of standingsIterator) {
+      const parsedStanding: Standing = {
+        id: row.get('standingid') as string,
         gamesPlayed: row.get('gamesPlayed') as number,
         wins: row.get('wins') as number,
         totalGames: row.get('totalGames') as number,
-        lineId: row.get('line') as string,
+        line: {
+          id: row.get('lineid') as string,
+          title: row.get('title') as string,
+        },
       };
       allStandings.push(parsedStanding);
     }
@@ -38,17 +36,18 @@ export default async function getDBStandings(): Promise<Record<string, DBStandin
     await client.end();
   }
 
-  const highestGamesPlayedStandings: Record<string, DBStanding> = {};
+  const highestGamesPlayedStandings: Record<string, Standing> = {};
 
   allStandings.forEach(standing => {
-    const currentHighest = highestGamesPlayedStandings[standing.lineId];
+    const lineTitle = standing?.line?.title || 'badEntry';
+    const currentHighest = highestGamesPlayedStandings[lineTitle];
     const currentGamesPlayed = currentHighest?.gamesPlayed || 0;
     const standingGamesPlayed = standing?.gamesPlayed || 0;
 
     if (!currentHighest) {
-      highestGamesPlayedStandings[standing.lineId] = standing;
+      highestGamesPlayedStandings[lineTitle] = standing;
     } else if (currentGamesPlayed < standingGamesPlayed) {
-      highestGamesPlayedStandings[standing.lineId] = standing;
+      highestGamesPlayedStandings[lineTitle] = standing;
     }
   });
 
