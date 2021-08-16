@@ -13,6 +13,7 @@ module.exports = {
     '!.prettierrc.js',
     'generated/*',
     'backend/codegen/*',
+    'standings-job/codegen/*',
   ], // We don't want to lint generated files nor node_modules, but we want to lint .prettierrc.js (ignored by default by eslint)
   extends: ['eslint:recommended'],
   overrides: [
