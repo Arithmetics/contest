@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Client } from 'ts-postgres';
-import { Standing } from './codegen/graphql-types';
+import cuid from 'cuid';
+import { Line, Standing } from './codegen/graphql-types';
 
-export default async function getDBStandings(): Promise<Record<string, Standing>> {
+export default async function getDBStandings(): Promise<Line[]> {
   const client = new Client({
     host: 'localhost',
     port: 5432,
@@ -12,53 +13,60 @@ export default async function getDBStandings(): Promise<Record<string, Standing>
   });
   await client.connect();
 
-  const allStandings: Array<Standing> = [];
+  const allLines: Array<Line> = [];
 
   try {
-    const standingsIterator = client.query(
-      `SELECT "Standing".id AS standingId, "Standing"."gamesPlayed", "Standing".wins, "Standing"."totalGames", "Line".id AS lineId, "Line".title FROM "Standing" LEFT JOIN "Line" ON "Standing".line = "Line".id;`
+    const linesIterator = client.query(
+      `SELECT "Line".id, "Line".title, "Standing"."gamesPlayed", "Standing".wins FROM "Line" LEFT JOIN "Standing" ON "Line".id = "Standing".line AND "Standing"."gamesPlayed" = (SELECT MAX("gamesPlayed") FROM "Standing" WHERE "Standing".line = "Line".id);`
     );
 
-    for await (const row of standingsIterator) {
-      const parsedStanding: Standing = {
-        id: row.get('standingid') as string,
-        gamesPlayed: row.get('gamesPlayed') as number,
-        wins: row.get('wins') as number,
-        totalGames: row.get('totalGames') as number,
-        line: {
-          id: row.get('lineid') as string,
-          title: row.get('title') as string,
-        },
+    for await (const row of linesIterator) {
+      const parsedLine: Line = {
+        id: row.get('id') as string,
+        title: row.get('title') as string,
+        standings: [
+          {
+            id: '',
+            gamesPlayed: row.get('gamesPlayed') as number,
+            wins: row.get('wins') as number,
+          }
+        ]
       };
-      allStandings.push(parsedStanding);
+      allLines.push(parsedLine);
     }
   } finally {
     await client.end();
   }
 
-  const highestGamesPlayedStandings: Record<string, Standing> = {};
+  return allLines;
+}
 
-  allStandings.forEach(standing => {
-    const lineTitle = standing?.line?.title || 'badEntry';
-    const currentHighest = highestGamesPlayedStandings[lineTitle];
-    const currentGamesPlayed = currentHighest?.gamesPlayed || 0;
-    const standingGamesPlayed = standing?.gamesPlayed || 0;
 
-    if (!currentHighest) {
-      highestGamesPlayedStandings[lineTitle] = standing;
-    } else if (currentGamesPlayed < standingGamesPlayed) {
-      highestGamesPlayedStandings[lineTitle] = standing;
-    }
+export async function insertStandings(newStandingsToInsert: Standing[]): Promise<void> {
+  const client = new Client({
+    host: 'localhost',
+    port: 5432,
+    user: 'keystoneuser',
+    password: 'rock7900',
+    database: 'contest',
   });
+  await client.connect();
 
-  return highestGamesPlayedStandings;
-  // highestGamesPlayedStandings now has all current standing records
 
-  // now go get all new standings from api
+  try {
+    for (let i = 0; i < newStandingsToInsert.length; i++) {
+      const newStanding = newStandingsToInsert[i]
+      const nid = cuid()
+      await client.query(
+        `INSERT INTO "Standing" VALUES ($1, ${newStanding.gamesPlayed}, ${newStanding.wins}, ${newStanding.totalGames}, ${newStanding.line?.id})`, [nid]
+      );
 
-  // compare each one to the matching line games played (need a way to match this...)
-
-  // keep all new ones in an array
-
-  // insert them all and print the new ones
+      console.log(newStanding);
+    }  
+  
+  } catch(e) {
+    console.log(e)
+  } finally {
+    await client.end();
+  }
 }

@@ -24,6 +24,7 @@
     "typescript": "^4.0.3"
   },
   "dependencies": {
+    "cuid": "^2.1.8",
     "got": "^6.7.1",
     "ts-postgres": "^1.1.3"
   }
