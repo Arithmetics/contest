@@ -26,7 +26,7 @@ type ExportEspnStanding = {
 };
 
 export default async function fetchEspnStandings(): Promise<ExportEspnStanding[]> {
-  const response = await got('http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams', {});
+  const response = await got('http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=100', {});
 
   const data = JSON.parse(response.body);
 

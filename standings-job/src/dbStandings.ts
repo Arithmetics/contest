@@ -57,9 +57,10 @@ export async function insertStandings(newStandingsToInsert: Standing[]): Promise
     for (let i = 0; i < newStandingsToInsert.length; i++) {
       const newStanding = newStandingsToInsert[i]
       const nid = cuid()
-      await client.query(
-        `INSERT INTO "Standing" VALUES ($1, ${newStanding.gamesPlayed}, ${newStanding.wins}, ${newStanding.totalGames}, ${newStanding.line?.id})`, [nid]
-      );
+
+      const x = `INSERT INTO "Standing" VALUES ('${nid}', ${newStanding.gamesPlayed}, ${newStanding.wins}, ${newStanding.totalGames}, '${newStanding.line?.id}')`
+      console.log(x)
+      await client.query(x);
 
       console.log(newStanding);
     }  
