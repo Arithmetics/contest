@@ -11,6 +11,7 @@ export default async function getDBStandings(): Promise<Line[]> {
     password: 'rock7900',
     database: 'contest',
   });
+
   await client.connect();
 
   const allLines: Array<Line> = [];
@@ -29,8 +30,8 @@ export default async function getDBStandings(): Promise<Line[]> {
             id: '',
             gamesPlayed: row.get('gamesPlayed') as number,
             wins: row.get('wins') as number,
-          }
-        ]
+          },
+        ],
       };
       allLines.push(parsedLine);
     }
@@ -41,7 +42,6 @@ export default async function getDBStandings(): Promise<Line[]> {
   return allLines;
 }
 
-
 export async function insertStandings(newStandingsToInsert: Standing[]): Promise<void> {
   const client = new Client({
     host: 'localhost',
@@ -50,23 +50,22 @@ export async function insertStandings(newStandingsToInsert: Standing[]): Promise
     password: 'rock7900',
     database: 'contest',
   });
-  await client.connect();
 
+  await client.connect();
 
   try {
     for (let i = 0; i < newStandingsToInsert.length; i++) {
-      const newStanding = newStandingsToInsert[i]
-      const nid = cuid()
+      const newStanding = newStandingsToInsert[i];
+      const nid = cuid();
 
-      const x = `INSERT INTO "Standing" VALUES ('${nid}', ${newStanding.gamesPlayed}, ${newStanding.wins}, ${newStanding.totalGames}, '${newStanding.line?.id}')`
-      console.log(x)
+      const x = `INSERT INTO "Standing" VALUES ('${nid}', ${newStanding.gamesPlayed}, ${newStanding.wins}, ${newStanding.totalGames}, '${newStanding.line?.id}')`;
+      console.log(x);
       await client.query(x);
 
       console.log(newStanding);
-    }  
-  
-  } catch(e) {
-    console.log(e)
+    }
+  } catch (e) {
+    console.log(e);
   } finally {
     await client.end();
   }
