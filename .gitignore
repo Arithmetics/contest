@@ -39,3 +39,4 @@ yarn-error.log*
 *.env
 */backend/.keystone/*
 */backend/node_modules
+standings-job/node_modules

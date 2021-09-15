@@ -68,20 +68,21 @@ export const Registration = list({
               // only add points if user has a bet on the choice
               const usersBet = choice.bets?.find((bet) => bet?.user?.id === item.userId);
               if (usersBet) {
+                const points = usersBet.isSuper ? 2 : 1;
                 if (choice.status === ChoiceStatus.Won) {
-                  locked += 1;
-                  likely += 1;
-                  possible += 1;
+                  locked += points;
+                  likely += points;
+                  possible += points;
                 }
                 if (choice.status === ChoiceStatus.Winning) {
-                  likely += 1;
-                  possible += 1;
+                  likely += points;
+                  possible += points;
                 }
                 if (choice.status === ChoiceStatus.Losing) {
-                  possible += 1;
+                  possible += points;
                 }
                 if (choice.status === ChoiceStatus.NotStarted) {
-                  possible += 1;
+                  possible += points;
                 }
               }
             });

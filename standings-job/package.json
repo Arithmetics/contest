@@ -1,0 +1,31 @@
+{
+  "name": "standings-job",
+  "version": "1.0.0",
+  "description": "Scraper for standings data",
+  "main": "index.js",
+  "scripts": {
+    "build": "rimraf ./build && tsc",
+    "dev": "nodemon",
+    "start": "npm run build && node build/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/got": "^9.6.12",
+    "@types/node": "^12.7.2",
+    "husky": "^4.2.3",
+    "nodemon": "^1.19.1",
+    "onchange": "^6.1.0",
+    "prettier": "^1.19.1",
+    "rimraf": "^3.0.0",
+    "run-script-os": "^1.1.1",
+    "ts-node": "^8.3.0",
+    "typescript": "^4.0.3"
+  },
+  "dependencies": {
+    "cuid": "^2.1.8",
+    "got": "^6.7.1",
+    "ts-postgres": "^1.1.3"
+  }
+}
