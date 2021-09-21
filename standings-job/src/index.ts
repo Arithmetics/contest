@@ -3,6 +3,7 @@ import getDBStandings, { insertStandings } from './dbStandings';
 import { Standing } from './codegen/graphql-types';
 
 async function main(): Promise<void> {
+  console.log('xxxx');
   const myLines = await getDBStandings();
   const espnStandings = await fetchEspnStandings();
 
