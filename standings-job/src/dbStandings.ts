@@ -1,17 +1,18 @@
 /* eslint-disable prettier/prettier */
 import { Client } from 'ts-postgres';
 import cuid from 'cuid';
+import 'dotenv/config';
 import { Line, Standing } from './codegen/graphql-types';
 
-export default async function getDBStandings(): Promise<Line[]> {
-  const client = new Client({
-    host: 'localhost',
-    port: 5432,
-    user: 'keystoneuser',
-    password: 'rock7900',
-    database: 'contest',
-  });
+const client = new Client({
+  host: process.env.HOST || '',
+  port: Number(process.env.PORT) || 5432,
+  user: process.env.USER || '',
+  password: process.env.PASSWORD || '',
+  database: process.env.DATABASE || '',
+});
 
+export default async function getDBStandings(): Promise<Line[]> {
   await client.connect();
 
   const allLines: Array<Line> = [];
@@ -35,6 +36,8 @@ export default async function getDBStandings(): Promise<Line[]> {
       };
       allLines.push(parsedLine);
     }
+  } catch (e) {
+    console.log('hmmm');
   } finally {
     await client.end();
   }
@@ -43,14 +46,6 @@ export default async function getDBStandings(): Promise<Line[]> {
 }
 
 export async function insertStandings(newStandingsToInsert: Standing[]): Promise<void> {
-  const client = new Client({
-    host: 'localhost',
-    port: 5432,
-    user: 'keystoneuser',
-    password: 'rock7900',
-    database: 'contest',
-  });
-
   await client.connect();
 
   try {
@@ -59,13 +54,10 @@ export async function insertStandings(newStandingsToInsert: Standing[]): Promise
       const nid = cuid();
 
       const x = `INSERT INTO "Standing" VALUES ('${nid}', ${newStanding.gamesPlayed}, ${newStanding.wins}, ${newStanding.totalGames}, '${newStanding.line?.id}')`;
-      console.log(x);
       await client.query(x);
 
       console.log(newStanding);
     }
-  } catch (e) {
-    console.log(e);
   } finally {
     await client.end();
   }

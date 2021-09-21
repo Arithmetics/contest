@@ -51,6 +51,7 @@ export const Registration = list({
                 status
                 bets {
                   id
+                  isSuper
                   user {
                     id
                   }

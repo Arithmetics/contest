@@ -38,7 +38,7 @@ export default async function fetchEspnStandings(): Promise<ExportEspnStanding[]
   const exportStandings: ExportEspnStanding[] = [];
 
   teams.forEach((espnTeam: EspnTeam) => {
-    const teamName = `${espnTeam.team.location} ${espnTeam.team.name}`;
+    const teamName = `${espnTeam.team.location} ${espnTeam.team.name ?? 'Football Team'}`;
     const wins = espnTeam.team.record.items[0].stats.find((s) => s.name === 'wins')?.value || 0;
     const losses = espnTeam.team.record.items[0].stats.find((s) => s.name === 'losses')?.value || 0;
     const ties = espnTeam.team.record.items[0].stats.find((s) => s.name === 'ties')?.value || 0;
