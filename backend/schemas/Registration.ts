@@ -88,7 +88,6 @@ export const Registration = list({
               }
             });
           });
-
           return {
             locked,
             likely,
