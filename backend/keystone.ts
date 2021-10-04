@@ -2,6 +2,7 @@ import { config } from '@keystone-next/keystone/schema';
 import { statelessSessions } from '@keystone-next/keystone/session';
 import { createAuth } from '@keystone-next/auth';
 import { createSchema } from '@keystone-next/keystone/schema';
+import cron from 'node-cron';
 import 'dotenv/config';
 
 import { sendPasswordResetEmail } from './lib/mail';
@@ -65,7 +66,12 @@ export default auth.withAuth(
       useMigrations: false, // need to change this some day
       async onConnect(context) {
         console.log('connected');
-        startDailyStandingsJob(context);
+
+        cron.schedule('0 0 0 * * *', () => {
+          console.log('running standing job!');
+          startDailyStandingsJob(context);
+        });
+
         if (process.argv.includes('--seed-data')) {
           await insertSeedData(context);
         }

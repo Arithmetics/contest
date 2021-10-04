@@ -58,12 +58,13 @@ export async function startDailyStandingsJob(keyStoneContext: KeystoneContext): 
         totalGames: 17,
         line: {
           id: line.id,
+          title: line.title,
         },
       });
     }
   });
 
-  const dataX: { data: StandingCreateInput }[] = newStandingsToInsert.map((ns) => {
+  const newLineData: { data: StandingCreateInput }[] = newStandingsToInsert.map((ns) => {
     return {
       data: {
         gamesPlayed: ns.gamesPlayed,
@@ -75,6 +76,13 @@ export async function startDailyStandingsJob(keyStoneContext: KeystoneContext): 
   });
 
   await lists.Standing.createMany({
-    data: dataX,
+    data: newLineData,
   });
+
+  newStandingsToInsert.forEach((ns) => {
+    console.log(
+      `New standing inserted: ${ns.line?.title} - ${ns.wins} wins / ${ns.gamesPlayed} games played`
+    );
+  });
+  console.log(`${newStandingsToInsert.length} standings inserted in total`);
 }

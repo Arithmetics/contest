@@ -21,15 +21,6 @@ generates:
       withHOC: false
     plugins:
       - 'typescript'
-  # standing-job
-  standings-job/src/codegen/graphql-types.ts:
-    config:
-      dedupeOperationSuffix: true
-      withHooks: false
-      withComponent: false
-      withHOC: false
-    plugins:
-      - 'typescript'
   ./graphql.schema.json:
     plugins:
       - 'introspection'
