@@ -38,7 +38,6 @@ export const Registration = list({
           },
         }),
         async resolve(item, _args, context) {
-          const start = Date.now();
           const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
 
@@ -89,8 +88,6 @@ export const Registration = list({
               }
             });
           });
-          const end = Date.now();
-          console.log('endomg one', end - start);
           return {
             locked,
             likely,
