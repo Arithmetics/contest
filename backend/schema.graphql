@@ -1,6 +1,150 @@
-"""
- A keystone list
-"""
+type Mutation {
+  sendUserPasswordResetLink(email: String!): SendUserPasswordResetLinkResult
+  redeemUserPasswordResetToken(
+    email: String!
+    token: String!
+    password: String!
+  ): RedeemUserPasswordResetTokenResult
+  createInitialUser(
+    data: CreateInitialUserInput!
+  ): UserAuthenticationWithPasswordSuccess!
+  authenticateUserWithPassword(
+    email: String!
+    password: String!
+  ): UserAuthenticationWithPasswordResult!
+  createBet(data: BetCreateInput!): Bet
+  createBets(data: [BetCreateInput!]!): [Bet]
+  updateBet(where: BetWhereUniqueInput!, data: BetUpdateInput!): Bet
+  updateBets(data: [BetUpdateArgs!]!): [Bet]
+  deleteBet(where: BetWhereUniqueInput!): Bet
+  deleteBets(where: [BetWhereUniqueInput!]!): [Bet]
+  createChoice(data: ChoiceCreateInput!): Choice
+  createChoices(data: [ChoiceCreateInput!]!): [Choice]
+  updateChoice(where: ChoiceWhereUniqueInput!, data: ChoiceUpdateInput!): Choice
+  updateChoices(data: [ChoiceUpdateArgs!]!): [Choice]
+  deleteChoice(where: ChoiceWhereUniqueInput!): Choice
+  deleteChoices(where: [ChoiceWhereUniqueInput!]!): [Choice]
+  createCloudImage(data: CloudImageCreateInput!): CloudImage
+  createCloudImages(data: [CloudImageCreateInput!]!): [CloudImage]
+  updateCloudImage(
+    where: CloudImageWhereUniqueInput!
+    data: CloudImageUpdateInput!
+  ): CloudImage
+  updateCloudImages(data: [CloudImageUpdateArgs!]!): [CloudImage]
+  deleteCloudImage(where: CloudImageWhereUniqueInput!): CloudImage
+  deleteCloudImages(where: [CloudImageWhereUniqueInput!]!): [CloudImage]
+  createContest(data: ContestCreateInput!): Contest
+  createContests(data: [ContestCreateInput!]!): [Contest]
+  updateContest(
+    where: ContestWhereUniqueInput!
+    data: ContestUpdateInput!
+  ): Contest
+  updateContests(data: [ContestUpdateArgs!]!): [Contest]
+  deleteContest(where: ContestWhereUniqueInput!): Contest
+  deleteContests(where: [ContestWhereUniqueInput!]!): [Contest]
+  createLine(data: LineCreateInput!): Line
+  createLines(data: [LineCreateInput!]!): [Line]
+  updateLine(where: LineWhereUniqueInput!, data: LineUpdateInput!): Line
+  updateLines(data: [LineUpdateArgs!]!): [Line]
+  deleteLine(where: LineWhereUniqueInput!): Line
+  deleteLines(where: [LineWhereUniqueInput!]!): [Line]
+  createRegistration(data: RegistrationCreateInput!): Registration
+  createRegistrations(data: [RegistrationCreateInput!]!): [Registration]
+  updateRegistration(
+    where: RegistrationWhereUniqueInput!
+    data: RegistrationUpdateInput!
+  ): Registration
+  updateRegistrations(data: [RegistrationUpdateArgs!]!): [Registration]
+  deleteRegistration(where: RegistrationWhereUniqueInput!): Registration
+  deleteRegistrations(where: [RegistrationWhereUniqueInput!]!): [Registration]
+  createRuleSet(data: RuleSetCreateInput!): RuleSet
+  createRuleSets(data: [RuleSetCreateInput!]!): [RuleSet]
+  updateRuleSet(
+    where: RuleSetWhereUniqueInput!
+    data: RuleSetUpdateInput!
+  ): RuleSet
+  updateRuleSets(data: [RuleSetUpdateArgs!]!): [RuleSet]
+  deleteRuleSet(where: RuleSetWhereUniqueInput!): RuleSet
+  deleteRuleSets(where: [RuleSetWhereUniqueInput!]!): [RuleSet]
+  createStanding(data: StandingCreateInput!): Standing
+  createStandings(data: [StandingCreateInput!]!): [Standing]
+  updateStanding(
+    where: StandingWhereUniqueInput!
+    data: StandingUpdateInput!
+  ): Standing
+  updateStandings(data: [StandingUpdateArgs!]!): [Standing]
+  deleteStanding(where: StandingWhereUniqueInput!): Standing
+  deleteStandings(where: [StandingWhereUniqueInput!]!): [Standing]
+  createUser(data: UserCreateInput!): User
+  createUsers(data: [UserCreateInput!]!): [User]
+  updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User
+  updateUsers(data: [UserUpdateArgs!]!): [User]
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteUsers(where: [UserWhereUniqueInput!]!): [User]
+  endSession: Boolean!
+}
+
+type SendUserPasswordResetLinkResult {
+  code: PasswordResetRequestErrorCode!
+  message: String!
+}
+
+enum PasswordResetRequestErrorCode {
+  IDENTITY_NOT_FOUND
+  MULTIPLE_IDENTITY_MATCHES
+}
+
+type ValidateUserPasswordResetTokenResult {
+  code: PasswordResetRedemptionErrorCode!
+  message: String!
+}
+
+type RedeemUserPasswordResetTokenResult {
+  code: PasswordResetRedemptionErrorCode!
+  message: String!
+}
+
+enum PasswordResetRedemptionErrorCode {
+  FAILURE
+  IDENTITY_NOT_FOUND
+  MULTIPLE_IDENTITY_MATCHES
+  TOKEN_NOT_SET
+  TOKEN_MISMATCH
+  TOKEN_EXPIRED
+  TOKEN_REDEEMED
+}
+
+input CreateInitialUserInput {
+  email: String
+  name: String
+  userName: String
+  password: String
+}
+
+union AuthenticatedItem = User
+
+union UserAuthenticationWithPasswordResult =
+    UserAuthenticationWithPasswordSuccess
+  | UserAuthenticationWithPasswordFailure
+
+type UserAuthenticationWithPasswordSuccess {
+  sessionToken: String!
+  item: User!
+}
+
+type UserAuthenticationWithPasswordFailure {
+  code: PasswordAuthErrorCode!
+  message: String!
+}
+
+enum PasswordAuthErrorCode {
+  FAILURE
+  IDENTITY_NOT_FOUND
+  SECRET_NOT_SET
+  MULTIPLE_IDENTITY_MATCHES
+  SECRET_MISMATCH
+}
+
 type Bet {
   id: ID!
   user: User
@@ -11,31 +155,31 @@ type Bet {
 input BetWhereInput {
   AND: [BetWhereInput!]
   OR: [BetWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
+  NOT: [BetWhereInput!]
+  id: IDFilter
   user: UserWhereInput
-  user_is_null: Boolean
   choice: ChoiceWhereInput
-  choice_is_null: Boolean
-  isSuper: Boolean
-  isSuper_not: Boolean
+  isSuper: BooleanNullableFilter
+}
+
+input IDFilter {
+  equals: ID
+  in: [ID!]
+  notIn: [ID!]
+  lt: ID
+  lte: ID
+  gt: ID
+  gte: ID
+  not: IDFilter
+}
+
+input BooleanNullableFilter {
+  equals: Boolean
+  not: BooleanNullableFilter
 }
 
 input BetWhereUniqueInput {
   id: ID
-}
-
-enum SortBetsBy {
-  id_ASC
-  id_DESC
-  isSuper_ASC
-  isSuper_DESC
 }
 
 input BetOrderByInput {
@@ -49,43 +193,44 @@ enum OrderDirection {
 }
 
 input BetUpdateInput {
-  user: UserRelateToOneInput
-  choice: ChoiceRelateToOneInput
+  user: UserRelateToOneForUpdateInput
+  choice: ChoiceRelateToOneForUpdateInput
   isSuper: Boolean
 }
 
-input UserRelateToOneInput {
+input UserRelateToOneForUpdateInput {
   create: UserCreateInput
   connect: UserWhereUniqueInput
-  disconnect: UserWhereUniqueInput
-  disconnectAll: Boolean
+  disconnect: Boolean
 }
 
-input ChoiceRelateToOneInput {
+input ChoiceRelateToOneForUpdateInput {
   create: ChoiceCreateInput
   connect: ChoiceWhereUniqueInput
-  disconnect: ChoiceWhereUniqueInput
-  disconnectAll: Boolean
+  disconnect: Boolean
 }
 
-input BetsUpdateInput {
-  id: ID!
-  data: BetUpdateInput
+input BetUpdateArgs {
+  where: BetWhereUniqueInput!
+  data: BetUpdateInput!
 }
 
 input BetCreateInput {
-  user: UserRelateToOneInput
-  choice: ChoiceRelateToOneInput
+  user: UserRelateToOneForCreateInput
+  choice: ChoiceRelateToOneForCreateInput
   isSuper: Boolean
 }
 
-input BetsCreateInput {
-  data: BetCreateInput
+input UserRelateToOneForCreateInput {
+  create: UserCreateInput
+  connect: UserWhereUniqueInput
 }
 
-"""
- A keystone list
-"""
+input ChoiceRelateToOneForCreateInput {
+  create: ChoiceCreateInput
+  connect: ChoiceWhereUniqueInput
+}
+
 type Choice {
   id: ID!
   selection: ChoiceSelectionType
@@ -93,25 +238,10 @@ type Choice {
   line: Line
   bets(
     where: BetWhereInput! = {}
-    search: String
-    sortBy: [SortBetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
     orderBy: [BetOrderByInput!]! = []
-    first: Int
+    take: Int
     skip: Int! = 0
   ): [Bet!]
-  _betsMeta(
-    where: BetWhereInput! = {}
-    search: String
-    sortBy: [SortBetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [BetOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use betsCount instead."
-    )
   betsCount(where: BetWhereInput! = {}): Int
   status: ChoiceStatus
   labelName: String
@@ -122,10 +252,6 @@ enum ChoiceSelectionType {
   UNDER
   AWAY
   HOME
-}
-
-type _QueryMeta {
-  count: Int
 }
 
 enum ChoiceStatus {
@@ -139,50 +265,29 @@ enum ChoiceStatus {
 input ChoiceWhereInput {
   AND: [ChoiceWhereInput!]
   OR: [ChoiceWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  selection: ChoiceSelectionType
-  selection_not: ChoiceSelectionType
-  selection_in: [ChoiceSelectionType]
-  selection_not_in: [ChoiceSelectionType]
-  isWin: Boolean
-  isWin_not: Boolean
+  NOT: [ChoiceWhereInput!]
+  id: IDFilter
+  selection: ChoiceSelectionTypeNullableFilter
+  isWin: BooleanNullableFilter
   line: LineWhereInput
-  line_is_null: Boolean
+  bets: BetManyRelationFilter
+}
 
-  """
-   condition must be true for all nodes
-  """
-  bets_every: BetWhereInput
+input ChoiceSelectionTypeNullableFilter {
+  equals: ChoiceSelectionType
+  in: [ChoiceSelectionType!]
+  notIn: [ChoiceSelectionType!]
+  not: ChoiceSelectionTypeNullableFilter
+}
 
-  """
-   condition must be true for at least 1 node
-  """
-  bets_some: BetWhereInput
-
-  """
-   condition must be false for all nodes
-  """
-  bets_none: BetWhereInput
+input BetManyRelationFilter {
+  every: BetWhereInput
+  some: BetWhereInput
+  none: BetWhereInput
 }
 
 input ChoiceWhereUniqueInput {
   id: ID
-}
-
-enum SortChoicesBy {
-  id_ASC
-  id_DESC
-  selection_ASC
-  selection_DESC
-  isWin_ASC
-  isWin_DESC
 }
 
 input ChoiceOrderByInput {
@@ -194,43 +299,45 @@ input ChoiceOrderByInput {
 input ChoiceUpdateInput {
   selection: ChoiceSelectionType
   isWin: Boolean
-  line: LineRelateToOneInput
-  bets: BetRelateToManyInput
+  line: LineRelateToOneForUpdateInput
+  bets: BetRelateToManyForUpdateInput
 }
 
-input LineRelateToOneInput {
+input LineRelateToOneForUpdateInput {
   create: LineCreateInput
   connect: LineWhereUniqueInput
-  disconnect: LineWhereUniqueInput
-  disconnectAll: Boolean
+  disconnect: Boolean
 }
 
-input BetRelateToManyInput {
-  create: [BetCreateInput]
-  connect: [BetWhereUniqueInput]
-  disconnect: [BetWhereUniqueInput]
-  disconnectAll: Boolean
+input BetRelateToManyForUpdateInput {
+  disconnect: [BetWhereUniqueInput!]
+  set: [BetWhereUniqueInput!]
+  create: [BetCreateInput!]
+  connect: [BetWhereUniqueInput!]
 }
 
-input ChoicesUpdateInput {
-  id: ID!
-  data: ChoiceUpdateInput
+input ChoiceUpdateArgs {
+  where: ChoiceWhereUniqueInput!
+  data: ChoiceUpdateInput!
 }
 
 input ChoiceCreateInput {
   selection: ChoiceSelectionType
   isWin: Boolean
-  line: LineRelateToOneInput
-  bets: BetRelateToManyInput
+  line: LineRelateToOneForCreateInput
+  bets: BetRelateToManyForCreateInput
 }
 
-input ChoicesCreateInput {
-  data: ChoiceCreateInput
+input LineRelateToOneForCreateInput {
+  create: LineCreateInput
+  connect: LineWhereUniqueInput
 }
 
-"""
- A keystone list
-"""
+input BetRelateToManyForCreateInput {
+  create: [BetCreateInput!]
+  connect: [BetWhereUniqueInput!]
+}
+
 type CloudImage {
   id: ID!
   image: CloudinaryImage_File
@@ -289,47 +396,47 @@ input CloudinaryImageFormat {
 input CloudImageWhereInput {
   AND: [CloudImageWhereInput!]
   OR: [CloudImageWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  image: String
-  image_not: String
-  image_in: [String]
-  image_not_in: [String]
-  altText: String
-  altText_not: String
-  altText_contains: String
-  altText_not_contains: String
-  altText_starts_with: String
-  altText_not_starts_with: String
-  altText_ends_with: String
-  altText_not_ends_with: String
-  altText_i: String
-  altText_not_i: String
-  altText_contains_i: String
-  altText_not_contains_i: String
-  altText_starts_with_i: String
-  altText_not_starts_with_i: String
-  altText_ends_with_i: String
-  altText_not_ends_with_i: String
-  altText_in: [String]
-  altText_not_in: [String]
+  NOT: [CloudImageWhereInput!]
+  id: IDFilter
+  altText: StringNullableFilter
+}
+
+input StringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringNullableFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringNullableFilter
 }
 
 input CloudImageWhereUniqueInput {
   id: ID
-}
-
-enum SortCloudImagesBy {
-  id_ASC
-  id_DESC
-  altText_ASC
-  altText_DESC
 }
 
 input CloudImageOrderByInput {
@@ -347,9 +454,9 @@ The `Upload` scalar type represents a file upload.
 """
 scalar Upload
 
-input CloudImagesUpdateInput {
-  id: ID!
-  data: CloudImageUpdateInput
+input CloudImageUpdateArgs {
+  where: CloudImageWhereUniqueInput!
+  data: CloudImageUpdateInput!
 }
 
 input CloudImageCreateInput {
@@ -357,13 +464,6 @@ input CloudImageCreateInput {
   altText: String
 }
 
-input CloudImagesCreateInput {
-  data: CloudImageCreateInput
-}
-
-"""
- A keystone list
-"""
 type Contest {
   id: ID!
   name: String
@@ -373,47 +473,17 @@ type Contest {
   image: CloudImage
   lines(
     where: LineWhereInput! = {}
-    search: String
-    sortBy: [SortLinesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
     orderBy: [LineOrderByInput!]! = []
-    first: Int
+    take: Int
     skip: Int! = 0
   ): [Line!]
-  _linesMeta(
-    where: LineWhereInput! = {}
-    search: String
-    sortBy: [SortLinesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [LineOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use linesCount instead."
-    )
   linesCount(where: LineWhereInput! = {}): Int
   registrations(
     where: RegistrationWhereInput! = {}
-    search: String
-    sortBy: [SortRegistrationsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
     orderBy: [RegistrationOrderByInput!]! = []
-    first: Int
+    take: Int
     skip: Int! = 0
   ): [Registration!]
-  _registrationsMeta(
-    where: RegistrationWhereInput! = {}
-    search: String
-    sortBy: [SortRegistrationsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [RegistrationOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use registrationsCount instead."
-    )
   registrationsCount(where: RegistrationWhereInput! = {}): Int
   ruleSet: RuleSet
 }
@@ -427,113 +497,50 @@ enum ContestStatusType {
 input ContestWhereInput {
   AND: [ContestWhereInput!]
   OR: [ContestWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  name: String
-  name_not: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  name_i: String
-  name_not_i: String
-  name_contains_i: String
-  name_not_contains_i: String
-  name_starts_with_i: String
-  name_not_starts_with_i: String
-  name_ends_with_i: String
-  name_not_ends_with_i: String
-  name_in: [String]
-  name_not_in: [String]
-  description: String
-  description_not: String
-  description_contains: String
-  description_not_contains: String
-  description_starts_with: String
-  description_not_starts_with: String
-  description_ends_with: String
-  description_not_ends_with: String
-  description_i: String
-  description_not_i: String
-  description_contains_i: String
-  description_not_contains_i: String
-  description_starts_with_i: String
-  description_not_starts_with_i: String
-  description_ends_with_i: String
-  description_not_ends_with_i: String
-  description_in: [String]
-  description_not_in: [String]
-  status: ContestStatusType
-  status_not: ContestStatusType
-  status_in: [ContestStatusType]
-  status_not_in: [ContestStatusType]
-  entryFee: Int
-  entryFee_not: Int
-  entryFee_lt: Int
-  entryFee_lte: Int
-  entryFee_gt: Int
-  entryFee_gte: Int
-  entryFee_in: [Int]
-  entryFee_not_in: [Int]
+  NOT: [ContestWhereInput!]
+  id: IDFilter
+  name: StringNullableFilter
+  description: StringNullableFilter
+  status: ContestStatusTypeNullableFilter
+  entryFee: IntNullableFilter
   image: CloudImageWhereInput
-  image_is_null: Boolean
-
-  """
-   condition must be true for all nodes
-  """
-  lines_every: LineWhereInput
-
-  """
-   condition must be true for at least 1 node
-  """
-  lines_some: LineWhereInput
-
-  """
-   condition must be false for all nodes
-  """
-  lines_none: LineWhereInput
-
-  """
-   condition must be true for all nodes
-  """
-  registrations_every: RegistrationWhereInput
-
-  """
-   condition must be true for at least 1 node
-  """
-  registrations_some: RegistrationWhereInput
-
-  """
-   condition must be false for all nodes
-  """
-  registrations_none: RegistrationWhereInput
+  lines: LineManyRelationFilter
+  registrations: RegistrationManyRelationFilter
   ruleSet: RuleSetWhereInput
-  ruleSet_is_null: Boolean
+}
+
+input ContestStatusTypeNullableFilter {
+  equals: ContestStatusType
+  in: [ContestStatusType!]
+  notIn: [ContestStatusType!]
+  not: ContestStatusTypeNullableFilter
+}
+
+input IntNullableFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntNullableFilter
+}
+
+input LineManyRelationFilter {
+  every: LineWhereInput
+  some: LineWhereInput
+  none: LineWhereInput
+}
+
+input RegistrationManyRelationFilter {
+  every: RegistrationWhereInput
+  some: RegistrationWhereInput
+  none: RegistrationWhereInput
 }
 
 input ContestWhereUniqueInput {
   id: ID
-}
-
-enum SortContestsBy {
-  id_ASC
-  id_DESC
-  name_ASC
-  name_DESC
-  description_ASC
-  description_DESC
-  status_ASC
-  status_DESC
-  entryFee_ASC
-  entryFee_DESC
 }
 
 input ContestOrderByInput {
@@ -549,43 +556,41 @@ input ContestUpdateInput {
   description: String
   status: ContestStatusType
   entryFee: Int
-  image: CloudImageRelateToOneInput
-  lines: LineRelateToManyInput
-  registrations: RegistrationRelateToManyInput
-  ruleSet: RuleSetRelateToOneInput
+  image: CloudImageRelateToOneForUpdateInput
+  lines: LineRelateToManyForUpdateInput
+  registrations: RegistrationRelateToManyForUpdateInput
+  ruleSet: RuleSetRelateToOneForUpdateInput
 }
 
-input CloudImageRelateToOneInput {
+input CloudImageRelateToOneForUpdateInput {
   create: CloudImageCreateInput
   connect: CloudImageWhereUniqueInput
-  disconnect: CloudImageWhereUniqueInput
-  disconnectAll: Boolean
+  disconnect: Boolean
 }
 
-input LineRelateToManyInput {
-  create: [LineCreateInput]
-  connect: [LineWhereUniqueInput]
-  disconnect: [LineWhereUniqueInput]
-  disconnectAll: Boolean
+input LineRelateToManyForUpdateInput {
+  disconnect: [LineWhereUniqueInput!]
+  set: [LineWhereUniqueInput!]
+  create: [LineCreateInput!]
+  connect: [LineWhereUniqueInput!]
 }
 
-input RegistrationRelateToManyInput {
-  create: [RegistrationCreateInput]
-  connect: [RegistrationWhereUniqueInput]
-  disconnect: [RegistrationWhereUniqueInput]
-  disconnectAll: Boolean
+input RegistrationRelateToManyForUpdateInput {
+  disconnect: [RegistrationWhereUniqueInput!]
+  set: [RegistrationWhereUniqueInput!]
+  create: [RegistrationCreateInput!]
+  connect: [RegistrationWhereUniqueInput!]
 }
 
-input RuleSetRelateToOneInput {
+input RuleSetRelateToOneForUpdateInput {
   create: RuleSetCreateInput
   connect: RuleSetWhereUniqueInput
-  disconnect: RuleSetWhereUniqueInput
-  disconnectAll: Boolean
+  disconnect: Boolean
 }
 
-input ContestsUpdateInput {
-  id: ID!
-  data: ContestUpdateInput
+input ContestUpdateArgs {
+  where: ContestWhereUniqueInput!
+  data: ContestUpdateInput!
 }
 
 input ContestCreateInput {
@@ -593,19 +598,32 @@ input ContestCreateInput {
   description: String
   status: ContestStatusType
   entryFee: Int
-  image: CloudImageRelateToOneInput
-  lines: LineRelateToManyInput
-  registrations: RegistrationRelateToManyInput
-  ruleSet: RuleSetRelateToOneInput
+  image: CloudImageRelateToOneForCreateInput
+  lines: LineRelateToManyForCreateInput
+  registrations: RegistrationRelateToManyForCreateInput
+  ruleSet: RuleSetRelateToOneForCreateInput
 }
 
-input ContestsCreateInput {
-  data: ContestCreateInput
+input CloudImageRelateToOneForCreateInput {
+  create: CloudImageCreateInput
+  connect: CloudImageWhereUniqueInput
 }
 
-"""
- A keystone list
-"""
+input LineRelateToManyForCreateInput {
+  create: [LineCreateInput!]
+  connect: [LineWhereUniqueInput!]
+}
+
+input RegistrationRelateToManyForCreateInput {
+  create: [RegistrationCreateInput!]
+  connect: [RegistrationWhereUniqueInput!]
+}
+
+input RuleSetRelateToOneForCreateInput {
+  create: RuleSetCreateInput
+  connect: RuleSetWhereUniqueInput
+}
+
 type Line {
   id: ID!
   title: String
@@ -615,144 +633,70 @@ type Line {
   contest: Contest
   choices(
     where: ChoiceWhereInput! = {}
-    search: String
-    sortBy: [SortChoicesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
     orderBy: [ChoiceOrderByInput!]! = []
-    first: Int
+    take: Int
     skip: Int! = 0
   ): [Choice!]
-  _choicesMeta(
-    where: ChoiceWhereInput! = {}
-    search: String
-    sortBy: [SortChoicesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [ChoiceOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use choicesCount instead."
-    )
   choicesCount(where: ChoiceWhereInput! = {}): Int
   standings(
     where: StandingWhereInput! = {}
-    search: String
-    sortBy: [SortStandingsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
     orderBy: [StandingOrderByInput!]! = []
-    first: Int
+    take: Int
     skip: Int! = 0
   ): [Standing!]
-  _standingsMeta(
-    where: StandingWhereInput! = {}
-    search: String
-    sortBy: [SortStandingsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [StandingOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use standingsCount instead."
-    )
   standingsCount(where: StandingWhereInput! = {}): Int
 }
 
 input LineWhereInput {
   AND: [LineWhereInput!]
   OR: [LineWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  title: String
-  title_not: String
-  title_contains: String
-  title_not_contains: String
-  title_starts_with: String
-  title_not_starts_with: String
-  title_ends_with: String
-  title_not_ends_with: String
-  title_i: String
-  title_not_i: String
-  title_contains_i: String
-  title_not_contains_i: String
-  title_starts_with_i: String
-  title_not_starts_with_i: String
-  title_ends_with_i: String
-  title_not_ends_with_i: String
-  title_in: [String]
-  title_not_in: [String]
-  closingTime: String
-  closingTime_not: String
-  closingTime_lt: String
-  closingTime_lte: String
-  closingTime_gt: String
-  closingTime_gte: String
-  closingTime_in: [String]
-  closingTime_not_in: [String]
-  benchmark: Float
-  benchmark_not: Float
-  benchmark_lt: Float
-  benchmark_lte: Float
-  benchmark_gt: Float
-  benchmark_gte: Float
-  benchmark_in: [Float]
-  benchmark_not_in: [Float]
+  NOT: [LineWhereInput!]
+  id: IDFilter
+  title: StringNullableFilter
+  closingTime: DateTimeNullableFilter
+  benchmark: FloatNullableFilter
   image: CloudImageWhereInput
-  image_is_null: Boolean
   contest: ContestWhereInput
-  contest_is_null: Boolean
+  choices: ChoiceManyRelationFilter
+  standings: StandingManyRelationFilter
+}
 
-  """
-   condition must be true for all nodes
-  """
-  choices_every: ChoiceWhereInput
+input DateTimeNullableFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  not: DateTimeNullableFilter
+}
 
-  """
-   condition must be true for at least 1 node
-  """
-  choices_some: ChoiceWhereInput
+input FloatNullableFilter {
+  equals: Float
+  in: [Float!]
+  notIn: [Float!]
+  lt: Float
+  lte: Float
+  gt: Float
+  gte: Float
+  not: FloatNullableFilter
+}
 
-  """
-   condition must be false for all nodes
-  """
-  choices_none: ChoiceWhereInput
+input ChoiceManyRelationFilter {
+  every: ChoiceWhereInput
+  some: ChoiceWhereInput
+  none: ChoiceWhereInput
+}
 
-  """
-   condition must be true for all nodes
-  """
-  standings_every: StandingWhereInput
-
-  """
-   condition must be true for at least 1 node
-  """
-  standings_some: StandingWhereInput
-
-  """
-   condition must be false for all nodes
-  """
-  standings_none: StandingWhereInput
+input StandingManyRelationFilter {
+  every: StandingWhereInput
+  some: StandingWhereInput
+  none: StandingWhereInput
 }
 
 input LineWhereUniqueInput {
   id: ID
-}
-
-enum SortLinesBy {
-  id_ASC
-  id_DESC
-  title_ASC
-  title_DESC
-  closingTime_ASC
-  closingTime_DESC
-  benchmark_ASC
-  benchmark_DESC
 }
 
 input LineOrderByInput {
@@ -766,55 +710,62 @@ input LineUpdateInput {
   title: String
   closingTime: String
   benchmark: Float
-  image: CloudImageRelateToOneInput
-  contest: ContestRelateToOneInput
-  choices: ChoiceRelateToManyInput
-  standings: StandingRelateToManyInput
+  image: CloudImageRelateToOneForUpdateInput
+  contest: ContestRelateToOneForUpdateInput
+  choices: ChoiceRelateToManyForUpdateInput
+  standings: StandingRelateToManyForUpdateInput
 }
 
-input ContestRelateToOneInput {
+input ContestRelateToOneForUpdateInput {
   create: ContestCreateInput
   connect: ContestWhereUniqueInput
-  disconnect: ContestWhereUniqueInput
-  disconnectAll: Boolean
+  disconnect: Boolean
 }
 
-input ChoiceRelateToManyInput {
-  create: [ChoiceCreateInput]
-  connect: [ChoiceWhereUniqueInput]
-  disconnect: [ChoiceWhereUniqueInput]
-  disconnectAll: Boolean
+input ChoiceRelateToManyForUpdateInput {
+  disconnect: [ChoiceWhereUniqueInput!]
+  set: [ChoiceWhereUniqueInput!]
+  create: [ChoiceCreateInput!]
+  connect: [ChoiceWhereUniqueInput!]
 }
 
-input StandingRelateToManyInput {
-  create: [StandingCreateInput]
-  connect: [StandingWhereUniqueInput]
-  disconnect: [StandingWhereUniqueInput]
-  disconnectAll: Boolean
+input StandingRelateToManyForUpdateInput {
+  disconnect: [StandingWhereUniqueInput!]
+  set: [StandingWhereUniqueInput!]
+  create: [StandingCreateInput!]
+  connect: [StandingWhereUniqueInput!]
 }
 
-input LinesUpdateInput {
-  id: ID!
-  data: LineUpdateInput
+input LineUpdateArgs {
+  where: LineWhereUniqueInput!
+  data: LineUpdateInput!
 }
 
 input LineCreateInput {
   title: String
   closingTime: String
   benchmark: Float
-  image: CloudImageRelateToOneInput
-  contest: ContestRelateToOneInput
-  choices: ChoiceRelateToManyInput
-  standings: StandingRelateToManyInput
+  image: CloudImageRelateToOneForCreateInput
+  contest: ContestRelateToOneForCreateInput
+  choices: ChoiceRelateToManyForCreateInput
+  standings: StandingRelateToManyForCreateInput
 }
 
-input LinesCreateInput {
-  data: LineCreateInput
+input ContestRelateToOneForCreateInput {
+  create: ContestCreateInput
+  connect: ContestWhereUniqueInput
 }
 
-"""
- A keystone list
-"""
+input ChoiceRelateToManyForCreateInput {
+  create: [ChoiceCreateInput!]
+  connect: [ChoiceWhereUniqueInput!]
+}
+
+input StandingRelateToManyForCreateInput {
+  create: [StandingCreateInput!]
+  connect: [StandingWhereUniqueInput!]
+}
+
 type Registration {
   id: ID!
   hasPaid: Boolean
@@ -832,31 +783,15 @@ type PointCounts {
 input RegistrationWhereInput {
   AND: [RegistrationWhereInput!]
   OR: [RegistrationWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  hasPaid: Boolean
-  hasPaid_not: Boolean
+  NOT: [RegistrationWhereInput!]
+  id: IDFilter
+  hasPaid: BooleanNullableFilter
   contest: ContestWhereInput
-  contest_is_null: Boolean
   user: UserWhereInput
-  user_is_null: Boolean
 }
 
 input RegistrationWhereUniqueInput {
   id: ID
-}
-
-enum SortRegistrationsBy {
-  id_ASC
-  id_DESC
-  hasPaid_ASC
-  hasPaid_DESC
 }
 
 input RegistrationOrderByInput {
@@ -866,28 +801,21 @@ input RegistrationOrderByInput {
 
 input RegistrationUpdateInput {
   hasPaid: Boolean
-  contest: ContestRelateToOneInput
-  user: UserRelateToOneInput
+  contest: ContestRelateToOneForUpdateInput
+  user: UserRelateToOneForUpdateInput
 }
 
-input RegistrationsUpdateInput {
-  id: ID!
-  data: RegistrationUpdateInput
+input RegistrationUpdateArgs {
+  where: RegistrationWhereUniqueInput!
+  data: RegistrationUpdateInput!
 }
 
 input RegistrationCreateInput {
   hasPaid: Boolean
-  contest: ContestRelateToOneInput
-  user: UserRelateToOneInput
+  contest: ContestRelateToOneForCreateInput
+  user: UserRelateToOneForCreateInput
 }
 
-input RegistrationsCreateInput {
-  data: RegistrationCreateInput
-}
-
-"""
- A keystone list
-"""
 type RuleSet {
   id: ID!
   maxBets: Int
@@ -899,55 +827,16 @@ type RuleSet {
 input RuleSetWhereInput {
   AND: [RuleSetWhereInput!]
   OR: [RuleSetWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  maxBets: Int
-  maxBets_not: Int
-  maxBets_lt: Int
-  maxBets_lte: Int
-  maxBets_gt: Int
-  maxBets_gte: Int
-  maxBets_in: [Int]
-  maxBets_not_in: [Int]
-  maxSuperBets: Int
-  maxSuperBets_not: Int
-  maxSuperBets_lt: Int
-  maxSuperBets_lte: Int
-  maxSuperBets_gt: Int
-  maxSuperBets_gte: Int
-  maxSuperBets_in: [Int]
-  maxSuperBets_not_in: [Int]
-  superBetPointCount: Int
-  superBetPointCount_not: Int
-  superBetPointCount_lt: Int
-  superBetPointCount_lte: Int
-  superBetPointCount_gt: Int
-  superBetPointCount_gte: Int
-  superBetPointCount_in: [Int]
-  superBetPointCount_not_in: [Int]
+  NOT: [RuleSetWhereInput!]
+  id: IDFilter
+  maxBets: IntNullableFilter
+  maxSuperBets: IntNullableFilter
+  superBetPointCount: IntNullableFilter
   contest: ContestWhereInput
-  contest_is_null: Boolean
 }
 
 input RuleSetWhereUniqueInput {
   id: ID
-}
-
-enum SortRuleSetsBy {
-  id_ASC
-  id_DESC
-  maxBets_ASC
-  maxBets_DESC
-  maxSuperBets_ASC
-  maxSuperBets_DESC
-  superBetPointCount_ASC
-  superBetPointCount_DESC
 }
 
 input RuleSetOrderByInput {
@@ -961,28 +850,21 @@ input RuleSetUpdateInput {
   maxBets: Int
   maxSuperBets: Int
   superBetPointCount: Int
-  contest: ContestRelateToOneInput
+  contest: ContestRelateToOneForUpdateInput
 }
 
-input RuleSetsUpdateInput {
-  id: ID!
-  data: RuleSetUpdateInput
+input RuleSetUpdateArgs {
+  where: RuleSetWhereUniqueInput!
+  data: RuleSetUpdateInput!
 }
 
 input RuleSetCreateInput {
   maxBets: Int
   maxSuperBets: Int
   superBetPointCount: Int
-  contest: ContestRelateToOneInput
+  contest: ContestRelateToOneForCreateInput
 }
 
-input RuleSetsCreateInput {
-  data: RuleSetCreateInput
-}
-
-"""
- A keystone list
-"""
 type Standing {
   id: ID!
   gamesPlayed: Int
@@ -994,55 +876,16 @@ type Standing {
 input StandingWhereInput {
   AND: [StandingWhereInput!]
   OR: [StandingWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  gamesPlayed: Int
-  gamesPlayed_not: Int
-  gamesPlayed_lt: Int
-  gamesPlayed_lte: Int
-  gamesPlayed_gt: Int
-  gamesPlayed_gte: Int
-  gamesPlayed_in: [Int]
-  gamesPlayed_not_in: [Int]
-  wins: Int
-  wins_not: Int
-  wins_lt: Int
-  wins_lte: Int
-  wins_gt: Int
-  wins_gte: Int
-  wins_in: [Int]
-  wins_not_in: [Int]
-  totalGames: Int
-  totalGames_not: Int
-  totalGames_lt: Int
-  totalGames_lte: Int
-  totalGames_gt: Int
-  totalGames_gte: Int
-  totalGames_in: [Int]
-  totalGames_not_in: [Int]
+  NOT: [StandingWhereInput!]
+  id: IDFilter
+  gamesPlayed: IntNullableFilter
+  wins: IntNullableFilter
+  totalGames: IntNullableFilter
   line: LineWhereInput
-  line_is_null: Boolean
 }
 
 input StandingWhereUniqueInput {
   id: ID
-}
-
-enum SortStandingsBy {
-  id_ASC
-  id_DESC
-  gamesPlayed_ASC
-  gamesPlayed_DESC
-  wins_ASC
-  wins_DESC
-  totalGames_ASC
-  totalGames_DESC
 }
 
 input StandingOrderByInput {
@@ -1056,28 +899,21 @@ input StandingUpdateInput {
   gamesPlayed: Int
   wins: Int
   totalGames: Int
-  line: LineRelateToOneInput
+  line: LineRelateToOneForUpdateInput
 }
 
-input StandingsUpdateInput {
-  id: ID!
-  data: StandingUpdateInput
+input StandingUpdateArgs {
+  where: StandingWhereUniqueInput!
+  data: StandingUpdateInput!
 }
 
 input StandingCreateInput {
   gamesPlayed: Int
   wins: Int
   totalGames: Int
-  line: LineRelateToOneInput
+  line: LineRelateToOneForCreateInput
 }
 
-input StandingsCreateInput {
-  data: StandingCreateInput
-}
-
-"""
- A keystone list
-"""
 type User {
   id: ID!
   email: String
@@ -1087,48 +923,18 @@ type User {
   isAdmin: Boolean
   bets(
     where: BetWhereInput! = {}
-    search: String
-    sortBy: [SortBetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
     orderBy: [BetOrderByInput!]! = []
-    first: Int
+    take: Int
     skip: Int! = 0
   ): [Bet!]
-  _betsMeta(
-    where: BetWhereInput! = {}
-    search: String
-    sortBy: [SortBetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [BetOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use betsCount instead."
-    )
   betsCount(where: BetWhereInput! = {}): Int
   avatarImage: CloudImage
   registrations(
     where: RegistrationWhereInput! = {}
-    search: String
-    sortBy: [SortRegistrationsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
     orderBy: [RegistrationOrderByInput!]! = []
-    first: Int
+    take: Int
     skip: Int! = 0
   ): [Registration!]
-  _registrationsMeta(
-    where: RegistrationWhereInput! = {}
-    search: String
-    sortBy: [SortRegistrationsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [RegistrationOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use registrationsCount instead."
-    )
   registrationsCount(where: RegistrationWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: String
@@ -1142,143 +948,29 @@ type PasswordState {
 input UserWhereInput {
   AND: [UserWhereInput!]
   OR: [UserWhereInput!]
-  id: ID
-  id_not: ID
-  id_lt: ID
-  id_lte: ID
-  id_gt: ID
-  id_gte: ID
-  id_in: [ID!]
-  id_not_in: [ID!]
-  email: String
-  email_not: String
-  email_contains: String
-  email_not_contains: String
-  email_starts_with: String
-  email_not_starts_with: String
-  email_ends_with: String
-  email_not_ends_with: String
-  email_i: String
-  email_not_i: String
-  email_contains_i: String
-  email_not_contains_i: String
-  email_starts_with_i: String
-  email_not_starts_with_i: String
-  email_ends_with_i: String
-  email_not_ends_with_i: String
-  email_in: [String]
-  email_not_in: [String]
-  name: String
-  name_not: String
-  name_contains: String
-  name_not_contains: String
-  name_starts_with: String
-  name_not_starts_with: String
-  name_ends_with: String
-  name_not_ends_with: String
-  name_i: String
-  name_not_i: String
-  name_contains_i: String
-  name_not_contains_i: String
-  name_starts_with_i: String
-  name_not_starts_with_i: String
-  name_ends_with_i: String
-  name_not_ends_with_i: String
-  name_in: [String]
-  name_not_in: [String]
-  userName: String
-  userName_not: String
-  userName_contains: String
-  userName_not_contains: String
-  userName_starts_with: String
-  userName_not_starts_with: String
-  userName_ends_with: String
-  userName_not_ends_with: String
-  userName_i: String
-  userName_not_i: String
-  userName_contains_i: String
-  userName_not_contains_i: String
-  userName_starts_with_i: String
-  userName_not_starts_with_i: String
-  userName_ends_with_i: String
-  userName_not_ends_with_i: String
-  userName_in: [String]
-  userName_not_in: [String]
-  password_is_set: Boolean
-  isAdmin: Boolean
-  isAdmin_not: Boolean
-
-  """
-   condition must be true for all nodes
-  """
-  bets_every: BetWhereInput
-
-  """
-   condition must be true for at least 1 node
-  """
-  bets_some: BetWhereInput
-
-  """
-   condition must be false for all nodes
-  """
-  bets_none: BetWhereInput
+  NOT: [UserWhereInput!]
+  id: IDFilter
+  email: StringNullableFilter
+  name: StringNullableFilter
+  userName: StringNullableFilter
+  password: PasswordFilter
+  isAdmin: BooleanNullableFilter
+  bets: BetManyRelationFilter
   avatarImage: CloudImageWhereInput
-  avatarImage_is_null: Boolean
+  registrations: RegistrationManyRelationFilter
+  passwordResetToken: PasswordFilter
+  passwordResetIssuedAt: DateTimeNullableFilter
+  passwordResetRedeemedAt: DateTimeNullableFilter
+}
 
-  """
-   condition must be true for all nodes
-  """
-  registrations_every: RegistrationWhereInput
-
-  """
-   condition must be true for at least 1 node
-  """
-  registrations_some: RegistrationWhereInput
-
-  """
-   condition must be false for all nodes
-  """
-  registrations_none: RegistrationWhereInput
-  passwordResetToken_is_set: Boolean
-  passwordResetIssuedAt: String
-  passwordResetIssuedAt_not: String
-  passwordResetIssuedAt_lt: String
-  passwordResetIssuedAt_lte: String
-  passwordResetIssuedAt_gt: String
-  passwordResetIssuedAt_gte: String
-  passwordResetIssuedAt_in: [String]
-  passwordResetIssuedAt_not_in: [String]
-  passwordResetRedeemedAt: String
-  passwordResetRedeemedAt_not: String
-  passwordResetRedeemedAt_lt: String
-  passwordResetRedeemedAt_lte: String
-  passwordResetRedeemedAt_gt: String
-  passwordResetRedeemedAt_gte: String
-  passwordResetRedeemedAt_in: [String]
-  passwordResetRedeemedAt_not_in: [String]
+input PasswordFilter {
+  isSet: Boolean!
 }
 
 input UserWhereUniqueInput {
   id: ID
   email: String
   userName: String
-}
-
-enum SortUsersBy {
-  id_ASC
-  id_DESC
-  email_ASC
-  email_DESC
-  name_ASC
-  name_DESC
-  userName_ASC
-  userName_DESC
-  isAdmin_ASC
-  isAdmin_DESC
-  passwordResetIssuedAt_ASC
-  passwordResetIssuedAt_DESC
-  passwordResetRedeemedAt_ASC
-  passwordResetRedeemedAt_DESC
 }
 
 input UserOrderByInput {
@@ -1297,17 +989,17 @@ input UserUpdateInput {
   userName: String
   password: String
   isAdmin: Boolean
-  bets: BetRelateToManyInput
-  avatarImage: CloudImageRelateToOneInput
-  registrations: RegistrationRelateToManyInput
+  bets: BetRelateToManyForUpdateInput
+  avatarImage: CloudImageRelateToOneForUpdateInput
+  registrations: RegistrationRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: String
   passwordResetRedeemedAt: String
 }
 
-input UsersUpdateInput {
-  id: ID!
-  data: UserUpdateInput
+input UserUpdateArgs {
+  where: UserWhereUniqueInput!
+  data: UserUpdateInput!
 }
 
 input UserCreateInput {
@@ -1316,16 +1008,12 @@ input UserCreateInput {
   userName: String
   password: String
   isAdmin: Boolean
-  bets: BetRelateToManyInput
-  avatarImage: CloudImageRelateToOneInput
-  registrations: RegistrationRelateToManyInput
+  bets: BetRelateToManyForCreateInput
+  avatarImage: CloudImageRelateToOneForCreateInput
+  registrations: RegistrationRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: String
   passwordResetRedeemedAt: String
-}
-
-input UsersCreateInput {
-  data: UserCreateInput
 }
 
 """
@@ -1336,673 +1024,84 @@ scalar JSON
     url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
   )
 
-type Mutation {
-  """
-   Create a single Bet item.
-  """
-  createBet(data: BetCreateInput): Bet
-
-  """
-   Create multiple Bet items.
-  """
-  createBets(data: [BetsCreateInput]): [Bet]
-
-  """
-   Update a single Bet item by ID.
-  """
-  updateBet(id: ID!, data: BetUpdateInput): Bet
-
-  """
-   Update multiple Bet items by ID.
-  """
-  updateBets(data: [BetsUpdateInput]): [Bet]
-
-  """
-   Delete a single Bet item by ID.
-  """
-  deleteBet(id: ID!): Bet
-
-  """
-   Delete multiple Bet items by ID.
-  """
-  deleteBets(ids: [ID!]): [Bet]
-
-  """
-   Create a single Choice item.
-  """
-  createChoice(data: ChoiceCreateInput): Choice
-
-  """
-   Create multiple Choice items.
-  """
-  createChoices(data: [ChoicesCreateInput]): [Choice]
-
-  """
-   Update a single Choice item by ID.
-  """
-  updateChoice(id: ID!, data: ChoiceUpdateInput): Choice
-
-  """
-   Update multiple Choice items by ID.
-  """
-  updateChoices(data: [ChoicesUpdateInput]): [Choice]
-
-  """
-   Delete a single Choice item by ID.
-  """
-  deleteChoice(id: ID!): Choice
-
-  """
-   Delete multiple Choice items by ID.
-  """
-  deleteChoices(ids: [ID!]): [Choice]
-
-  """
-   Create a single CloudImage item.
-  """
-  createCloudImage(data: CloudImageCreateInput): CloudImage
-
-  """
-   Create multiple CloudImage items.
-  """
-  createCloudImages(data: [CloudImagesCreateInput]): [CloudImage]
-
-  """
-   Update a single CloudImage item by ID.
-  """
-  updateCloudImage(id: ID!, data: CloudImageUpdateInput): CloudImage
-
-  """
-   Update multiple CloudImage items by ID.
-  """
-  updateCloudImages(data: [CloudImagesUpdateInput]): [CloudImage]
-
-  """
-   Delete a single CloudImage item by ID.
-  """
-  deleteCloudImage(id: ID!): CloudImage
-
-  """
-   Delete multiple CloudImage items by ID.
-  """
-  deleteCloudImages(ids: [ID!]): [CloudImage]
-
-  """
-   Create a single Contest item.
-  """
-  createContest(data: ContestCreateInput): Contest
-
-  """
-   Create multiple Contest items.
-  """
-  createContests(data: [ContestsCreateInput]): [Contest]
-
-  """
-   Update a single Contest item by ID.
-  """
-  updateContest(id: ID!, data: ContestUpdateInput): Contest
-
-  """
-   Update multiple Contest items by ID.
-  """
-  updateContests(data: [ContestsUpdateInput]): [Contest]
-
-  """
-   Delete a single Contest item by ID.
-  """
-  deleteContest(id: ID!): Contest
-
-  """
-   Delete multiple Contest items by ID.
-  """
-  deleteContests(ids: [ID!]): [Contest]
-
-  """
-   Create a single Line item.
-  """
-  createLine(data: LineCreateInput): Line
-
-  """
-   Create multiple Line items.
-  """
-  createLines(data: [LinesCreateInput]): [Line]
-
-  """
-   Update a single Line item by ID.
-  """
-  updateLine(id: ID!, data: LineUpdateInput): Line
-
-  """
-   Update multiple Line items by ID.
-  """
-  updateLines(data: [LinesUpdateInput]): [Line]
-
-  """
-   Delete a single Line item by ID.
-  """
-  deleteLine(id: ID!): Line
-
-  """
-   Delete multiple Line items by ID.
-  """
-  deleteLines(ids: [ID!]): [Line]
-
-  """
-   Create a single Registration item.
-  """
-  createRegistration(data: RegistrationCreateInput): Registration
-
-  """
-   Create multiple Registration items.
-  """
-  createRegistrations(data: [RegistrationsCreateInput]): [Registration]
-
-  """
-   Update a single Registration item by ID.
-  """
-  updateRegistration(id: ID!, data: RegistrationUpdateInput): Registration
-
-  """
-   Update multiple Registration items by ID.
-  """
-  updateRegistrations(data: [RegistrationsUpdateInput]): [Registration]
-
-  """
-   Delete a single Registration item by ID.
-  """
-  deleteRegistration(id: ID!): Registration
-
-  """
-   Delete multiple Registration items by ID.
-  """
-  deleteRegistrations(ids: [ID!]): [Registration]
-
-  """
-   Create a single RuleSet item.
-  """
-  createRuleSet(data: RuleSetCreateInput): RuleSet
-
-  """
-   Create multiple RuleSet items.
-  """
-  createRuleSets(data: [RuleSetsCreateInput]): [RuleSet]
-
-  """
-   Update a single RuleSet item by ID.
-  """
-  updateRuleSet(id: ID!, data: RuleSetUpdateInput): RuleSet
-
-  """
-   Update multiple RuleSet items by ID.
-  """
-  updateRuleSets(data: [RuleSetsUpdateInput]): [RuleSet]
-
-  """
-   Delete a single RuleSet item by ID.
-  """
-  deleteRuleSet(id: ID!): RuleSet
-
-  """
-   Delete multiple RuleSet items by ID.
-  """
-  deleteRuleSets(ids: [ID!]): [RuleSet]
-
-  """
-   Create a single Standing item.
-  """
-  createStanding(data: StandingCreateInput): Standing
-
-  """
-   Create multiple Standing items.
-  """
-  createStandings(data: [StandingsCreateInput]): [Standing]
-
-  """
-   Update a single Standing item by ID.
-  """
-  updateStanding(id: ID!, data: StandingUpdateInput): Standing
-
-  """
-   Update multiple Standing items by ID.
-  """
-  updateStandings(data: [StandingsUpdateInput]): [Standing]
-
-  """
-   Delete a single Standing item by ID.
-  """
-  deleteStanding(id: ID!): Standing
-
-  """
-   Delete multiple Standing items by ID.
-  """
-  deleteStandings(ids: [ID!]): [Standing]
-
-  """
-   Create a single User item.
-  """
-  createUser(data: UserCreateInput): User
-
-  """
-   Create multiple User items.
-  """
-  createUsers(data: [UsersCreateInput]): [User]
-
-  """
-   Update a single User item by ID.
-  """
-  updateUser(id: ID!, data: UserUpdateInput): User
-
-  """
-   Update multiple User items by ID.
-  """
-  updateUsers(data: [UsersUpdateInput]): [User]
-
-  """
-   Delete a single User item by ID.
-  """
-  deleteUser(id: ID!): User
-
-  """
-   Delete multiple User items by ID.
-  """
-  deleteUsers(ids: [ID!]): [User]
-  authenticateUserWithPassword(
-    email: String!
-    password: String!
-  ): UserAuthenticationWithPasswordResult!
-  createInitialUser(
-    data: CreateInitialUserInput!
-  ): UserAuthenticationWithPasswordSuccess!
-  sendUserPasswordResetLink(email: String!): SendUserPasswordResetLinkResult
-  redeemUserPasswordResetToken(
-    email: String!
-    token: String!
-    password: String!
-  ): RedeemUserPasswordResetTokenResult
-  endSession: Boolean!
-}
-
-union AuthenticatedItem = User
-
-union UserAuthenticationWithPasswordResult =
-    UserAuthenticationWithPasswordSuccess
-  | UserAuthenticationWithPasswordFailure
-
-type UserAuthenticationWithPasswordSuccess {
-  sessionToken: String!
-  item: User!
-}
-
-type UserAuthenticationWithPasswordFailure {
-  code: PasswordAuthErrorCode!
-  message: String!
-}
-
-enum PasswordAuthErrorCode {
-  FAILURE
-  IDENTITY_NOT_FOUND
-  SECRET_NOT_SET
-  MULTIPLE_IDENTITY_MATCHES
-  SECRET_MISMATCH
-}
-
-input CreateInitialUserInput {
-  email: String
-  name: String
-  userName: String
-  password: String
-}
-
-type SendUserPasswordResetLinkResult {
-  code: PasswordResetRequestErrorCode!
-  message: String!
-}
-
-enum PasswordResetRequestErrorCode {
-  IDENTITY_NOT_FOUND
-  MULTIPLE_IDENTITY_MATCHES
-}
-
-type ValidateUserPasswordResetTokenResult {
-  code: PasswordResetRedemptionErrorCode!
-  message: String!
-}
-
-type RedeemUserPasswordResetTokenResult {
-  code: PasswordResetRedemptionErrorCode!
-  message: String!
-}
-
-enum PasswordResetRedemptionErrorCode {
-  FAILURE
-  IDENTITY_NOT_FOUND
-  MULTIPLE_IDENTITY_MATCHES
-  TOKEN_NOT_SET
-  TOKEN_MISMATCH
-  TOKEN_EXPIRED
-  TOKEN_REDEEMED
-}
-
 type Query {
-  """
-   Search for all Bet items which match the where clause.
-  """
-  allBets(
-    where: BetWhereInput! = {}
-    search: String
-    sortBy: [SortBetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [BetOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [Bet!]
-
-  """
-   Search for the Bet item with the matching ID.
-  """
-  Bet(where: BetWhereUniqueInput!): Bet
-
-  """
-   Perform a meta-query on all Bet items which match the where clause.
-  """
-  _allBetsMeta(
-    where: BetWhereInput! = {}
-    search: String
-    sortBy: [SortBetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [BetOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use betsCount instead."
-    )
-  betsCount(where: BetWhereInput! = {}): Int
-
-  """
-   Search for all Choice items which match the where clause.
-  """
-  allChoices(
-    where: ChoiceWhereInput! = {}
-    search: String
-    sortBy: [SortChoicesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [ChoiceOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [Choice!]
-
-  """
-   Search for the Choice item with the matching ID.
-  """
-  Choice(where: ChoiceWhereUniqueInput!): Choice
-
-  """
-   Perform a meta-query on all Choice items which match the where clause.
-  """
-  _allChoicesMeta(
-    where: ChoiceWhereInput! = {}
-    search: String
-    sortBy: [SortChoicesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [ChoiceOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use choicesCount instead."
-    )
-  choicesCount(where: ChoiceWhereInput! = {}): Int
-
-  """
-   Search for all CloudImage items which match the where clause.
-  """
-  allCloudImages(
-    where: CloudImageWhereInput! = {}
-    search: String
-    sortBy: [SortCloudImagesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [CloudImageOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [CloudImage!]
-
-  """
-   Search for the CloudImage item with the matching ID.
-  """
-  CloudImage(where: CloudImageWhereUniqueInput!): CloudImage
-
-  """
-   Perform a meta-query on all CloudImage items which match the where clause.
-  """
-  _allCloudImagesMeta(
-    where: CloudImageWhereInput! = {}
-    search: String
-    sortBy: [SortCloudImagesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [CloudImageOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use cloudImagesCount instead."
-    )
-  cloudImagesCount(where: CloudImageWhereInput! = {}): Int
-
-  """
-   Search for all Contest items which match the where clause.
-  """
-  allContests(
-    where: ContestWhereInput! = {}
-    search: String
-    sortBy: [SortContestsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [ContestOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [Contest!]
-
-  """
-   Search for the Contest item with the matching ID.
-  """
-  Contest(where: ContestWhereUniqueInput!): Contest
-
-  """
-   Perform a meta-query on all Contest items which match the where clause.
-  """
-  _allContestsMeta(
-    where: ContestWhereInput! = {}
-    search: String
-    sortBy: [SortContestsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [ContestOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use contestsCount instead."
-    )
-  contestsCount(where: ContestWhereInput! = {}): Int
-
-  """
-   Search for all Line items which match the where clause.
-  """
-  allLines(
-    where: LineWhereInput! = {}
-    search: String
-    sortBy: [SortLinesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [LineOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [Line!]
-
-  """
-   Search for the Line item with the matching ID.
-  """
-  Line(where: LineWhereUniqueInput!): Line
-
-  """
-   Perform a meta-query on all Line items which match the where clause.
-  """
-  _allLinesMeta(
-    where: LineWhereInput! = {}
-    search: String
-    sortBy: [SortLinesBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [LineOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use linesCount instead."
-    )
-  linesCount(where: LineWhereInput! = {}): Int
-
-  """
-   Search for all Registration items which match the where clause.
-  """
-  allRegistrations(
-    where: RegistrationWhereInput! = {}
-    search: String
-    sortBy: [SortRegistrationsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [RegistrationOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [Registration!]
-
-  """
-   Search for the Registration item with the matching ID.
-  """
-  Registration(where: RegistrationWhereUniqueInput!): Registration
-
-  """
-   Perform a meta-query on all Registration items which match the where clause.
-  """
-  _allRegistrationsMeta(
-    where: RegistrationWhereInput! = {}
-    search: String
-    sortBy: [SortRegistrationsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [RegistrationOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use registrationsCount instead."
-    )
-  registrationsCount(where: RegistrationWhereInput! = {}): Int
-
-  """
-   Search for all RuleSet items which match the where clause.
-  """
-  allRuleSets(
-    where: RuleSetWhereInput! = {}
-    search: String
-    sortBy: [SortRuleSetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [RuleSetOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [RuleSet!]
-
-  """
-   Search for the RuleSet item with the matching ID.
-  """
-  RuleSet(where: RuleSetWhereUniqueInput!): RuleSet
-
-  """
-   Perform a meta-query on all RuleSet items which match the where clause.
-  """
-  _allRuleSetsMeta(
-    where: RuleSetWhereInput! = {}
-    search: String
-    sortBy: [SortRuleSetsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [RuleSetOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use ruleSetsCount instead."
-    )
-  ruleSetsCount(where: RuleSetWhereInput! = {}): Int
-
-  """
-   Search for all Standing items which match the where clause.
-  """
-  allStandings(
-    where: StandingWhereInput! = {}
-    search: String
-    sortBy: [SortStandingsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [StandingOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [Standing!]
-
-  """
-   Search for the Standing item with the matching ID.
-  """
-  Standing(where: StandingWhereUniqueInput!): Standing
-
-  """
-   Perform a meta-query on all Standing items which match the where clause.
-  """
-  _allStandingsMeta(
-    where: StandingWhereInput! = {}
-    search: String
-    sortBy: [SortStandingsBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [StandingOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use standingsCount instead."
-    )
-  standingsCount(where: StandingWhereInput! = {}): Int
-
-  """
-   Search for all User items which match the where clause.
-  """
-  allUsers(
-    where: UserWhereInput! = {}
-    search: String
-    sortBy: [SortUsersBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [UserOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): [User!]
-
-  """
-   Search for the User item with the matching ID.
-  """
-  User(where: UserWhereUniqueInput!): User
-
-  """
-   Perform a meta-query on all User items which match the where clause.
-  """
-  _allUsersMeta(
-    where: UserWhereInput! = {}
-    search: String
-    sortBy: [SortUsersBy!]
-      @deprecated(reason: "sortBy has been deprecated in favour of orderBy")
-    orderBy: [UserOrderByInput!]! = []
-    first: Int
-    skip: Int! = 0
-  ): _QueryMeta
-    @deprecated(
-      reason: "This query will be removed in a future version. Please use usersCount instead."
-    )
-  usersCount(where: UserWhereInput! = {}): Int
-  authenticatedItem: AuthenticatedItem
   validateUserPasswordResetToken(
     email: String!
     token: String!
   ): ValidateUserPasswordResetTokenResult
+  authenticatedItem: AuthenticatedItem
+  bets(
+    where: BetWhereInput! = {}
+    orderBy: [BetOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Bet!]
+  bet(where: BetWhereUniqueInput!): Bet
+  betsCount(where: BetWhereInput! = {}): Int
+  choices(
+    where: ChoiceWhereInput! = {}
+    orderBy: [ChoiceOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Choice!]
+  choice(where: ChoiceWhereUniqueInput!): Choice
+  choicesCount(where: ChoiceWhereInput! = {}): Int
+  cloudImages(
+    where: CloudImageWhereInput! = {}
+    orderBy: [CloudImageOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [CloudImage!]
+  cloudImage(where: CloudImageWhereUniqueInput!): CloudImage
+  cloudImagesCount(where: CloudImageWhereInput! = {}): Int
+  contests(
+    where: ContestWhereInput! = {}
+    orderBy: [ContestOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Contest!]
+  contest(where: ContestWhereUniqueInput!): Contest
+  contestsCount(where: ContestWhereInput! = {}): Int
+  lines(
+    where: LineWhereInput! = {}
+    orderBy: [LineOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Line!]
+  line(where: LineWhereUniqueInput!): Line
+  linesCount(where: LineWhereInput! = {}): Int
+  registrations(
+    where: RegistrationWhereInput! = {}
+    orderBy: [RegistrationOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Registration!]
+  registration(where: RegistrationWhereUniqueInput!): Registration
+  registrationsCount(where: RegistrationWhereInput! = {}): Int
+  ruleSets(
+    where: RuleSetWhereInput! = {}
+    orderBy: [RuleSetOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [RuleSet!]
+  ruleSet(where: RuleSetWhereUniqueInput!): RuleSet
+  ruleSetsCount(where: RuleSetWhereInput! = {}): Int
+  standings(
+    where: StandingWhereInput! = {}
+    orderBy: [StandingOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [Standing!]
+  standing(where: StandingWhereUniqueInput!): Standing
+  standingsCount(where: StandingWhereInput! = {}): Int
+  users(
+    where: UserWhereInput! = {}
+    orderBy: [UserOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [User!]
+  user(where: UserWhereUniqueInput!): User
+  usersCount(where: UserWhereInput! = {}): Int
   keystone: KeystoneMeta!
 }
 
@@ -2046,6 +1145,7 @@ type KeystoneAdminUIFieldMeta {
   createView: KeystoneAdminUIFieldMetaCreateView!
   listView: KeystoneAdminUIFieldMetaListView!
   itemView(id: ID!): KeystoneAdminUIFieldMetaItemView
+  search: QueryMode
 }
 
 type KeystoneAdminUIFieldMetaCreateView {

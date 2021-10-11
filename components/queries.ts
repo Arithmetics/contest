@@ -23,7 +23,7 @@ export const CURRENT_USER_QUERY = gql`
 
 export const ALL_CONTESTS_QUERY = gql`
   query AllContests {
-    allContests {
+    contests {
       id
       name
       description
@@ -53,7 +53,7 @@ export const ALL_CONTESTS_QUERY = gql`
 
 export const CONTEST_BY_ID_QUERY = gql`
   query ContestById($id: ID!) {
-    Contest(where: { id: $id }) {
+    contest(where: { id: $id }) {
       id
       name
       description
@@ -160,7 +160,7 @@ export const DELETE_BET_MUTATION = gql`
 
 export const TRACKER_STATUS_QUERY = gql`
   query TrackerStatus($contestId: ID!) {
-    allLines(where: { contest: { id: $contestId } }) {
+    lines(where: { contest: { id: $contestId } }) {
       id
       title
       benchmark
@@ -188,7 +188,7 @@ export const TRACKER_STATUS_QUERY = gql`
 
 export const LEADERBOARD_QUERY = gql`
   query Leaderboard($contestId: ID!) {
-    allRegistrations(where: { contest: { id: $contestId } }) {
+    registrations(where: { contest: { id: $contestId } }) {
       id
       user {
         id
@@ -213,7 +213,7 @@ export const LEADERBOARD_QUERY = gql`
 
 export const CONTEST_BETS_QUERY = gql`
   query ContestBets($contestId: ID!) {
-    allBets(where: { choice: { line: { contest: { id: $contestId } } } }) {
+    bets(where: { choice: { line: { contest: { id: $contestId } } } }) {
       id
       isSuper
       choice {
