@@ -28,6 +28,6 @@
     "@types/node-cron": "^2.0.4",
     "@types/nodemailer": "^6.4.1",
     "@types/nodemailer-sendgrid": "^1.0.0",
-    "prisma": "2.25.0"
+    "prisma": "^3.2.1"
   }
 }
