@@ -22,6 +22,7 @@ export default function LineCardHeader({ line }: LineCardHeaderProps): JSX.Eleme
       </Stat>
       <Image
         boxSize="75px"
+        fit="scale-down"
         bg={'gray.600'}
         alt={line.image?.altText || 'unknown'}
         src={line.image?.image?.publicUrlTransformed || ''}

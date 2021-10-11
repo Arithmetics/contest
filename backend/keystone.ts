@@ -67,7 +67,7 @@ export default auth.withAuth(
       async onConnect(context) {
         console.log('connected');
 
-        cron.schedule('0 0 0 * * *', () => {
+        cron.schedule('0 0 3 * * *', () => {
           console.log('running standing job!');
           startDailyStandingsJob(context);
         });
