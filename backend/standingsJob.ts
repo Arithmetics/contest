@@ -5,7 +5,11 @@ import { Line, Standing, StandingCreateInput } from './codegen/graphql-types';
 
 import fetchEspnStandings from './espnStandings';
 
-export async function startDailyStandingsJob(keyStoneContext: KeystoneContext): Promise<void> {
+export async function startDailyStandingsJob(
+  keyStoneContext: KeystoneContext,
+  contestId: string,
+  apiUrl: string
+): Promise<void> {
   const lists = keyStoneContext
     .withSession({
       data: {
@@ -16,11 +20,11 @@ export async function startDailyStandingsJob(keyStoneContext: KeystoneContext): 
     .sudo().lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
 
   const graphql = String.raw;
-  const espnStandings = await fetchEspnStandings();
+  const espnStandings = await fetchEspnStandings(apiUrl);
 
   // need to figure out the contests to do (active with NFL_OU enum??)
   const linesWithStandings = (await lists.Line.findMany({
-    where: { contest: { id: 'ckre48xe10960292pu1w1puj8' } },
+    where: { contest: { id: contestId } },
     query: graphql`
       id
       title
@@ -50,7 +54,7 @@ export async function startDailyStandingsJob(keyStoneContext: KeystoneContext): 
 
   filteredLineStandings?.forEach((line) => {
     const matchingESPNStanding = espnStandings.find((s) => s.teamName === line.title);
-    if ((matchingESPNStanding?.gamesPlayed || 0) > (line.standings?.[0].gamesPlayed || 0)) {
+    if ((matchingESPNStanding?.gamesPlayed || 0) > (line.standings?.[0]?.gamesPlayed || 0)) {
       newStandingsToInsert.push({
         id: '',
         gamesPlayed: matchingESPNStanding?.gamesPlayed,

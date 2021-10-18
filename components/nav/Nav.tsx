@@ -85,15 +85,14 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="NFL Over Under"
                   leftIcon={<GiAmericanFootballHelmet />}
-                  // href={`/${Routes.CONTESTS}/nflOverUnder`}
-                  href={`/`}
+                  href={`/${Routes.CONTESTS}/ckre48xe10960292pu1w1puj8`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
                 <ButtonLink
                   title="NBA Over Under"
                   leftIcon={<IoIosBasketball />}
-                  href={`/${Routes.CONTESTS}/nbaOverUnder`}
+                  href={`/${Routes.CONTESTS}/ckudib3ur1716721jmclxp1pvo4`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
@@ -115,14 +114,14 @@ export default function Nav(): JSX.Element {
                 title="NFL Over Under"
                 leftIcon={<GiAmericanFootballHelmet />}
                 // href={`/${Routes.CONTESTS}/nflOverUnder`}
-                href={`/`}
-                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nflOverUnder`)}
+                href={`/${Routes.CONTESTS}/ckre48xe10960292pu1w1puj8`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/ckre48xe10960292pu1w1puj8`)}
               />
               <ButtonLink
                 title="NBA Over Under"
                 leftIcon={<IoIosBasketball />}
-                href={`/${Routes.CONTESTS}/nbaOverUnder`}
-                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nbaOverUnder`)}
+                href={`/${Routes.CONTESTS}/ckudib3ur1716721jmclxp1pvo4`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/ckudib3ur1716721jmclxp1pvo4`)}
               />
             </HStack>
           </HStack>
