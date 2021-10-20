@@ -25,11 +25,8 @@ type ExportEspnStanding = {
   wins: number;
 };
 
-export default async function fetchEspnStandings(): Promise<ExportEspnStanding[]> {
-  const response = await got(
-    'http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=100',
-    {}
-  );
+export default async function fetchEspnStandings(url: string): Promise<ExportEspnStanding[]> {
+  const response = await got(url, {});
 
   const data = JSON.parse(response.body);
 

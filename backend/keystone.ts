@@ -68,8 +68,19 @@ export default auth.withAuth(
         console.log('connected');
 
         cron.schedule('0 0 3 * * *', () => {
-          console.log('running standing job!');
-          startDailyStandingsJob(context);
+          console.log('running NFL standing job!');
+
+          startDailyStandingsJob(
+            context,
+            'ckre48xe10960292pu1w1puj8',
+            'http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=100'
+          );
+          console.log('running NBA standing job!');
+          startDailyStandingsJob(
+            context,
+            'ckudib3ur1716721jmclxp1pvo4',
+            'http://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams?limit=100'
+          );
         });
 
         if (process.argv.includes('--seed-data')) {
