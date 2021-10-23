@@ -8,6 +8,7 @@ import fetchEspnStandings from './espnStandings';
 export async function startDailyStandingsJob(
   keyStoneContext: KeystoneContext,
   contestId: string,
+  totalGames: number,
   apiUrl: string
 ): Promise<void> {
   const lists = keyStoneContext
@@ -59,7 +60,7 @@ export async function startDailyStandingsJob(
         id: '',
         gamesPlayed: matchingESPNStanding?.gamesPlayed,
         wins: matchingESPNStanding?.wins,
-        totalGames: 17,
+        totalGames: totalGames,
         line: {
           id: line.id,
           title: line.title,
