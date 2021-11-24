@@ -1,7 +1,6 @@
-import { config } from '@keystone-next/keystone/schema';
 import { statelessSessions } from '@keystone-next/keystone/session';
 import { createAuth } from '@keystone-next/auth';
-import { createSchema } from '@keystone-next/keystone/schema';
+import { config, createSchema } from '@keystone-next/keystone';
 import cron from 'node-cron';
 import 'dotenv/config';
 

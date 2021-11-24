@@ -1,4 +1,4 @@
-import { KeystoneContext } from '@keystone-next/types';
+import { KeystoneContext } from '@keystone-next/keystone/types';
 import { BetWhereInput } from '.keystone/types';
 
 export type AugKeystoneSession = {
@@ -14,7 +14,7 @@ export type AugListAccessArgs = {
   itemId?: string;
   session?: AugKeystoneSession;
   context: KeystoneContext;
-  operation: 'read' | 'update' | 'create' | 'delete';
+  operation: 'query' | 'update' | 'create' | 'delete';
 };
 
 export function isSignedIn({ session }: AugListAccessArgs): boolean {

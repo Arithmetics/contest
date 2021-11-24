@@ -1,13 +1,15 @@
-import { integer, relationship } from '@keystone-next/fields';
-import { list } from '@keystone-next/keystone/schema';
+import { integer, relationship } from '@keystone-next/keystone/fields';
+import { list } from '@keystone-next/keystone';
 import { isAdmin } from '../keystoneTypeAugments';
 
 export const RuleSet = list({
   access: {
-    create: isAdmin,
-    read: true,
-    update: isAdmin,
-    delete: isAdmin,
+    operation: {
+      create: isAdmin,
+      query: () => true,
+      update: isAdmin,
+      delete: isAdmin,
+    },
   },
   fields: {
     maxBets: integer(),

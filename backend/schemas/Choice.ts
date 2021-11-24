@@ -1,16 +1,18 @@
-import { checkbox, select, relationship, virtual } from '@keystone-next/fields';
-import { list } from '@keystone-next/keystone/schema';
-import { KeystoneListsAPI, schema } from '@keystone-next/types';
+import { checkbox, select, relationship, virtual } from '@keystone-next/keystone/fields';
+import { list } from '@keystone-next/keystone';
+import { KeystoneListsAPI, graphql } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 
 export const Choice = list({
   access: {
-    create: isAdmin,
-    read: true,
-    update: isAdmin,
-    delete: isAdmin,
+    operation: {
+      create: isAdmin,
+      query: () => true,
+      update: isAdmin,
+      delete: isAdmin,
+    },
   },
   fields: {
     selection: select({
@@ -28,10 +30,10 @@ export const Choice = list({
     line: relationship({ ref: 'Line.choices', many: false }),
     bets: relationship({ ref: 'Bet.choice', many: true }),
     status: virtual({
-      field: schema.field({
-        type: schema.enum({
+      field: graphql.field({
+        type: graphql.enum({
           name: 'ChoiceStatus',
-          values: schema.enumValues(['NOT_STARTED', 'WINNING', 'LOSING', 'WON', 'LOST']),
+          values: graphql.enumValues(['NOT_STARTED', 'WINNING', 'LOSING', 'WON', 'LOST']),
         }),
         async resolve(item, _args, context) {
           const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
@@ -116,8 +118,8 @@ export const Choice = list({
       }),
     }),
     labelName: virtual({
-      field: schema.field({
-        type: schema.String,
+      field: graphql.field({
+        type: graphql.String,
         async resolve(item, _args, context) {
           const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;

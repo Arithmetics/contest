@@ -1,4 +1,4 @@
-import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/types';
+import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 
 import { Line, Standing, StandingCreateInput } from './codegen/graphql-types';

@@ -1,16 +1,20 @@
-import { checkbox, relationship } from '@keystone-next/fields';
-import { list } from '@keystone-next/keystone/schema';
-import { KeystoneListsAPI } from '@keystone-next/types';
+import { checkbox, relationship } from '@keystone-next/keystone/fields';
+import { list } from '@keystone-next/keystone';
+import { KeystoneListsAPI } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { canModifyBet, canReadBet, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { Choice } from '../codegen/graphql-types';
 
 export const Bet = list({
   access: {
-    create: isSignedIn,
-    read: canReadBet,
-    delete: canModifyBet,
-    update: canModifyBet,
+    operation: {
+      create: isSignedIn,
+    },
+    filter: {
+      query: canReadBet,
+      delete: canModifyBet,
+      update: canModifyBet,
+    },
   },
   fields: {
     user: relationship({ ref: 'User.bets', many: false }),

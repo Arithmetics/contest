@@ -1,5 +1,5 @@
-import { text } from '@keystone-next/fields';
-import { list } from '@keystone-next/keystone/schema';
+import { text } from '@keystone-next/keystone/fields';
+import { list } from '@keystone-next/keystone';
 import { cloudinaryImage } from '@keystone-next/cloudinary';
 import { isAdmin, isSignedIn } from '../keystoneTypeAugments';
 
@@ -12,10 +12,12 @@ export const cloudinary = {
 
 export const CloudImage = list({
   access: {
-    create: isSignedIn,
-    read: true,
-    update: isAdmin,
-    delete: isAdmin,
+    operation: {
+      create: isSignedIn,
+      query: () => true,
+      update: isAdmin,
+      delete: isAdmin,
+    },
   },
   fields: {
     image: cloudinaryImage({

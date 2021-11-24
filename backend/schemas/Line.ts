@@ -1,13 +1,15 @@
-import { float, relationship, text, timestamp } from '@keystone-next/fields';
-import { list } from '@keystone-next/keystone/schema';
+import { float, relationship, text, timestamp } from '@keystone-next/keystone/fields';
+import { list } from '@keystone-next/keystone';
 import { isAdmin } from '../keystoneTypeAugments';
 
 export const Line = list({
   access: {
-    create: isAdmin,
-    read: true,
-    update: isAdmin,
-    delete: isAdmin,
+    operation: {
+      create: isAdmin,
+      query: () => true,
+      update: isAdmin,
+      delete: isAdmin,
+    },
   },
   fields: {
     title: text({ isRequired: true }),
