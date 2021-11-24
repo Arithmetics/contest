@@ -78,7 +78,7 @@ export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element 
   return (
     <Center>
       <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'stretch'}>
-        {data?.allLines?.map((line) => {
+        {data?.lines?.map((line) => {
           return <TrackerGraphCard key={line?.id} line={line as Line} contestId={contestId} />;
         })}
       </Box>
@@ -182,7 +182,7 @@ function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps): JSX.E
     variables: { contestId: contestId || '' },
   });
 
-  const allBets = contestBetsData?.allBets || [];
+  const allBets = contestBetsData?.bets || [];
 
   const choice = line?.choices?.find((c) => c.selection === choiceType);
 

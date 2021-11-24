@@ -104,7 +104,10 @@ export const Bet = list({
       const contest = typedChoice.line?.contest;
 
       const usersBets = await lists.Bet.findMany({
-        where: { user: { id: userId }, choice: { line: { contest: { id: contest?.id } } } },
+        where: {
+          user: { id: userId },
+          choice: { line: { contest: { id: { equals: contest?.id } } } },
+        },
         query: graphql`
           id
           isSuper

@@ -55,7 +55,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
     variables: { contestId: contestId || '' },
   });
 
-  const contest = contestData?.Contest as Contest | undefined;
+  const contest = contestData?.contest as Contest | undefined;
   const lines = contest?.lines as Line[] | undefined;
   const user = userData?.authenticatedItem as User | undefined;
 

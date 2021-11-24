@@ -25,7 +25,7 @@ export async function startDailyStandingsJob(
 
   // need to figure out the contests to do (active with NFL_OU enum??)
   const linesWithStandings = (await lists.Line.findMany({
-    where: { contest: { id: contestId } },
+    where: { contest: { id: { equals: contestId } } },
     query: graphql`
       id
       title
@@ -69,14 +69,12 @@ export async function startDailyStandingsJob(
     }
   });
 
-  const newLineData: { data: StandingCreateInput }[] = newStandingsToInsert.map((ns) => {
+  const newLineData: StandingCreateInput[] = newStandingsToInsert.map((ns) => {
     return {
-      data: {
-        gamesPlayed: ns.gamesPlayed,
-        wins: ns.wins,
-        totalGames: ns.totalGames,
-        line: { connect: { id: ns.line?.id } },
-      },
+      gamesPlayed: ns.gamesPlayed,
+      wins: ns.wins,
+      totalGames: ns.totalGames,
+      line: { connect: { id: ns.line?.id } },
     };
   });
 

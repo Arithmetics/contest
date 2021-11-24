@@ -47,7 +47,7 @@ export default function SignupForm(): JSX.Element {
     setEmailLoading(true);
     const res = await emailAvailQuery.refetch({ email });
     setEmailLoading(false);
-    const count = res?.data?._allUsersMeta?.count;
+    const count = res?.data?.usersCount;
     return count === 0;
   };
 
@@ -59,7 +59,7 @@ export default function SignupForm(): JSX.Element {
     setUserNameLoading(true);
     const res = await userNameAvailQuery.refetch({ userName });
     setUserNameLoading(false);
-    const count = res?.data?._allUsersMeta?.count;
+    const count = res?.data?.usersCount;
     return count === 0;
   };
 

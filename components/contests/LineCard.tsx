@@ -98,7 +98,7 @@ export default function LineCard({
     },
   });
 
-  const usersBets = contestBetsData?.allBets?.filter((bet) => bet?.user?.id === userId);
+  const usersBets = contestBetsData?.bets?.filter((bet) => bet?.user?.id === userId);
 
   const selectedChoice = line.choices?.find((choice) =>
     usersBets?.some((bet) => bet.choice?.id === choice.id)

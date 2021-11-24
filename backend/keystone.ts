@@ -6,7 +6,7 @@ import cron from 'node-cron';
 import 'dotenv/config';
 
 import { sendPasswordResetEmail } from './lib/mail';
-import { insertSeedData } from './seedData';
+// import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
 
 import { User } from './schemas/User';
@@ -86,7 +86,8 @@ export default auth.withAuth(
         });
 
         if (process.argv.includes('--seed-data')) {
-          await insertSeedData(context);
+          console.log('NO SEED DATA');
+          // await insertSeedData(context);
         }
       },
     },

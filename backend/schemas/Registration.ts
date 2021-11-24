@@ -42,7 +42,7 @@ export const Registration = list({
           const graphql = String.raw;
 
           const contestLines = (await lists.Line.findMany({
-            where: { contest: { id: (item.contestId as string) || '' } },
+            where: { contest: { id: { equals: (item.contestId as string) || '' } } },
             query: graphql`
               id
               title
@@ -131,7 +131,7 @@ export const Registration = list({
       const duplicateRegistrations = await lists.Registration.findMany({
         where: {
           contest: { id: resolvedData.contest.connect.id },
-          user: { id: session?.data?.id },
+          user: { id: { equals: session?.data?.id } },
         },
         query: graphql`
             id
