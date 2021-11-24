@@ -12,9 +12,9 @@ export const Line = list({
     },
   },
   fields: {
-    title: text({ isRequired: true }),
-    closingTime: timestamp({ isRequired: true }),
-    benchmark: float({ isRequired: true }),
+    title: text({ validation: { isRequired: true } }),
+    closingTime: timestamp({ validation: { isRequired: true } }),
+    benchmark: float({ validation: { isRequired: true } }),
     image: relationship({
       ref: 'CloudImage',
       ui: {

@@ -1,6 +1,6 @@
 import { statelessSessions } from '@keystone-next/keystone/session';
 import { createAuth } from '@keystone-next/auth';
-import { config, createSchema } from '@keystone-next/keystone';
+import { config } from '@keystone-next/keystone';
 import cron from 'node-cron';
 import 'dotenv/config';
 
@@ -60,7 +60,7 @@ export default auth.withAuth(
       },
     },
     db: {
-      adapter: 'prisma_postgresql',
+      provider: 'postgresql',
       url: process.env.DATABASE_URL || 'postgres://localhost:5432/contest',
       useMigrations: false, // need to change this some day
       async onConnect(context) {
@@ -93,7 +93,7 @@ export default auth.withAuth(
     ui: {
       isAccessAllowed: (context) => !!context.session?.data,
     },
-    lists: createSchema({
+    lists: {
       Bet,
       Choice,
       CloudImage,
@@ -103,7 +103,7 @@ export default auth.withAuth(
       RuleSet,
       Standing,
       User,
-    }),
+    },
     session: statelessSessions({
       maxAge: sessionMaxAge,
       secret: sessionSecret,

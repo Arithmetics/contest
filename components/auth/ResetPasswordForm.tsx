@@ -20,21 +20,6 @@ import PasswordInput from './PasswordInput';
 import ForgotPasswordForm from './ForgotPasswordForm';
 
 function generatePasswordResetErrorText(code?: PasswordResetRedemptionErrorCode): string {
-  if (code === PasswordResetRedemptionErrorCode.Failure) {
-    return 'Password reset failure. Please try again';
-  }
-  if (code === PasswordResetRedemptionErrorCode.IdentityNotFound) {
-    return 'Could not find that email address in the system.';
-  }
-  if (code === PasswordResetRedemptionErrorCode.MultipleIdentityMatches) {
-    return 'Multiple matches for that email. Something weird is going on.';
-  }
-  if (code === PasswordResetRedemptionErrorCode.TokenNotSet) {
-    return 'No token found for password reset. Please request a new email and click the link inside.';
-  }
-  if (code === PasswordResetRedemptionErrorCode.TokenMismatch) {
-    return 'Token doesn`t match. Please request a new email and click the link inside.';
-  }
   if (code === PasswordResetRedemptionErrorCode.TokenExpired) {
     return 'Token is expired. Please request a new email and click the link inside.';
   }

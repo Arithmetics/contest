@@ -12,12 +12,11 @@ export const User = list({
     },
   },
   fields: {
-    email: text({ isRequired: true, isIndexed: 'unique', isFilterable: true }),
-    name: text({ isRequired: true }),
-    userName: text({ isRequired: true, isIndexed: 'unique', isFilterable: true }),
+    email: text({ validation: { isRequired: true }, isIndexed: 'unique', isFilterable: true }),
+    name: text({ validation: { isRequired: true } }),
+    userName: text({ validation: { isRequired: true }, isIndexed: 'unique', isFilterable: true }),
     password: password(),
     isAdmin: checkbox({
-      isRequired: true,
       defaultValue: false,
       access: { read: () => true, update: isAdmin, create: isAdmin },
     }),

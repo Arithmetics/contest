@@ -12,6 +12,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  DateTime: any;
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: any;
   /** The `Upload` scalar type represents a file upload. */
@@ -75,16 +76,16 @@ export type BetWhereInput = {
   id?: Maybe<IdFilter>;
   user?: Maybe<UserWhereInput>;
   choice?: Maybe<ChoiceWhereInput>;
-  isSuper?: Maybe<BooleanNullableFilter>;
+  isSuper?: Maybe<BooleanFilter>;
 };
 
 export type BetWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>;
 };
 
-export type BooleanNullableFilter = {
+export type BooleanFilter = {
   equals?: Maybe<Scalars['Boolean']>;
-  not?: Maybe<BooleanNullableFilter>;
+  not?: Maybe<BooleanFilter>;
 };
 
 export type Choice = {
@@ -194,7 +195,7 @@ export type ChoiceWhereInput = {
   NOT?: Maybe<Array<ChoiceWhereInput>>;
   id?: Maybe<IdFilter>;
   selection?: Maybe<ChoiceSelectionTypeNullableFilter>;
-  isWin?: Maybe<BooleanNullableFilter>;
+  isWin?: Maybe<BooleanFilter>;
   line?: Maybe<LineWhereInput>;
   bets?: Maybe<BetManyRelationFilter>;
 };
@@ -246,7 +247,7 @@ export type CloudImageWhereInput = {
   OR?: Maybe<Array<CloudImageWhereInput>>;
   NOT?: Maybe<Array<CloudImageWhereInput>>;
   id?: Maybe<IdFilter>;
-  altText?: Maybe<StringNullableFilter>;
+  altText?: Maybe<StringFilter>;
 };
 
 export type CloudImageWhereUniqueInput = {
@@ -411,8 +412,8 @@ export type ContestWhereInput = {
   OR?: Maybe<Array<ContestWhereInput>>;
   NOT?: Maybe<Array<ContestWhereInput>>;
   id?: Maybe<IdFilter>;
-  name?: Maybe<StringNullableFilter>;
-  description?: Maybe<StringNullableFilter>;
+  name?: Maybe<StringFilter>;
+  description?: Maybe<StringFilter>;
   status?: Maybe<ContestStatusTypeNullableFilter>;
   entryFee?: Maybe<IntNullableFilter>;
   image?: Maybe<CloudImageWhereInput>;
@@ -432,18 +433,30 @@ export type CreateInitialUserInput = {
   password?: Maybe<Scalars['String']>;
 };
 
+
+export type DateTimeFilter = {
+  equals?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
+  not?: Maybe<DateTimeFilter>;
+};
+
 export type DateTimeNullableFilter = {
-  equals?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Scalars['String']>>;
-  notIn?: Maybe<Array<Scalars['String']>>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
+  equals?: Maybe<Scalars['DateTime']>;
+  in?: Maybe<Array<Scalars['DateTime']>>;
+  notIn?: Maybe<Array<Scalars['DateTime']>>;
+  lt?: Maybe<Scalars['DateTime']>;
+  lte?: Maybe<Scalars['DateTime']>;
+  gt?: Maybe<Scalars['DateTime']>;
+  gte?: Maybe<Scalars['DateTime']>;
   not?: Maybe<DateTimeNullableFilter>;
 };
 
-export type FloatNullableFilter = {
+export type FloatFilter = {
   equals?: Maybe<Scalars['Float']>;
   in?: Maybe<Array<Scalars['Float']>>;
   notIn?: Maybe<Array<Scalars['Float']>>;
@@ -451,7 +464,7 @@ export type FloatNullableFilter = {
   lte?: Maybe<Scalars['Float']>;
   gt?: Maybe<Scalars['Float']>;
   gte?: Maybe<Scalars['Float']>;
-  not?: Maybe<FloatNullableFilter>;
+  not?: Maybe<FloatFilter>;
 };
 
 export type IdFilter = {
@@ -463,6 +476,17 @@ export type IdFilter = {
   gt?: Maybe<Scalars['ID']>;
   gte?: Maybe<Scalars['ID']>;
   not?: Maybe<IdFilter>;
+};
+
+export type IntFilter = {
+  equals?: Maybe<Scalars['Int']>;
+  in?: Maybe<Array<Scalars['Int']>>;
+  notIn?: Maybe<Array<Scalars['Int']>>;
+  lt?: Maybe<Scalars['Int']>;
+  lte?: Maybe<Scalars['Int']>;
+  gt?: Maybe<Scalars['Int']>;
+  gte?: Maybe<Scalars['Int']>;
+  not?: Maybe<IntFilter>;
 };
 
 export type IntNullableFilter = {
@@ -495,6 +519,7 @@ export type KeystoneAdminUiFieldMeta = {
   path: Scalars['String'];
   label: Scalars['String'];
   isOrderable: Scalars['Boolean'];
+  isFilterable: Scalars['Boolean'];
   fieldMeta?: Maybe<Scalars['JSON']>;
   viewsIndex: Scalars['Int'];
   customViewsIndex?: Maybe<Scalars['Int']>;
@@ -506,7 +531,7 @@ export type KeystoneAdminUiFieldMeta = {
 
 
 export type KeystoneAdminUiFieldMetaItemViewArgs = {
-  id: Scalars['ID'];
+  id?: Maybe<Scalars['ID']>;
 };
 
 export type KeystoneAdminUiFieldMetaCreateView = {
@@ -521,7 +546,7 @@ export enum KeystoneAdminUiFieldMetaCreateViewFieldMode {
 
 export type KeystoneAdminUiFieldMetaItemView = {
   __typename?: 'KeystoneAdminUIFieldMetaItemView';
-  fieldMode: KeystoneAdminUiFieldMetaItemViewFieldMode;
+  fieldMode?: Maybe<KeystoneAdminUiFieldMetaItemViewFieldMode>;
 };
 
 export enum KeystoneAdminUiFieldMetaItemViewFieldMode {
@@ -580,7 +605,7 @@ export type Line = {
   __typename?: 'Line';
   id: Scalars['ID'];
   title?: Maybe<Scalars['String']>;
-  closingTime?: Maybe<Scalars['String']>;
+  closingTime?: Maybe<Scalars['DateTime']>;
   benchmark?: Maybe<Scalars['Float']>;
   image?: Maybe<CloudImage>;
   contest?: Maybe<Contest>;
@@ -618,7 +643,7 @@ export type LineStandingsCountArgs = {
 
 export type LineCreateInput = {
   title?: Maybe<Scalars['String']>;
-  closingTime?: Maybe<Scalars['String']>;
+  closingTime?: Maybe<Scalars['DateTime']>;
   benchmark?: Maybe<Scalars['Float']>;
   image?: Maybe<CloudImageRelateToOneForCreateInput>;
   contest?: Maybe<ContestRelateToOneForCreateInput>;
@@ -669,7 +694,7 @@ export type LineUpdateArgs = {
 
 export type LineUpdateInput = {
   title?: Maybe<Scalars['String']>;
-  closingTime?: Maybe<Scalars['String']>;
+  closingTime?: Maybe<Scalars['DateTime']>;
   benchmark?: Maybe<Scalars['Float']>;
   image?: Maybe<CloudImageRelateToOneForUpdateInput>;
   contest?: Maybe<ContestRelateToOneForUpdateInput>;
@@ -682,9 +707,9 @@ export type LineWhereInput = {
   OR?: Maybe<Array<LineWhereInput>>;
   NOT?: Maybe<Array<LineWhereInput>>;
   id?: Maybe<IdFilter>;
-  title?: Maybe<StringNullableFilter>;
-  closingTime?: Maybe<DateTimeNullableFilter>;
-  benchmark?: Maybe<FloatNullableFilter>;
+  title?: Maybe<StringFilter>;
+  closingTime?: Maybe<DateTimeFilter>;
+  benchmark?: Maybe<FloatFilter>;
   image?: Maybe<CloudImageWhereInput>;
   contest?: Maybe<ContestWhereInput>;
   choices?: Maybe<ChoiceManyRelationFilter>;
@@ -697,7 +722,7 @@ export type LineWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  sendUserPasswordResetLink?: Maybe<SendUserPasswordResetLinkResult>;
+  sendUserPasswordResetLink: Scalars['Boolean'];
   redeemUserPasswordResetToken?: Maybe<RedeemUserPasswordResetTokenResult>;
   createInitialUser: UserAuthenticationWithPasswordSuccess;
   authenticateUserWithPassword: UserAuthenticationWithPasswordResult;
@@ -1060,7 +1085,7 @@ export type MutationDeleteUsersArgs = {
   where: Array<UserWhereUniqueInput>;
 };
 
-export type NestedStringNullableFilter = {
+export type NestedStringFilter = {
   equals?: Maybe<Scalars['String']>;
   in?: Maybe<Array<Scalars['String']>>;
   notIn?: Maybe<Array<Scalars['String']>>;
@@ -1071,20 +1096,12 @@ export type NestedStringNullableFilter = {
   contains?: Maybe<Scalars['String']>;
   startsWith?: Maybe<Scalars['String']>;
   endsWith?: Maybe<Scalars['String']>;
-  not?: Maybe<NestedStringNullableFilter>;
+  not?: Maybe<NestedStringFilter>;
 };
 
 export enum OrderDirection {
   Asc = 'asc',
   Desc = 'desc'
-}
-
-export enum PasswordAuthErrorCode {
-  Failure = 'FAILURE',
-  IdentityNotFound = 'IDENTITY_NOT_FOUND',
-  SecretNotSet = 'SECRET_NOT_SET',
-  MultipleIdentityMatches = 'MULTIPLE_IDENTITY_MATCHES',
-  SecretMismatch = 'SECRET_MISMATCH'
 }
 
 export type PasswordFilter = {
@@ -1093,17 +1110,8 @@ export type PasswordFilter = {
 
 export enum PasswordResetRedemptionErrorCode {
   Failure = 'FAILURE',
-  IdentityNotFound = 'IDENTITY_NOT_FOUND',
-  MultipleIdentityMatches = 'MULTIPLE_IDENTITY_MATCHES',
-  TokenNotSet = 'TOKEN_NOT_SET',
-  TokenMismatch = 'TOKEN_MISMATCH',
   TokenExpired = 'TOKEN_EXPIRED',
   TokenRedeemed = 'TOKEN_REDEEMED'
-}
-
-export enum PasswordResetRequestErrorCode {
-  IdentityNotFound = 'IDENTITY_NOT_FOUND',
-  MultipleIdentityMatches = 'MULTIPLE_IDENTITY_MATCHES'
 }
 
 export type PasswordState = {
@@ -1385,7 +1393,7 @@ export type RegistrationWhereInput = {
   OR?: Maybe<Array<RegistrationWhereInput>>;
   NOT?: Maybe<Array<RegistrationWhereInput>>;
   id?: Maybe<IdFilter>;
-  hasPaid?: Maybe<BooleanNullableFilter>;
+  hasPaid?: Maybe<BooleanFilter>;
   contest?: Maybe<ContestWhereInput>;
   user?: Maybe<UserWhereInput>;
 };
@@ -1455,12 +1463,6 @@ export type RuleSetWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>;
 };
 
-export type SendUserPasswordResetLinkResult = {
-  __typename?: 'SendUserPasswordResetLinkResult';
-  code: PasswordResetRequestErrorCode;
-  message: Scalars['String'];
-};
-
 export type Standing = {
   __typename?: 'Standing';
   id: Scalars['ID'];
@@ -1519,9 +1521,9 @@ export type StandingWhereInput = {
   OR?: Maybe<Array<StandingWhereInput>>;
   NOT?: Maybe<Array<StandingWhereInput>>;
   id?: Maybe<IdFilter>;
-  gamesPlayed?: Maybe<IntNullableFilter>;
-  wins?: Maybe<IntNullableFilter>;
-  totalGames?: Maybe<IntNullableFilter>;
+  gamesPlayed?: Maybe<IntFilter>;
+  wins?: Maybe<IntFilter>;
+  totalGames?: Maybe<IntFilter>;
   line?: Maybe<LineWhereInput>;
 };
 
@@ -1529,7 +1531,7 @@ export type StandingWhereUniqueInput = {
   id?: Maybe<Scalars['ID']>;
 };
 
-export type StringNullableFilter = {
+export type StringFilter = {
   equals?: Maybe<Scalars['String']>;
   in?: Maybe<Array<Scalars['String']>>;
   notIn?: Maybe<Array<Scalars['String']>>;
@@ -1541,7 +1543,7 @@ export type StringNullableFilter = {
   startsWith?: Maybe<Scalars['String']>;
   endsWith?: Maybe<Scalars['String']>;
   mode?: Maybe<QueryMode>;
-  not?: Maybe<NestedStringNullableFilter>;
+  not?: Maybe<NestedStringFilter>;
 };
 
 
@@ -1559,8 +1561,8 @@ export type User = {
   registrations?: Maybe<Array<Registration>>;
   registrationsCount?: Maybe<Scalars['Int']>;
   passwordResetToken?: Maybe<PasswordState>;
-  passwordResetIssuedAt?: Maybe<Scalars['String']>;
-  passwordResetRedeemedAt?: Maybe<Scalars['String']>;
+  passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
+  passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
 };
 
 
@@ -1591,7 +1593,6 @@ export type UserRegistrationsCountArgs = {
 
 export type UserAuthenticationWithPasswordFailure = {
   __typename?: 'UserAuthenticationWithPasswordFailure';
-  code: PasswordAuthErrorCode;
   message: Scalars['String'];
 };
 
@@ -1613,8 +1614,8 @@ export type UserCreateInput = {
   avatarImage?: Maybe<CloudImageRelateToOneForCreateInput>;
   registrations?: Maybe<RegistrationRelateToManyForCreateInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
-  passwordResetIssuedAt?: Maybe<Scalars['String']>;
-  passwordResetRedeemedAt?: Maybe<Scalars['String']>;
+  passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
+  passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type UserOrderByInput = {
@@ -1653,8 +1654,8 @@ export type UserUpdateInput = {
   avatarImage?: Maybe<CloudImageRelateToOneForUpdateInput>;
   registrations?: Maybe<RegistrationRelateToManyForUpdateInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
-  passwordResetIssuedAt?: Maybe<Scalars['String']>;
-  passwordResetRedeemedAt?: Maybe<Scalars['String']>;
+  passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
+  passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
 };
 
 export type UserWhereInput = {
@@ -1662,11 +1663,11 @@ export type UserWhereInput = {
   OR?: Maybe<Array<UserWhereInput>>;
   NOT?: Maybe<Array<UserWhereInput>>;
   id?: Maybe<IdFilter>;
-  email?: Maybe<StringNullableFilter>;
-  name?: Maybe<StringNullableFilter>;
-  userName?: Maybe<StringNullableFilter>;
+  email?: Maybe<StringFilter>;
+  name?: Maybe<StringFilter>;
+  userName?: Maybe<StringFilter>;
   password?: Maybe<PasswordFilter>;
-  isAdmin?: Maybe<BooleanNullableFilter>;
+  isAdmin?: Maybe<BooleanFilter>;
   bets?: Maybe<BetManyRelationFilter>;
   avatarImage?: Maybe<CloudImageWhereInput>;
   registrations?: Maybe<RegistrationManyRelationFilter>;
@@ -1714,10 +1715,7 @@ export type RequestResetMutationVariables = Exact<{
 
 export type RequestResetMutation = (
   { __typename?: 'Mutation' }
-  & { sendUserPasswordResetLink?: Maybe<(
-    { __typename?: 'SendUserPasswordResetLinkResult' }
-    & Pick<SendUserPasswordResetLinkResult, 'code' | 'message'>
-  )> }
+  & Pick<Mutation, 'sendUserPasswordResetLink'>
 );
 
 export type ResetMutationVariables = Exact<{
@@ -1751,7 +1749,7 @@ export type SignInMutation = (
     ) }
   ) | (
     { __typename?: 'UserAuthenticationWithPasswordFailure' }
-    & Pick<UserAuthenticationWithPasswordFailure, 'code' | 'message'>
+    & Pick<UserAuthenticationWithPasswordFailure, 'message'>
   ) }
 );
 
@@ -2166,10 +2164,7 @@ export type CheckIfUsernameAvailableLazyQueryHookResult = ReturnType<typeof useC
 export type CheckIfUsernameAvailableQueryResult = Apollo.QueryResult<CheckIfUsernameAvailableQuery, CheckIfUsernameAvailableQueryVariables>;
 export const RequestResetDocument = gql`
     mutation RequestReset($email: String!) {
-  sendUserPasswordResetLink(email: $email) {
-    code
-    message
-  }
+  sendUserPasswordResetLink(email: $email)
 }
     `;
 export type RequestResetMutationFn = Apollo.MutationFunction<RequestResetMutation, RequestResetMutationVariables>;
@@ -2246,7 +2241,6 @@ export const SignInDocument = gql`
       }
     }
     ... on UserAuthenticationWithPasswordFailure {
-      code
       message
     }
   }

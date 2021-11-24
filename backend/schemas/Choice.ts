@@ -1,6 +1,6 @@
 import { checkbox, select, relationship, virtual } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
-import { KeystoneListsAPI, graphql } from '@keystone-next/keystone/types';
+import { list, graphql } from '@keystone-next/keystone';
+import { KeystoneListsAPI } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
@@ -16,17 +16,19 @@ export const Choice = list({
   },
   fields: {
     selection: select({
-      dataType: 'enum',
+      type: 'enum',
       options: [
         { label: 'Over', value: 'OVER' },
         { label: 'Under', value: 'UNDER' },
         { label: 'Away', value: 'AWAY' },
         { label: 'Home', value: 'HOME' },
       ],
-      isRequired: true,
+      validation: {
+        isRequired: true,
+      },
       ui: { displayMode: 'select' },
     }),
-    isWin: checkbox({ isRequired: true, defaultValue: false }),
+    isWin: checkbox({ defaultValue: false }),
     line: relationship({ ref: 'Line.choices', many: false }),
     bets: relationship({ ref: 'Bet.choice', many: true }),
     status: virtual({
@@ -36,7 +38,7 @@ export const Choice = list({
           values: graphql.enumValues(['NOT_STARTED', 'WINNING', 'LOSING', 'WON', 'LOST']),
         }),
         async resolve(item, _args, context) {
-          const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
 
           const requestedLine = (await lists.Line.findOne({
@@ -121,7 +123,7 @@ export const Choice = list({
       field: graphql.field({
         type: graphql.String,
         async resolve(item, _args, context) {
-          const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
           const requestedLine = (await lists.Line.findOne({
             where: { id: (item.lineId as string) || '' },

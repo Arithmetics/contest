@@ -14,10 +14,7 @@ export const CHECK_IF_USERNAME_AVAILABLE_QUERY = gql`
 
 export const REQUEST_RESET_MUTATION = gql`
   mutation RequestReset($email: String!) {
-    sendUserPasswordResetLink(email: $email) {
-      code
-      message
-    }
+    sendUserPasswordResetLink(email: $email)
   }
 `;
 
@@ -42,7 +39,6 @@ export const SIGNIN_MUTATION = gql`
         }
       }
       ... on UserAuthenticationWithPasswordFailure {
-        code
         message
       }
     }

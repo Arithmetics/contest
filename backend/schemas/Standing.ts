@@ -12,9 +12,9 @@ export const Standing = list({
     },
   },
   fields: {
-    gamesPlayed: integer({ isRequired: true }),
-    wins: integer({ isRequired: true }),
-    totalGames: integer({ isRequired: true }),
+    gamesPlayed: integer({ validation: { isRequired: true } }),
+    wins: integer({ validation: { isRequired: true } }),
+    totalGames: integer({ validation: { isRequired: true } }),
     line: relationship({ ref: 'Line.standings', many: false }),
   },
 });

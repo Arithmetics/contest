@@ -1,6 +1,6 @@
 import { checkbox, relationship, virtual } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
-import { KeystoneListsAPI, graphql } from '@keystone-next/keystone/types';
+import { list, graphql } from '@keystone-next/keystone';
+import { KeystoneListsAPI } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo, ContestStatusType } from '.keystone/types';
 import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
@@ -40,7 +40,7 @@ export const Registration = list({
           },
         }),
         async resolve(item, _args, context) {
-          const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
 
           const contestLines = (await lists.Line.findMany({
@@ -97,13 +97,13 @@ export const Registration = list({
           };
         },
       }),
-      graphQLReturnFragment: '{ locked likely possible }',
+      ui: { query: '{ locked likely possible }' },
     }),
   },
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
@@ -145,8 +145,8 @@ export const Registration = list({
       }
     },
     validateDelete: async (args) => {
-      const { existingItem, addValidationError, context } = args;
-      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const { item, addValidationError, context } = args;
+      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
@@ -155,12 +155,12 @@ export const Registration = list({
         return;
       }
 
-      if (existingItem.userId !== session.data?.id) {
+      if (item.userId !== session.data?.id) {
         addValidationError('Can only delete your own contest');
       }
 
       const requestedContest = await lists.Contest.findOne({
-        where: { id: existingItem.contestId },
+        where: { id: item.contestId },
         query: graphql`
             id
             status

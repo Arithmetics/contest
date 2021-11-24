@@ -18,7 +18,7 @@ export async function startDailyStandingsJob(
         isAdmin: true,
       },
     })
-    .sudo().lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+    .sudo().db as KeystoneListsAPI<KeystoneListsTypeInfo>;
 
   const graphql = String.raw;
   const espnStandings = await fetchEspnStandings(apiUrl);

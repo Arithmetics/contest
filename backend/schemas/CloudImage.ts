@@ -24,7 +24,7 @@ export const CloudImage = list({
       cloudinary,
       label: 'Source',
     }),
-    altText: text(),
+    altText: text({ validation: { isRequired: false } }),
   },
   ui: {
     listView: {

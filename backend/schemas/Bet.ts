@@ -19,12 +19,12 @@ export const Bet = list({
   fields: {
     user: relationship({ ref: 'User.bets', many: false }),
     choice: relationship({ ref: 'Choice.bets', many: false }),
-    isSuper: checkbox({ isRequired: true, defaultValue: false }),
+    isSuper: checkbox({ defaultValue: false }),
   },
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
