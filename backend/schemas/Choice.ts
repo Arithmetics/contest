@@ -92,22 +92,22 @@ export const Choice = list({
           }
 
           // WINNING if selected OVER current win % is greater than benchmark win %
-          if (item.selection === 'OVER' && winPercentage > benchmarkPercentage) {
+          if (item.selection === 'OVER' && winPercentage > benchmarkPercentage + 0.000001) {
             return ChoiceStatus.Winning;
           }
 
           // LOSING if select over and current win % is less than benchmark win %
-          if (item.selection === 'OVER' && winPercentage < benchmarkPercentage) {
+          if (item.selection === 'OVER' && winPercentage < benchmarkPercentage + 0.000001) {
             return ChoiceStatus.Losing;
           }
 
           // LOSING if selected UNDER current win % is more than benchmark win %
-          if (item.selection === 'UNDER' && winPercentage > benchmarkPercentage) {
+          if (item.selection === 'UNDER' && winPercentage > benchmarkPercentage + 0.000001) {
             return ChoiceStatus.Losing;
           }
 
           // WINNING if selected UNDER and current win % is less than benchmark win %
-          if (item.selection === 'UNDER' && winPercentage < benchmarkPercentage) {
+          if (item.selection === 'UNDER' && winPercentage < benchmarkPercentage + 0.000001) {
             return ChoiceStatus.Winning;
           }
 

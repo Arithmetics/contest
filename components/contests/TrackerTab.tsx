@@ -108,6 +108,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
       <HStack maxW={'100%'}>
         <Image
           boxSize="75px"
+          fit="scale-down"
           bg={'gray.600'}
           alt={line?.image?.altText || 'unknown'}
           src={line?.image?.image?.publicUrlTransformed || ''}

@@ -15,6 +15,21 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
   const translateY = useBreakpointValue({ base: 120, md: 0 });
   const anchor = useBreakpointValue<LegendAnchor>({ base: 'bottom-left', md: 'bottom-right' });
 
+  const maxX = data.reduce((acc, cur) => {
+    const maxData = cur.data.reduce((acc2, cur2) => {
+      const xVal = cur2?.x || 0;
+      if (xVal > acc2 && typeof xVal === 'number') {
+        acc2 = xVal;
+      }
+      return acc2;
+    }, 0);
+
+    if (maxData > acc) {
+      acc = maxData;
+    }
+    return acc;
+  }, 0);
+
   return (
     <ResponsiveLine
       data={data}
@@ -30,14 +45,14 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
         theme.colors.cyan['400'],
       ]}
       margin={{ top: 50, right: marginRight, bottom: marginBottom, left: 60 }}
-      xScale={{ type: 'linear', min: 1, max: 17 }}
+      xScale={{ type: 'linear', min: 1, max: maxX }}
       yScale={{ type: 'linear', min: 0, max: 1, reverse: false }}
       yFormat=" >-.2f"
       xFormat=" >-.2f"
       axisTop={null}
       axisRight={null}
       axisBottom={{
-        tickValues: 17,
+        tickValues: maxX,
         tickSize: 1,
         tickPadding: 5,
         tickRotation: 0,
