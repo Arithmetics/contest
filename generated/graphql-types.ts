@@ -722,10 +722,6 @@ export type LineWhereUniqueInput = {
 
 export type Mutation = {
   __typename?: 'Mutation';
-  sendUserPasswordResetLink: Scalars['Boolean'];
-  redeemUserPasswordResetToken?: Maybe<RedeemUserPasswordResetTokenResult>;
-  createInitialUser: UserAuthenticationWithPasswordSuccess;
-  authenticateUserWithPassword: UserAuthenticationWithPasswordResult;
   createBet?: Maybe<Bet>;
   createBets?: Maybe<Array<Maybe<Bet>>>;
   updateBet?: Maybe<Bet>;
@@ -781,29 +777,10 @@ export type Mutation = {
   deleteUser?: Maybe<User>;
   deleteUsers?: Maybe<Array<Maybe<User>>>;
   endSession: Scalars['Boolean'];
-};
-
-
-export type MutationSendUserPasswordResetLinkArgs = {
-  email: Scalars['String'];
-};
-
-
-export type MutationRedeemUserPasswordResetTokenArgs = {
-  email: Scalars['String'];
-  token: Scalars['String'];
-  password: Scalars['String'];
-};
-
-
-export type MutationCreateInitialUserArgs = {
-  data: CreateInitialUserInput;
-};
-
-
-export type MutationAuthenticateUserWithPasswordArgs = {
-  email: Scalars['String'];
-  password: Scalars['String'];
+  authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
+  createInitialUser: UserAuthenticationWithPasswordSuccess;
+  sendUserPasswordResetLink: Scalars['Boolean'];
+  redeemUserPasswordResetToken?: Maybe<RedeemUserPasswordResetTokenResult>;
 };
 
 
@@ -1085,6 +1062,29 @@ export type MutationDeleteUsersArgs = {
   where: Array<UserWhereUniqueInput>;
 };
 
+
+export type MutationAuthenticateUserWithPasswordArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationCreateInitialUserArgs = {
+  data: CreateInitialUserInput;
+};
+
+
+export type MutationSendUserPasswordResetLinkArgs = {
+  email: Scalars['String'];
+};
+
+
+export type MutationRedeemUserPasswordResetTokenArgs = {
+  email: Scalars['String'];
+  token: Scalars['String'];
+  password: Scalars['String'];
+};
+
 export type NestedStringFilter = {
   equals?: Maybe<Scalars['String']>;
   in?: Maybe<Array<Scalars['String']>>;
@@ -1128,8 +1128,6 @@ export type PointCounts = {
 
 export type Query = {
   __typename?: 'Query';
-  validateUserPasswordResetToken?: Maybe<ValidateUserPasswordResetTokenResult>;
-  authenticatedItem?: Maybe<AuthenticatedItem>;
   bets?: Maybe<Array<Bet>>;
   bet?: Maybe<Bet>;
   betsCount?: Maybe<Scalars['Int']>;
@@ -1158,12 +1156,8 @@ export type Query = {
   user?: Maybe<User>;
   usersCount?: Maybe<Scalars['Int']>;
   keystone: KeystoneMeta;
-};
-
-
-export type QueryValidateUserPasswordResetTokenArgs = {
-  email: Scalars['String'];
-  token: Scalars['String'];
+  authenticatedItem?: Maybe<AuthenticatedItem>;
+  validateUserPasswordResetToken?: Maybe<ValidateUserPasswordResetTokenResult>;
 };
 
 
@@ -1326,6 +1320,12 @@ export type QueryUserArgs = {
 
 export type QueryUsersCountArgs = {
   where?: UserWhereInput;
+};
+
+
+export type QueryValidateUserPasswordResetTokenArgs = {
+  email: Scalars['String'];
+  token: Scalars['String'];
 };
 
 export enum QueryMode {
@@ -1741,7 +1741,7 @@ export type SignInMutationVariables = Exact<{
 
 export type SignInMutation = (
   { __typename?: 'Mutation' }
-  & { authenticateUserWithPassword: (
+  & { authenticateUserWithPassword?: Maybe<(
     { __typename?: 'UserAuthenticationWithPasswordSuccess' }
     & { item: (
       { __typename?: 'User' }
@@ -1750,7 +1750,7 @@ export type SignInMutation = (
   ) | (
     { __typename?: 'UserAuthenticationWithPasswordFailure' }
     & Pick<UserAuthenticationWithPasswordFailure, 'message'>
-  ) }
+  )> }
 );
 
 export type SignOutMutationVariables = Exact<{ [key: string]: never; }>;
