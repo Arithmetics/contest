@@ -1,4 +1,4 @@
-import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/types';
+import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 
 import { Line, Standing, StandingCreateInput } from './codegen/graphql-types';
@@ -18,14 +18,14 @@ export async function startDailyStandingsJob(
         isAdmin: true,
       },
     })
-    .sudo().lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+    .sudo().db as KeystoneListsAPI<KeystoneListsTypeInfo>;
 
   const graphql = String.raw;
   const espnStandings = await fetchEspnStandings(apiUrl);
 
   // need to figure out the contests to do (active with NFL_OU enum??)
   const linesWithStandings = (await lists.Line.findMany({
-    where: { contest: { id: contestId } },
+    where: { contest: { id: { equals: contestId } } },
     query: graphql`
       id
       title
@@ -69,14 +69,12 @@ export async function startDailyStandingsJob(
     }
   });
 
-  const newLineData: { data: StandingCreateInput }[] = newStandingsToInsert.map((ns) => {
+  const newLineData: StandingCreateInput[] = newStandingsToInsert.map((ns) => {
     return {
-      data: {
-        gamesPlayed: ns.gamesPlayed,
-        wins: ns.wins,
-        totalGames: ns.totalGames,
-        line: { connect: { id: ns.line?.id } },
-      },
+      gamesPlayed: ns.gamesPlayed,
+      wins: ns.wins,
+      totalGames: ns.totalGames,
+      line: { connect: { id: ns.line?.id } },
     };
   });
 

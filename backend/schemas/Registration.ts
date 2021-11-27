@@ -1,22 +1,24 @@
-import { checkbox, relationship, virtual } from '@keystone-next/fields';
-import { list } from '@keystone-next/keystone/schema';
-import { KeystoneListsAPI, schema } from '@keystone-next/types';
+import { checkbox, relationship, virtual } from '@keystone-next/keystone/fields';
+import { list, graphql } from '@keystone-next/keystone';
+import { KeystoneListsAPI } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo, ContestStatusType } from '.keystone/types';
 import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 
 export const Registration = list({
   access: {
-    read: true,
-    delete: isSignedIn,
-    create: isSignedIn,
-    update: isAdmin,
+    operation: {
+      query: () => true,
+      delete: isSignedIn,
+      create: isSignedIn,
+      update: isAdmin,
+    },
   },
   fields: {
     hasPaid: checkbox({
       defaultValue: false,
       access: {
-        read: true,
+        read: () => true,
         update: isAdmin,
       },
     }),
@@ -24,25 +26,25 @@ export const Registration = list({
     user: relationship({ ref: 'User.registrations', many: false }),
 
     counts: virtual({
-      field: schema.field({
-        type: schema.object<{
+      field: graphql.field({
+        type: graphql.object<{
           locked: number;
           likely: number;
           possible: number;
         }>()({
           name: 'PointCounts',
           fields: {
-            locked: schema.field({ type: schema.Int }),
-            likely: schema.field({ type: schema.Int }),
-            possible: schema.field({ type: schema.Int }),
+            locked: graphql.field({ type: graphql.Int }),
+            likely: graphql.field({ type: graphql.Int }),
+            possible: graphql.field({ type: graphql.Int }),
           },
         }),
         async resolve(item, _args, context) {
-          const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
 
           const contestLines = (await lists.Line.findMany({
-            where: { contest: { id: (item.contestId as string) || '' } },
+            where: { contest: { id: { equals: (item.contestId as string) || '' } } },
             query: graphql`
               id
               title
@@ -95,13 +97,13 @@ export const Registration = list({
           };
         },
       }),
-      graphQLReturnFragment: '{ locked likely possible }',
+      ui: { query: '{ locked likely possible }' },
     }),
   },
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
@@ -131,7 +133,7 @@ export const Registration = list({
       const duplicateRegistrations = await lists.Registration.findMany({
         where: {
           contest: { id: resolvedData.contest.connect.id },
-          user: { id: session?.data?.id },
+          user: { id: { equals: session?.data?.id } },
         },
         query: graphql`
             id
@@ -143,8 +145,8 @@ export const Registration = list({
       }
     },
     validateDelete: async (args) => {
-      const { existingItem, addValidationError, context } = args;
-      const lists = context.lists as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const { item, addValidationError, context } = args;
+      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
@@ -153,12 +155,12 @@ export const Registration = list({
         return;
       }
 
-      if (existingItem.userId !== session.data?.id) {
+      if (item.userId !== session.data?.id) {
         addValidationError('Can only delete your own contest');
       }
 
       const requestedContest = await lists.Contest.findOne({
-        where: { id: existingItem.contestId },
+        where: { id: item.contestId },
         query: graphql`
             id
             status

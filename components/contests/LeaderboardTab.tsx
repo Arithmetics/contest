@@ -31,7 +31,7 @@ type LeaderboardTabProps = {
 export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.Element {
   const { data, loading } = useLeaderboardQuery({ variables: { contestId: contestId || '' } });
 
-  const sortedLeaderboard = sortLeaderboard(data?.allRegistrations || []);
+  const sortedLeaderboard = sortLeaderboard(data?.registrations || []);
 
   const marginBox = useBreakpointValue({ base: 1, sm: 2, md: 6 });
   if (loading) {

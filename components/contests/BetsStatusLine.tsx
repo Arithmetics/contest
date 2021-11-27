@@ -39,12 +39,12 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
     variables: { contestId: contest?.id || '' },
   });
 
-  const usersBets = contestBetsData?.allBets?.filter((bet) => bet?.user?.id === user?.id);
+  const usersBets = contestBetsData?.bets?.filter((bet) => bet?.user?.id === user?.id);
 
   const betsLeft = betsRemaining(usersBets || [], contest?.ruleSet).toString();
   const superBetsLeft = superBetsRemaining(usersBets || [], contest?.ruleSet).toString();
 
-  const sortedLeaderboard = sortLeaderboard(leaderboardData?.allRegistrations || []);
+  const sortedLeaderboard = sortLeaderboard(leaderboardData?.registrations || []);
   const position =
     sortedLeaderboard.findIndex((registration) => registration?.user?.id === user?.id) + 1;
 

@@ -1,23 +1,24 @@
-import { list } from '@keystone-next/keystone/schema';
-import { text, checkbox, password, relationship } from '@keystone-next/fields';
+import { text, checkbox, password, relationship } from '@keystone-next/keystone/fields';
+import { list } from '@keystone-next/keystone';
 import { isAdmin, isOwnAccount } from '../keystoneTypeAugments';
 
 export const User = list({
   access: {
-    create: isOwnAccount,
-    read: true,
-    update: isOwnAccount,
-    delete: isAdmin,
+    operation: {
+      create: isOwnAccount,
+      query: () => true,
+      update: isOwnAccount,
+      delete: isAdmin,
+    },
   },
   fields: {
-    email: text({ isRequired: true, isUnique: true }),
-    name: text({ isRequired: true }),
-    userName: text({ isRequired: true, isUnique: true }),
+    email: text({ validation: { isRequired: true }, isIndexed: 'unique', isFilterable: true }),
+    name: text({ validation: { isRequired: true } }),
+    userName: text({ validation: { isRequired: true }, isIndexed: 'unique', isFilterable: true }),
     password: password(),
     isAdmin: checkbox({
-      isRequired: true,
       defaultValue: false,
-      access: { read: true, update: isAdmin, create: isAdmin },
+      access: { read: () => true, update: isAdmin, create: isAdmin },
     }),
     bets: relationship({ ref: 'Bet.user', many: true }),
     avatarImage: relationship({

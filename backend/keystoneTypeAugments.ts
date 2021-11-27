@@ -1,4 +1,4 @@
-import { KeystoneContext } from '@keystone-next/types';
+import { KeystoneContext } from '@keystone-next/keystone/types';
 import { BetWhereInput } from '.keystone/types';
 
 export type AugKeystoneSession = {
@@ -14,7 +14,7 @@ export type AugListAccessArgs = {
   itemId?: string;
   session?: AugKeystoneSession;
   context: KeystoneContext;
-  operation: 'read' | 'update' | 'create' | 'delete';
+  operation: 'query' | 'update' | 'create' | 'delete';
 };
 
 export function isSignedIn({ session }: AugListAccessArgs): boolean {
@@ -51,10 +51,10 @@ export async function canModifyBet(
   // owns bet AND line is not closed
   const betOwnerAndLineNotClosed: BetWhereInput = {
     AND: [
-      { user: { id: userId } },
+      { user: { id: { equals: userId } } },
       {
         choice: {
-          line: { closingTime_gt: now },
+          line: { closingTime: { gt: now } },
         },
       },
     ],
@@ -77,7 +77,7 @@ export async function canReadBet(accessArgs: AugListAccessArgs): Promise<boolean
   if (!userId) {
     return {
       choice: {
-        line: { closingTime_lt: now },
+        line: { closingTime: { lt: now } },
       },
     };
   }
@@ -85,10 +85,10 @@ export async function canReadBet(accessArgs: AugListAccessArgs): Promise<boolean
   // owns bet OR line is closed
   const betOwnerOrLineClosed: BetWhereInput = {
     OR: [
-      { user: { id: userId } },
+      { user: { id: { equals: userId } } },
       {
         choice: {
-          line: { closingTime_lt: now },
+          line: { closingTime: { lt: now } },
         },
       },
     ],

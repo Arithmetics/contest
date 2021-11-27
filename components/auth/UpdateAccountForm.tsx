@@ -40,7 +40,7 @@ export default function UpdateAccountForm(): JSX.Element {
     setUserNameLoading(true);
     const res = await userNameAvailQuery.refetch({ userName });
     setUserNameLoading(false);
-    const count = res?.data?._allUsersMeta?.count;
+    const count = res?.data?.usersCount;
     return count === 0 || userName === user?.userName;
   };
 

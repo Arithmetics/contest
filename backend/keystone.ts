@@ -1,12 +1,11 @@
-import { config } from '@keystone-next/keystone/schema';
 import { statelessSessions } from '@keystone-next/keystone/session';
 import { createAuth } from '@keystone-next/auth';
-import { createSchema } from '@keystone-next/keystone/schema';
+import { config } from '@keystone-next/keystone';
 import cron from 'node-cron';
 import 'dotenv/config';
 
 import { sendPasswordResetEmail } from './lib/mail';
-import { insertSeedData } from './seedData';
+// import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
 
 import { User } from './schemas/User';
@@ -61,7 +60,7 @@ export default auth.withAuth(
       },
     },
     db: {
-      adapter: 'prisma_postgresql',
+      provider: 'postgresql',
       url: process.env.DATABASE_URL || 'postgres://localhost:5432/contest',
       useMigrations: false, // need to change this some day
       async onConnect(context) {
@@ -86,14 +85,15 @@ export default auth.withAuth(
         });
 
         if (process.argv.includes('--seed-data')) {
-          await insertSeedData(context);
+          console.log('NO SEED DATA');
+          // await insertSeedData(context);
         }
       },
     },
     ui: {
       isAccessAllowed: (context) => !!context.session?.data,
     },
-    lists: createSchema({
+    lists: {
       Bet,
       Choice,
       CloudImage,
@@ -103,7 +103,7 @@ export default auth.withAuth(
       RuleSet,
       Standing,
       User,
-    }),
+    },
     session: statelessSessions({
       maxAge: sessionMaxAge,
       secret: sessionSecret,

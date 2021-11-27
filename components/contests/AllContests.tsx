@@ -45,7 +45,7 @@ export default function AllContest(): JSX.Element {
 
   return (
     <Flex justifyContent="center" flexWrap="wrap">
-      {data?.allContests
+      {data?.contests
         ?.slice()
         .sort((a, b) => {
           const order = [
