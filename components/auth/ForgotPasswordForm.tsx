@@ -38,7 +38,7 @@ export default function ForgotPasswordForm(): JSX.Element {
   const submitForgotPassword = async (data: ForgotPasswordFormInputs): Promise<void> => {
     try {
       const res = await requestReset({ variables: { email: data.email } });
-      if (res.data?.sendUserPasswordResetLink === null) {
+      if (res.data?.sendUserPasswordResetLink) {
         toast({
           title: 'Reset email sent',
           description: 'Check your inbox and click the link in the email.',
