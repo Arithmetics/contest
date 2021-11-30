@@ -326,6 +326,7 @@ type Contest {
   description: String
   status: ContestStatusType
   entryFee: Int
+  contestType: ContestContestTypeType
   image: CloudImage
   lines(
     where: LineWhereInput! = {}
@@ -350,6 +351,12 @@ enum ContestStatusType {
   COMPLETE
 }
 
+enum ContestContestTypeType {
+  NBA_OVER_UNDER
+  NFL_OVER_UNDER
+  NFL_ATS
+}
+
 input ContestWhereUniqueInput {
   id: ID
 }
@@ -363,6 +370,7 @@ input ContestWhereInput {
   description: StringFilter
   status: ContestStatusTypeNullableFilter
   entryFee: IntNullableFilter
+  contestType: ContestContestTypeTypeNullableFilter
   image: CloudImageWhereInput
   lines: LineManyRelationFilter
   registrations: RegistrationManyRelationFilter
@@ -387,6 +395,13 @@ input IntNullableFilter {
   not: IntNullableFilter
 }
 
+input ContestContestTypeTypeNullableFilter {
+  equals: ContestContestTypeType
+  in: [ContestContestTypeType!]
+  notIn: [ContestContestTypeType!]
+  not: ContestContestTypeTypeNullableFilter
+}
+
 input LineManyRelationFilter {
   every: LineWhereInput
   some: LineWhereInput
@@ -405,6 +420,7 @@ input ContestOrderByInput {
   description: OrderDirection
   status: OrderDirection
   entryFee: OrderDirection
+  contestType: OrderDirection
 }
 
 input ContestUpdateInput {
@@ -412,6 +428,7 @@ input ContestUpdateInput {
   description: String
   status: ContestStatusType
   entryFee: Int
+  contestType: ContestContestTypeType
   image: CloudImageRelateToOneForUpdateInput
   lines: LineRelateToManyForUpdateInput
   registrations: RegistrationRelateToManyForUpdateInput
@@ -454,6 +471,7 @@ input ContestCreateInput {
   description: String
   status: ContestStatusType
   entryFee: Int
+  contestType: ContestContestTypeType
   image: CloudImageRelateToOneForCreateInput
   lines: LineRelateToManyForCreateInput
   registrations: RegistrationRelateToManyForCreateInput
