@@ -821,6 +821,18 @@
             "deprecationReason": null
           },
           {
+            "name": "image",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "CloudImage",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "status",
             "description": null,
             "args": [],
@@ -918,6 +930,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BetRelateToManyForCreateInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "image",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "CloudImageRelateToOneForCreateInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -1494,6 +1518,18 @@
             "defaultValue": null,
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "image",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "CloudImageRelateToOneForUpdateInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "interfaces": null,
@@ -1620,6 +1656,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "BetManyRelationFilter",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "image",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "CloudImageWhereInput",
               "ofType": null
             },
             "defaultValue": null,
@@ -2590,6 +2638,18 @@
             "deprecationReason": null
           },
           {
+            "name": "contestType",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "ENUM",
+              "name": "ContestContestTypeType",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "image",
             "description": null,
             "args": [],
@@ -2856,6 +2916,110 @@
         "possibleTypes": null
       },
       {
+        "kind": "ENUM",
+        "name": "ContestContestTypeType",
+        "description": null,
+        "fields": null,
+        "inputFields": null,
+        "interfaces": null,
+        "enumValues": [
+          {
+            "name": "NBA_OVER_UNDER",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NFL_OVER_UNDER",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NFL_ATS",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "possibleTypes": null
+      },
+      {
+        "kind": "INPUT_OBJECT",
+        "name": "ContestContestTypeTypeNullableFilter",
+        "description": null,
+        "fields": null,
+        "inputFields": [
+          {
+            "name": "equals",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "ContestContestTypeType",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "in",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "ContestContestTypeType",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "notIn",
+            "description": null,
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "NON_NULL",
+                "name": null,
+                "ofType": {
+                  "kind": "ENUM",
+                  "name": "ContestContestTypeType",
+                  "ofType": null
+                }
+              }
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "not",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ContestContestTypeTypeNullableFilter",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "interfaces": null,
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
         "kind": "INPUT_OBJECT",
         "name": "ContestCreateInput",
         "description": null,
@@ -2903,6 +3067,18 @@
             "type": {
               "kind": "SCALAR",
               "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestType",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "ContestContestTypeType",
               "ofType": null
             },
             "defaultValue": null,
@@ -3018,6 +3194,18 @@
           },
           {
             "name": "entryFee",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestType",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -3317,6 +3505,18 @@
             "deprecationReason": null
           },
           {
+            "name": "contestType",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "ContestContestTypeType",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "image",
             "description": null,
             "type": {
@@ -3489,6 +3689,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "IntNullableFilter",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "contestType",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "ContestContestTypeTypeNullableFilter",
               "ofType": null
             },
             "defaultValue": null,

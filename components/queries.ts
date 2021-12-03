@@ -29,6 +29,7 @@ export const ALL_CONTESTS_QUERY = gql`
       description
       status
       entryFee
+      contestType
       lines {
         id
         choices {
@@ -59,6 +60,7 @@ export const CONTEST_BY_ID_QUERY = gql`
       description
       status
       entryFee
+      contestType
       ruleSet {
         maxBets
         maxSuperBets
@@ -79,6 +81,12 @@ export const CONTEST_BY_ID_QUERY = gql`
           id
           selection
           isWin
+          image {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
         }
       }
       registrations {
@@ -185,6 +193,12 @@ export const TRACKER_STATUS_QUERY = gql`
         id
         selection
         isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
       }
     }
   }

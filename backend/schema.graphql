@@ -99,6 +99,7 @@ type Choice {
     skip: Int! = 0
   ): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
+  image: CloudImage
   status: ChoiceStatus
   labelName: String
 }
@@ -131,6 +132,7 @@ input ChoiceWhereInput {
   isWin: BooleanFilter
   line: LineWhereInput
   bets: BetManyRelationFilter
+  image: CloudImageWhereInput
 }
 
 input ChoiceSelectionTypeNullableFilter {
@@ -157,6 +159,7 @@ input ChoiceUpdateInput {
   isWin: Boolean
   line: LineRelateToOneForUpdateInput
   bets: BetRelateToManyForUpdateInput
+  image: CloudImageRelateToOneForUpdateInput
 }
 
 input LineRelateToOneForUpdateInput {
@@ -172,6 +175,12 @@ input BetRelateToManyForUpdateInput {
   connect: [BetWhereUniqueInput!]
 }
 
+input CloudImageRelateToOneForUpdateInput {
+  create: CloudImageCreateInput
+  connect: CloudImageWhereUniqueInput
+  disconnect: Boolean
+}
+
 input ChoiceUpdateArgs {
   where: ChoiceWhereUniqueInput!
   data: ChoiceUpdateInput!
@@ -182,6 +191,7 @@ input ChoiceCreateInput {
   isWin: Boolean
   line: LineRelateToOneForCreateInput
   bets: BetRelateToManyForCreateInput
+  image: CloudImageRelateToOneForCreateInput
 }
 
 input LineRelateToOneForCreateInput {
@@ -192,6 +202,11 @@ input LineRelateToOneForCreateInput {
 input BetRelateToManyForCreateInput {
   create: [BetCreateInput!]
   connect: [BetWhereUniqueInput!]
+}
+
+input CloudImageRelateToOneForCreateInput {
+  create: CloudImageCreateInput
+  connect: CloudImageWhereUniqueInput
 }
 
 type CloudImage {
@@ -435,12 +450,6 @@ input ContestUpdateInput {
   ruleSet: RuleSetRelateToOneForUpdateInput
 }
 
-input CloudImageRelateToOneForUpdateInput {
-  create: CloudImageCreateInput
-  connect: CloudImageWhereUniqueInput
-  disconnect: Boolean
-}
-
 input LineRelateToManyForUpdateInput {
   disconnect: [LineWhereUniqueInput!]
   set: [LineWhereUniqueInput!]
@@ -476,11 +485,6 @@ input ContestCreateInput {
   lines: LineRelateToManyForCreateInput
   registrations: RegistrationRelateToManyForCreateInput
   ruleSet: RuleSetRelateToOneForCreateInput
-}
-
-input CloudImageRelateToOneForCreateInput {
-  create: CloudImageCreateInput
-  connect: CloudImageWhereUniqueInput
 }
 
 input LineRelateToManyForCreateInput {

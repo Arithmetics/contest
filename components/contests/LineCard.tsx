@@ -23,6 +23,7 @@ import {
   ChoiceSelectionType,
   Line,
   RuleSet,
+  ContestContestTypeType,
   useMakeBetMutation,
   useDeleteBetMutation,
   useContestBetsQuery,
@@ -54,6 +55,7 @@ type LineCardProps = {
   contestId?: string;
   userHasEntered?: boolean;
   ruleSet?: RuleSet;
+  contestType?: ContestContestTypeType | null;
 };
 
 export default function LineCard({
@@ -62,6 +64,7 @@ export default function LineCard({
   contestId,
   userHasEntered,
   ruleSet,
+  contestType,
 }: LineCardProps): JSX.Element {
   const { data: contestBetsData, loading: contestBetsLoading } = useContestBetsQuery({
     variables: { contestId: contestId || '' },
@@ -208,7 +211,7 @@ export default function LineCard({
       marginTop={6}
       padding={3}
     >
-      <LineCardHeader line={line} />
+      <LineCardHeader line={line} contestType={contestType} />
       <Divider orientation="horizontal" paddingTop={3} />
       {/* middle form */}
       <Stack spacing={0} align={'left'} paddingTop={3}>

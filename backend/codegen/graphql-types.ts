@@ -93,6 +93,7 @@ export type Choice = {
   line?: Maybe<Line>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']>;
+  image?: Maybe<CloudImage>;
   status?: Maybe<ChoiceStatus>;
   labelName?: Maybe<Scalars['String']>;
 };
@@ -115,6 +116,7 @@ export type ChoiceCreateInput = {
   isWin?: Maybe<Scalars['Boolean']>;
   line?: Maybe<LineRelateToOneForCreateInput>;
   bets?: Maybe<BetRelateToManyForCreateInput>;
+  image?: Maybe<CloudImageRelateToOneForCreateInput>;
 };
 
 export type ChoiceManyRelationFilter = {
@@ -184,6 +186,7 @@ export type ChoiceUpdateInput = {
   isWin?: Maybe<Scalars['Boolean']>;
   line?: Maybe<LineRelateToOneForUpdateInput>;
   bets?: Maybe<BetRelateToManyForUpdateInput>;
+  image?: Maybe<CloudImageRelateToOneForUpdateInput>;
 };
 
 export type ChoiceWhereInput = {
@@ -195,6 +198,7 @@ export type ChoiceWhereInput = {
   isWin?: Maybe<BooleanFilter>;
   line?: Maybe<LineWhereInput>;
   bets?: Maybe<BetManyRelationFilter>;
+  image?: Maybe<CloudImageWhereInput>;
 };
 
 export type ChoiceWhereUniqueInput = {
@@ -311,6 +315,7 @@ export type Contest = {
   description?: Maybe<Scalars['String']>;
   status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
+  contestType?: Maybe<ContestContestTypeType>;
   image?: Maybe<CloudImage>;
   lines?: Maybe<Array<Line>>;
   linesCount?: Maybe<Scalars['Int']>;
@@ -345,11 +350,25 @@ export type ContestRegistrationsCountArgs = {
   where?: RegistrationWhereInput;
 };
 
+export enum ContestContestTypeType {
+  NbaOverUnder = 'NBA_OVER_UNDER',
+  NflOverUnder = 'NFL_OVER_UNDER',
+  NflAts = 'NFL_ATS'
+}
+
+export type ContestContestTypeTypeNullableFilter = {
+  equals?: Maybe<ContestContestTypeType>;
+  in?: Maybe<Array<ContestContestTypeType>>;
+  notIn?: Maybe<Array<ContestContestTypeType>>;
+  not?: Maybe<ContestContestTypeTypeNullableFilter>;
+};
+
 export type ContestCreateInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
+  contestType?: Maybe<ContestContestTypeType>;
   image?: Maybe<CloudImageRelateToOneForCreateInput>;
   lines?: Maybe<LineRelateToManyForCreateInput>;
   registrations?: Maybe<RegistrationRelateToManyForCreateInput>;
@@ -362,6 +381,7 @@ export type ContestOrderByInput = {
   description?: Maybe<OrderDirection>;
   status?: Maybe<OrderDirection>;
   entryFee?: Maybe<OrderDirection>;
+  contestType?: Maybe<OrderDirection>;
 };
 
 export type ContestRelateToOneForCreateInput = {
@@ -398,6 +418,7 @@ export type ContestUpdateInput = {
   description?: Maybe<Scalars['String']>;
   status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
+  contestType?: Maybe<ContestContestTypeType>;
   image?: Maybe<CloudImageRelateToOneForUpdateInput>;
   lines?: Maybe<LineRelateToManyForUpdateInput>;
   registrations?: Maybe<RegistrationRelateToManyForUpdateInput>;
@@ -413,6 +434,7 @@ export type ContestWhereInput = {
   description?: Maybe<StringFilter>;
   status?: Maybe<ContestStatusTypeNullableFilter>;
   entryFee?: Maybe<IntNullableFilter>;
+  contestType?: Maybe<ContestContestTypeTypeNullableFilter>;
   image?: Maybe<CloudImageWhereInput>;
   lines?: Maybe<LineManyRelationFilter>;
   registrations?: Maybe<RegistrationManyRelationFilter>;
