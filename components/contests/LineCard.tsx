@@ -15,6 +15,10 @@ import {
   ColorProps,
   StatArrow,
   Badge,
+  Image,
+  useRadio,
+  // getRadioProps,
+  UseRadioProps,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import gql from 'graphql-tag';
@@ -31,6 +35,35 @@ import {
 
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
 import LineCardHeader from './LineCardHeader';
+
+type RadioImageProps = {
+  imageUrl?: string | null;
+  altText?: string | null;
+};
+
+function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
+  const { altText, imageUrl } = props;
+  const { getInputProps } = useRadio(props);
+  // const { getInputProps, getCheckboxProps } = useRadio(props);
+
+  const input = getInputProps();
+  // const checkbox = getCheckboxProps();
+
+  return (
+    <Box as="label">
+      <input {...input} />
+      <Image
+        boxSize="150px"
+        fit="scale-down"
+        bg={'gray.600'}
+        borderRadius="lg"
+        cursor="pointer"
+        alt={altText || 'unknown'}
+        src={imageUrl || ''}
+      />
+    </Box>
+  );
+}
 
 export function hasLineClosed(line: Line): boolean {
   if (!line.closingTime) {
@@ -220,16 +253,24 @@ export default function LineCard({
           <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
             <HStack justifyContent="center" spacing={6}>
               {line.choices?.map((choice) => {
+                // const radio = getRadioProps({ value: choice.id });
                 return (
-                  <Radio
+                  // <Radio
+                  //   key={choice.id}
+                  //   value={choice.id}
+                  //   disabled={formDisabled}
+                  //   colorScheme="teal"
+                  //   size="lg"
+                  // >
+                  // {/* <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
+                  //  */}
+                  <RadioImage
                     key={choice.id}
-                    value={choice.id}
-                    disabled={formDisabled}
-                    colorScheme="teal"
-                    size="lg"
-                  >
-                    <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
-                  </Radio>
+                    altText={choice.image?.altText}
+                    imageUrl={choice.image?.image?.publicUrlTransformed}
+                    // {...radio}
+                  />
+                  // </Radio>
                 );
               })}
             </HStack>
