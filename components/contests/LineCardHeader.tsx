@@ -1,6 +1,19 @@
 import { Image, HStack, Stat, StatLabel, StatNumber, StatHelpText } from '@chakra-ui/react';
 import { Line, ContestContestTypeType } from '../../generated/graphql-types';
 
+export function formatATS(home: boolean, benchmark?: number | null): string {
+  if (!benchmark) {
+    return '(???)';
+  }
+
+  const xBenchmark = home ? benchmark * -1 : benchmark;
+
+  if (xBenchmark < 0) {
+    return `(${String(xBenchmark)})`;
+  }
+  return `(+${xBenchmark})`;
+}
+
 function formatLineDate(line: Line): string {
   if (!line.closingTime) {
     return 'No closing time set';
@@ -18,7 +31,9 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
     return (
       <HStack>
         <Stat>
-          <StatNumber>{line.title}</StatNumber>
+          <StatNumber>
+            {line.title} {formatATS(true, line.benchmark)}
+          </StatNumber>
           <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
         </Stat>
       </HStack>

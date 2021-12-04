@@ -19,9 +19,10 @@ import {
   useRadio,
   // getRadioProps,
   UseRadioProps,
+  useRadioGroup,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 
 import {
   ChoiceSelectionType,
@@ -34,33 +35,49 @@ import {
 } from '../../generated/graphql-types';
 
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
-import LineCardHeader from './LineCardHeader';
+import LineCardHeader, { formatATS } from './LineCardHeader';
 
 type RadioImageProps = {
+  hasSelection: boolean;
   imageUrl?: string | null;
   altText?: string | null;
+  spread?: number | null;
+  isHome: boolean;
 };
 
 function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
-  const { altText, imageUrl } = props;
-  const { getInputProps } = useRadio(props);
-  // const { getInputProps, getCheckboxProps } = useRadio(props);
+  const { altText, imageUrl, hasSelection, spread, isHome } = props;
+  const { getInputProps, getCheckboxProps } = useRadio(props);
 
   const input = getInputProps();
-  // const checkbox = getCheckboxProps();
+  const checkbox = getCheckboxProps();
+
+  // border={'1px'}
+  //     borderColor={'teal.500'}
 
   return (
-    <Box as="label">
+    <Box as="label" position="relative">
       <input {...input} />
       <Image
-        boxSize="150px"
-        fit="scale-down"
+        {...checkbox}
+        _checked={{ filter: 'none', border: '1px', borderColor: 'teal.500' }}
+        filter={hasSelection ? 'grayscale(100%)' : 'none'}
+        htmlHeight="100px"
+        htmlWidth="200px"
+        objectFit="cover"
         bg={'gray.600'}
-        borderRadius="lg"
+        borderRadius="md"
         cursor="pointer"
         alt={altText || 'unknown'}
         src={imageUrl || ''}
+        transitionProperty="transform"
+        transitionDuration="0.3s"
+        transitionTimingFunction="ease-in-out"
+        _hover={{ transform: 'scale(1.02)' }}
       />
+      <Badge position="absolute" variant="solid" left="6px" top="6px">
+        {formatATS(isHome, spread)}
+      </Badge>
     </Box>
   );
 }
@@ -99,27 +116,13 @@ export default function LineCard({
   ruleSet,
   contestType,
 }: LineCardProps): JSX.Element {
-  const { data: contestBetsData, loading: contestBetsLoading } = useContestBetsQuery({
+  const { data: contestBetsData, loading: contestBetsLoading, refetch } = useContestBetsQuery({
     variables: { contestId: contestId || '' },
   });
 
   const [makeBet, { loading: makeBetLoading }] = useMakeBetMutation({
-    update: (cache, payload) => {
-      return cache.modify({
-        fields: {
-          allBets(existingAllBets = []) {
-            const newBetRef = cache.writeFragment({
-              data: payload.data?.createBet,
-              fragment: gql`
-                fragment NewBet on Bet {
-                  id
-                }
-              `,
-            });
-            return [...existingAllBets, newBetRef];
-          },
-        },
-      });
+    update: () => {
+      refetch();
     },
   });
   const [deleteBet, { loading: deleteBetLoading }] = useDeleteBetMutation({
@@ -146,6 +149,14 @@ export default function LineCard({
     selectedChoice?.id || '0'
   );
   const [superBetSelected, setSuperBetSelected] = useState<boolean>(usersBet?.isSuper || false);
+
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: 'test',
+    defaultValue: formSelectedChoiceId,
+    onChange: setFormSelectedChoiceId,
+  });
+
+  const group = getRootProps();
 
   useEffect(() => {
     if (!selectedChoice) {
@@ -250,10 +261,11 @@ export default function LineCard({
       <Stack spacing={0} align={'left'} paddingTop={3}>
         {/* Form starts here */}
         {!lineClosed && (
-          <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
-            <HStack justifyContent="center" spacing={6}>
+          // <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
+          <>
+            <HStack justifyContent="center" spacing={6} {...group}>
               {line.choices?.map((choice) => {
-                // const radio = getRadioProps({ value: choice.id });
+                const radio = getRadioProps({ value: choice.id });
                 return (
                   // <Radio
                   //   key={choice.id}
@@ -268,7 +280,11 @@ export default function LineCard({
                     key={choice.id}
                     altText={choice.image?.altText}
                     imageUrl={choice.image?.image?.publicUrlTransformed}
-                    // {...radio}
+                    hasSelection={formSelectedChoiceId !== '0'}
+                    isDisabled={formDisabled}
+                    spread={line.benchmark}
+                    isHome={choice.selection === 'HOME'}
+                    {...radio}
                   />
                   // </Radio>
                 );
@@ -286,7 +302,8 @@ export default function LineCard({
                 Super Pick
               </Checkbox>
             </Center>
-          </RadioGroup>
+          </>
+          // </RadioGroup>
         )}
         {lineClosed && (
           <>

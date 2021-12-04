@@ -109,7 +109,7 @@ export const Bet = list({
 
       const usersBets = await lists.Bet.findMany({
         where: {
-          user: { id: userId },
+          user: { id: { equals: userId } },
           choice: { line: { contest: { id: { equals: contest?.id } } } },
         },
         query: graphql`
