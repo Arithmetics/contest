@@ -87,6 +87,12 @@ export const CONTEST_BY_ID_QUERY = gql`
             }
             altText
           }
+          secondaryImage {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
         }
       }
       registrations {
@@ -211,7 +217,6 @@ export const LEADERBOARD_QUERY = gql`
       user {
         id
         userName
-        # other stuff
         avatarImage {
           id
           altText
@@ -245,6 +250,54 @@ export const CONTEST_BETS_QUERY = gql`
           altText
           image {
             publicUrlTransformed
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ATS_LEADERBOARD_QUERY = gql`
+  query ATSLeaderboardQuery($contestId: ID!) {
+    registrations(where: { contest: { id: { equals: $contestId } } }) {
+      id
+      user {
+        id
+        userName
+        avatarImage {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
+    }
+    lines(where: { contest: { id: { equals: $contestId } } }) {
+      id
+      title
+      closingTime
+      choices {
+        id
+        selection
+        isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        secondaryImage {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        bets {
+          id
+          isSuper
+          user {
+            id
           }
         }
       }

@@ -32,7 +32,8 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
       <HStack>
         <Stat>
           <StatNumber>
-            {line.title} {formatATS(true, line.benchmark)}
+            {line.title}
+            {/* {formatATS(true, line.benchmark)} */}
           </StatNumber>
           <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
         </Stat>

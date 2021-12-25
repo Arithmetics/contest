@@ -94,6 +94,7 @@ export type Choice = {
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']>;
   image?: Maybe<CloudImage>;
+  secondaryImage?: Maybe<CloudImage>;
   status?: Maybe<ChoiceStatus>;
   labelName?: Maybe<Scalars['String']>;
 };
@@ -117,6 +118,7 @@ export type ChoiceCreateInput = {
   line?: Maybe<LineRelateToOneForCreateInput>;
   bets?: Maybe<BetRelateToManyForCreateInput>;
   image?: Maybe<CloudImageRelateToOneForCreateInput>;
+  secondaryImage?: Maybe<CloudImageRelateToOneForCreateInput>;
 };
 
 export type ChoiceManyRelationFilter = {
@@ -187,6 +189,7 @@ export type ChoiceUpdateInput = {
   line?: Maybe<LineRelateToOneForUpdateInput>;
   bets?: Maybe<BetRelateToManyForUpdateInput>;
   image?: Maybe<CloudImageRelateToOneForUpdateInput>;
+  secondaryImage?: Maybe<CloudImageRelateToOneForUpdateInput>;
 };
 
 export type ChoiceWhereInput = {
@@ -199,6 +202,7 @@ export type ChoiceWhereInput = {
   line?: Maybe<LineWhereInput>;
   bets?: Maybe<BetManyRelationFilter>;
   image?: Maybe<CloudImageWhereInput>;
+  secondaryImage?: Maybe<CloudImageWhereInput>;
 };
 
 export type ChoiceWhereUniqueInput = {
