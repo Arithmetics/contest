@@ -24,7 +24,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
       return <LeaderboardTab contestId={id} />;
     }
     if (typedContestNav === ContestTabs.RULES) {
-      return <RulesTab />;
+      return <RulesTab contestId={id} />;
     }
     if (typedContestNav === ContestTabs.TRACKER) {
       return <TrackerTab contestId={id} />;

@@ -40,6 +40,15 @@ export const Choice = list({
         inlineEdit: { fields: ['image', 'altText'] },
       },
     }),
+    secondaryImage: relationship({
+      ref: 'CloudImage',
+      ui: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
+      },
+    }),
     status: virtual({
       field: graphql.field({
         type: graphql.enum({

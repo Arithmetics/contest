@@ -46,7 +46,7 @@ type RadioImageProps = {
 };
 
 function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
-  const { altText, imageUrl, hasSelection, spread, isHome } = props;
+  const { altText, imageUrl, hasSelection, spread, isHome, isDisabled } = props;
   const { getInputProps, getCheckboxProps } = useRadio(props);
 
   const input = getInputProps();
@@ -67,13 +67,13 @@ function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
         objectFit="cover"
         bg={'gray.600'}
         borderRadius="md"
-        cursor="pointer"
+        cursor={isDisabled ? 'default' : 'pointer'}
         alt={altText || 'unknown'}
         src={imageUrl || ''}
         transitionProperty="transform"
         transitionDuration="0.3s"
         transitionTimingFunction="ease-in-out"
-        _hover={{ transform: 'scale(1.02)' }}
+        _hover={{ transform: isDisabled ? 'scale(1.0)' : 'scale(1.02)' }}
       />
       <Badge position="absolute" variant="solid" left="6px" top="6px">
         {formatATS(isHome, spread)}

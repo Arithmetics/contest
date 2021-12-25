@@ -100,6 +100,7 @@ type Choice {
   ): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
   image: CloudImage
+  secondaryImage: CloudImage
   status: ChoiceStatus
   labelName: String
 }
@@ -133,6 +134,7 @@ input ChoiceWhereInput {
   line: LineWhereInput
   bets: BetManyRelationFilter
   image: CloudImageWhereInput
+  secondaryImage: CloudImageWhereInput
 }
 
 input ChoiceSelectionTypeNullableFilter {
@@ -160,6 +162,7 @@ input ChoiceUpdateInput {
   line: LineRelateToOneForUpdateInput
   bets: BetRelateToManyForUpdateInput
   image: CloudImageRelateToOneForUpdateInput
+  secondaryImage: CloudImageRelateToOneForUpdateInput
 }
 
 input LineRelateToOneForUpdateInput {
@@ -192,6 +195,7 @@ input ChoiceCreateInput {
   line: LineRelateToOneForCreateInput
   bets: BetRelateToManyForCreateInput
   image: CloudImageRelateToOneForCreateInput
+  secondaryImage: CloudImageRelateToOneForCreateInput
 }
 
 input LineRelateToOneForCreateInput {

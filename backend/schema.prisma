@@ -24,27 +24,31 @@ model Bet {
 }
 
 model Choice {
-  id        String              @id @default(cuid())
-  selection ChoiceSelectionType
-  isWin     Boolean             @default(false)
-  line      Line?               @relation("Choice_line", fields: [lineId], references: [id])
-  lineId    String?             @map("line")
-  bets      Bet[]               @relation("Bet_choice")
-  image     CloudImage?         @relation("Choice_image", fields: [imageId], references: [id])
-  imageId   String?             @map("image")
+  id               String              @id @default(cuid())
+  selection        ChoiceSelectionType
+  isWin            Boolean             @default(false)
+  line             Line?               @relation("Choice_line", fields: [lineId], references: [id])
+  lineId           String?             @map("line")
+  bets             Bet[]               @relation("Bet_choice")
+  image            CloudImage?         @relation("Choice_image", fields: [imageId], references: [id])
+  imageId          String?             @map("image")
+  secondaryImage   CloudImage?         @relation("Choice_secondaryImage", fields: [secondaryImageId], references: [id])
+  secondaryImageId String?             @map("secondaryImage")
 
   @@index([lineId])
   @@index([imageId])
+  @@index([secondaryImageId])
 }
 
 model CloudImage {
-  id                    String    @id @default(cuid())
-  image                 Json?
-  altText               String    @default("")
-  from_Choice_image     Choice[]  @relation("Choice_image")
-  from_Contest_image    Contest[] @relation("Contest_image")
-  from_Line_image       Line[]    @relation("Line_image")
-  from_User_avatarImage User[]    @relation("User_avatarImage")
+  id                         String    @id @default(cuid())
+  image                      Json?
+  altText                    String    @default("")
+  from_Choice_image          Choice[]  @relation("Choice_image")
+  from_Choice_secondaryImage Choice[]  @relation("Choice_secondaryImage")
+  from_Contest_image         Contest[] @relation("Contest_image")
+  from_Line_image            Line[]    @relation("Line_image")
+  from_User_avatarImage      User[]    @relation("User_avatarImage")
 }
 
 model Contest {
