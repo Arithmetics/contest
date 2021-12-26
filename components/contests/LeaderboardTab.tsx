@@ -1,14 +1,11 @@
 import {
   Avatar,
-  AvatarBadge,
-  Text,
   Table,
   Thead,
   Tbody,
   Tr,
   Th,
   Td,
-  HStack,
   Image,
   Center,
   Tooltip,
@@ -16,9 +13,9 @@ import {
   useBreakpointValue,
   Spinner,
 } from '@chakra-ui/react';
+import { BsLightning } from 'react-icons/bs';
 import { firstBy } from 'thenby';
 import { useAtsLeaderboardQuery, Registration, Line } from '../../generated/graphql-types';
-import theme from '../../theme';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(
@@ -58,6 +55,33 @@ function scoreAllRegistrations(
   return scores;
 }
 
+function getRemainingLocks(registrations: Registration[], lines: Line[]): Record<string, number> {
+  const remainingLocks: Record<string, number> = {};
+
+  registrations.forEach((reg) => {
+    const userId = reg?.user?.id;
+    if (userId) {
+      remainingLocks[userId] = 5;
+    }
+  });
+
+  lines.forEach((line) => {
+    line.choices?.forEach((choice) => {
+      if (choice.isWin) {
+        choice.bets?.forEach((bet) => {
+          // todo: use rules
+          if (bet.user?.id) {
+            const points = bet.isSuper ? 1 : 0;
+            const usersCurrentLocks = remainingLocks[bet.user?.id];
+            remainingLocks[bet.user?.id] = usersCurrentLocks - points;
+          }
+        });
+      }
+    });
+  });
+  return remainingLocks;
+}
+
 type LeaderboardTabProps = {
   contestId?: string;
 };
@@ -65,12 +89,11 @@ type LeaderboardTabProps = {
 export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.Element {
   const { data, loading } = useAtsLeaderboardQuery({ variables: { contestId: contestId || '' } });
 
-  // const sortedLeaderboard = sortLeaderboard(data?.registrations || []);
-
   const registrations = data?.registrations;
   const lines = data?.lines;
 
   const totalScores = scoreAllRegistrations(registrations || [], lines || []);
+  const remainingLocks = getRemainingLocks(registrations || [], lines || []);
 
   const sortedRegistrations = registrations
     ? [...registrations]?.sort(
@@ -83,7 +106,6 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
         })
       )
     : [];
-  // console.log({ registrations, lines, sortedRegistrations, totalScores });
 
   const marginBox = useBreakpointValue({ base: 1, sm: 2, md: 6 });
 
@@ -116,34 +138,60 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
         </Thead>
         <Tbody>
           {lines?.map((line) => {
-            // const winningChoice = line?.choices?.find((c) => c.isWin);
-            const winningChoice = line?.choices?.[0];
+            const winningChoice = line?.choices?.find((c) => c.isWin);
 
             return (
               <Tr key={line?.id}>
                 <Td>{line?.title}</Td>
 
-                <Td bg={theme.colors.red['400']}>
-                  {/* to do check bet status */}
-                  {true && (
-                    <Tooltip label="Super Bet">
-                      <Image
-                        boxSize="25px"
-                        fit="scale-down"
-                        alt={winningChoice?.secondaryImage?.altText || 'unknown'}
-                        src={winningChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
-                      />
-                    </Tooltip>
-                  )}
-                </Td>
+                {sortedRegistrations.map((reg) => {
+                  const usersChoice = line?.choices?.find((c) =>
+                    c.bets?.some((b) => b?.user?.id === reg?.user?.id)
+                  );
+
+                  const isSuper = usersChoice?.bets?.some(
+                    (bet) => bet?.user?.id === reg?.user?.id && bet.isSuper
+                  );
+
+                  let bgc = 'grey.700';
+                  if (winningChoice && winningChoice.id === usersChoice?.id) {
+                    bgc = 'green.600';
+                  }
+                  if (winningChoice && winningChoice.id !== usersChoice?.id) {
+                    bgc = 'red.700';
+                  }
+                  return (
+                    <Td key={reg.id} bg={bgc} position="relative">
+                      {usersChoice ? (
+                        <>
+                          <Image
+                            boxSize="30px"
+                            fit="scale-down"
+                            alt={usersChoice?.secondaryImage?.altText || 'unknown'}
+                            src={usersChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
+                          />
+                          {isSuper ? (
+                            <Box position="absolute" top="15%" left="45%">
+                              <Tooltip label="Super Bet">
+                                <Avatar icon={<BsLightning />} size="xs" bg="teal.300" />
+                              </Tooltip>
+                            </Box>
+                          ) : undefined}
+                        </>
+                      ) : (
+                        '?'
+                      )}
+                    </Td>
+                  );
+                })}
               </Tr>
             );
           })}
           <Tr bg={'gray.700'}>
             <Td>Locks Remaining</Td>
             {sortedRegistrations?.map((reg) => {
-              // const userId = reg?.user?.id || '';
-              return <Td key={reg.id}>99</Td>;
+              const userId = reg?.user?.id || '';
+              return <Td key={reg.id}>{remainingLocks[userId]}</Td>;
             })}
           </Tr>
           <Tr bg={'gray.600'}>

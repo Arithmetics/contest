@@ -241,6 +241,75 @@ export default function LineCard({
     }
   };
 
+  const radioGroup = (contestType?: ContestContestTypeType | null): JSX.Element => {
+    if (contestType === ContestContestTypeType.NflAts) {
+      return (
+        <>
+          <HStack justifyContent="center" spacing={6} {...group}>
+            {line.choices?.map((choice) => {
+              const radio = getRadioProps({ value: choice.id });
+              return (
+                <RadioImage
+                  key={choice.id}
+                  altText={choice.image?.altText}
+                  imageUrl={choice.image?.image?.publicUrlTransformed}
+                  hasSelection={formSelectedChoiceId !== '0'}
+                  isDisabled={formDisabled}
+                  spread={line.benchmark}
+                  isHome={choice.selection === 'HOME'}
+                  {...radio}
+                />
+              );
+            })}
+          </HStack>
+          <Center>
+            <Checkbox
+              onChange={() => setSuperBetSelected(!superBetSelected)}
+              isChecked={superBetSelected}
+              marginTop={4}
+              isDisabled={formDisabled || !superPickAvailable}
+              colorScheme="teal"
+              size="lg"
+            >
+              Super Pick
+            </Checkbox>
+          </Center>
+        </>
+      );
+    }
+    return (
+      <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
+        <HStack justifyContent="center" spacing={6} {...group}>
+          {line.choices?.map((choice) => {
+            return (
+              <Radio
+                key={choice.id}
+                value={choice.id}
+                disabled={formDisabled}
+                colorScheme="teal"
+                size="lg"
+              >
+                <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
+              </Radio>
+            );
+          })}
+        </HStack>
+        <Center>
+          <Checkbox
+            onChange={() => setSuperBetSelected(!superBetSelected)}
+            isChecked={superBetSelected}
+            marginTop={4}
+            isDisabled={formDisabled || !superPickAvailable}
+            colorScheme="teal"
+            size="lg"
+          >
+            Super Pick
+          </Checkbox>
+        </Center>
+      </RadioGroup>
+    );
+  };
+
   return (
     <Box
       maxW={'500px'}
@@ -260,51 +329,7 @@ export default function LineCard({
       {/* middle form */}
       <Stack spacing={0} align={'left'} paddingTop={3}>
         {/* Form starts here */}
-        {!lineClosed && (
-          // <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
-          <>
-            <HStack justifyContent="center" spacing={6} {...group}>
-              {line.choices?.map((choice) => {
-                const radio = getRadioProps({ value: choice.id });
-                return (
-                  // <Radio
-                  //   key={choice.id}
-                  //   value={choice.id}
-                  //   disabled={formDisabled}
-                  //   colorScheme="teal"
-                  //   size="lg"
-                  // >
-                  // {/* <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
-                  //  */}
-                  <RadioImage
-                    key={choice.id}
-                    altText={choice.image?.altText}
-                    imageUrl={choice.image?.image?.publicUrlTransformed}
-                    hasSelection={formSelectedChoiceId !== '0'}
-                    isDisabled={formDisabled}
-                    spread={line.benchmark}
-                    isHome={choice.selection === 'HOME'}
-                    {...radio}
-                  />
-                  // </Radio>
-                );
-              })}
-            </HStack>
-            <Center>
-              <Checkbox
-                onChange={() => setSuperBetSelected(!superBetSelected)}
-                isChecked={superBetSelected}
-                marginTop={4}
-                isDisabled={formDisabled || !superPickAvailable}
-                colorScheme="teal"
-                size="lg"
-              >
-                Super Pick
-              </Checkbox>
-            </Center>
-          </>
-          // </RadioGroup>
-        )}
+        {!lineClosed && radioGroup(contestType)}
         {lineClosed && (
           <>
             <Center>
