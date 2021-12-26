@@ -2142,51 +2142,57 @@ export type AtsLeaderboardQueryVariables = Exact<{
 
 export type AtsLeaderboardQuery = (
   { __typename?: 'Query' }
-  & { registrations?: Maybe<Array<(
-    { __typename?: 'Registration' }
-    & Pick<Registration, 'id'>
-    & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'id' | 'userName'>
-      & { avatarImage?: Maybe<(
-        { __typename?: 'CloudImage' }
-        & Pick<CloudImage, 'id' | 'altText'>
-        & { image?: Maybe<(
-          { __typename?: 'CloudinaryImage_File' }
-          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+  & { contest?: Maybe<(
+    { __typename?: 'Contest' }
+    & { ruleSet?: Maybe<(
+      { __typename?: 'RuleSet' }
+      & Pick<RuleSet, 'id' | 'superBetPointCount' | 'maxBets' | 'maxSuperBets'>
+    )>, registrations?: Maybe<Array<(
+      { __typename?: 'Registration' }
+      & Pick<Registration, 'id'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'userName'>
+        & { avatarImage?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'id' | 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
         )> }
       )> }
-    )> }
-  )>>, lines?: Maybe<Array<(
-    { __typename?: 'Line' }
-    & Pick<Line, 'id' | 'title' | 'closingTime'>
-    & { choices?: Maybe<Array<(
-      { __typename?: 'Choice' }
-      & Pick<Choice, 'id' | 'selection' | 'isWin'>
-      & { image?: Maybe<(
-        { __typename?: 'CloudImage' }
-        & Pick<CloudImage, 'altText'>
+    )>>, lines?: Maybe<Array<(
+      { __typename?: 'Line' }
+      & Pick<Line, 'id' | 'title' | 'closingTime'>
+      & { choices?: Maybe<Array<(
+        { __typename?: 'Choice' }
+        & Pick<Choice, 'id' | 'selection' | 'isWin'>
         & { image?: Maybe<(
-          { __typename?: 'CloudinaryImage_File' }
-          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
-        )> }
-      )>, secondaryImage?: Maybe<(
-        { __typename?: 'CloudImage' }
-        & Pick<CloudImage, 'altText'>
-        & { image?: Maybe<(
-          { __typename?: 'CloudinaryImage_File' }
-          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
-        )> }
-      )>, bets?: Maybe<Array<(
-        { __typename?: 'Bet' }
-        & Pick<Bet, 'id' | 'isSuper'>
-        & { user?: Maybe<(
-          { __typename?: 'User' }
-          & Pick<User, 'id'>
-        )> }
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )>, secondaryImage?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )>, bets?: Maybe<Array<(
+          { __typename?: 'Bet' }
+          & Pick<Bet, 'id' | 'isSuper'>
+          & { user?: Maybe<(
+            { __typename?: 'User' }
+            & Pick<User, 'id'>
+          )> }
+        )>> }
       )>> }
     )>> }
-  )>> }
+  )> }
 );
 
 
@@ -3073,45 +3079,53 @@ export type ContestBetsLazyQueryHookResult = ReturnType<typeof useContestBetsLaz
 export type ContestBetsQueryResult = Apollo.QueryResult<ContestBetsQuery, ContestBetsQueryVariables>;
 export const AtsLeaderboardQueryDocument = gql`
     query ATSLeaderboardQuery($contestId: ID!) {
-  registrations(where: {contest: {id: {equals: $contestId}}}) {
-    id
-    user {
+  contest(where: {id: $contestId}) {
+    ruleSet {
       id
-      userName
-      avatarImage {
+      superBetPointCount
+      maxBets
+      maxSuperBets
+    }
+    registrations {
+      id
+      user {
         id
-        altText
-        image {
-          publicUrlTransformed
+        userName
+        avatarImage {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
         }
       }
     }
-  }
-  lines(where: {contest: {id: {equals: $contestId}}}) {
-    id
-    title
-    closingTime
-    choices {
+    lines {
       id
-      selection
-      isWin
-      image {
-        image {
-          publicUrlTransformed
-        }
-        altText
-      }
-      secondaryImage {
-        image {
-          publicUrlTransformed
-        }
-        altText
-      }
-      bets {
+      title
+      closingTime
+      choices {
         id
-        isSuper
-        user {
+        selection
+        isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        secondaryImage {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        bets {
           id
+          isSuper
+          user {
+            id
+          }
         }
       }
     }

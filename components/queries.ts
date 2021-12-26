@@ -259,45 +259,53 @@ export const CONTEST_BETS_QUERY = gql`
 
 export const ATS_LEADERBOARD_QUERY = gql`
   query ATSLeaderboardQuery($contestId: ID!) {
-    registrations(where: { contest: { id: { equals: $contestId } } }) {
-      id
-      user {
+    contest(where: { id: $contestId }) {
+      ruleSet {
         id
-        userName
-        avatarImage {
+        superBetPointCount
+        maxBets
+        maxSuperBets
+      }
+      registrations {
+        id
+        user {
           id
-          altText
-          image {
-            publicUrlTransformed
+          userName
+          avatarImage {
+            id
+            altText
+            image {
+              publicUrlTransformed
+            }
           }
         }
       }
-    }
-    lines(where: { contest: { id: { equals: $contestId } } }) {
-      id
-      title
-      closingTime
-      choices {
+      lines {
         id
-        selection
-        isWin
-        image {
-          image {
-            publicUrlTransformed
-          }
-          altText
-        }
-        secondaryImage {
-          image {
-            publicUrlTransformed
-          }
-          altText
-        }
-        bets {
+        title
+        closingTime
+        choices {
           id
-          isSuper
-          user {
+          selection
+          isWin
+          image {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
+          secondaryImage {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
+          bets {
             id
+            isSuper
+            user {
+              id
+            }
           }
         }
       }
