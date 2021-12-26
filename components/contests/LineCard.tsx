@@ -173,9 +173,14 @@ export default function LineCard({
   const lineClosed = hasLineClosed(line);
   const winningChoice = line.choices?.find((c) => c.isWin);
   const losingChoice = line.choices?.find((c) => !c.isWin);
+  // const winningBetCount = winningChoice?.bets?.length || 0;
+  // const losingBetCount = losingChoice?.bets?.length || 0;
 
-  const winningBetCount = winningChoice?.bets?.length || 0;
-  const losingBetCount = losingChoice?.bets?.length || 0;
+  const winningBetCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === winningChoice?.id)
+    .length;
+
+  const losingBetCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === losingChoice?.id)
+    .length;
 
   const pickAvailable = !contestBetsLoading && betsRemaining(usersBets, ruleSet) > 0;
   const superPickAvailable = !contestBetsLoading && superBetsRemaining(usersBets, ruleSet) > 0;
@@ -185,15 +190,29 @@ export default function LineCard({
   const overBetVolume = line.choices
     ?.filter((c) => c.selection === ChoiceSelectionType.Over)
     .reduce((acc, c) => {
-      const overCount = c.bets?.length;
+      const overCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
       return acc + (overCount || 0);
     }, 0);
 
   const underBetVolume = line.choices
     ?.filter((c) => c.selection === ChoiceSelectionType.Under)
     .reduce((acc, c) => {
-      const overCount = c.bets?.length;
-      return acc + (overCount || 0);
+      const underCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+      return acc + (underCount || 0);
+    }, 0);
+
+  const awayBetVolume = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Away)
+    .reduce((acc, c) => {
+      const awayCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+      return acc + (awayCount || 0);
+    }, 0);
+
+  const homeBetVolume = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Home)
+    .reduce((acc, c) => {
+      const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+      return acc + (homeCount || 0);
     }, 0);
 
   const radioTextColor = (choiceId: string): ColorProps => {
@@ -416,12 +435,20 @@ export default function LineCard({
           <>
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
-                <StatLabel>Bet Volume</StatLabel>
-                <StatNumber>{overBetVolume}</StatNumber>
+                <StatLabel>
+                  {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Under'} Bet Volume
+                </StatLabel>
+                <StatNumber>
+                  {contestType === ContestContestTypeType.NflAts ? awayBetVolume : overBetVolume}
+                </StatNumber>
               </Stat>
               <Stat textAlign="center">
-                <StatLabel>Bet Volume</StatLabel>
-                <StatNumber>{underBetVolume}</StatNumber>
+                <StatLabel>
+                  {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Over'} Bet Volume
+                </StatLabel>
+                <StatNumber>
+                  {contestType === ContestContestTypeType.NflAts ? homeBetVolume : underBetVolume}
+                </StatNumber>
               </Stat>
             </HStack>
           </>

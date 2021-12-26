@@ -193,7 +193,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
             );
           })}
           <Tr bg={'gray.700'}>
-            <Td>Locks Remaining</Td>
+            <Td>Super Bets Remaining</Td>
             {sortedRegistrations?.map((reg) => {
               const userId = reg?.user?.id || '';
               return <Td key={reg.id}>{remainingLocks[userId]}</Td>;

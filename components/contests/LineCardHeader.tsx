@@ -1,4 +1,4 @@
-import { Image, HStack, Stat, StatLabel, StatNumber, StatHelpText } from '@chakra-ui/react';
+import { Image, HStack, Stat, StatLabel, StatNumber, StatHelpText, Text } from '@chakra-ui/react';
 import { Line, ContestContestTypeType } from '../../generated/graphql-types';
 
 export function formatATS(home: boolean, benchmark?: number | null): string {
@@ -28,12 +28,36 @@ type LineCardHeaderProps = {
 
 export default function LineCardHeader({ line, contestType }: LineCardHeaderProps): JSX.Element {
   if (contestType === ContestContestTypeType.NflAts) {
+    const awayChoice = line?.choices?.find((c) => c.selection === 'AWAY');
+    const homeChoice = line?.choices?.find((c) => c.selection === 'HOME');
     return (
       <HStack>
         <Stat>
           <StatNumber>
             {line.title}
-            {/* {formatATS(true, line.benchmark)} */}
+            <HStack>
+              <Text>{formatATS(false, line.benchmark)}</Text>
+              {awayChoice && (
+                <Image
+                  boxSize="40px"
+                  fit="scale-down"
+                  bg={'gray.600'}
+                  alt={awayChoice.secondaryImage?.altText || 'unknown'}
+                  src={awayChoice.secondaryImage?.image?.publicUrlTransformed || ''}
+                />
+              )}
+              <Text>@</Text>
+              {homeChoice && (
+                <Image
+                  boxSize="40px"
+                  fit="scale-down"
+                  bg={'gray.600'}
+                  alt={homeChoice.secondaryImage?.altText || 'unknown'}
+                  src={homeChoice.secondaryImage?.image?.publicUrlTransformed || ''}
+                />
+              )}
+              <Text>{formatATS(true, line.benchmark)}</Text>
+            </HStack>
           </StatNumber>
           <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
         </Stat>
