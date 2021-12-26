@@ -42,5 +42,10 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
     return <LeaderboardTabATS contestId={contestId} />;
   }
   // return <LeaderboardTabOU contestId={contestId} />;
-  return <Text>Temporarily Disabled</Text>;
+
+  return (
+    <Center marginTop={'30vh'}>
+      <Text fontSize="2xl">Temporarily Disabled</Text>
+    </Center>
+  );
 }
