@@ -1,8 +1,8 @@
 import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { ResponsiveLine, Serie, PointTooltipProps } from '@nivo/line';
 import { LegendAnchor } from '@nivo/legends';
-import { Line } from '../../generated/graphql-types';
-import theme from '../../theme';
+import { Line } from '../../../generated/graphql-types';
+import theme from '../../../theme';
 
 type ResponsiveLineProps = {
   data: Serie[];

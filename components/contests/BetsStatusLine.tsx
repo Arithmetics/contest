@@ -11,7 +11,7 @@ import {
   useContestBetsQuery,
 } from '../../generated/graphql-types';
 
-import { sortLeaderboard } from './LeaderboardTab';
+import { sortLeaderboard } from './leaderboard/LeaderboardTab';
 
 export function betsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | null): number {
   const maxBets = ruleSet?.maxBets || 0;

@@ -15,8 +15,12 @@ import {
 } from '@chakra-ui/react';
 import { BsLightning } from 'react-icons/bs';
 import { firstBy } from 'thenby';
-import { RuleSet } from '../../backend/codegen/graphql-types';
-import { useAtsLeaderboardQuery, Registration, Line } from '../../generated/graphql-types';
+import {
+  useAtsLeaderboardQuery,
+  Registration,
+  Line,
+  RuleSet,
+} from '../../../generated/graphql-types';
 
 function scoreAllRegistrations(
   registrations: Registration[],

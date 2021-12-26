@@ -5,7 +5,7 @@ import {
   Registration,
   Contest,
   ContestContestTypeType,
-} from '../../generated/graphql-types';
+} from '../../../generated/graphql-types';
 import LeaderboardTabATS from './LeaderboardTabATS';
 import LeaderboardTabOU from './LeaderboardTabOU';
 

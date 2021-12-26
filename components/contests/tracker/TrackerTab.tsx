@@ -20,7 +20,7 @@ import {
   Line,
   useTrackerStatusQuery,
   useContestBetsQuery,
-} from '../../generated/graphql-types';
+} from '../../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
 
 function winsForOver(line?: Line): number {
