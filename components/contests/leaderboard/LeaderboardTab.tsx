@@ -1,4 +1,4 @@
-import { Center, Spinner } from '@chakra-ui/react';
+import { Center, Spinner, Text } from '@chakra-ui/react';
 import { firstBy } from 'thenby';
 import {
   useContestByIdQuery,
@@ -7,7 +7,7 @@ import {
   ContestContestTypeType,
 } from '../../../generated/graphql-types';
 import LeaderboardTabATS from './LeaderboardTabATS';
-import LeaderboardTabOU from './LeaderboardTabOU';
+// import LeaderboardTabOU from './LeaderboardTabOU';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(
@@ -41,5 +41,6 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   if (contest?.contestType === ContestContestTypeType.NflAts) {
     return <LeaderboardTabATS contestId={contestId} />;
   }
-  return <LeaderboardTabOU contestId={contestId} />;
+  // return <LeaderboardTabOU contestId={contestId} />;
+  return <Text>Temporarily Disabled</Text>;
 }

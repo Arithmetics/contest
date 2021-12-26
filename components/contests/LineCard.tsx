@@ -173,8 +173,6 @@ export default function LineCard({
   const lineClosed = hasLineClosed(line);
   const winningChoice = line.choices?.find((c) => c.isWin);
   const losingChoice = line.choices?.find((c) => !c.isWin);
-  // const winningBetCount = winningChoice?.bets?.length || 0;
-  // const losingBetCount = losingChoice?.bets?.length || 0;
 
   const winningBetCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === winningChoice?.id)
     .length;
