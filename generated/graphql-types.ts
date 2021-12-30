@@ -2079,6 +2079,52 @@ export type TrackerStatusQuery = (
   )>> }
 );
 
+export type AtsTrackerStatusQueryVariables = Exact<{
+  contestId: Scalars['ID'];
+}>;
+
+
+export type AtsTrackerStatusQuery = (
+  { __typename?: 'Query' }
+  & { lines?: Maybe<Array<(
+    { __typename?: 'Line' }
+    & Pick<Line, 'id' | 'title' | 'benchmark' | 'closingTime'>
+    & { image?: Maybe<(
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'id' | 'altText'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudinaryImage_File' }
+        & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )>, choices?: Maybe<Array<(
+      { __typename?: 'Choice' }
+      & Pick<Choice, 'id' | 'selection' | 'isWin'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )>, secondaryImage?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )>, bets?: Maybe<Array<(
+        { __typename?: 'Bet' }
+        & Pick<Bet, 'id' | 'isSuper'>
+        & { user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'id'>
+        )> }
+      )>> }
+    )>> }
+  )>> }
+);
+
 export type LeaderboardQueryVariables = Exact<{
   contestId: Scalars['ID'];
 }>;
@@ -2976,6 +3022,75 @@ export function useTrackerStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrackerStatusQueryHookResult = ReturnType<typeof useTrackerStatusQuery>;
 export type TrackerStatusLazyQueryHookResult = ReturnType<typeof useTrackerStatusLazyQuery>;
 export type TrackerStatusQueryResult = Apollo.QueryResult<TrackerStatusQuery, TrackerStatusQueryVariables>;
+export const AtsTrackerStatusDocument = gql`
+    query ATSTrackerStatus($contestId: ID!) {
+  lines(where: {contest: {id: {equals: $contestId}}}) {
+    id
+    title
+    benchmark
+    closingTime
+    image {
+      id
+      altText
+      image {
+        publicUrlTransformed
+      }
+    }
+    choices {
+      id
+      selection
+      isWin
+      image {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+      secondaryImage {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+      bets {
+        id
+        isSuper
+        user {
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAtsTrackerStatusQuery__
+ *
+ * To run a query within a React component, call `useAtsTrackerStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAtsTrackerStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAtsTrackerStatusQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useAtsTrackerStatusQuery(baseOptions: Apollo.QueryHookOptions<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>(AtsTrackerStatusDocument, options);
+      }
+export function useAtsTrackerStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>(AtsTrackerStatusDocument, options);
+        }
+export type AtsTrackerStatusQueryHookResult = ReturnType<typeof useAtsTrackerStatusQuery>;
+export type AtsTrackerStatusLazyQueryHookResult = ReturnType<typeof useAtsTrackerStatusLazyQuery>;
+export type AtsTrackerStatusQueryResult = Apollo.QueryResult<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>;
 export const LeaderboardDocument = gql`
     query Leaderboard($contestId: ID!) {
   registrations(where: {contest: {id: {equals: $contestId}}}) {

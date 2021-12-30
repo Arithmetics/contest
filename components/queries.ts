@@ -210,6 +210,48 @@ export const TRACKER_STATUS_QUERY = gql`
   }
 `;
 
+export const ATS_TRACKER_STATUS_QUERY = gql`
+  query ATSTrackerStatus($contestId: ID!) {
+    lines(where: { contest: { id: { equals: $contestId } } }) {
+      id
+      title
+      benchmark
+      closingTime
+      image {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+      choices {
+        id
+        selection
+        isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        secondaryImage {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        bets {
+          id
+          isSuper
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const LEADERBOARD_QUERY = gql`
   query Leaderboard($contestId: ID!) {
     registrations(where: { contest: { id: { equals: $contestId } } }) {

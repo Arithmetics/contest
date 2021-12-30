@@ -81,7 +81,7 @@ const atsRules = (
     <Rule
       icon={<Icon as={FaDiceTwo} color={'teal.500'} w={5} h={5} />}
       iconBg={'gray.700'}
-      text={' Picks lock at game time.'}
+      text={' Picks lock in at game time.'}
     />
     <Rule
       icon={<Icon as={FaDiceThree} color={'teal.500'} w={5} h={5} />}
