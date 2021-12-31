@@ -2,12 +2,46 @@ import { Center, Spinner, Box, Divider, Flex } from '@chakra-ui/react';
 import {
   ContestContestTypeType,
   Line,
+  Bet,
   ChoiceSelectionType,
   useAtsTrackerStatusQuery,
 } from '../../../generated/graphql-types';
 
 import LineCardHeader from '../LineCardHeader';
 import { UserBetGroup } from './TrackerOU';
+import TrackerBarGraph, { BarData } from './TrackerBarGraph';
+
+function prepLineData(line: Line): BarData[] {
+  const homeBets = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Home)
+    .reduce((acc, cur) => {
+      cur?.bets?.forEach((b) => acc.push(b));
+      return acc;
+    }, [] as Bet[]);
+
+  const awayBets = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Away)
+    .reduce((acc, cur) => {
+      cur?.bets?.forEach((b) => acc.push(b));
+      return acc;
+    }, [] as Bet[]);
+
+  const data = [
+    {
+      choiceType: ChoiceSelectionType.Home,
+      Regular: homeBets?.filter((b) => !b.isSuper).length ?? 0,
+      Super: homeBets?.filter((b) => b.isSuper).length ?? 0,
+    },
+    {
+      choiceType: ChoiceSelectionType.Away,
+      Regular: awayBets?.filter((b) => !b.isSuper).length ?? 0,
+      Super: awayBets?.filter((b) => b.isSuper).length ?? 0,
+    },
+  ];
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  return data;
+}
 
 type TrackerATSProps = {
   contestId?: string;
@@ -41,6 +75,12 @@ type GenericLineProps = {
 };
 
 function TrackerBarGraphCard({ line, contestId }: GenericLineProps): JSX.Element {
+  const homeWin =
+    line.choices?.some((c) => c.selection === ChoiceSelectionType.Home && c.isWin) || false;
+
+  const awayWin =
+    line.choices?.some((c) => c.selection === ChoiceSelectionType.Away && c.isWin) || false;
+
   return (
     <Box
       maxW={'100%'}
@@ -57,7 +97,7 @@ function TrackerBarGraphCard({ line, contestId }: GenericLineProps): JSX.Element
       <LineCardHeader line={line} contestType={ContestContestTypeType.NflAts} />
       <Divider orientation="horizontal" paddingTop={3} />
       <Box height={'400px'} width={'700px'} maxW={'80vw'}>
-        {/* <TrackerGraph data={prepareLineStandingsForGraph(line as Line)} /> */}
+        <TrackerBarGraph data={prepLineData(line)} homeWin={homeWin} awayWin={awayWin} />
       </Box>
       <Divider orientation="horizontal" paddingY={2} />
       <Flex justifyContent={'center'} marginTop={2}>
