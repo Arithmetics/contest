@@ -25,8 +25,8 @@ export function isAdmin({ session }: AugListAccessArgs): boolean {
   return !!session?.data?.isAdmin;
 }
 
-export function isOwnAccount({ itemId: userId, session }: AugListAccessArgs): boolean {
-  return userId === session?.data.id;
+export function isOwnAccount({ session }: AugListAccessArgs): boolean {
+  return session?.itemId === session?.data.id;
 }
 
 export function isIsoDateInFuture(isoDateString: string | number): boolean {
