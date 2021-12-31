@@ -21,7 +21,7 @@ interface FeatureProps {
 
 const Rule = ({ text, icon, iconBg }: FeatureProps): JSX.Element => {
   return (
-    <Stack direction={'row'} alignItems={'center'}>
+    <Stack direction={'row'} alignItems={'center'} marginTop={2}>
       <Flex w={8} h={8} align={'center'} justify={'center'} rounded={'full'} bg={iconBg}>
         {icon}
       </Flex>

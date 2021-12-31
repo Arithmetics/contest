@@ -50,7 +50,7 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
 
   return (
     <Box overflow="hidden" m={6}>
-      <HStack justifyContent="center" flexWrap={'wrap'}>
+      <HStack justifyContent="center" flexWrap={'wrap'} gridGap={1} marginRight={2}>
         {/* bug fix span */}
         <span></span>
         {contestBetsLoading ? (
@@ -93,20 +93,14 @@ type StatusCardProps = {
 
 function StatusCard({ icon, statLabel, statNumber }: StatusCardProps): JSX.Element {
   return (
-    <HStack
-      margin={3}
-      marginTop={3}
-      maxW={'300px'}
-      width={'full'}
-      bg={'gray.600'}
-      rounded={'md'}
-      p={3}
-    >
-      <Stat>
-        <StatLabel>{statLabel}</StatLabel>
-        <StatNumber>{statNumber}</StatNumber>
-      </Stat>
-      <Avatar icon={icon} />
-    </HStack>
+    <Box maxW={'300px'} width={'full'} bg={'gray.600'} rounded={'md'} p={3}>
+      <HStack>
+        <Stat>
+          <StatLabel>{statLabel}</StatLabel>
+          <StatNumber>{statNumber}</StatNumber>
+        </Stat>
+        <Avatar icon={icon} />
+      </HStack>
+    </Box>
   );
 }

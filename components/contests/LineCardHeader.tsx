@@ -1,4 +1,13 @@
-import { Image, HStack, Stat, StatLabel, StatNumber, StatHelpText, Text } from '@chakra-ui/react';
+import {
+  Image,
+  HStack,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatHelpText,
+  Text,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { Line, ContestContestTypeType } from '../../generated/graphql-types';
 
 export function formatATS(home: boolean, benchmark?: number | null): string {
@@ -27,6 +36,9 @@ type LineCardHeaderProps = {
 };
 
 export default function LineCardHeader({ line, contestType }: LineCardHeaderProps): JSX.Element {
+  const lineFontSize = useBreakpointValue({ base: 'md', md: 'xl' });
+  const titleFontSize = useBreakpointValue({ base: 'xl', md: '2xl' });
+
   if (contestType === ContestContestTypeType.NflAts) {
     const awayChoice = line?.choices?.find((c) => c.selection === 'AWAY');
     const homeChoice = line?.choices?.find((c) => c.selection === 'HOME');
@@ -34,9 +46,9 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
       <HStack>
         <Stat>
           <StatNumber>
-            {line.title}
+            <Text fontSize={titleFontSize}>{line.title}</Text>
             <HStack>
-              <Text>{formatATS(false, line.benchmark)}</Text>
+              <Text fontSize={lineFontSize}>{formatATS(false, line.benchmark)}</Text>
               {awayChoice && (
                 <Image
                   boxSize="40px"
@@ -46,7 +58,7 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
                   src={awayChoice.secondaryImage?.image?.publicUrlTransformed || ''}
                 />
               )}
-              <Text>@</Text>
+              <Text fontSize={lineFontSize}>@</Text>
               {homeChoice && (
                 <Image
                   boxSize="40px"
@@ -56,7 +68,7 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
                   src={homeChoice.secondaryImage?.image?.publicUrlTransformed || ''}
                 />
               )}
-              <Text>{formatATS(true, line.benchmark)}</Text>
+              <Text fontSize={lineFontSize}>{formatATS(true, line.benchmark)}</Text>
             </HStack>
           </StatNumber>
           <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>

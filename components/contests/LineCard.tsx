@@ -357,18 +357,20 @@ export default function LineCard({
                   <Text fontSize="2xl">{selectedChoice?.selection}</Text>
                 </HStack>
               )}
-              {superBetSelected && (
+            </Center>
+            {superBetSelected && (
+              <Center>
                 <Badge marginLeft={2} colorScheme="purple">
                   Super Bet
                 </Badge>
-              )}
-            </Center>
+              </Center>
+            )}
 
             {lineHasWinner(line) && (
               <>
                 {usersBet && (
                   <Center>
-                    <HStack>
+                    <HStack alignItems={'baseline'}>
                       <Text color={'whiteAlpha.600'}>Your result:</Text>
                       {selectedChoice?.isWin ? (
                         <Badge marginLeft={2} colorScheme="green">
