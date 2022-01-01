@@ -120,7 +120,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
         <WinsLossesLeftSection line={line} />
       </HStack>
       <Divider orientation="horizontal" paddingTop={3} />
-      <Box height={'400px'} width={'700px'} maxW={'80vw'}>
+      <Box height={'400px'} width={'650px'} maxW={'80vw'}>
         <TrackerGraph data={prepareLineStandingsForGraph(line as Line)} />
       </Box>
       <Divider orientation="horizontal" paddingY={2} />

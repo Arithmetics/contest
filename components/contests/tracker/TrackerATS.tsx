@@ -96,7 +96,7 @@ function TrackerBarGraphCard({ line, contestId }: GenericLineProps): JSX.Element
     >
       <LineCardHeader line={line} contestType={ContestContestTypeType.NflAts} />
       <Divider orientation="horizontal" paddingTop={3} />
-      <Box height={'400px'} width={'700px'} maxW={'80vw'}>
+      <Box height={'400px'} width={'650px'} maxW={'80vw'}>
         <TrackerBarGraph data={prepLineData(line)} homeWin={homeWin} awayWin={awayWin} />
       </Box>
       <Divider orientation="horizontal" paddingY={2} />
