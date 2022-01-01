@@ -99,6 +99,8 @@ type Choice {
     skip: Int! = 0
   ): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
+  image: CloudImage
+  secondaryImage: CloudImage
   status: ChoiceStatus
   labelName: String
 }
@@ -131,6 +133,8 @@ input ChoiceWhereInput {
   isWin: BooleanFilter
   line: LineWhereInput
   bets: BetManyRelationFilter
+  image: CloudImageWhereInput
+  secondaryImage: CloudImageWhereInput
 }
 
 input ChoiceSelectionTypeNullableFilter {
@@ -157,6 +161,8 @@ input ChoiceUpdateInput {
   isWin: Boolean
   line: LineRelateToOneForUpdateInput
   bets: BetRelateToManyForUpdateInput
+  image: CloudImageRelateToOneForUpdateInput
+  secondaryImage: CloudImageRelateToOneForUpdateInput
 }
 
 input LineRelateToOneForUpdateInput {
@@ -172,6 +178,12 @@ input BetRelateToManyForUpdateInput {
   connect: [BetWhereUniqueInput!]
 }
 
+input CloudImageRelateToOneForUpdateInput {
+  create: CloudImageCreateInput
+  connect: CloudImageWhereUniqueInput
+  disconnect: Boolean
+}
+
 input ChoiceUpdateArgs {
   where: ChoiceWhereUniqueInput!
   data: ChoiceUpdateInput!
@@ -182,6 +194,8 @@ input ChoiceCreateInput {
   isWin: Boolean
   line: LineRelateToOneForCreateInput
   bets: BetRelateToManyForCreateInput
+  image: CloudImageRelateToOneForCreateInput
+  secondaryImage: CloudImageRelateToOneForCreateInput
 }
 
 input LineRelateToOneForCreateInput {
@@ -192,6 +206,11 @@ input LineRelateToOneForCreateInput {
 input BetRelateToManyForCreateInput {
   create: [BetCreateInput!]
   connect: [BetWhereUniqueInput!]
+}
+
+input CloudImageRelateToOneForCreateInput {
+  create: CloudImageCreateInput
+  connect: CloudImageWhereUniqueInput
 }
 
 type CloudImage {
@@ -326,6 +345,7 @@ type Contest {
   description: String
   status: ContestStatusType
   entryFee: Int
+  contestType: ContestContestTypeType
   image: CloudImage
   lines(
     where: LineWhereInput! = {}
@@ -350,6 +370,12 @@ enum ContestStatusType {
   COMPLETE
 }
 
+enum ContestContestTypeType {
+  NBA_OVER_UNDER
+  NFL_OVER_UNDER
+  NFL_ATS
+}
+
 input ContestWhereUniqueInput {
   id: ID
 }
@@ -363,6 +389,7 @@ input ContestWhereInput {
   description: StringFilter
   status: ContestStatusTypeNullableFilter
   entryFee: IntNullableFilter
+  contestType: ContestContestTypeTypeNullableFilter
   image: CloudImageWhereInput
   lines: LineManyRelationFilter
   registrations: RegistrationManyRelationFilter
@@ -387,6 +414,13 @@ input IntNullableFilter {
   not: IntNullableFilter
 }
 
+input ContestContestTypeTypeNullableFilter {
+  equals: ContestContestTypeType
+  in: [ContestContestTypeType!]
+  notIn: [ContestContestTypeType!]
+  not: ContestContestTypeTypeNullableFilter
+}
+
 input LineManyRelationFilter {
   every: LineWhereInput
   some: LineWhereInput
@@ -405,6 +439,7 @@ input ContestOrderByInput {
   description: OrderDirection
   status: OrderDirection
   entryFee: OrderDirection
+  contestType: OrderDirection
 }
 
 input ContestUpdateInput {
@@ -412,16 +447,11 @@ input ContestUpdateInput {
   description: String
   status: ContestStatusType
   entryFee: Int
+  contestType: ContestContestTypeType
   image: CloudImageRelateToOneForUpdateInput
   lines: LineRelateToManyForUpdateInput
   registrations: RegistrationRelateToManyForUpdateInput
   ruleSet: RuleSetRelateToOneForUpdateInput
-}
-
-input CloudImageRelateToOneForUpdateInput {
-  create: CloudImageCreateInput
-  connect: CloudImageWhereUniqueInput
-  disconnect: Boolean
 }
 
 input LineRelateToManyForUpdateInput {
@@ -454,15 +484,11 @@ input ContestCreateInput {
   description: String
   status: ContestStatusType
   entryFee: Int
+  contestType: ContestContestTypeType
   image: CloudImageRelateToOneForCreateInput
   lines: LineRelateToManyForCreateInput
   registrations: RegistrationRelateToManyForCreateInput
   ruleSet: RuleSetRelateToOneForCreateInput
-}
-
-input CloudImageRelateToOneForCreateInput {
-  create: CloudImageCreateInput
-  connect: CloudImageWhereUniqueInput
 }
 
 input LineRelateToManyForCreateInput {

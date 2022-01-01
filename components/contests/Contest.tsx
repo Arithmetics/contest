@@ -2,9 +2,9 @@ import { useRouter } from 'next/router';
 import ContestNav, { ContestTabs } from '../../components/nav/ContestNav';
 import {} from '../../generated/graphql-types';
 import BetsTab from './BetsTab';
-import LeaderboardTab from './LeaderboardTab';
+import LeaderboardTab from './leaderboard/LeaderboardTab';
 import HistoryTab from './HistoryTab';
-import TrackerTab from './TrackerTab';
+import TrackerTab from './tracker/TrackerTab';
 import RulesTab from './RulesTab';
 
 type ContestProps = {
@@ -24,7 +24,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
       return <LeaderboardTab contestId={id} />;
     }
     if (typedContestNav === ContestTabs.RULES) {
-      return <RulesTab />;
+      return <RulesTab contestId={id} />;
     }
     if (typedContestNav === ContestTabs.TRACKER) {
       return <TrackerTab contestId={id} />;

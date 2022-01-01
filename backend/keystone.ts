@@ -62,7 +62,7 @@ export default auth.withAuth(
     db: {
       provider: 'postgresql',
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
-      useMigrations: false, // need to change this some day
+      useMigrations: true,
       async onConnect(context) {
         console.log('connected');
 

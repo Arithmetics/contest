@@ -96,6 +96,8 @@ export type Choice = {
   line?: Maybe<Line>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']>;
+  image?: Maybe<CloudImage>;
+  secondaryImage?: Maybe<CloudImage>;
   status?: Maybe<ChoiceStatus>;
   labelName?: Maybe<Scalars['String']>;
 };
@@ -118,6 +120,8 @@ export type ChoiceCreateInput = {
   isWin?: Maybe<Scalars['Boolean']>;
   line?: Maybe<LineRelateToOneForCreateInput>;
   bets?: Maybe<BetRelateToManyForCreateInput>;
+  image?: Maybe<CloudImageRelateToOneForCreateInput>;
+  secondaryImage?: Maybe<CloudImageRelateToOneForCreateInput>;
 };
 
 export type ChoiceManyRelationFilter = {
@@ -187,6 +191,8 @@ export type ChoiceUpdateInput = {
   isWin?: Maybe<Scalars['Boolean']>;
   line?: Maybe<LineRelateToOneForUpdateInput>;
   bets?: Maybe<BetRelateToManyForUpdateInput>;
+  image?: Maybe<CloudImageRelateToOneForUpdateInput>;
+  secondaryImage?: Maybe<CloudImageRelateToOneForUpdateInput>;
 };
 
 export type ChoiceWhereInput = {
@@ -198,6 +204,8 @@ export type ChoiceWhereInput = {
   isWin?: Maybe<BooleanFilter>;
   line?: Maybe<LineWhereInput>;
   bets?: Maybe<BetManyRelationFilter>;
+  image?: Maybe<CloudImageWhereInput>;
+  secondaryImage?: Maybe<CloudImageWhereInput>;
 };
 
 export type ChoiceWhereUniqueInput = {
@@ -314,6 +322,7 @@ export type Contest = {
   description?: Maybe<Scalars['String']>;
   status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
+  contestType?: Maybe<ContestContestTypeType>;
   image?: Maybe<CloudImage>;
   lines?: Maybe<Array<Line>>;
   linesCount?: Maybe<Scalars['Int']>;
@@ -348,11 +357,25 @@ export type ContestRegistrationsCountArgs = {
   where?: RegistrationWhereInput;
 };
 
+export enum ContestContestTypeType {
+  NbaOverUnder = 'NBA_OVER_UNDER',
+  NflOverUnder = 'NFL_OVER_UNDER',
+  NflAts = 'NFL_ATS'
+}
+
+export type ContestContestTypeTypeNullableFilter = {
+  equals?: Maybe<ContestContestTypeType>;
+  in?: Maybe<Array<ContestContestTypeType>>;
+  notIn?: Maybe<Array<ContestContestTypeType>>;
+  not?: Maybe<ContestContestTypeTypeNullableFilter>;
+};
+
 export type ContestCreateInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
   status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
+  contestType?: Maybe<ContestContestTypeType>;
   image?: Maybe<CloudImageRelateToOneForCreateInput>;
   lines?: Maybe<LineRelateToManyForCreateInput>;
   registrations?: Maybe<RegistrationRelateToManyForCreateInput>;
@@ -365,6 +388,7 @@ export type ContestOrderByInput = {
   description?: Maybe<OrderDirection>;
   status?: Maybe<OrderDirection>;
   entryFee?: Maybe<OrderDirection>;
+  contestType?: Maybe<OrderDirection>;
 };
 
 export type ContestRelateToOneForCreateInput = {
@@ -401,6 +425,7 @@ export type ContestUpdateInput = {
   description?: Maybe<Scalars['String']>;
   status?: Maybe<ContestStatusType>;
   entryFee?: Maybe<Scalars['Int']>;
+  contestType?: Maybe<ContestContestTypeType>;
   image?: Maybe<CloudImageRelateToOneForUpdateInput>;
   lines?: Maybe<LineRelateToManyForUpdateInput>;
   registrations?: Maybe<RegistrationRelateToManyForUpdateInput>;
@@ -416,6 +441,7 @@ export type ContestWhereInput = {
   description?: Maybe<StringFilter>;
   status?: Maybe<ContestStatusTypeNullableFilter>;
   entryFee?: Maybe<IntNullableFilter>;
+  contestType?: Maybe<ContestContestTypeTypeNullableFilter>;
   image?: Maybe<CloudImageWhereInput>;
   lines?: Maybe<LineManyRelationFilter>;
   registrations?: Maybe<RegistrationManyRelationFilter>;
@@ -1829,11 +1855,6 @@ export type UpdateUserAvatarMutation = (
   )> }
 );
 
-export type NewBetFragment = (
-  { __typename?: 'Bet' }
-  & Pick<Bet, 'id'>
-);
-
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1860,7 +1881,7 @@ export type AllContestsQuery = (
   { __typename?: 'Query' }
   & { contests?: Maybe<Array<(
     { __typename?: 'Contest' }
-    & Pick<Contest, 'id' | 'name' | 'description' | 'status' | 'entryFee'>
+    & Pick<Contest, 'id' | 'name' | 'description' | 'status' | 'entryFee' | 'contestType'>
     & { lines?: Maybe<Array<(
       { __typename?: 'Line' }
       & Pick<Line, 'id'>
@@ -1895,7 +1916,7 @@ export type ContestByIdQuery = (
   { __typename?: 'Query' }
   & { contest?: Maybe<(
     { __typename?: 'Contest' }
-    & Pick<Contest, 'id' | 'name' | 'description' | 'status' | 'entryFee'>
+    & Pick<Contest, 'id' | 'name' | 'description' | 'status' | 'entryFee' | 'contestType'>
     & { ruleSet?: Maybe<(
       { __typename?: 'RuleSet' }
       & Pick<RuleSet, 'maxBets' | 'maxSuperBets' | 'superBetPointCount'>
@@ -1912,6 +1933,21 @@ export type ContestByIdQuery = (
       )>, choices?: Maybe<Array<(
         { __typename?: 'Choice' }
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )>, secondaryImage?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )> }
       )>> }
     )>>, registrations?: Maybe<Array<(
       { __typename?: 'Registration' }
@@ -2031,6 +2067,60 @@ export type TrackerStatusQuery = (
     )>>, choices?: Maybe<Array<(
       { __typename?: 'Choice' }
       & Pick<Choice, 'id' | 'selection' | 'isWin'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )> }
+    )>> }
+  )>> }
+);
+
+export type AtsTrackerStatusQueryVariables = Exact<{
+  contestId: Scalars['ID'];
+}>;
+
+
+export type AtsTrackerStatusQuery = (
+  { __typename?: 'Query' }
+  & { lines?: Maybe<Array<(
+    { __typename?: 'Line' }
+    & Pick<Line, 'id' | 'title' | 'benchmark' | 'closingTime'>
+    & { image?: Maybe<(
+      { __typename?: 'CloudImage' }
+      & Pick<CloudImage, 'id' | 'altText'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudinaryImage_File' }
+        & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )>, choices?: Maybe<Array<(
+      { __typename?: 'Choice' }
+      & Pick<Choice, 'id' | 'selection' | 'isWin'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )>, secondaryImage?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )>, bets?: Maybe<Array<(
+        { __typename?: 'Bet' }
+        & Pick<Bet, 'id' | 'isSuper'>
+        & { user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'id'>
+        )> }
+      )>> }
     )>> }
   )>> }
 );
@@ -2091,11 +2181,67 @@ export type ContestBetsQuery = (
   )>> }
 );
 
-export const NewBetFragmentDoc = gql`
-    fragment NewBet on Bet {
-  id
-}
-    `;
+export type AtsLeaderboardQueryVariables = Exact<{
+  contestId: Scalars['ID'];
+}>;
+
+
+export type AtsLeaderboardQuery = (
+  { __typename?: 'Query' }
+  & { contest?: Maybe<(
+    { __typename?: 'Contest' }
+    & { ruleSet?: Maybe<(
+      { __typename?: 'RuleSet' }
+      & Pick<RuleSet, 'id' | 'superBetPointCount' | 'maxBets' | 'maxSuperBets'>
+    )>, registrations?: Maybe<Array<(
+      { __typename?: 'Registration' }
+      & Pick<Registration, 'id'>
+      & { user?: Maybe<(
+        { __typename?: 'User' }
+        & Pick<User, 'id' | 'userName'>
+        & { avatarImage?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'id' | 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )> }
+      )> }
+    )>>, lines?: Maybe<Array<(
+      { __typename?: 'Line' }
+      & Pick<Line, 'id' | 'title' | 'closingTime'>
+      & { choices?: Maybe<Array<(
+        { __typename?: 'Choice' }
+        & Pick<Choice, 'id' | 'selection' | 'isWin'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )>, secondaryImage?: Maybe<(
+          { __typename?: 'CloudImage' }
+          & Pick<CloudImage, 'altText'>
+          & { image?: Maybe<(
+            { __typename?: 'CloudinaryImage_File' }
+            & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+          )> }
+        )>, bets?: Maybe<Array<(
+          { __typename?: 'Bet' }
+          & Pick<Bet, 'id' | 'isSuper'>
+          & { user?: Maybe<(
+            { __typename?: 'User' }
+            & Pick<User, 'id'>
+          )> }
+        )>> }
+      )>> }
+    )>> }
+  )> }
+);
+
+
 export const CheckIfEmailAvailableDocument = gql`
     query CheckIfEmailAvailable($email: String!) {
   usersCount(where: {email: {equals: $email}})
@@ -2520,6 +2666,7 @@ export const AllContestsDocument = gql`
     description
     status
     entryFee
+    contestType
     lines {
       id
       choices {
@@ -2576,6 +2723,7 @@ export const ContestByIdDocument = gql`
     description
     status
     entryFee
+    contestType
     ruleSet {
       maxBets
       maxSuperBets
@@ -2596,6 +2744,18 @@ export const ContestByIdDocument = gql`
         id
         selection
         isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        secondaryImage {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
       }
     }
     registrations {
@@ -2824,6 +2984,12 @@ export const TrackerStatusDocument = gql`
       id
       selection
       isWin
+      image {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
     }
   }
 }
@@ -2856,6 +3022,75 @@ export function useTrackerStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type TrackerStatusQueryHookResult = ReturnType<typeof useTrackerStatusQuery>;
 export type TrackerStatusLazyQueryHookResult = ReturnType<typeof useTrackerStatusLazyQuery>;
 export type TrackerStatusQueryResult = Apollo.QueryResult<TrackerStatusQuery, TrackerStatusQueryVariables>;
+export const AtsTrackerStatusDocument = gql`
+    query ATSTrackerStatus($contestId: ID!) {
+  lines(where: {contest: {id: {equals: $contestId}}}) {
+    id
+    title
+    benchmark
+    closingTime
+    image {
+      id
+      altText
+      image {
+        publicUrlTransformed
+      }
+    }
+    choices {
+      id
+      selection
+      isWin
+      image {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+      secondaryImage {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+      bets {
+        id
+        isSuper
+        user {
+          id
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAtsTrackerStatusQuery__
+ *
+ * To run a query within a React component, call `useAtsTrackerStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAtsTrackerStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAtsTrackerStatusQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useAtsTrackerStatusQuery(baseOptions: Apollo.QueryHookOptions<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>(AtsTrackerStatusDocument, options);
+      }
+export function useAtsTrackerStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>(AtsTrackerStatusDocument, options);
+        }
+export type AtsTrackerStatusQueryHookResult = ReturnType<typeof useAtsTrackerStatusQuery>;
+export type AtsTrackerStatusLazyQueryHookResult = ReturnType<typeof useAtsTrackerStatusLazyQuery>;
+export type AtsTrackerStatusQueryResult = Apollo.QueryResult<AtsTrackerStatusQuery, AtsTrackerStatusQueryVariables>;
 export const LeaderboardDocument = gql`
     query Leaderboard($contestId: ID!) {
   registrations(where: {contest: {id: {equals: $contestId}}}) {
@@ -2957,3 +3192,86 @@ export function useContestBetsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ContestBetsQueryHookResult = ReturnType<typeof useContestBetsQuery>;
 export type ContestBetsLazyQueryHookResult = ReturnType<typeof useContestBetsLazyQuery>;
 export type ContestBetsQueryResult = Apollo.QueryResult<ContestBetsQuery, ContestBetsQueryVariables>;
+export const AtsLeaderboardQueryDocument = gql`
+    query ATSLeaderboardQuery($contestId: ID!) {
+  contest(where: {id: $contestId}) {
+    ruleSet {
+      id
+      superBetPointCount
+      maxBets
+      maxSuperBets
+    }
+    registrations {
+      id
+      user {
+        id
+        userName
+        avatarImage {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
+    }
+    lines {
+      id
+      title
+      closingTime
+      choices {
+        id
+        selection
+        isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        secondaryImage {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        bets {
+          id
+          isSuper
+          user {
+            id
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAtsLeaderboardQuery__
+ *
+ * To run a query within a React component, call `useAtsLeaderboardQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAtsLeaderboardQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAtsLeaderboardQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useAtsLeaderboardQuery(baseOptions: Apollo.QueryHookOptions<AtsLeaderboardQuery, AtsLeaderboardQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<AtsLeaderboardQuery, AtsLeaderboardQueryVariables>(AtsLeaderboardQueryDocument, options);
+      }
+export function useAtsLeaderboardQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AtsLeaderboardQuery, AtsLeaderboardQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<AtsLeaderboardQuery, AtsLeaderboardQueryVariables>(AtsLeaderboardQueryDocument, options);
+        }
+export type AtsLeaderboardQueryHookResult = ReturnType<typeof useAtsLeaderboardQuery>;
+export type AtsLeaderboardQueryLazyQueryHookResult = ReturnType<typeof useAtsLeaderboardQueryLazyQuery>;
+export type AtsLeaderboardQueryQueryResult = Apollo.QueryResult<AtsLeaderboardQuery, AtsLeaderboardQueryVariables>;

@@ -132,7 +132,7 @@ export const Registration = list({
       // RULE: only one registration per user per contest
       const duplicateRegistrations = await lists.Registration.findMany({
         where: {
-          contest: { id: resolvedData.contest.connect.id },
+          contest: { id: { equals: resolvedData.contest.connect.id } },
           user: { id: { equals: session?.data?.id } },
         },
         query: graphql`

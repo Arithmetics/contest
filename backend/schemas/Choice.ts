@@ -31,6 +31,24 @@ export const Choice = list({
     isWin: checkbox({ defaultValue: false }),
     line: relationship({ ref: 'Line.choices', many: false }),
     bets: relationship({ ref: 'Bet.choice', many: true }),
+    image: relationship({
+      ref: 'CloudImage',
+      ui: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
+      },
+    }),
+    secondaryImage: relationship({
+      ref: 'CloudImage',
+      ui: {
+        displayMode: 'cards',
+        cardFields: ['image', 'altText'],
+        inlineCreate: { fields: ['image', 'altText'] },
+        inlineEdit: { fields: ['image', 'altText'] },
+      },
+    }),
     status: virtual({
       field: graphql.field({
         type: graphql.enum({

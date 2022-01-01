@@ -20,7 +20,7 @@ import {
   Line,
   useTrackerStatusQuery,
   useContestBetsQuery,
-} from '../../generated/graphql-types';
+} from '../../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
 
 function winsForOver(line?: Line): number {
@@ -60,11 +60,11 @@ function lossesForUnder(line?: Line): number {
   return Math.max(lossesNeeded, 0);
 }
 
-type TrackerTabProps = {
+type TrackerOUProps = {
   contestId?: string;
 };
 
-export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element {
+export default function TrackerOU({ contestId }: TrackerOUProps): JSX.Element {
   const { data, loading } = useTrackerStatusQuery({ variables: { contestId: contestId || '' } });
 
   if (loading) {
@@ -120,7 +120,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
         <WinsLossesLeftSection line={line} />
       </HStack>
       <Divider orientation="horizontal" paddingTop={3} />
-      <Box height={'400px'} width={'700px'} maxW={'80vw'}>
+      <Box height={'400px'} width={'650px'} maxW={'80vw'}>
         <TrackerGraph data={prepareLineStandingsForGraph(line as Line)} />
       </Box>
       <Divider orientation="horizontal" paddingY={2} />
@@ -177,7 +177,7 @@ type UserBetGroupProps = {
   choiceType: ChoiceSelectionType;
 };
 
-function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps): JSX.Element {
+export function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps): JSX.Element {
   const { data: contestBetsData, loading: contestBetsLoading } = useContestBetsQuery({
     variables: { contestId: contestId || '' },
   });

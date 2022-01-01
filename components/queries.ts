@@ -29,6 +29,7 @@ export const ALL_CONTESTS_QUERY = gql`
       description
       status
       entryFee
+      contestType
       lines {
         id
         choices {
@@ -59,6 +60,7 @@ export const CONTEST_BY_ID_QUERY = gql`
       description
       status
       entryFee
+      contestType
       ruleSet {
         maxBets
         maxSuperBets
@@ -79,6 +81,18 @@ export const CONTEST_BY_ID_QUERY = gql`
           id
           selection
           isWin
+          image {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
+          secondaryImage {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
         }
       }
       registrations {
@@ -185,6 +199,54 @@ export const TRACKER_STATUS_QUERY = gql`
         id
         selection
         isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+      }
+    }
+  }
+`;
+
+export const ATS_TRACKER_STATUS_QUERY = gql`
+  query ATSTrackerStatus($contestId: ID!) {
+    lines(where: { contest: { id: { equals: $contestId } } }) {
+      id
+      title
+      benchmark
+      closingTime
+      image {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+      choices {
+        id
+        selection
+        isWin
+        image {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        secondaryImage {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        bets {
+          id
+          isSuper
+          user {
+            id
+          }
+        }
       }
     }
   }
@@ -197,7 +259,6 @@ export const LEADERBOARD_QUERY = gql`
       user {
         id
         userName
-        # other stuff
         avatarImage {
           id
           altText
@@ -231,6 +292,62 @@ export const CONTEST_BETS_QUERY = gql`
           altText
           image {
             publicUrlTransformed
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const ATS_LEADERBOARD_QUERY = gql`
+  query ATSLeaderboardQuery($contestId: ID!) {
+    contest(where: { id: $contestId }) {
+      ruleSet {
+        id
+        superBetPointCount
+        maxBets
+        maxSuperBets
+      }
+      registrations {
+        id
+        user {
+          id
+          userName
+          avatarImage {
+            id
+            altText
+            image {
+              publicUrlTransformed
+            }
+          }
+        }
+      }
+      lines {
+        id
+        title
+        closingTime
+        choices {
+          id
+          selection
+          isWin
+          image {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
+          secondaryImage {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
+          bets {
+            id
+            isSuper
+            user {
+              id
+            }
           }
         }
       }

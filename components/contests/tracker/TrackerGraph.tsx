@@ -1,8 +1,8 @@
 import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { ResponsiveLine, Serie, PointTooltipProps } from '@nivo/line';
 import { LegendAnchor } from '@nivo/legends';
-import { Line } from '../../generated/graphql-types';
-import theme from '../../theme';
+import { Line } from '../../../generated/graphql-types';
+import theme from '../../../theme';
 
 type ResponsiveLineProps = {
   data: Serie[];
@@ -52,7 +52,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
       axisTop={null}
       axisRight={null}
       axisBottom={{
-        tickValues: maxX,
+        tickValues: maxX < 20 ? maxX : 20,
         tickSize: 1,
         tickPadding: 5,
         tickRotation: 0,

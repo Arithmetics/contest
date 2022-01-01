@@ -34,6 +34,17 @@ export const Contest = list({
       },
     }),
     entryFee: integer(),
+    contestType: select({
+      type: 'enum',
+      options: [
+        { label: 'NBA Over Under', value: 'NBA_OVER_UNDER' },
+        { label: 'NFL Over Under', value: 'NFL_OVER_UNDER' },
+        { label: 'NFL ATS', value: 'NFL_ATS' },
+      ],
+      validation: {
+        isRequired: true,
+      },
+    }),
     image: relationship({
       ref: 'CloudImage',
       ui: {

@@ -104,6 +104,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
                     contestId={contest?.id}
                     userHasEntered={userHasEntered}
                     ruleSet={contest?.ruleSet || undefined}
+                    contestType={contest?.contestType}
                   />
                 );
               })}
@@ -130,6 +131,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
                     contestId={contest?.id}
                     userHasEntered={userHasEntered}
                     ruleSet={contest?.ruleSet || undefined}
+                    contestType={contest?.contestType}
                   />
                 );
               })}
@@ -156,6 +158,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
                     contestId={contest?.id}
                     userHasEntered={userHasEntered}
                     ruleSet={contest?.ruleSet || undefined}
+                    contestType={contest?.contestType}
                   />
                 );
               })}

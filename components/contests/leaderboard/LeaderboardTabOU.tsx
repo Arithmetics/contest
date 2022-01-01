@@ -14,7 +14,7 @@ import {
   Spinner,
 } from '@chakra-ui/react';
 import { firstBy } from 'thenby';
-import { useLeaderboardQuery, Registration } from '../../generated/graphql-types';
+import { useLeaderboardQuery, Registration } from '../../../generated/graphql-types';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(

@@ -15,21 +15,72 @@ import {
   ColorProps,
   StatArrow,
   Badge,
+  Image,
+  useRadio,
+  // getRadioProps,
+  UseRadioProps,
+  useRadioGroup,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 
 import {
   ChoiceSelectionType,
   Line,
   RuleSet,
+  ContestContestTypeType,
   useMakeBetMutation,
   useDeleteBetMutation,
   useContestBetsQuery,
 } from '../../generated/graphql-types';
 
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
-import LineCardHeader from './LineCardHeader';
+import LineCardHeader, { formatATS } from './LineCardHeader';
+
+type RadioImageProps = {
+  hasSelection: boolean;
+  imageUrl?: string | null;
+  altText?: string | null;
+  spread?: number | null;
+  isHome: boolean;
+};
+
+function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
+  const { altText, imageUrl, hasSelection, spread, isHome, isDisabled } = props;
+  const { getInputProps, getCheckboxProps } = useRadio(props);
+
+  const input = getInputProps();
+  const checkbox = getCheckboxProps();
+
+  // border={'1px'}
+  //     borderColor={'teal.500'}
+
+  return (
+    <Box as="label" position="relative">
+      <input {...input} />
+      <Image
+        {...checkbox}
+        _checked={{ filter: 'none', border: '1px', borderColor: 'teal.500' }}
+        filter={hasSelection ? 'grayscale(100%)' : 'none'}
+        htmlHeight="100px"
+        htmlWidth="200px"
+        objectFit="cover"
+        bg={'gray.600'}
+        borderRadius="md"
+        cursor={isDisabled ? 'default' : 'pointer'}
+        alt={altText || 'unknown'}
+        src={imageUrl || ''}
+        transitionProperty="transform"
+        transitionDuration="0.3s"
+        transitionTimingFunction="ease-in-out"
+        _hover={{ transform: isDisabled ? 'scale(1.0)' : 'scale(1.02)' }}
+      />
+      <Badge position="absolute" variant="solid" left="6px" top="6px">
+        {formatATS(isHome, spread)}
+      </Badge>
+    </Box>
+  );
+}
 
 export function hasLineClosed(line: Line): boolean {
   if (!line.closingTime) {
@@ -54,6 +105,7 @@ type LineCardProps = {
   contestId?: string;
   userHasEntered?: boolean;
   ruleSet?: RuleSet;
+  contestType?: ContestContestTypeType | null;
 };
 
 export default function LineCard({
@@ -62,28 +114,15 @@ export default function LineCard({
   contestId,
   userHasEntered,
   ruleSet,
+  contestType,
 }: LineCardProps): JSX.Element {
-  const { data: contestBetsData, loading: contestBetsLoading } = useContestBetsQuery({
+  const { data: contestBetsData, loading: contestBetsLoading, refetch } = useContestBetsQuery({
     variables: { contestId: contestId || '' },
   });
 
   const [makeBet, { loading: makeBetLoading }] = useMakeBetMutation({
-    update: (cache, payload) => {
-      return cache.modify({
-        fields: {
-          allBets(existingAllBets = []) {
-            const newBetRef = cache.writeFragment({
-              data: payload.data?.createBet,
-              fragment: gql`
-                fragment NewBet on Bet {
-                  id
-                }
-              `,
-            });
-            return [...existingAllBets, newBetRef];
-          },
-        },
-      });
+    update: () => {
+      refetch();
     },
   });
   const [deleteBet, { loading: deleteBetLoading }] = useDeleteBetMutation({
@@ -111,6 +150,14 @@ export default function LineCard({
   );
   const [superBetSelected, setSuperBetSelected] = useState<boolean>(usersBet?.isSuper || false);
 
+  const { getRootProps, getRadioProps } = useRadioGroup({
+    name: 'test',
+    defaultValue: formSelectedChoiceId,
+    onChange: setFormSelectedChoiceId,
+  });
+
+  const group = getRootProps();
+
   useEffect(() => {
     if (!selectedChoice) {
       setFormSelectedChoiceId('0');
@@ -127,8 +174,11 @@ export default function LineCard({
   const winningChoice = line.choices?.find((c) => c.isWin);
   const losingChoice = line.choices?.find((c) => !c.isWin);
 
-  const winningBetCount = winningChoice?.bets?.length || 0;
-  const losingBetCount = losingChoice?.bets?.length || 0;
+  const winningBetCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === winningChoice?.id)
+    .length;
+
+  const losingBetCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === losingChoice?.id)
+    .length;
 
   const pickAvailable = !contestBetsLoading && betsRemaining(usersBets, ruleSet) > 0;
   const superPickAvailable = !contestBetsLoading && superBetsRemaining(usersBets, ruleSet) > 0;
@@ -138,15 +188,29 @@ export default function LineCard({
   const overBetVolume = line.choices
     ?.filter((c) => c.selection === ChoiceSelectionType.Over)
     .reduce((acc, c) => {
-      const overCount = c.bets?.length;
+      const overCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
       return acc + (overCount || 0);
     }, 0);
 
   const underBetVolume = line.choices
     ?.filter((c) => c.selection === ChoiceSelectionType.Under)
     .reduce((acc, c) => {
-      const overCount = c.bets?.length;
-      return acc + (overCount || 0);
+      const underCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+      return acc + (underCount || 0);
+    }, 0);
+
+  const awayBetVolume = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Away)
+    .reduce((acc, c) => {
+      const awayCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+      return acc + (awayCount || 0);
+    }, 0);
+
+  const homeBetVolume = line.choices
+    ?.filter((c) => c.selection === ChoiceSelectionType.Home)
+    .reduce((acc, c) => {
+      const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+      return acc + (homeCount || 0);
     }, 0);
 
   const radioTextColor = (choiceId: string): ColorProps => {
@@ -194,6 +258,75 @@ export default function LineCard({
     }
   };
 
+  const radioGroup = (contestType?: ContestContestTypeType | null): JSX.Element => {
+    if (contestType === ContestContestTypeType.NflAts) {
+      return (
+        <>
+          <HStack justifyContent="center" spacing={6} {...group}>
+            {line.choices?.map((choice) => {
+              const radio = getRadioProps({ value: choice.id });
+              return (
+                <RadioImage
+                  key={choice.id}
+                  altText={choice.image?.altText}
+                  imageUrl={choice.image?.image?.publicUrlTransformed}
+                  hasSelection={formSelectedChoiceId !== '0'}
+                  isDisabled={formDisabled}
+                  spread={line.benchmark}
+                  isHome={choice.selection === 'HOME'}
+                  {...radio}
+                />
+              );
+            })}
+          </HStack>
+          <Center>
+            <Checkbox
+              onChange={() => setSuperBetSelected(!superBetSelected)}
+              isChecked={superBetSelected}
+              marginTop={4}
+              isDisabled={formDisabled || !superPickAvailable}
+              colorScheme="teal"
+              size="lg"
+            >
+              Super Pick
+            </Checkbox>
+          </Center>
+        </>
+      );
+    }
+    return (
+      <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
+        <HStack justifyContent="center" spacing={6} {...group}>
+          {line.choices?.map((choice) => {
+            return (
+              <Radio
+                key={choice.id}
+                value={choice.id}
+                disabled={formDisabled}
+                colorScheme="teal"
+                size="lg"
+              >
+                <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
+              </Radio>
+            );
+          })}
+        </HStack>
+        <Center>
+          <Checkbox
+            onChange={() => setSuperBetSelected(!superBetSelected)}
+            isChecked={superBetSelected}
+            marginTop={4}
+            isDisabled={formDisabled || !superPickAvailable}
+            colorScheme="teal"
+            size="lg"
+          >
+            Super Pick
+          </Checkbox>
+        </Center>
+      </RadioGroup>
+    );
+  };
+
   return (
     <Box
       maxW={'500px'}
@@ -208,42 +341,12 @@ export default function LineCard({
       marginTop={6}
       padding={3}
     >
-      <LineCardHeader line={line} />
+      <LineCardHeader line={line} contestType={contestType} />
       <Divider orientation="horizontal" paddingTop={3} />
       {/* middle form */}
       <Stack spacing={0} align={'left'} paddingTop={3}>
         {/* Form starts here */}
-        {!lineClosed && (
-          <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
-            <HStack justifyContent="center" spacing={6}>
-              {line.choices?.map((choice) => {
-                return (
-                  <Radio
-                    key={choice.id}
-                    value={choice.id}
-                    disabled={formDisabled}
-                    colorScheme="teal"
-                    size="lg"
-                  >
-                    <Text {...radioTextColor(choice.id)}>{choice.selection}</Text>
-                  </Radio>
-                );
-              })}
-            </HStack>
-            <Center>
-              <Checkbox
-                onChange={() => setSuperBetSelected(!superBetSelected)}
-                isChecked={superBetSelected}
-                marginTop={4}
-                isDisabled={formDisabled || !superPickAvailable}
-                colorScheme="teal"
-                size="lg"
-              >
-                Super Pick
-              </Checkbox>
-            </Center>
-          </RadioGroup>
-        )}
+        {!lineClosed && radioGroup(contestType)}
         {lineClosed && (
           <>
             <Center>
@@ -254,18 +357,20 @@ export default function LineCard({
                   <Text fontSize="2xl">{selectedChoice?.selection}</Text>
                 </HStack>
               )}
-              {superBetSelected && (
+            </Center>
+            {superBetSelected && (
+              <Center>
                 <Badge marginLeft={2} colorScheme="purple">
                   Super Bet
                 </Badge>
-              )}
-            </Center>
+              </Center>
+            )}
 
             {lineHasWinner(line) && (
               <>
                 {usersBet && (
                   <Center>
-                    <HStack>
+                    <HStack alignItems={'baseline'}>
                       <Text color={'whiteAlpha.600'}>Your result:</Text>
                       {selectedChoice?.isWin ? (
                         <Badge marginLeft={2} colorScheme="green">
@@ -330,12 +435,20 @@ export default function LineCard({
           <>
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
-                <StatLabel>Bet Volume</StatLabel>
-                <StatNumber>{overBetVolume}</StatNumber>
+                <StatLabel>
+                  {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Over'} Bet Volume
+                </StatLabel>
+                <StatNumber>
+                  {contestType === ContestContestTypeType.NflAts ? awayBetVolume : overBetVolume}
+                </StatNumber>
               </Stat>
               <Stat textAlign="center">
-                <StatLabel>Bet Volume</StatLabel>
-                <StatNumber>{underBetVolume}</StatNumber>
+                <StatLabel>
+                  {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Under'} Bet Volume
+                </StatLabel>
+                <StatNumber>
+                  {contestType === ContestContestTypeType.NflAts ? homeBetVolume : underBetVolume}
+                </StatNumber>
               </Stat>
             </HStack>
           </>
