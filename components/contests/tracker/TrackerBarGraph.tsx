@@ -45,6 +45,15 @@ export default function TrackerBarGraph({ data, homeWin, awayWin }: TrackerBarGr
     colors = [theme.colors.red['400'], theme.colors.green['400']];
   }
 
+  const max = data.reduce((acc, cur) => {
+    const total = cur.Regular + cur.Super;
+
+    if (total > acc) {
+      acc = total;
+    }
+    return acc;
+  }, 0);
+
   return (
     <ResponsiveBar
       data={data}
@@ -87,10 +96,11 @@ export default function TrackerBarGraph({ data, homeWin, awayWin }: TrackerBarGr
         legendPosition: 'middle',
       }}
       axisLeft={{
+        tickValues: max < 10 ? max : 10,
         tickSize: 1,
-        tickPadding: 5,
+        tickPadding: 2,
         tickRotation: 0,
-        legend: 'win %',
+        legend: 'Picks / Super Picks',
         legendOffset: -40,
         legendPosition: 'middle',
       }}

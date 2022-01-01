@@ -52,7 +52,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
       axisTop={null}
       axisRight={null}
       axisBottom={{
-        tickValues: maxX,
+        tickValues: maxX < 20 ? maxX : 20,
         tickSize: 1,
         tickPadding: 5,
         tickRotation: 0,

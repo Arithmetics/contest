@@ -436,7 +436,7 @@ export default function LineCard({
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
                 <StatLabel>
-                  {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Under'} Bet Volume
+                  {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Over'} Bet Volume
                 </StatLabel>
                 <StatNumber>
                   {contestType === ContestContestTypeType.NflAts ? awayBetVolume : overBetVolume}
@@ -444,7 +444,7 @@ export default function LineCard({
               </Stat>
               <Stat textAlign="center">
                 <StatLabel>
-                  {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Over'} Bet Volume
+                  {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Under'} Bet Volume
                 </StatLabel>
                 <StatNumber>
                   {contestType === ContestContestTypeType.NflAts ? homeBetVolume : underBetVolume}
