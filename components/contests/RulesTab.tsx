@@ -93,7 +93,7 @@ const atsRules = (
     <Rule
       icon={<Icon as={FaDiceFour} color={'teal.500'} w={5} h={5} />}
       iconBg={'gray.700'}
-      text={'Tie breaker one is most lock picks correct.'}
+      text={'Tie breaker one will be picking the Superbowl Total'}
     />
     <Rule
       icon={<Icon as={FaDiceFive} color={'teal.500'} w={5} h={5} />}
