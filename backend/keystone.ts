@@ -67,14 +67,14 @@ export default auth.withAuth(
         console.log('connected');
 
         cron.schedule('0 0 14 * * *', () => {
-          console.log('running NFL standing job!');
+          // console.log('running NFL standing job!');
 
-          startDailyStandingsJob(
-            context,
-            'ckre48xe10960292pu1w1puj8',
-            17,
-            'http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=100'
-          );
+          // startDailyStandingsJob(
+          //   context,
+          //   'ckre48xe10960292pu1w1puj8',
+          //   17,
+          //   'http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=100'
+          // );
           console.log('running NBA standing job!');
           startDailyStandingsJob(
             context,
