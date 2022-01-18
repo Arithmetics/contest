@@ -78,7 +78,7 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="NFL ATS"
                   leftIcon={<GiAmericanFootballBall />}
-                  href={`/${Routes.CONTESTS}/nflPlayoffATS`}
+                  href={`/${Routes.CONTESTS}/ckxwi0h7g07990imcc781udsx`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
@@ -107,13 +107,12 @@ export default function Nav(): JSX.Element {
               <ButtonLink
                 title="NFL ATS"
                 leftIcon={<GiAmericanFootballBall />}
-                href={`/${Routes.CONTESTS}/nflPlayoffATS`}
-                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/nflPlayoffATS`)}
+                href={`/${Routes.CONTESTS}/ckxwi0h7g07990imcc781udsx`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/ckxwi0h7g07990imcc781udsx`)}
               />
               <ButtonLink
                 title="NFL Over Under"
                 leftIcon={<GiAmericanFootballHelmet />}
-                // href={`/${Routes.CONTESTS}/nflOverUnder`}
                 href={`/${Routes.CONTESTS}/ckre48xe10960292pu1w1puj8`}
                 buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/ckre48xe10960292pu1w1puj8`)}
               />
