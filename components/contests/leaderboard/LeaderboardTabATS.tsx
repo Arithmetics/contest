@@ -71,16 +71,13 @@ function getRemainingLocks(
 
   lines.forEach((line) => {
     line.choices?.forEach((choice) => {
-      if (choice.isWin) {
-        choice.bets?.forEach((bet) => {
-          // todo: use rules
-          if (bet.user?.id) {
-            const counts = bet.isSuper ? 1 : 0;
-            const usersCurrentLocks = remainingLocks[bet.user?.id];
-            remainingLocks[bet.user?.id] = usersCurrentLocks - counts;
-          }
-        });
-      }
+      choice.bets?.forEach((bet) => {
+        if (bet.user?.id) {
+          const counts = bet.isSuper ? 1 : 0;
+          const usersCurrentLocks = remainingLocks[bet.user?.id];
+          remainingLocks[bet.user?.id] = usersCurrentLocks - counts;
+        }
+      });
     });
   });
   return remainingLocks;
