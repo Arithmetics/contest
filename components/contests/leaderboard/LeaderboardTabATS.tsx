@@ -91,7 +91,15 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   const { data, loading } = useAtsLeaderboardQuery({ variables: { contestId: contestId || '' } });
 
   const registrations = data?.contest?.registrations;
-  const lines = data?.contest?.lines;
+  const lines = data?.contest?.lines || [];
+
+  const sortedLines = [...lines].sort(
+    firstBy<Line>((a, b) => {
+      const aTime = a.closingTime || 0;
+      const bTime = b.closingTime || 0;
+      return bTime - aTime;
+    })
+  );
   const ruleSet = data?.contest?.ruleSet;
 
   const totalScores = scoreAllRegistrations(registrations || [], lines || [], ruleSet);
@@ -139,7 +147,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
           </Tr>
         </Thead>
         <Tbody>
-          {lines?.map((line) => {
+          {sortedLines.map((line) => {
             const winningChoice = line?.choices?.find((c) => c.isWin);
 
             return (

@@ -39,10 +39,10 @@ export default function TrackerBarGraph({ data, homeWin, awayWin }: TrackerBarGr
   let colors = [theme.colors.gray['500'], theme.colors.gray['500']];
 
   if (homeWin) {
-    colors = [theme.colors.green['400'], theme.colors.red['400']];
+    colors = [theme.colors.red['400'], theme.colors.green['400']];
   }
   if (awayWin) {
-    colors = [theme.colors.red['400'], theme.colors.green['400']];
+    colors = [theme.colors.green['400'], theme.colors.red['400']];
   }
 
   const max = data.reduce((acc, cur) => {

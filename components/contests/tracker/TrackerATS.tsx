@@ -28,14 +28,14 @@ function prepLineData(line: Line): BarData[] {
 
   const data = [
     {
-      choiceType: ChoiceSelectionType.Home,
-      Regular: homeBets?.filter((b) => !b.isSuper).length ?? 0,
-      Super: homeBets?.filter((b) => b.isSuper).length ?? 0,
-    },
-    {
       choiceType: ChoiceSelectionType.Away,
       Regular: awayBets?.filter((b) => !b.isSuper).length ?? 0,
       Super: awayBets?.filter((b) => b.isSuper).length ?? 0,
+    },
+    {
+      choiceType: ChoiceSelectionType.Home,
+      Regular: homeBets?.filter((b) => !b.isSuper).length ?? 0,
+      Super: homeBets?.filter((b) => b.isSuper).length ?? 0,
     },
   ];
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -83,7 +83,7 @@ function TrackerBarGraphCard({ line, contestId }: GenericLineProps): JSX.Element
 
   return (
     <Box
-      maxW={'100%'}
+      width={'min(680px, 100%)'}
       bg={'gray.600'}
       border={'1px'}
       borderColor={'teal.500'}
