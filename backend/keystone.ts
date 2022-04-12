@@ -17,6 +17,7 @@ import { Bet } from './schemas/Bet';
 import { Registration } from './schemas/Registration';
 import { RuleSet } from './schemas/RuleSet';
 import { Standing } from './schemas/Standing';
+import { History } from './schemas/History';
 
 let sessionSecret = process.env.SESSION_SECRET;
 
@@ -98,6 +99,7 @@ export default auth.withAuth(
       Choice,
       CloudImage,
       Contest,
+      History,
       Line,
       Registration,
       RuleSet,
