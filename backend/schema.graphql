@@ -506,6 +506,79 @@ input RuleSetRelateToOneForCreateInput {
   connect: RuleSetWhereUniqueInput
 }
 
+type History {
+  id: ID!
+  display: String
+  contestType: HistoryContestTypeType
+  year: Int
+  user: User
+}
+
+enum HistoryContestTypeType {
+  NBA_OVER_UNDER
+  NFL_OVER_UNDER
+  NFL_ATS
+}
+
+input HistoryWhereUniqueInput {
+  id: ID
+}
+
+input HistoryWhereInput {
+  AND: [HistoryWhereInput!]
+  OR: [HistoryWhereInput!]
+  NOT: [HistoryWhereInput!]
+  id: IDFilter
+  display: StringFilter
+  contestType: HistoryContestTypeTypeNullableFilter
+  year: IntFilter
+  user: UserWhereInput
+}
+
+input HistoryContestTypeTypeNullableFilter {
+  equals: HistoryContestTypeType
+  in: [HistoryContestTypeType!]
+  notIn: [HistoryContestTypeType!]
+  not: HistoryContestTypeTypeNullableFilter
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
+input HistoryOrderByInput {
+  id: OrderDirection
+  display: OrderDirection
+  contestType: OrderDirection
+  year: OrderDirection
+}
+
+input HistoryUpdateInput {
+  display: String
+  contestType: HistoryContestTypeType
+  year: Int
+  user: UserRelateToOneForUpdateInput
+}
+
+input HistoryUpdateArgs {
+  where: HistoryWhereUniqueInput!
+  data: HistoryUpdateInput!
+}
+
+input HistoryCreateInput {
+  display: String
+  contestType: HistoryContestTypeType
+  year: Int
+  user: UserRelateToOneForCreateInput
+}
+
 type Line {
   id: ID!
   title: String
@@ -773,17 +846,6 @@ input StandingWhereInput {
   line: LineWhereInput
 }
 
-input IntFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntFilter
-}
-
 input StandingOrderByInput {
   id: OrderDirection
   gamesPlayed: OrderDirection
@@ -832,6 +894,13 @@ type User {
     skip: Int! = 0
   ): [Registration!]
   registrationsCount(where: RegistrationWhereInput! = {}): Int
+  histories(
+    where: HistoryWhereInput! = {}
+    orderBy: [HistoryOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [History!]
+  historiesCount(where: HistoryWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
@@ -860,6 +929,7 @@ input UserWhereInput {
   bets: BetManyRelationFilter
   avatarImage: CloudImageWhereInput
   registrations: RegistrationManyRelationFilter
+  histories: HistoryManyRelationFilter
   passwordResetToken: PasswordFilter
   passwordResetIssuedAt: DateTimeNullableFilter
   passwordResetRedeemedAt: DateTimeNullableFilter
@@ -867,6 +937,12 @@ input UserWhereInput {
 
 input PasswordFilter {
   isSet: Boolean!
+}
+
+input HistoryManyRelationFilter {
+  every: HistoryWhereInput
+  some: HistoryWhereInput
+  none: HistoryWhereInput
 }
 
 input DateTimeNullableFilter {
@@ -899,9 +975,17 @@ input UserUpdateInput {
   bets: BetRelateToManyForUpdateInput
   avatarImage: CloudImageRelateToOneForUpdateInput
   registrations: RegistrationRelateToManyForUpdateInput
+  histories: HistoryRelateToManyForUpdateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
+}
+
+input HistoryRelateToManyForUpdateInput {
+  disconnect: [HistoryWhereUniqueInput!]
+  set: [HistoryWhereUniqueInput!]
+  create: [HistoryCreateInput!]
+  connect: [HistoryWhereUniqueInput!]
 }
 
 input UserUpdateArgs {
@@ -918,9 +1002,15 @@ input UserCreateInput {
   bets: BetRelateToManyForCreateInput
   avatarImage: CloudImageRelateToOneForCreateInput
   registrations: RegistrationRelateToManyForCreateInput
+  histories: HistoryRelateToManyForCreateInput
   passwordResetToken: String
   passwordResetIssuedAt: DateTime
   passwordResetRedeemedAt: DateTime
+}
+
+input HistoryRelateToManyForCreateInput {
+  create: [HistoryCreateInput!]
+  connect: [HistoryWhereUniqueInput!]
 }
 
 """
@@ -962,6 +1052,15 @@ type Mutation {
   updateContests(data: [ContestUpdateArgs!]!): [Contest]
   deleteContest(where: ContestWhereUniqueInput!): Contest
   deleteContests(where: [ContestWhereUniqueInput!]!): [Contest]
+  createHistory(data: HistoryCreateInput!): History
+  createHistories(data: [HistoryCreateInput!]!): [History]
+  updateHistory(
+    where: HistoryWhereUniqueInput!
+    data: HistoryUpdateInput!
+  ): History
+  updateHistories(data: [HistoryUpdateArgs!]!): [History]
+  deleteHistory(where: HistoryWhereUniqueInput!): History
+  deleteHistories(where: [HistoryWhereUniqueInput!]!): [History]
   createLine(data: LineCreateInput!): Line
   createLines(data: [LineCreateInput!]!): [Line]
   updateLine(where: LineWhereUniqueInput!, data: LineUpdateInput!): Line
@@ -1081,6 +1180,14 @@ type Query {
   ): [Contest!]
   contest(where: ContestWhereUniqueInput!): Contest
   contestsCount(where: ContestWhereInput! = {}): Int
+  histories(
+    where: HistoryWhereInput! = {}
+    orderBy: [HistoryOrderByInput!]! = []
+    take: Int
+    skip: Int! = 0
+  ): [History!]
+  history(where: HistoryWhereUniqueInput!): History
+  historiesCount(where: HistoryWhereInput! = {}): Int
   lines(
     where: LineWhereInput! = {}
     orderBy: [LineOrderByInput!]! = []

@@ -30,7 +30,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
       return <TrackerTab contestId={id} />;
     }
     if (typedContestNav === ContestTabs.HISTORY) {
-      return <HistoryTab />;
+      return <HistoryTab contestId={id} />;
     }
   };
 

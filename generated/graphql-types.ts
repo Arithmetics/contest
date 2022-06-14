@@ -493,6 +493,87 @@ export type FloatFilter = {
   not?: Maybe<FloatFilter>;
 };
 
+export type History = {
+  __typename?: 'History';
+  id: Scalars['ID'];
+  display?: Maybe<Scalars['String']>;
+  contestType?: Maybe<HistoryContestTypeType>;
+  year?: Maybe<Scalars['Int']>;
+  user?: Maybe<User>;
+};
+
+export enum HistoryContestTypeType {
+  NbaOverUnder = 'NBA_OVER_UNDER',
+  NflOverUnder = 'NFL_OVER_UNDER',
+  NflAts = 'NFL_ATS'
+}
+
+export type HistoryContestTypeTypeNullableFilter = {
+  equals?: Maybe<HistoryContestTypeType>;
+  in?: Maybe<Array<HistoryContestTypeType>>;
+  notIn?: Maybe<Array<HistoryContestTypeType>>;
+  not?: Maybe<HistoryContestTypeTypeNullableFilter>;
+};
+
+export type HistoryCreateInput = {
+  display?: Maybe<Scalars['String']>;
+  contestType?: Maybe<HistoryContestTypeType>;
+  year?: Maybe<Scalars['Int']>;
+  user?: Maybe<UserRelateToOneForCreateInput>;
+};
+
+export type HistoryManyRelationFilter = {
+  every?: Maybe<HistoryWhereInput>;
+  some?: Maybe<HistoryWhereInput>;
+  none?: Maybe<HistoryWhereInput>;
+};
+
+export type HistoryOrderByInput = {
+  id?: Maybe<OrderDirection>;
+  display?: Maybe<OrderDirection>;
+  contestType?: Maybe<OrderDirection>;
+  year?: Maybe<OrderDirection>;
+};
+
+export type HistoryRelateToManyForCreateInput = {
+  create?: Maybe<Array<HistoryCreateInput>>;
+  connect?: Maybe<Array<HistoryWhereUniqueInput>>;
+};
+
+export type HistoryRelateToManyForUpdateInput = {
+  disconnect?: Maybe<Array<HistoryWhereUniqueInput>>;
+  set?: Maybe<Array<HistoryWhereUniqueInput>>;
+  create?: Maybe<Array<HistoryCreateInput>>;
+  connect?: Maybe<Array<HistoryWhereUniqueInput>>;
+};
+
+export type HistoryUpdateArgs = {
+  where: HistoryWhereUniqueInput;
+  data: HistoryUpdateInput;
+};
+
+export type HistoryUpdateInput = {
+  display?: Maybe<Scalars['String']>;
+  contestType?: Maybe<HistoryContestTypeType>;
+  year?: Maybe<Scalars['Int']>;
+  user?: Maybe<UserRelateToOneForUpdateInput>;
+};
+
+export type HistoryWhereInput = {
+  AND?: Maybe<Array<HistoryWhereInput>>;
+  OR?: Maybe<Array<HistoryWhereInput>>;
+  NOT?: Maybe<Array<HistoryWhereInput>>;
+  id?: Maybe<IdFilter>;
+  display?: Maybe<StringFilter>;
+  contestType?: Maybe<HistoryContestTypeTypeNullableFilter>;
+  year?: Maybe<IntFilter>;
+  user?: Maybe<UserWhereInput>;
+};
+
+export type HistoryWhereUniqueInput = {
+  id?: Maybe<Scalars['ID']>;
+};
+
 export type IdFilter = {
   equals?: Maybe<Scalars['ID']>;
   in?: Maybe<Array<Scalars['ID']>>;
@@ -772,6 +853,12 @@ export type Mutation = {
   updateContests?: Maybe<Array<Maybe<Contest>>>;
   deleteContest?: Maybe<Contest>;
   deleteContests?: Maybe<Array<Maybe<Contest>>>;
+  createHistory?: Maybe<History>;
+  createHistories?: Maybe<Array<Maybe<History>>>;
+  updateHistory?: Maybe<History>;
+  updateHistories?: Maybe<Array<Maybe<History>>>;
+  deleteHistory?: Maybe<History>;
+  deleteHistories?: Maybe<Array<Maybe<History>>>;
   createLine?: Maybe<Line>;
   createLines?: Maybe<Array<Maybe<Line>>>;
   updateLine?: Maybe<Line>;
@@ -931,6 +1018,37 @@ export type MutationDeleteContestArgs = {
 
 export type MutationDeleteContestsArgs = {
   where: Array<ContestWhereUniqueInput>;
+};
+
+
+export type MutationCreateHistoryArgs = {
+  data: HistoryCreateInput;
+};
+
+
+export type MutationCreateHistoriesArgs = {
+  data: Array<HistoryCreateInput>;
+};
+
+
+export type MutationUpdateHistoryArgs = {
+  where: HistoryWhereUniqueInput;
+  data: HistoryUpdateInput;
+};
+
+
+export type MutationUpdateHistoriesArgs = {
+  data: Array<HistoryUpdateArgs>;
+};
+
+
+export type MutationDeleteHistoryArgs = {
+  where: HistoryWhereUniqueInput;
+};
+
+
+export type MutationDeleteHistoriesArgs = {
+  where: Array<HistoryWhereUniqueInput>;
 };
 
 
@@ -1166,6 +1284,9 @@ export type Query = {
   contests?: Maybe<Array<Contest>>;
   contest?: Maybe<Contest>;
   contestsCount?: Maybe<Scalars['Int']>;
+  histories?: Maybe<Array<History>>;
+  history?: Maybe<History>;
+  historiesCount?: Maybe<Scalars['Int']>;
   lines?: Maybe<Array<Line>>;
   line?: Maybe<Line>;
   linesCount?: Maybe<Scalars['Int']>;
@@ -1256,6 +1377,24 @@ export type QueryContestArgs = {
 
 export type QueryContestsCountArgs = {
   where?: ContestWhereInput;
+};
+
+
+export type QueryHistoriesArgs = {
+  where?: HistoryWhereInput;
+  orderBy?: Array<HistoryOrderByInput>;
+  take?: Maybe<Scalars['Int']>;
+  skip?: Scalars['Int'];
+};
+
+
+export type QueryHistoryArgs = {
+  where: HistoryWhereUniqueInput;
+};
+
+
+export type QueryHistoriesCountArgs = {
+  where?: HistoryWhereInput;
 };
 
 
@@ -1586,6 +1725,8 @@ export type User = {
   avatarImage?: Maybe<CloudImage>;
   registrations?: Maybe<Array<Registration>>;
   registrationsCount?: Maybe<Scalars['Int']>;
+  histories?: Maybe<Array<History>>;
+  historiesCount?: Maybe<Scalars['Int']>;
   passwordResetToken?: Maybe<PasswordState>;
   passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
@@ -1617,6 +1758,19 @@ export type UserRegistrationsCountArgs = {
   where?: RegistrationWhereInput;
 };
 
+
+export type UserHistoriesArgs = {
+  where?: HistoryWhereInput;
+  orderBy?: Array<HistoryOrderByInput>;
+  take?: Maybe<Scalars['Int']>;
+  skip?: Scalars['Int'];
+};
+
+
+export type UserHistoriesCountArgs = {
+  where?: HistoryWhereInput;
+};
+
 export type UserAuthenticationWithPasswordFailure = {
   __typename?: 'UserAuthenticationWithPasswordFailure';
   message: Scalars['String'];
@@ -1639,6 +1793,7 @@ export type UserCreateInput = {
   bets?: Maybe<BetRelateToManyForCreateInput>;
   avatarImage?: Maybe<CloudImageRelateToOneForCreateInput>;
   registrations?: Maybe<RegistrationRelateToManyForCreateInput>;
+  histories?: Maybe<HistoryRelateToManyForCreateInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
@@ -1679,6 +1834,7 @@ export type UserUpdateInput = {
   bets?: Maybe<BetRelateToManyForUpdateInput>;
   avatarImage?: Maybe<CloudImageRelateToOneForUpdateInput>;
   registrations?: Maybe<RegistrationRelateToManyForUpdateInput>;
+  histories?: Maybe<HistoryRelateToManyForUpdateInput>;
   passwordResetToken?: Maybe<Scalars['String']>;
   passwordResetIssuedAt?: Maybe<Scalars['DateTime']>;
   passwordResetRedeemedAt?: Maybe<Scalars['DateTime']>;
@@ -1697,6 +1853,7 @@ export type UserWhereInput = {
   bets?: Maybe<BetManyRelationFilter>;
   avatarImage?: Maybe<CloudImageWhereInput>;
   registrations?: Maybe<RegistrationManyRelationFilter>;
+  histories?: Maybe<HistoryManyRelationFilter>;
   passwordResetToken?: Maybe<PasswordFilter>;
   passwordResetIssuedAt?: Maybe<DateTimeNullableFilter>;
   passwordResetRedeemedAt?: Maybe<DateTimeNullableFilter>;
@@ -2239,6 +2396,31 @@ export type AtsLeaderboardQuery = (
       )>> }
     )>> }
   )> }
+);
+
+export type HistoriesByTypeQueryVariables = Exact<{
+  contestType: HistoryContestTypeType;
+}>;
+
+
+export type HistoriesByTypeQuery = (
+  { __typename?: 'Query' }
+  & { histories?: Maybe<Array<(
+    { __typename?: 'History' }
+    & Pick<History, 'id' | 'display' | 'year'>
+    & { user?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'userName'>
+      & { avatarImage?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'id' | 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )> }
+    )> }
+  )>> }
 );
 
 
@@ -3275,3 +3457,51 @@ export function useAtsLeaderboardQueryLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type AtsLeaderboardQueryHookResult = ReturnType<typeof useAtsLeaderboardQuery>;
 export type AtsLeaderboardQueryLazyQueryHookResult = ReturnType<typeof useAtsLeaderboardQueryLazyQuery>;
 export type AtsLeaderboardQueryQueryResult = Apollo.QueryResult<AtsLeaderboardQuery, AtsLeaderboardQueryVariables>;
+export const HistoriesByTypeQueryDocument = gql`
+    query HistoriesByTypeQuery($contestType: HistoryContestTypeType!) {
+  histories(where: {contestType: {equals: $contestType}}, orderBy: [{year: asc}]) {
+    id
+    display
+    year
+    user {
+      id
+      userName
+      avatarImage {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useHistoriesByTypeQuery__
+ *
+ * To run a query within a React component, call `useHistoriesByTypeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHistoriesByTypeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHistoriesByTypeQuery({
+ *   variables: {
+ *      contestType: // value for 'contestType'
+ *   },
+ * });
+ */
+export function useHistoriesByTypeQuery(baseOptions: Apollo.QueryHookOptions<HistoriesByTypeQuery, HistoriesByTypeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<HistoriesByTypeQuery, HistoriesByTypeQueryVariables>(HistoriesByTypeQueryDocument, options);
+      }
+export function useHistoriesByTypeQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HistoriesByTypeQuery, HistoriesByTypeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<HistoriesByTypeQuery, HistoriesByTypeQueryVariables>(HistoriesByTypeQueryDocument, options);
+        }
+export type HistoriesByTypeQueryHookResult = ReturnType<typeof useHistoriesByTypeQuery>;
+export type HistoriesByTypeQueryLazyQueryHookResult = ReturnType<typeof useHistoriesByTypeQueryLazyQuery>;
+export type HistoriesByTypeQueryQueryResult = Apollo.QueryResult<HistoriesByTypeQuery, HistoriesByTypeQueryVariables>;

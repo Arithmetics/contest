@@ -68,6 +68,17 @@ model Contest {
   @@index([imageId])
 }
 
+model History {
+  id          String                 @id @default(cuid())
+  display     String                 @default("")
+  contestType HistoryContestTypeType
+  year        Int
+  user        User?                  @relation("History_user", fields: [userId], references: [id])
+  userId      String?                @map("user")
+
+  @@index([userId])
+}
+
 model Line {
   id          String      @id @default(cuid())
   title       String      @default("")
@@ -126,6 +137,7 @@ model User {
   avatarImage             CloudImage?    @relation("User_avatarImage", fields: [avatarImageId], references: [id])
   avatarImageId           String?        @map("avatarImage")
   registrations           Registration[] @relation("Registration_user")
+  histories               History[]      @relation("History_user")
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
@@ -147,6 +159,12 @@ enum ContestStatusType {
 }
 
 enum ContestContestTypeType {
+  NBA_OVER_UNDER
+  NFL_OVER_UNDER
+  NFL_ATS
+}
+
+enum HistoryContestTypeType {
   NBA_OVER_UNDER
   NFL_OVER_UNDER
   NFL_ATS

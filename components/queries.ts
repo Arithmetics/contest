@@ -354,3 +354,24 @@ export const ATS_LEADERBOARD_QUERY = gql`
     }
   }
 `;
+
+export const HISTORIES_BY_TYPE_QUERY = gql`
+  query HistoriesByTypeQuery($contestType: HistoryContestTypeType!) {
+    histories(where: { contestType: { equals: $contestType } }, orderBy: [{ year: asc }]) {
+      id
+      display
+      year
+      user {
+        id
+        userName
+        avatarImage {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
+    }
+  }
+`;

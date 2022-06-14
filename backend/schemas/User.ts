@@ -31,6 +31,7 @@ export const User = list({
       },
     }),
     registrations: relationship({ ref: 'Registration.user', many: true }),
+    histories: relationship({ ref: 'History.user', many: true }),
   },
   ui: {
     listView: {

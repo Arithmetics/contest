@@ -2,6 +2,12 @@ import { integer, relationship, select, text } from '@keystone-next/keystone/fie
 import { list } from '@keystone-next/keystone';
 import { isAdmin } from '../keystoneTypeAugments';
 
+export enum RootContestType {
+  NBA_OVER_UNDER = 'NBA_OVER_UNDER',
+  NFL_OVER_UNDER = 'NFL_OVER_UNDER',
+  NFL_ATS = 'NFL_ATS',
+}
+
 export const Contest = list({
   access: {
     operation: {
@@ -37,9 +43,9 @@ export const Contest = list({
     contestType: select({
       type: 'enum',
       options: [
-        { label: 'NBA Over Under', value: 'NBA_OVER_UNDER' },
-        { label: 'NFL Over Under', value: 'NFL_OVER_UNDER' },
-        { label: 'NFL ATS', value: 'NFL_ATS' },
+        { label: 'NBA Over Under', value: RootContestType.NBA_OVER_UNDER },
+        { label: 'NFL Over Under', value: RootContestType.NFL_OVER_UNDER },
+        { label: 'NFL ATS', value: RootContestType.NFL_ATS },
       ],
       validation: {
         isRequired: true,
