@@ -94,6 +94,7 @@ export const UPDATE_USER_AVATAR_MUTATION = gql`
       email
       userName
       name
+
       avatarImage {
         image {
           publicUrlTransformed

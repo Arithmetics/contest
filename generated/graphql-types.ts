@@ -2019,7 +2019,7 @@ export type CurrentUserQuery = (
   { __typename?: 'Query' }
   & { authenticatedItem?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'name' | 'userName'>
+    & Pick<User, 'id' | 'email' | 'name' | 'userName' | 'isAdmin'>
     & { avatarImage?: Maybe<(
       { __typename?: 'CloudImage' }
       & Pick<CloudImage, 'id' | 'altText'>
@@ -2111,7 +2111,7 @@ export type ContestByIdQuery = (
       & Pick<Registration, 'id'>
       & { user?: Maybe<(
         { __typename?: 'User' }
-        & Pick<User, 'id' | 'userName'>
+        & Pick<User, 'id' | 'email' | 'userName'>
         & { avatarImage?: Maybe<(
           { __typename?: 'CloudImage' }
           & Pick<CloudImage, 'id' | 'altText'>
@@ -2802,6 +2802,7 @@ export const CurrentUserDocument = gql`
       email
       name
       userName
+      isAdmin
       avatarImage {
         id
         altText
@@ -2944,6 +2945,7 @@ export const ContestByIdDocument = gql`
       id
       user {
         id
+        email
         userName
         avatarImage {
           id

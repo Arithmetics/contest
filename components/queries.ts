@@ -8,6 +8,7 @@ export const CURRENT_USER_QUERY = gql`
         email
         name
         userName
+        isAdmin
         # other stuff
         avatarImage {
           id
@@ -99,6 +100,7 @@ export const CONTEST_BY_ID_QUERY = gql`
         id
         user {
           id
+          email
           userName
           avatarImage {
             id
