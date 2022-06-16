@@ -2082,7 +2082,7 @@ export type ContestByIdQuery = (
       & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
       & { image?: Maybe<(
         { __typename?: 'CloudImage' }
-        & Pick<CloudImage, 'altText'>
+        & Pick<CloudImage, 'id' | 'altText'>
         & { image?: Maybe<(
           { __typename?: 'CloudinaryImage_File' }
           & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2092,14 +2092,14 @@ export type ContestByIdQuery = (
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
         & { image?: Maybe<(
           { __typename?: 'CloudImage' }
-          & Pick<CloudImage, 'altText'>
+          & Pick<CloudImage, 'id' | 'altText'>
           & { image?: Maybe<(
             { __typename?: 'CloudinaryImage_File' }
             & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
           )> }
         )>, secondaryImage?: Maybe<(
           { __typename?: 'CloudImage' }
-          & Pick<CloudImage, 'altText'>
+          & Pick<CloudImage, 'id' | 'altText'>
           & { image?: Maybe<(
             { __typename?: 'CloudinaryImage_File' }
             & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2123,7 +2123,7 @@ export type ContestByIdQuery = (
       )> }
     )>>, image?: Maybe<(
       { __typename?: 'CloudImage' }
-      & Pick<CloudImage, 'altText'>
+      & Pick<CloudImage, 'id' | 'altText'>
       & { image?: Maybe<(
         { __typename?: 'CloudinaryImage_File' }
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2275,7 +2275,7 @@ export type AtsTrackerStatusQuery = (
         & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
-          & Pick<User, 'id'>
+          & Pick<User, 'id' | 'email'>
         )> }
       )>> }
     )>> }
@@ -2918,6 +2918,7 @@ export const ContestByIdDocument = gql`
       closingTime
       title
       image {
+        id
         image {
           publicUrlTransformed
         }
@@ -2928,12 +2929,14 @@ export const ContestByIdDocument = gql`
         selection
         isWin
         image {
+          id
           image {
             publicUrlTransformed
           }
           altText
         }
         secondaryImage {
+          id
           image {
             publicUrlTransformed
           }
@@ -2957,6 +2960,7 @@ export const ContestByIdDocument = gql`
       }
     }
     image {
+      id
       image {
         publicUrlTransformed
       }
@@ -3241,6 +3245,7 @@ export const AtsTrackerStatusDocument = gql`
         isSuper
         user {
           id
+          email
         }
       }
     }

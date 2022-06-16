@@ -176,6 +176,9 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
             <Text fontSize="lg" textAlign="center">
               {contest?.description}
             </Text>
+            <Text fontSize="md" textAlign="center">
+              Pay here: https://account.venmo.com/u/BrockTillotson
+            </Text>
           </Center>
         </>
       ) : undefined}

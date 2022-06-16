@@ -73,6 +73,7 @@ export const CONTEST_BY_ID_QUERY = gql`
         closingTime
         title
         image {
+          id
           image {
             publicUrlTransformed
           }
@@ -83,12 +84,14 @@ export const CONTEST_BY_ID_QUERY = gql`
           selection
           isWin
           image {
+            id
             image {
               publicUrlTransformed
             }
             altText
           }
           secondaryImage {
+            id
             image {
               publicUrlTransformed
             }
@@ -112,6 +115,7 @@ export const CONTEST_BY_ID_QUERY = gql`
         }
       }
       image {
+        id
         image {
           publicUrlTransformed
         }
@@ -247,6 +251,7 @@ export const ATS_TRACKER_STATUS_QUERY = gql`
           isSuper
           user {
             id
+            email
           }
         }
       }

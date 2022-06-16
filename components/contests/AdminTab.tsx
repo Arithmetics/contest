@@ -1,5 +1,7 @@
 import { Code, Center, Spinner, Heading, Flex } from '@chakra-ui/react';
-import { useContestByIdQuery } from '../../generated/graphql-types';
+import { useContestByIdQuery, ContestContestTypeType } from '../../generated/graphql-types';
+import CSVsATS from './CSVsATS';
+import CSVsOU from './CSVsOU';
 
 type AdminTabProps = {
   contestId?: string;
@@ -43,6 +45,11 @@ export default function AdminTab({ contestId }: AdminTabProps): JSX.Element {
         <Center>
           <Code>{emails}</Code>
         </Center>
+        {contestData?.contest?.contestType === ContestContestTypeType.NflAts ? (
+          <CSVsATS contestId={contestData?.contest?.id} />
+        ) : (
+          <CSVsOU contestId={contestData?.contest?.id} />
+        )}
       </Flex>
     </Center>
   );
