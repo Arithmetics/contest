@@ -8,7 +8,7 @@ type CSVsATSProps = {
 
 function createLineCSVData(line: Line): string[][] {
   const data: string[][] = [['game', 'email', 'selection', 'isSuper']];
-  console.log({ line });
+
   line.choices?.forEach((choice) => {
     choice?.bets?.forEach((bet) => {
       data.push([
