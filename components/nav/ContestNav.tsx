@@ -43,6 +43,7 @@ export enum ContestTabs {
   RULES = 'rules',
   TRACKER = 'tracker',
   HISTORY = 'history',
+  ADMIN = 'admin',
 }
 
 const tabIndices: Record<number, ContestTabs> = {
@@ -51,6 +52,7 @@ const tabIndices: Record<number, ContestTabs> = {
   2: ContestTabs.RULES,
   3: ContestTabs.TRACKER,
   4: ContestTabs.HISTORY,
+  5: ContestTabs.ADMIN,
 };
 
 const indexedTabs: Record<string, number> = {
@@ -59,6 +61,7 @@ const indexedTabs: Record<string, number> = {
   [ContestTabs.RULES]: 2,
   [ContestTabs.TRACKER]: 3,
   [ContestTabs.HISTORY]: 4,
+  [ContestTabs.ADMIN]: 5,
 };
 
 type ContestNavProps = {
@@ -173,6 +176,9 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
             <Text fontSize="lg" textAlign="center">
               {contest?.description}
             </Text>
+            <Text fontSize="md" textAlign="center">
+              Pay here: https://account.venmo.com/u/BrockTillotson
+            </Text>
           </Center>
         </>
       ) : undefined}
@@ -220,6 +226,11 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
             <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
               History
             </Tab>
+            {userData?.authenticatedItem?.isAdmin && (
+              <Tab py={4} m={0} _focus={{ boxShadow: 'none' }}>
+                Admin
+              </Tab>
+            )}
           </TabList>
         </Tabs>
       </Flex>

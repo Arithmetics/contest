@@ -6,6 +6,7 @@ import LeaderboardTab from './leaderboard/LeaderboardTab';
 import HistoryTab from './HistoryTab';
 import TrackerTab from './tracker/TrackerTab';
 import RulesTab from './RulesTab';
+import AdminTab from './AdminTab';
 
 type ContestProps = {
   id?: string;
@@ -31,6 +32,9 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
     }
     if (typedContestNav === ContestTabs.HISTORY) {
       return <HistoryTab contestId={id} />;
+    }
+    if (typedContestNav === ContestTabs.ADMIN) {
+      return <AdminTab contestId={id} />;
     }
   };
 

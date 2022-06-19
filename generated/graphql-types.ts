@@ -2019,7 +2019,7 @@ export type CurrentUserQuery = (
   { __typename?: 'Query' }
   & { authenticatedItem?: Maybe<(
     { __typename?: 'User' }
-    & Pick<User, 'id' | 'email' | 'name' | 'userName'>
+    & Pick<User, 'id' | 'email' | 'name' | 'userName' | 'isAdmin'>
     & { avatarImage?: Maybe<(
       { __typename?: 'CloudImage' }
       & Pick<CloudImage, 'id' | 'altText'>
@@ -2082,7 +2082,7 @@ export type ContestByIdQuery = (
       & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
       & { image?: Maybe<(
         { __typename?: 'CloudImage' }
-        & Pick<CloudImage, 'altText'>
+        & Pick<CloudImage, 'id' | 'altText'>
         & { image?: Maybe<(
           { __typename?: 'CloudinaryImage_File' }
           & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2092,14 +2092,14 @@ export type ContestByIdQuery = (
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
         & { image?: Maybe<(
           { __typename?: 'CloudImage' }
-          & Pick<CloudImage, 'altText'>
+          & Pick<CloudImage, 'id' | 'altText'>
           & { image?: Maybe<(
             { __typename?: 'CloudinaryImage_File' }
             & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
           )> }
         )>, secondaryImage?: Maybe<(
           { __typename?: 'CloudImage' }
-          & Pick<CloudImage, 'altText'>
+          & Pick<CloudImage, 'id' | 'altText'>
           & { image?: Maybe<(
             { __typename?: 'CloudinaryImage_File' }
             & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2111,7 +2111,7 @@ export type ContestByIdQuery = (
       & Pick<Registration, 'id'>
       & { user?: Maybe<(
         { __typename?: 'User' }
-        & Pick<User, 'id' | 'userName'>
+        & Pick<User, 'id' | 'email' | 'userName'>
         & { avatarImage?: Maybe<(
           { __typename?: 'CloudImage' }
           & Pick<CloudImage, 'id' | 'altText'>
@@ -2123,7 +2123,7 @@ export type ContestByIdQuery = (
       )> }
     )>>, image?: Maybe<(
       { __typename?: 'CloudImage' }
-      & Pick<CloudImage, 'altText'>
+      & Pick<CloudImage, 'id' | 'altText'>
       & { image?: Maybe<(
         { __typename?: 'CloudinaryImage_File' }
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
@@ -2275,7 +2275,7 @@ export type AtsTrackerStatusQuery = (
         & Pick<Bet, 'id' | 'isSuper'>
         & { user?: Maybe<(
           { __typename?: 'User' }
-          & Pick<User, 'id'>
+          & Pick<User, 'id' | 'email'>
         )> }
       )>> }
     )>> }
@@ -2802,6 +2802,7 @@ export const CurrentUserDocument = gql`
       email
       name
       userName
+      isAdmin
       avatarImage {
         id
         altText
@@ -2917,6 +2918,7 @@ export const ContestByIdDocument = gql`
       closingTime
       title
       image {
+        id
         image {
           publicUrlTransformed
         }
@@ -2927,12 +2929,14 @@ export const ContestByIdDocument = gql`
         selection
         isWin
         image {
+          id
           image {
             publicUrlTransformed
           }
           altText
         }
         secondaryImage {
+          id
           image {
             publicUrlTransformed
           }
@@ -2944,6 +2948,7 @@ export const ContestByIdDocument = gql`
       id
       user {
         id
+        email
         userName
         avatarImage {
           id
@@ -2955,6 +2960,7 @@ export const ContestByIdDocument = gql`
       }
     }
     image {
+      id
       image {
         publicUrlTransformed
       }
@@ -3239,6 +3245,7 @@ export const AtsTrackerStatusDocument = gql`
         isSuper
         user {
           id
+          email
         }
       }
     }
