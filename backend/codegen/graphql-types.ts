@@ -326,6 +326,7 @@ export type Contest = {
   registrations?: Maybe<Array<Registration>>;
   registrationsCount?: Maybe<Scalars['Int']>;
   ruleSet?: Maybe<RuleSet>;
+  winner?: Maybe<User>;
 };
 
 
@@ -377,6 +378,7 @@ export type ContestCreateInput = {
   lines?: Maybe<LineRelateToManyForCreateInput>;
   registrations?: Maybe<RegistrationRelateToManyForCreateInput>;
   ruleSet?: Maybe<RuleSetRelateToOneForCreateInput>;
+  winner?: Maybe<UserRelateToOneForCreateInput>;
 };
 
 export type ContestOrderByInput = {
@@ -427,6 +429,7 @@ export type ContestUpdateInput = {
   lines?: Maybe<LineRelateToManyForUpdateInput>;
   registrations?: Maybe<RegistrationRelateToManyForUpdateInput>;
   ruleSet?: Maybe<RuleSetRelateToOneForUpdateInput>;
+  winner?: Maybe<UserRelateToOneForUpdateInput>;
 };
 
 export type ContestWhereInput = {
@@ -443,6 +446,7 @@ export type ContestWhereInput = {
   lines?: Maybe<LineManyRelationFilter>;
   registrations?: Maybe<RegistrationManyRelationFilter>;
   ruleSet?: Maybe<RuleSetWhereInput>;
+  winner?: Maybe<UserWhereInput>;
 };
 
 export type ContestWhereUniqueInput = {

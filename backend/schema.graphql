@@ -362,6 +362,7 @@ type Contest {
   ): [Registration!]
   registrationsCount(where: RegistrationWhereInput! = {}): Int
   ruleSet: RuleSet
+  winner: User
 }
 
 enum ContestStatusType {
@@ -394,6 +395,7 @@ input ContestWhereInput {
   lines: LineManyRelationFilter
   registrations: RegistrationManyRelationFilter
   ruleSet: RuleSetWhereInput
+  winner: UserWhereInput
 }
 
 input ContestStatusTypeNullableFilter {
@@ -452,6 +454,7 @@ input ContestUpdateInput {
   lines: LineRelateToManyForUpdateInput
   registrations: RegistrationRelateToManyForUpdateInput
   ruleSet: RuleSetRelateToOneForUpdateInput
+  winner: UserRelateToOneForUpdateInput
 }
 
 input LineRelateToManyForUpdateInput {
@@ -489,6 +492,7 @@ input ContestCreateInput {
   lines: LineRelateToManyForCreateInput
   registrations: RegistrationRelateToManyForCreateInput
   ruleSet: RuleSetRelateToOneForCreateInput
+  winner: UserRelateToOneForCreateInput
 }
 
 input LineRelateToManyForCreateInput {

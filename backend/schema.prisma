@@ -64,8 +64,11 @@ model Contest {
   registrations Registration[]         @relation("Registration_contest")
   ruleSet       RuleSet?               @relation("Contest_ruleSet", fields: [ruleSetId], references: [id])
   ruleSetId     String?                @unique @map("ruleSet")
+  winner        User?                  @relation("Contest_winner", fields: [winnerId], references: [id])
+  winnerId      String?                @map("winner")
 
   @@index([imageId])
+  @@index([winnerId])
 }
 
 model History {
@@ -141,6 +144,7 @@ model User {
   passwordResetToken      String?
   passwordResetIssuedAt   DateTime?
   passwordResetRedeemedAt DateTime?
+  from_Contest_winner     Contest[]      @relation("Contest_winner")
 
   @@index([avatarImageId])
 }

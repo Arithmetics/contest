@@ -329,6 +329,7 @@ export type Contest = {
   registrations?: Maybe<Array<Registration>>;
   registrationsCount?: Maybe<Scalars['Int']>;
   ruleSet?: Maybe<RuleSet>;
+  winner?: Maybe<User>;
 };
 
 
@@ -380,6 +381,7 @@ export type ContestCreateInput = {
   lines?: Maybe<LineRelateToManyForCreateInput>;
   registrations?: Maybe<RegistrationRelateToManyForCreateInput>;
   ruleSet?: Maybe<RuleSetRelateToOneForCreateInput>;
+  winner?: Maybe<UserRelateToOneForCreateInput>;
 };
 
 export type ContestOrderByInput = {
@@ -430,6 +432,7 @@ export type ContestUpdateInput = {
   lines?: Maybe<LineRelateToManyForUpdateInput>;
   registrations?: Maybe<RegistrationRelateToManyForUpdateInput>;
   ruleSet?: Maybe<RuleSetRelateToOneForUpdateInput>;
+  winner?: Maybe<UserRelateToOneForUpdateInput>;
 };
 
 export type ContestWhereInput = {
@@ -446,6 +449,7 @@ export type ContestWhereInput = {
   lines?: Maybe<LineManyRelationFilter>;
   registrations?: Maybe<RegistrationManyRelationFilter>;
   ruleSet?: Maybe<RuleSetWhereInput>;
+  winner?: Maybe<UserWhereInput>;
 };
 
 export type ContestWhereUniqueInput = {
@@ -2060,6 +2064,17 @@ export type AllContestsQuery = (
         { __typename?: 'CloudinaryImage_File' }
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
       )> }
+    )>, winner?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'userName'>
+      & { avatarImage?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'id' | 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )> }
     )> }
   )>> }
 );
@@ -2127,6 +2142,17 @@ export type ContestByIdQuery = (
       & { image?: Maybe<(
         { __typename?: 'CloudinaryImage_File' }
         & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+      )> }
+    )>, winner?: Maybe<(
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'userName'>
+      & { avatarImage?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'id' | 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
       )> }
     )> }
   )> }
@@ -2868,6 +2894,17 @@ export const AllContestsDocument = gql`
       }
       altText
     }
+    winner {
+      id
+      userName
+      avatarImage {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
   }
 }
     `;
@@ -2965,6 +3002,17 @@ export const ContestByIdDocument = gql`
         publicUrlTransformed
       }
       altText
+    }
+    winner {
+      id
+      userName
+      avatarImage {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
     }
   }
 }
