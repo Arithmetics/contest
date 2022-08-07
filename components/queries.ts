@@ -49,6 +49,17 @@ export const ALL_CONTESTS_QUERY = gql`
         }
         altText
       }
+      winner {
+        id
+        userName
+        avatarImage {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
+      }
     }
   }
 `;
@@ -120,6 +131,17 @@ export const CONTEST_BY_ID_QUERY = gql`
           publicUrlTransformed
         }
         altText
+      }
+      winner {
+        id
+        userName
+        avatarImage {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
       }
     }
   }

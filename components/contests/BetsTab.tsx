@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   Button,
   Collapse,
@@ -8,6 +9,7 @@ import {
   Center,
   Spinner,
   useDisclosure,
+  useToast,
 } from '@chakra-ui/react';
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
 import BetsStatusLine from './BetsStatusLine';
@@ -19,6 +21,7 @@ import {
   useCurrentUserQuery,
   useContestBetsQuery,
 } from '../../generated/graphql-types';
+import PayToast from './PayToast';
 
 export enum ContestTabs {
   BETS = 'bets',
@@ -58,6 +61,25 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const contest = contestData?.contest as Contest | undefined;
   const lines = contest?.lines as Line[] | undefined;
   const user = userData?.authenticatedItem as User | undefined;
+
+  const usersRegistration = contest?.registrations?.find(
+    (r) => r.user?.id === userData?.authenticatedItem?.id
+  );
+
+  // console.log(contest?.registrations, );
+  const toast = useToast();
+
+  useEffect(() => {
+    if (usersRegistration && !usersRegistration.hasPaid) {
+      toast({
+        title: 'Have you paid yet?',
+        description: <PayToast />,
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [usersRegistration?.id]);
 
   if (getContestLoading || getUserLoading || contestBetsLoading) {
     return (

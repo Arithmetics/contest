@@ -24,6 +24,8 @@ import {
   useDisclosure,
   useBreakpointValue,
   HStack,
+  Tooltip,
+  Avatar,
 } from '@chakra-ui/react';
 import { SettingsIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/router';
@@ -174,12 +176,20 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
 
           <Center>
             <Text fontSize="lg" textAlign="center">
-              {contest?.description}
-            </Text>
-            <Text fontSize="md" textAlign="center">
-              Pay here: https://account.venmo.com/u/BrockTillotson
+              {contest.status === ContestStatusType.Complete ? 'Winner' : contest?.description}
             </Text>
           </Center>
+          {contest.status === ContestStatusType.Complete && contest.winner ? (
+            <Center>
+              <Tooltip label={contest.winner.userName}>
+                <Avatar
+                  size="lg"
+                  name={contest.winner.userName || ''}
+                  src={contest.winner.avatarImage?.image?.publicUrlTransformed || ''}
+                />
+              </Tooltip>
+            </Center>
+          ) : null}
         </>
       ) : undefined}
 

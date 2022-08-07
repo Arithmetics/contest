@@ -15,6 +15,8 @@ import {
   Center,
   useColorModeValue,
   useToast,
+  Tooltip,
+  Avatar,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 
@@ -99,7 +101,6 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
       router.push(`/${Routes.CONTESTS}/${contest.id}`);
     }
   };
-
   return (
     <Box
       maxW={'500px'}
@@ -135,6 +136,20 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
             <StatLabel>Entrants</StatLabel>
             <StatNumber>{contest.registrations?.length}</StatNumber>
           </Stat>
+          {contest.status === ContestStatusType.Complete && contest.winner ? (
+            <Stack align={'center'}>
+              <Text fontSize="14px" fontWeight={500}>
+                Winner
+              </Text>
+              <Tooltip label={contest.winner.userName}>
+                <Avatar
+                  size="md"
+                  name={contest.winner.userName || ''}
+                  src={contest.winner.avatarImage?.image?.publicUrlTransformed || ''}
+                />
+              </Tooltip>
+            </Stack>
+          ) : null}
 
           <Stat textAlign="center">
             <StatLabel>Entry Fee</StatLabel>
