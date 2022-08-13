@@ -7,6 +7,7 @@ import HistoryTab from './HistoryTab';
 import TrackerTab from './tracker/TrackerTab';
 import RulesTab from './RulesTab';
 import AdminTab from './AdminTab';
+import Chat from './chat/Chat';
 
 type ContestProps = {
   id?: string;
@@ -16,6 +17,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
   const router = useRouter();
   const { contestNav } = router.query;
   const typedContestNav = contestNav as ContestTabs | undefined;
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const activeTab = (): JSX.Element | undefined => {
     if (!typedContestNav || typedContestNav === ContestTabs.BETS) {
@@ -42,6 +44,8 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
     <>
       <ContestNav contestId={id} selectedTab={contestNav as ContestTabs} />
       {activeTab()}
+      <ChatButton openChat={() => setIsChatOpen(true)} />
+      <Chat open={open} contestId={id} onClose={() => setIsChatOpen(false)} />
     </>
   );
 }
