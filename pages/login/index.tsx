@@ -12,7 +12,7 @@ export default function LoginPage(): JSX.Element {
           maxHeight={'700px'}
           alt={'Login Image'}
           objectFit={'cover'}
-          src={'/images/zeke.png'}
+          src={'/images/btbets-jt.png'}
         />
       </Flex>
     </Stack>
