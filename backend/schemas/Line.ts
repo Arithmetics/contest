@@ -1,6 +1,9 @@
-import { float, relationship, text, timestamp } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
+import { float, relationship, text, timestamp, virtual } from '@keystone-next/keystone/fields';
+import { list, graphql } from '@keystone-next/keystone';
+import { KeystoneListsAPI } from '@keystone-next/keystone/types';
+import { KeystoneListsTypeInfo } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
+import { Contest } from '../codegen/graphql-types';
 
 export const Line = list({
   access: {
@@ -27,5 +30,29 @@ export const Line = list({
     contest: relationship({ ref: 'Contest.lines', many: false }),
     choices: relationship({ ref: 'Choice.line', many: true }),
     standings: relationship({ ref: 'Standing.line', many: true }),
+    labelName: virtual({
+      field: graphql.field({
+        type: graphql.String,
+        async resolve(item, _args, context) {
+          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const graphql = String.raw;
+
+          const parentContest = (await lists.Contest.findOne({
+            where: { id: (item.contestId as string) || '' },
+            query: graphql`
+              id
+              name
+            `,
+          })) as Contest;
+
+          const contestTitle = parentContest?.name || '';
+
+          return `${item.title}: ${contestTitle}`;
+        },
+      }),
+    }),
+  },
+  ui: {
+    labelField: 'labelName',
   },
 });
