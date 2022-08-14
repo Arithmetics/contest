@@ -22,7 +22,6 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-// import gql from 'graphql-tag';
 
 import {
   ChoiceSelectionType,
@@ -416,7 +415,6 @@ export default function LineCard({
                   onClick={onClickDeleteBet}
                   disabled={deleteBetLoading}
                   isLoading={deleteBetLoading}
-                  // flexGrow
                   variant="outline"
                   bg="red.500"
                   color={'white'}
