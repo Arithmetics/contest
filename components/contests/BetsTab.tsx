@@ -66,7 +66,6 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
     (r) => r.user?.id === userData?.authenticatedItem?.id
   );
 
-  // console.log(contest?.registrations, );
   const toast = useToast();
 
   useEffect(() => {
