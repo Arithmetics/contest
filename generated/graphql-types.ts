@@ -2123,7 +2123,7 @@ export type ContestByIdQuery = (
       )>> }
     )>>, registrations?: Maybe<Array<(
       { __typename?: 'Registration' }
-      & Pick<Registration, 'id'>
+      & Pick<Registration, 'id' | 'hasPaid'>
       & { user?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'id' | 'email' | 'userName'>
@@ -2983,6 +2983,7 @@ export const ContestByIdDocument = gql`
     }
     registrations {
       id
+      hasPaid
       user {
         id
         email

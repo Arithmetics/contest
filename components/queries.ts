@@ -112,6 +112,7 @@ export const CONTEST_BY_ID_QUERY = gql`
       }
       registrations {
         id
+        hasPaid
         user {
           id
           email
