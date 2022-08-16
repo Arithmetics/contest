@@ -30,6 +30,7 @@ import {
 
 import ButtonLink from '../ButtonLink';
 import { Routes } from '../../constants';
+import { CONTEST_BY_ID_QUERY } from '../queries';
 
 export default function AllContest(): JSX.Element {
   const { data, loading } = useAllContestsQuery();
@@ -78,7 +79,10 @@ type ContestCardProps = {
 function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
   const router = useRouter();
   const toast = useToast();
-  const [registerForContest, { loading }] = useContestRegistrationMutation();
+  const [registerForContest, { loading }] = useContestRegistrationMutation({
+    awaitRefetchQueries: true,
+    refetchQueries: [{ query: CONTEST_BY_ID_QUERY, variables: { id: contest.id } }],
+  });
 
   const userHasEntered = contest.registrations?.some((r) => r.user?.id === userId);
 

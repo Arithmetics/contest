@@ -604,6 +604,7 @@ type Line {
     skip: Int! = 0
   ): [Standing!]
   standingsCount(where: StandingWhereInput! = {}): Int
+  labelName: String
 }
 
 scalar DateTime

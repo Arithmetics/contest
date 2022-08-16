@@ -22,7 +22,6 @@ import {
   useRadioGroup,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-// import gql from 'graphql-tag';
 
 import {
   ChoiceSelectionType,
@@ -327,9 +326,11 @@ export default function LineCard({
     );
   };
 
+  const cardWidth = contestType === ContestContestTypeType.NflAts ? '500px' : '350px';
+
   return (
     <Box
-      maxW={'500px'}
+      maxW={cardWidth}
       width={'full'}
       bg={'gray.600'}
       border={usersBet ? '1px' : ''}
@@ -416,7 +417,6 @@ export default function LineCard({
                   onClick={onClickDeleteBet}
                   disabled={deleteBetLoading}
                   isLoading={deleteBetLoading}
-                  // flexGrow
                   variant="outline"
                   bg="red.500"
                   color={'white'}
