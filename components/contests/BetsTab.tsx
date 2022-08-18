@@ -10,7 +10,9 @@ import {
   Spinner,
   useDisclosure,
   useToast,
+  Fade,
 } from '@chakra-ui/react';
+import { useIntersectionObserver } from 'react-intersection-observer-hook';
 import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
 import BetsStatusLine from './BetsStatusLine';
 import {
@@ -68,6 +70,13 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
 
   const toast = useToast();
 
+  const [ref, { entry }] = useIntersectionObserver();
+  const isVisible = entry && entry.isIntersecting;
+
+  useEffect(() => {
+    console.log(`xxx: ${isVisible}`);
+  }, [isVisible]);
+
   useEffect(() => {
     if (usersRegistration && !usersRegistration.hasPaid) {
       toast({
@@ -105,7 +114,27 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
   return (
     <>
-      {userHasEntered ? <BetsStatusLine contest={contest} user={user} /> : undefined}
+      {/* top thing */}
+      {userHasEntered ? (
+        <BetsStatusLine ref={ref} contest={contest} user={user} floatMode={false} />
+      ) : undefined}
+      {/* absolute stuff */}
+      {userHasEntered && !isVisible ? (
+        <Fade in={true} style={{ zIndex: 1 }}>
+          <div
+            style={{
+              position: 'fixed',
+              top: '0px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: '100vw',
+              zIndex: 1,
+            }}
+          >
+            <BetsStatusLine contest={contest} user={user} floatMode={true} />
+          </div>
+        </Fade>
+      ) : undefined}
       {availableLines.length !== 0 ? (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
           <Heading as="h3" size="lg">

@@ -1,4 +1,14 @@
-import { Box, Stat, StatLabel, StatNumber, Avatar, HStack, Spinner } from '@chakra-ui/react';
+import { forwardRef } from 'react';
+import {
+  Box,
+  Stat,
+  StatLabel,
+  StatNumber,
+  Avatar,
+  HStack,
+  Spinner,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { BsLightning } from 'react-icons/bs';
 import { RiCoinLine } from 'react-icons/ri';
 import { AiOutlineOrderedList } from 'react-icons/ai';
@@ -28,9 +38,10 @@ export function superBetsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | 
 type BetStatusLineProps = {
   contest?: Contest;
   user?: User;
+  floatMode: boolean;
 };
 
-export default function BetStatusLine({ contest, user }: BetStatusLineProps): JSX.Element {
+function BetStatusLine({ contest, user, floatMode }: BetStatusLineProps, ref: any): JSX.Element {
   const { data: leaderboardData, loading: leaderboardLoading } = useLeaderboardQuery({
     variables: { contestId: contest?.id || '' },
   });
@@ -48,36 +59,56 @@ export default function BetStatusLine({ contest, user }: BetStatusLineProps): JS
   const position =
     sortedLeaderboard.findIndex((registration) => registration?.user?.id === user?.id) + 1;
 
+  const margin = useBreakpointValue({ base: 1, md: 6 }, 'md');
+
   return (
-    <Box overflow="hidden" m={6}>
+    <Box overflow="hidden" m={margin} marginTop={3} ref={ref}>
       <HStack justifyContent="center" flexWrap={'wrap'} gridGap={1} marginRight={2}>
         {/* bug fix span */}
         <span></span>
         {contestBetsLoading ? (
-          <StatusCard icon={<Spinner />} statLabel="Bets Left" statNumber="--" />
+          <StatusCard
+            icon={<Spinner />}
+            statLabel="Bets Left"
+            statNumber="--"
+            floatMode={floatMode}
+          />
         ) : (
           <StatusCard
             icon={<RiCoinLine fontSize="1.5rem" />}
             statLabel="Bets Left"
             statNumber={betsLeft}
+            floatMode={floatMode}
           />
         )}
         {contestBetsLoading ? (
-          <StatusCard icon={<Spinner />} statLabel="Super Bets Left" statNumber="--" />
+          <StatusCard
+            icon={<Spinner />}
+            statLabel="Super Bets Left"
+            statNumber="--"
+            floatMode={floatMode}
+          />
         ) : (
           <StatusCard
             icon={<BsLightning fontSize="1.5rem" />}
             statLabel="Super Bets Left"
             statNumber={superBetsLeft}
+            floatMode={floatMode}
           />
         )}
         {leaderboardLoading ? (
-          <StatusCard icon={<Spinner />} statLabel="Current Position" statNumber="--" />
+          <StatusCard
+            icon={<Spinner />}
+            statLabel="Current Position"
+            statNumber="--"
+            floatMode={floatMode}
+          />
         ) : (
           <StatusCard
             icon={<AiOutlineOrderedList fontSize="1.5rem" />}
             statLabel="Current Position"
             statNumber={`${position} / ${sortedLeaderboard.length}`}
+            floatMode={floatMode}
           />
         )}
       </HStack>
@@ -89,18 +120,34 @@ type StatusCardProps = {
   icon: JSX.Element;
   statLabel: string;
   statNumber: string;
+  floatMode: boolean;
 };
 
-function StatusCard({ icon, statLabel, statNumber }: StatusCardProps): JSX.Element {
+function StatusCard({ icon, statLabel, statNumber, floatMode }: StatusCardProps): JSX.Element {
+  const maxWidth = useBreakpointValue({ base: '30%', md: floatMode ? '150px' : '300px' }, 'md');
+  const showIcon = useBreakpointValue({ base: false, md: true }, 'md');
+  const minHeight = useBreakpointValue({ base: '103px', md: '0px' }, 'md');
+
   return (
-    <Box maxW={'300px'} width={'full'} bg={'gray.600'} rounded={'md'} p={3}>
+    <Box
+      maxW={maxWidth}
+      width={'full'}
+      bg={floatMode ? 'gray.900' : 'gray.600'}
+      rounded={'md'}
+      p={3}
+      border="1px solid"
+      borderColor={floatMode ? 'cyan.500' : ''}
+      minHeight={minHeight}
+    >
       <HStack>
         <Stat>
           <StatLabel>{statLabel}</StatLabel>
           <StatNumber>{statNumber}</StatNumber>
         </Stat>
-        <Avatar icon={icon} />
+        {!floatMode && showIcon && <Avatar icon={icon} />}
       </HStack>
     </Box>
   );
 }
+
+export default forwardRef(BetStatusLine);
