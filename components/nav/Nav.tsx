@@ -113,8 +113,8 @@ export default function Nav(): JSX.Element {
               <ButtonLink
                 title="NFL Over Under"
                 leftIcon={<GiAmericanFootballHelmet />}
-                href={`/${Routes.CONTESTS}/ckre48xe10960292pu1w1puj8`}
-                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/ckre48xe10960292pu1w1puj8`)}
+                href={`/${Routes.CONTESTS}/cl6sco44c19150jmcou8s8rlg`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/cl6sco44c19150jmcou8s8rlg`)}
               />
               <ButtonLink
                 title="NBA Over Under"
