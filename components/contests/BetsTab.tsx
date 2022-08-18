@@ -10,6 +10,7 @@ import {
   Spinner,
   useDisclosure,
   useToast,
+  useBreakpointValue,
   Fade,
 } from '@chakra-ui/react';
 import { useIntersectionObserver } from 'react-intersection-observer-hook';
@@ -73,6 +74,8 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const [ref, { entry }] = useIntersectionObserver();
   const isVisible = entry && entry.isIntersecting;
 
+  const margin = useBreakpointValue({ base: 2, md: 6 }, 'md');
+
   useEffect(() => {
     console.log(`xxx: ${isVisible}`);
   }, [isVisible]);
@@ -112,6 +115,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const settledLines = lines.filter((l) => lineHasWinner(l as Line));
   const userId = user?.id;
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
+
   return (
     <>
       {/* top thing */}
@@ -136,7 +140,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
         </Fade>
       ) : undefined}
       {availableLines.length !== 0 ? (
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
+        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={margin} m={margin}>
           <Heading as="h3" size="lg">
             Available Lines
           </Heading>
@@ -163,7 +167,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
         </Box>
       ) : undefined}
       {pendingLines.length !== 0 ? (
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
+        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={margin} m={margin}>
           <Heading as="h3" size="lg">
             Pending Lines
           </Heading>
@@ -190,7 +194,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
         </Box>
       ) : undefined}
       {settledLines.length !== 0 ? (
-        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={6} m={6}>
+        <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={margin} m={margin}>
           <Heading as="h3" size="lg">
             Settled Lines
           </Heading>
