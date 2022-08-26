@@ -82,6 +82,7 @@ export default auth.withAuth(
           //   17,
           //   'http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=100'
           // );
+
           // console.log('running NBA standing job!');
           // startDailyStandingsJob(
           //   context,
