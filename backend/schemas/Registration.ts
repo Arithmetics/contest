@@ -4,6 +4,7 @@ import { KeystoneListsAPI } from '@keystone-next/keystone/types';
 import { KeystoneListsTypeInfo, ContestStatusType } from '.keystone/types';
 import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
+import { cache } from '../cache';
 
 export const Registration = list({
   access: {
@@ -42,6 +43,13 @@ export const Registration = list({
         async resolve(item, _args, context) {
           const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
+
+          if (
+            cache[item.contestId as string] &&
+            cache[item.contestId as string][item.userId as string]
+          ) {
+            return cache[item.contestId as string][item.userId as string];
+          }
 
           const contestLines = (await lists.Line.findMany({
             where: { contest: { id: { equals: (item.contestId as string) || '' } } },
@@ -90,6 +98,14 @@ export const Registration = list({
               }
             });
           });
+          if (!cache[item.contestId as string]) {
+            cache[item.contestId as string] = {};
+          }
+          cache[item.contestId as string][item.userId as string] = {
+            locked,
+            likely,
+            possible,
+          };
           return {
             locked,
             likely,
