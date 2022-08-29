@@ -188,4 +188,9 @@ export const Registration = list({
       }
     },
   },
+  ui: {
+    listView: {
+      initialColumns: ['id', 'user', 'hasPaid', 'contest'],
+    },
+  },
 });
