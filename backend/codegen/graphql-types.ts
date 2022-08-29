@@ -721,6 +721,7 @@ export type Line = {
   choicesCount?: Maybe<Scalars['Int']>;
   standings?: Maybe<Array<Standing>>;
   standingsCount?: Maybe<Scalars['Int']>;
+  labelName?: Maybe<Scalars['String']>;
 };
 
 

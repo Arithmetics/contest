@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Avatar,
   Text,
@@ -12,9 +13,12 @@ import {
   Box,
   useBreakpointValue,
   Spinner,
+  IconButton,
 } from '@chakra-ui/react';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { firstBy } from 'thenby';
-import { useLeaderboardQuery, Registration } from '../../../generated/graphql-types';
+import { useLeaderboardQuery, Registration, User } from '../../../generated/graphql-types';
+import UserPickModal from './UserPickModal';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(
@@ -29,6 +33,8 @@ type LeaderboardTabProps = {
 };
 
 export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.Element {
+  const [selectedUser, setSelectedUser] = useState<User | undefined>(undefined);
+
   const { data, loading } = useLeaderboardQuery({ variables: { contestId: contestId || '' } });
 
   const sortedLeaderboard = sortLeaderboard(data?.registrations || []);
@@ -43,39 +49,51 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   }
 
   return (
-    <Box borderWidth="1px" borderRadius="lg" padding={marginBox} m={marginBox} overflowX="auto">
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>Place</Th>
-            <Th>User</Th>
-            <Th isNumeric>Total Locked Points</Th>
-            <Th isNumeric>Total Likely Points</Th>
-            <Th isNumeric>Total Possible Points</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {sortedLeaderboard?.map((reg, i) => {
-            const user = reg.user;
-            const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+    <>
+      <UserPickModal
+        contestId={contestId}
+        user={selectedUser}
+        onClose={() => setSelectedUser(undefined)}
+      />
+      <Box borderWidth="1px" borderRadius="lg" padding={marginBox} m={marginBox} overflowX="auto">
+        <Table variant="simple">
+          <Thead>
+            <Tr>
+              <Th>Place</Th>
+              <Th>User</Th>
+              <Th isNumeric>Total Locked Points</Th>
+              <Th isNumeric>Total Likely Points</Th>
+              <Th isNumeric>Total Possible Points</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {sortedLeaderboard?.map((reg, i) => {
+              const user = reg.user;
+              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
-            return (
-              <Tr key={reg.id}>
-                <Td>{i + 1}.</Td>
-                <Td>
-                  <HStack>
-                    <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
-                    <Text>{user?.userName}</Text>
-                  </HStack>
-                </Td>
-                <Td isNumeric>{reg.counts?.locked}</Td>
-                <Td isNumeric>{reg.counts?.likely}</Td>
-                <Td isNumeric>{reg.counts?.possible}</Td>
-              </Tr>
-            );
-          })}
-        </Tbody>
-      </Table>
-    </Box>
+              return (
+                <Tr key={reg.id}>
+                  <Td>{i + 1}.</Td>
+                  <Td>
+                    <HStack>
+                      <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
+                      <Text>{user?.userName}</Text>
+                      <IconButton
+                        aria-label="See picks"
+                        icon={<ExternalLinkIcon />}
+                        onClick={() => setSelectedUser(user || undefined)}
+                      />
+                    </HStack>
+                  </Td>
+                  <Td isNumeric>{reg.counts?.locked}</Td>
+                  <Td isNumeric>{reg.counts?.likely}</Td>
+                  <Td isNumeric>{reg.counts?.possible}</Td>
+                </Tr>
+              );
+            })}
+          </Tbody>
+        </Table>
+      </Box>
+    </>
   );
 }
