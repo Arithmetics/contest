@@ -46,9 +46,21 @@ export default function ForgotPasswordForm(): JSX.Element {
   const [signin, { data, loading }] = useSignInMutation({
     refetchQueries: [{ query: CURRENT_USER_QUERY }],
     update: (cache) => {
-      return cache.evict({
+      cache.evict({
+        id: 'ROOT_QUERY',
+        fieldName: 'contests',
+      });
+      cache.evict({
         id: 'ROOT_QUERY',
         fieldName: 'allBets',
+      });
+      cache.evict({
+        id: 'ROOT_QUERY',
+        fieldName: 'bets',
+      });
+      return cache.evict({
+        id: 'ROOT_QUERY',
+        fieldName: 'contest',
       });
     },
   });
