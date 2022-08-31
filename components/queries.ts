@@ -405,3 +405,33 @@ export const HISTORIES_BY_TYPE_QUERY = gql`
     }
   }
 `;
+
+export const USERS_CONTEST_BETS_QUERY = gql`
+  query UserContestBetsQuery($userId: ID!, $contestId: ID!) {
+    contest(where: { id: $contestId }) {
+      id
+      lines {
+        id
+        benchmark
+        closingTime
+        title
+        image {
+          id
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+        choices {
+          id
+          selection
+          isWin
+          bets(where: { user: { id: { equals: $userId } } }) {
+            id
+            isSuper
+          }
+        }
+      }
+    }
+  }
+`;
