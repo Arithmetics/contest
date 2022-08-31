@@ -37,6 +37,10 @@ export default function UserPickModal({
 
   const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
+  const anyBets = data?.contest?.lines?.some((line) =>
+    line?.choices?.some((choice) => choice?.bets?.length)
+  );
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -56,32 +60,36 @@ export default function UserPickModal({
               </Center>
             ) : (
               <VStack alignItems="start" margin={2}>
-                {data?.contest?.lines?.map((line) => {
-                  return line?.choices?.map((choice) => {
-                    if (!choice.bets?.length) {
-                      return undefined;
-                    }
-                    return choice?.bets?.map((bet) => {
-                      return (
-                        <HStack key={bet.id}>
-                          <Avatar
-                            size="sm"
-                            bg="gray.500"
-                            name={line?.title || ''}
-                            src={line?.image?.image?.publicUrlTransformed || ''}
-                          />
-                          <div>
-                            {line.title} - {line.benchmark}
-                          </div>
-                          <Badge colorScheme={choice.selection === 'OVER' ? 'green' : 'red'}>
-                            {choice.selection}
-                          </Badge>
-                          {bet.isSuper && <Badge colorScheme="purple">Super</Badge>}
-                        </HStack>
-                      );
+                {anyBets ? (
+                  data?.contest?.lines?.map((line) => {
+                    return line?.choices?.map((choice) => {
+                      if (!choice.bets?.length) {
+                        return undefined;
+                      }
+                      return choice?.bets?.map((bet) => {
+                        return (
+                          <HStack key={bet.id}>
+                            <Avatar
+                              size="sm"
+                              bg="gray.500"
+                              name={line?.title || ''}
+                              src={line?.image?.image?.publicUrlTransformed || ''}
+                            />
+                            <div>
+                              {line.title} - {line.benchmark}
+                            </div>
+                            <Badge colorScheme={choice.selection === 'OVER' ? 'green' : 'red'}>
+                              {choice.selection}
+                            </Badge>
+                            {bet.isSuper && <Badge colorScheme="purple">Super</Badge>}
+                          </HStack>
+                        );
+                      });
                     });
-                  });
-                })}
+                  })
+                ) : (
+                  <Text>No Bets</Text>
+                )}
               </VStack>
             )}
           </ModalBody>
