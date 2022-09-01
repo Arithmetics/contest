@@ -10,6 +10,7 @@ import {
   CloseButton,
   ThemingProps,
   Image,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';
@@ -29,6 +30,8 @@ export default function Nav(): JSX.Element {
   const router = useRouter();
 
   const user = useUser();
+
+  const logoWidth = useBreakpointValue({ base: '100px', md: '150px' }, 'md');
 
   const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
@@ -100,7 +103,7 @@ export default function Nav(): JSX.Element {
             </Box>
 
             <ChakraLink href="/" title="LOGO">
-              <Image width="150px" bg={'gray.600'} src="/images/bt-bets-logo.png" />
+              <Image width={logoWidth} bg={'gray.600'} src="/images/bt-bets-logo.png" />
             </ChakraLink>
 
             <HStack spacing={3} display={{ base: 'none', md: 'inline-flex' }}>
