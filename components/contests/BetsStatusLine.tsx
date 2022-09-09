@@ -124,7 +124,10 @@ type StatusCardProps = {
 };
 
 function StatusCard({ icon, statLabel, statNumber, floatMode }: StatusCardProps): JSX.Element {
-  const maxWidth = useBreakpointValue({ base: '30%', md: floatMode ? '150px' : '300px' }, 'md');
+  const maxWidth = useBreakpointValue(
+    { base: '30%', md: floatMode ? '150px' : '200px', lg: floatMode ? '150px' : '300px' },
+    'md'
+  );
   const showIcon = useBreakpointValue({ base: false, md: true }, 'md');
   const minHeight = useBreakpointValue({ base: '103px', md: '0px' }, 'md');
 
