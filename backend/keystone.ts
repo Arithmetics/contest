@@ -68,7 +68,7 @@ export default auth.withAuth(
         // async onConnect() {
         console.log('connected');
 
-        cron.schedule('30 * * * *', () => {
+        cron.schedule('0 0 14 * * *', () => {
           console.log('running NFL standing job!');
 
           startDailyStandingsJob(
