@@ -5,6 +5,7 @@ import cron from 'node-cron';
 import 'dotenv/config';
 
 import { sendPasswordResetEmail } from './lib/mail';
+import { cache } from './cache';
 // import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
 
@@ -67,8 +68,12 @@ export default auth.withAuth(
       async onConnect(context) {
         // async onConnect() {
         console.log('connected');
-
+        // cron jobs
         cron.schedule('0 0 14 * * *', () => {
+          Object.keys(cache).forEach((k) => {
+            cache[k] = null;
+          });
+
           console.log('running NFL standing job!');
 
           startDailyStandingsJob(
@@ -77,6 +82,7 @@ export default auth.withAuth(
             17,
             'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
           );
+
           // console.log('running NBA standing job!');
           // startDailyStandingsJob(
           //   context,

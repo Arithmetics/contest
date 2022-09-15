@@ -30,8 +30,8 @@ export default function UserPickModal({
 
   const { data, loading } = useUserContestBetsQuery({
     variables: {
-      contestId: contestId || '',
-      userId: user?.id || '',
+      contestId: contestId || 'cl82iclpy000009l5fn461xrg',
+      userId: user?.id || 'cl82iclpy000009l5fn461xrg',
     },
   });
 

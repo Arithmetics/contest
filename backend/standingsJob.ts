@@ -88,4 +88,20 @@ export async function startDailyStandingsJob(
     );
   });
   console.log(`${newStandingsToInsert.length} standings inserted in total`);
+
+  // await: fill the cache for the contest
+  await lists.Registration.findMany({
+    where: { contest: { id: { equals: contestId } } },
+    query: graphql`
+      id
+      user {
+        id
+      }
+      counts {
+        locked
+        likely
+        possible
+      }
+    `,
+  });
 }
