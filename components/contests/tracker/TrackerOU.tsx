@@ -95,6 +95,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
   return (
     <Box
       maxW={'100%'}
+      width={'700px'}
       bg={'gray.600'}
       border={'1px'}
       borderColor={'teal.500'}
@@ -194,15 +195,21 @@ export function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps)
         ?.filter((c) => c.selection === choiceType)
         .map((choice) => {
           return (
-            <Box key={choice.id} flexGrow={1} marginX={2} padding={2}>
+            <Box key={choice.id} flexGrow={1} marginX={2} padding={2} maxWidth={'50%'}>
               <Text paddingBottom={1}>{choiceType} Bets</Text>
-              <Box display={'flex'} flexWrap={'wrap'}>
+              <Box
+                display={'flex'}
+                flexWrap={'wrap'}
+                style={{
+                  gap: '3px',
+                }}
+              >
                 {!choiceBets || choiceBets.length === 0 || contestBetsLoading ? (
                   <Text>---</Text>
                 ) : undefined}
                 {choiceBets.map((bet) => {
                   return (
-                    <Box key={bet.user?.id} marginX={1}>
+                    <Box key={bet.user?.id}>
                       <Tooltip label={bet.user?.userName}>
                         <Avatar
                           size="sm"
