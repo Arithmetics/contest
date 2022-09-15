@@ -724,6 +724,7 @@ export type Line = {
   choicesCount?: Maybe<Scalars['Int']>;
   standings?: Maybe<Array<Standing>>;
   standingsCount?: Maybe<Scalars['Int']>;
+  labelName?: Maybe<Scalars['String']>;
 };
 
 
@@ -2449,6 +2450,39 @@ export type HistoriesByTypeQuery = (
   )>> }
 );
 
+export type UserContestBetsQueryVariables = Exact<{
+  userId: Scalars['ID'];
+  contestId: Scalars['ID'];
+}>;
+
+
+export type UserContestBetsQuery = (
+  { __typename?: 'Query' }
+  & { contest?: Maybe<(
+    { __typename?: 'Contest' }
+    & Pick<Contest, 'id'>
+    & { lines?: Maybe<Array<(
+      { __typename?: 'Line' }
+      & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
+      & { image?: Maybe<(
+        { __typename?: 'CloudImage' }
+        & Pick<CloudImage, 'id' | 'altText'>
+        & { image?: Maybe<(
+          { __typename?: 'CloudinaryImage_File' }
+          & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
+        )> }
+      )>, choices?: Maybe<Array<(
+        { __typename?: 'Choice' }
+        & Pick<Choice, 'id' | 'selection' | 'isWin'>
+        & { bets?: Maybe<Array<(
+          { __typename?: 'Bet' }
+          & Pick<Bet, 'id' | 'isSuper'>
+        )>> }
+      )>> }
+    )>> }
+  )> }
+);
+
 
 export const CheckIfEmailAvailableDocument = gql`
     query CheckIfEmailAvailable($email: String!) {
@@ -3561,3 +3595,61 @@ export function useHistoriesByTypeQueryLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type HistoriesByTypeQueryHookResult = ReturnType<typeof useHistoriesByTypeQuery>;
 export type HistoriesByTypeQueryLazyQueryHookResult = ReturnType<typeof useHistoriesByTypeQueryLazyQuery>;
 export type HistoriesByTypeQueryQueryResult = Apollo.QueryResult<HistoriesByTypeQuery, HistoriesByTypeQueryVariables>;
+export const UserContestBetsQueryDocument = gql`
+    query UserContestBetsQuery($userId: ID!, $contestId: ID!) {
+  contest(where: {id: $contestId}) {
+    id
+    lines {
+      id
+      benchmark
+      closingTime
+      title
+      image {
+        id
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+      choices {
+        id
+        selection
+        isWin
+        bets(where: {user: {id: {equals: $userId}}}) {
+          id
+          isSuper
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useUserContestBetsQuery__
+ *
+ * To run a query within a React component, call `useUserContestBetsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserContestBetsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserContestBetsQuery({
+ *   variables: {
+ *      userId: // value for 'userId'
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useUserContestBetsQuery(baseOptions: Apollo.QueryHookOptions<UserContestBetsQuery, UserContestBetsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UserContestBetsQuery, UserContestBetsQueryVariables>(UserContestBetsQueryDocument, options);
+      }
+export function useUserContestBetsQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserContestBetsQuery, UserContestBetsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UserContestBetsQuery, UserContestBetsQueryVariables>(UserContestBetsQueryDocument, options);
+        }
+export type UserContestBetsQueryHookResult = ReturnType<typeof useUserContestBetsQuery>;
+export type UserContestBetsQueryLazyQueryHookResult = ReturnType<typeof useUserContestBetsQueryLazyQuery>;
+export type UserContestBetsQueryQueryResult = Apollo.QueryResult<UserContestBetsQuery, UserContestBetsQueryVariables>;

@@ -77,10 +77,6 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
   const margin = useBreakpointValue({ base: 2, md: 6 }, 'md');
 
   useEffect(() => {
-    console.log(`xxx: ${isVisible}`);
-  }, [isVisible]);
-
-  useEffect(() => {
     if (usersRegistration && !usersRegistration.hasPaid) {
       toast({
         title: 'Have you paid yet?',

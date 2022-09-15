@@ -7,7 +7,7 @@ import 'dotenv/config';
 import { sendPasswordResetEmail } from './lib/mail';
 import { cache } from './cache';
 // import { insertSeedData } from './seedData';
-// import { startDailyStandingsJob } from './standingsJob';
+import { startDailyStandingsJob } from './standingsJob';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -65,23 +65,23 @@ export default auth.withAuth(
       provider: 'postgresql',
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
       useMigrations: true,
-      // async onConnect(context) {
-      async onConnect() {
+      async onConnect(context) {
+        // async onConnect() {
         console.log('connected');
         // cron jobs
         cron.schedule('0 0 14 * * *', () => {
-          // clear cache
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
           });
-          // console.log('running NFL standing job!');
 
-          // startDailyStandingsJob(
-          //   context,
-          //   'ckre48xe10960292pu1w1puj8',
-          //   17,
-          //   'http://site.api.espn.com/apis/site/v2/sports/football/nfl/teams?limit=100'
-          // );
+          console.log('running NFL standing job!');
+
+          startDailyStandingsJob(
+            context,
+            'cl6sco44c19150jmcou8s8rlg',
+            17,
+            'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
+          );
 
           // console.log('running NBA standing job!');
           // startDailyStandingsJob(
@@ -90,7 +90,7 @@ export default auth.withAuth(
           //   82,
           //   'http://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams?limit=100'
           // );
-          console.log('NO CRON JOBS SCHEDULED');
+          // console.log('NO CRON JOBS SCHEDULED');
         });
 
         if (process.argv.includes('--seed-data')) {
