@@ -94,7 +94,7 @@ type GenericLineProps = {
 function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
   return (
     <Box
-      maxW={'100%'}
+      maxW={'95vw'}
       width={'700px'}
       bg={'gray.600'}
       border={'1px'}
