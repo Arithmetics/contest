@@ -106,5 +106,7 @@ export async function startDailyStandingsJob(
   });
 
   console.log('cache filled');
-  console.log(regs);
+  regs.forEach((r) => {
+    console.log(r.counts);
+  });
 }
