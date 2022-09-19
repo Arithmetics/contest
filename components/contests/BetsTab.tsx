@@ -86,6 +86,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
         isClosable: true,
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usersRegistration?.id]);
 
   if (getContestLoading || getUserLoading || contestBetsLoading) {

@@ -41,7 +41,10 @@ type BetStatusLineProps = {
   floatMode: boolean;
 };
 
-function BetStatusLine({ contest, user, floatMode }: BetStatusLineProps, ref: any): JSX.Element {
+function BetStatusLine(
+  { contest, user, floatMode }: BetStatusLineProps,
+  ref: unknown
+): JSX.Element {
   const { data: leaderboardData, loading: leaderboardLoading } = useLeaderboardQuery({
     variables: { contestId: contest?.id || '' },
   });
@@ -62,7 +65,14 @@ function BetStatusLine({ contest, user, floatMode }: BetStatusLineProps, ref: an
   const margin = useBreakpointValue({ base: 1, md: 6 }, 'md');
 
   return (
-    <Box overflow="hidden" m={margin} marginTop={3} ref={ref}>
+    <Box
+      overflow="hidden"
+      m={margin}
+      marginTop={3}
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      ref={ref}
+    >
       <HStack justifyContent="center" flexWrap={'wrap'} gridGap={1} marginRight={2}>
         {/* bug fix span */}
         <span></span>
