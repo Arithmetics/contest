@@ -41,7 +41,8 @@ export const Registration = list({
           },
         }),
         async resolve(item, _args, context) {
-          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          console.log('starting');
+          // const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
 
           if (
@@ -50,8 +51,8 @@ export const Registration = list({
           ) {
             return cache[item.contestId as string][item.userId as string];
           }
-
-          const contestLines = (await lists.Line.findMany({
+          // const contestLines = (await lists.Line.findMany({
+          const contestLines = (await context.query.Line.findMany({
             where: { contest: { id: { equals: (item.contestId as string) || '' } } },
             query: graphql`
               id
@@ -106,6 +107,7 @@ export const Registration = list({
             likely,
             possible,
           };
+          console.log('set the queue');
           return {
             locked,
             likely,
