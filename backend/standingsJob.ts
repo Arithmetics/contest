@@ -90,7 +90,7 @@ export async function startDailyStandingsJob(
   console.log(`${newStandingsToInsert.length} standings inserted in total`);
 
   // await: fill the cache for the contest
-  const regs = await lists.Registration.findMany({
+  const regs = await keyStoneContext.query.Registration.findMany({
     where: { contest: { id: { equals: contestId } } },
     query: graphql`
       id
@@ -107,6 +107,6 @@ export async function startDailyStandingsJob(
 
   console.log('cache filled');
   regs.forEach((r) => {
-    console.log(r.counts);
+    console.log(r);
   });
 }

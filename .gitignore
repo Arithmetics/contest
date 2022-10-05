@@ -40,3 +40,4 @@ yarn-error.log*
 */backend/.keystone/*
 */backend/node_modules
 standings-job/node_modules
+/.tool-versions

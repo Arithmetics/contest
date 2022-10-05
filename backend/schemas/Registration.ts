@@ -107,7 +107,9 @@ export const Registration = list({
             likely,
             possible,
           };
-          console.log('set the queue');
+          console.log(
+            `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible}`
+          );
           return {
             locked,
             likely,
