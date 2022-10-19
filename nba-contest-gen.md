@@ -1,5 +1,5 @@
 {
-    "closingTime": "2022-10-14T23:00:00Z",
+    "closingTime": "2022-10-18T23:00:00Z",
     "overSelection": {
                     "selection": "OVER",
                     "isWin": false
@@ -17,13 +17,13 @@ mutation(
   ) {
     createContest(
       data: {
-        name: "NBA Over Under"
+        name: "2022 NBA Over Under"
         description: "Pick over or under season win totals for NBA"
         status: OPEN
         entryFee: 25
         contestType: NBA_OVER_UNDER
         ruleSet: {
-          create: { maxBets: 10, maxSuperBets: 10, superBetPointCount: 2 }
+          create: { maxBets: 10, maxSuperBets: 5, superBetPointCount: 2 }
         }
         lines: {
           create: [
