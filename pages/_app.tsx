@@ -1,5 +1,6 @@
 import NextApp, { AppInitialProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
+import { Analytics } from '@vercel/analytics/react';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import { ApolloProvider } from '@apollo/client';
@@ -24,6 +25,7 @@ class App extends NextApp {
         <ChakraProvider theme={theme}>
           <Page>
             <Component {...pageProps} />
+            <Analytics />
           </Page>
         </ChakraProvider>
       </ApolloProvider>
