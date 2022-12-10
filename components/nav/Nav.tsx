@@ -95,7 +95,7 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="NBA Over Under"
                   leftIcon={<IoIosBasketball />}
-                  href={`/${Routes.CONTESTS}/ckudib3ur1716721jmclxp1pvo4`}
+                  href={`/${Routes.CONTESTS}/cl93po7wh3206630imctmlg2a73`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
@@ -122,8 +122,8 @@ export default function Nav(): JSX.Element {
               <ButtonLink
                 title="NBA Over Under"
                 leftIcon={<IoIosBasketball />}
-                href={`/${Routes.CONTESTS}/ckudib3ur1716721jmclxp1pvo4`}
-                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/ckudib3ur1716721jmclxp1pvo4`)}
+                href={`/${Routes.CONTESTS}/cl93po7wh3206630imctmlg2a73`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/cl93po7wh3206630imctmlg2a73`)}
               />
             </HStack>
           </HStack>
