@@ -46,7 +46,7 @@ export default function UserPickModal({
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent width={'500px'} maxWidth={'95vw'}>
           <ModalHeader>
             <HStack>
               <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
@@ -54,13 +54,13 @@ export default function UserPickModal({
             </HStack>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody width={'600px'} maxWidth={'95vw'}>
+          <ModalBody>
             {loading ? (
               <Center marginY={8}>
                 <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
               </Center>
             ) : (
-              <VStack alignItems="start" margin={2}>
+              <VStack alignItems="start" margin={2} width="100%">
                 {anyBets ? (
                   data?.contest?.lines?.map((line) => {
                     const winsNeeded = winsForOver(line);
@@ -87,23 +87,23 @@ export default function UserPickModal({
                               {choice.selection}
                             </Badge>
                             {bet.isSuper && <Badge colorScheme="purple">Super</Badge>}
-                            {winsNeeded < 0 && choice.selection === 'OVER' && (
+                            {winsNeeded < 0 && choice.selection === 'UNDER' && (
                               <Badge variant="outline" colorScheme="green">
                                 WIN
                               </Badge>
                             )}
-                            {lossesNeeded < 0 && choice.selection === 'UNDER' && (
+                            {lossesNeeded < 0 && choice.selection === 'OVER' && (
                               <Badge variant="outline" colorScheme="green">
                                 WIN
                               </Badge>
                             )}
 
-                            {winsNeeded < 0 && choice.selection === 'UNDER' && (
+                            {winsNeeded < 0 && choice.selection === 'OVER' && (
                               <Badge variant="outline" colorScheme="red">
                                 LOSS
                               </Badge>
                             )}
-                            {lossesNeeded < 0 && choice.selection === 'OVER' && (
+                            {lossesNeeded < 0 && choice.selection === 'UNDER' && (
                               <Badge variant="outline" colorScheme="red">
                                 LOSS
                               </Badge>
