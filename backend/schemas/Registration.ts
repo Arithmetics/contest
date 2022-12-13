@@ -41,7 +41,6 @@ export const Registration = list({
           },
         }),
         async resolve(item, _args, context) {
-          console.log('starting');
           // const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
           const graphql = String.raw;
 

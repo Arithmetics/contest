@@ -2471,7 +2471,10 @@ export type UserContestBetsQuery = (
           { __typename?: 'CloudinaryImage_File' }
           & Pick<CloudinaryImage_File, 'publicUrlTransformed'>
         )> }
-      )>, choices?: Maybe<Array<(
+      )>, standings?: Maybe<Array<(
+        { __typename?: 'Standing' }
+        & Pick<Standing, 'id' | 'wins' | 'gamesPlayed' | 'totalGames'>
+      )>>, choices?: Maybe<Array<(
         { __typename?: 'Choice' }
         & Pick<Choice, 'id' | 'selection' | 'isWin'>
         & { bets?: Maybe<Array<(
@@ -3610,6 +3613,12 @@ export const UserContestBetsQueryDocument = gql`
           publicUrlTransformed
         }
         altText
+      }
+      standings(orderBy: {gamesPlayed: asc}) {
+        id
+        wins
+        gamesPlayed
+        totalGames
       }
       choices {
         id

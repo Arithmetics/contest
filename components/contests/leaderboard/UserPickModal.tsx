@@ -14,6 +14,7 @@ import {
   Center,
 } from '@chakra-ui/react';
 import { useUserContestBetsQuery, User } from '../../../generated/graphql-types';
+import { lossesForUnder, winsForOver } from '../tracker/TrackerOU';
 
 type UserPickModalProps = {
   contestId?: string;
@@ -53,7 +54,7 @@ export default function UserPickModal({
             </HStack>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody width={'600px'} maxWidth={'95vw'}>
             {loading ? (
               <Center marginY={8}>
                 <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
@@ -62,6 +63,9 @@ export default function UserPickModal({
               <VStack alignItems="start" margin={2}>
                 {anyBets ? (
                   data?.contest?.lines?.map((line) => {
+                    const winsNeeded = winsForOver(line);
+                    const lossesNeeded = lossesForUnder(line);
+
                     return line?.choices?.map((choice) => {
                       if (!choice.bets?.length) {
                         return undefined;
@@ -72,6 +76,7 @@ export default function UserPickModal({
                             <Avatar
                               size="sm"
                               bg="gray.500"
+                              marginRight={'10px'}
                               name={line?.title || ''}
                               src={line?.image?.image?.publicUrlTransformed || ''}
                             />
@@ -82,6 +87,31 @@ export default function UserPickModal({
                               {choice.selection}
                             </Badge>
                             {bet.isSuper && <Badge colorScheme="purple">Super</Badge>}
+                            {winsNeeded < 0 && choice.selection === 'OVER' && (
+                              <Badge variant="outline" colorScheme="green">
+                                WIN
+                              </Badge>
+                            )}
+                            {lossesNeeded < 0 && choice.selection === 'UNDER' && (
+                              <Badge variant="outline" colorScheme="green">
+                                WIN
+                              </Badge>
+                            )}
+
+                            {winsNeeded < 0 && choice.selection === 'UNDER' && (
+                              <Badge variant="outline" colorScheme="red">
+                                LOSS
+                              </Badge>
+                            )}
+                            {lossesNeeded < 0 && choice.selection === 'OVER' && (
+                              <Badge variant="outline" colorScheme="red">
+                                LOSS
+                              </Badge>
+                            )}
+
+                            {!(lossesNeeded < 0) && !(winsNeeded < 0) && (
+                              <Badge>{`${winsNeeded}W / ${lossesNeeded}L`}</Badge>
+                            )}
                           </HStack>
                         );
                       });

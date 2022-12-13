@@ -23,7 +23,7 @@ import {
 } from '../../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
 
-function winsForOver(line?: Line): number {
+export function winsForOver(line?: Line): number {
   const standings = line?.standings;
   const benchmark = line?.benchmark;
   if (!standings || standings.length === 0) {
@@ -40,7 +40,7 @@ function winsForOver(line?: Line): number {
   return Math.max(winsNeeded, 0);
 }
 
-function lossesForUnder(line?: Line): number {
+export function lossesForUnder(line?: Line): number {
   const standings = line?.standings;
   const benchmark = line?.benchmark;
   if (!standings || standings.length === 0) {

@@ -422,6 +422,12 @@ export const USERS_CONTEST_BETS_QUERY = gql`
           }
           altText
         }
+        standings(orderBy: { gamesPlayed: asc }) {
+          id
+          wins
+          gamesPlayed
+          totalGames
+        }
         choices {
           id
           selection
