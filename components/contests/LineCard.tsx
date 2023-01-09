@@ -17,7 +17,6 @@ import {
   Badge,
   Image,
   useRadio,
-  // getRadioProps,
   UseRadioProps,
   useRadioGroup,
 } from '@chakra-ui/react';
@@ -259,10 +258,19 @@ export default function LineCard({
 
   const radioGroup = (contestType?: ContestContestTypeType | null): JSX.Element => {
     if (contestType === ContestContestTypeType.NflAts) {
+      const awayChoice = line.choices?.find((c) => c.selection === 'AWAY');
+      const homeChoice = line.choices?.find((c) => c.selection === 'HOME');
+      const choices = [];
+      if (awayChoice) {
+        choices.push(awayChoice);
+      }
+      if (homeChoice) {
+        choices.push(homeChoice);
+      }
       return (
         <>
           <HStack justifyContent="center" spacing={6} {...group}>
-            {line.choices?.map((choice) => {
+            {choices.map((choice) => {
               const radio = getRadioProps({ value: choice.id });
               return (
                 <RadioImage
