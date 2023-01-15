@@ -139,7 +139,22 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
               return (
                 <Th key={reg.id}>
                   <Tooltip label={user?.userName}>
-                    <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
+                    <div
+                      style={{
+                        position: 'relative',
+                      }}
+                    >
+                      <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
+                      {reg.isPremium && (
+                        <span
+                          role="img"
+                          aria-label="dog"
+                          style={{ fontSize: '20px', position: 'absolute', right: 0, top: '-25%' }}
+                        >
+                          🐶
+                        </span>
+                      )}
+                    </div>
                   </Tooltip>
                 </Th>
               );

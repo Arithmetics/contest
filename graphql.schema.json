@@ -11761,6 +11761,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPremium",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "contest",
             "description": null,
             "args": [],
@@ -11810,6 +11822,18 @@
         "inputFields": [
           {
             "name": "hasPaid",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPremium",
             "description": null,
             "type": {
               "kind": "SCALAR",
@@ -11916,6 +11940,18 @@
           },
           {
             "name": "hasPaid",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPremium",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -12135,6 +12171,18 @@
             "deprecationReason": null
           },
           {
+            "name": "isPremium",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Boolean",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "contest",
             "description": null,
             "type": {
@@ -12243,6 +12291,18 @@
           },
           {
             "name": "hasPaid",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "BooleanFilter",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "isPremium",
             "description": null,
             "type": {
               "kind": "INPUT_OBJECT",

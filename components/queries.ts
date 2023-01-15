@@ -113,6 +113,7 @@ export const CONTEST_BY_ID_QUERY = gql`
       registrations {
         id
         hasPaid
+        isPremium
         user {
           id
           email
@@ -340,6 +341,7 @@ export const ATS_LEADERBOARD_QUERY = gql`
       }
       registrations {
         id
+        isPremium
         user {
           id
           userName

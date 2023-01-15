@@ -732,6 +732,7 @@ input StandingRelateToManyForCreateInput {
 type Registration {
   id: ID!
   hasPaid: Boolean
+  isPremium: Boolean
   contest: Contest
   user: User
   counts: PointCounts
@@ -753,6 +754,7 @@ input RegistrationWhereInput {
   NOT: [RegistrationWhereInput!]
   id: IDFilter
   hasPaid: BooleanFilter
+  isPremium: BooleanFilter
   contest: ContestWhereInput
   user: UserWhereInput
 }
@@ -760,10 +762,12 @@ input RegistrationWhereInput {
 input RegistrationOrderByInput {
   id: OrderDirection
   hasPaid: OrderDirection
+  isPremium: OrderDirection
 }
 
 input RegistrationUpdateInput {
   hasPaid: Boolean
+  isPremium: Boolean
   contest: ContestRelateToOneForUpdateInput
   user: UserRelateToOneForUpdateInput
 }
@@ -775,6 +779,7 @@ input RegistrationUpdateArgs {
 
 input RegistrationCreateInput {
   hasPaid: Boolean
+  isPremium: Boolean
   contest: ContestRelateToOneForCreateInput
   user: UserRelateToOneForCreateInput
 }

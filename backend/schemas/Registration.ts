@@ -23,6 +23,13 @@ export const Registration = list({
         update: isAdmin,
       },
     }),
+    isPremium: checkbox({
+      defaultValue: false,
+      access: {
+        read: () => true,
+        update: isAdmin,
+      },
+    }),
     contest: relationship({ ref: 'Contest.registrations', many: false }),
     user: relationship({ ref: 'User.registrations', many: false }),
 
