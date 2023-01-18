@@ -1510,6 +1510,7 @@ export type Registration = {
   __typename?: 'Registration';
   id: Scalars['ID'];
   hasPaid?: Maybe<Scalars['Boolean']>;
+  isPremium?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<Contest>;
   user?: Maybe<User>;
   counts?: Maybe<PointCounts>;
@@ -1517,6 +1518,7 @@ export type Registration = {
 
 export type RegistrationCreateInput = {
   hasPaid?: Maybe<Scalars['Boolean']>;
+  isPremium?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<ContestRelateToOneForCreateInput>;
   user?: Maybe<UserRelateToOneForCreateInput>;
 };
@@ -1530,6 +1532,7 @@ export type RegistrationManyRelationFilter = {
 export type RegistrationOrderByInput = {
   id?: Maybe<OrderDirection>;
   hasPaid?: Maybe<OrderDirection>;
+  isPremium?: Maybe<OrderDirection>;
 };
 
 export type RegistrationRelateToManyForCreateInput = {
@@ -1551,6 +1554,7 @@ export type RegistrationUpdateArgs = {
 
 export type RegistrationUpdateInput = {
   hasPaid?: Maybe<Scalars['Boolean']>;
+  isPremium?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<ContestRelateToOneForUpdateInput>;
   user?: Maybe<UserRelateToOneForUpdateInput>;
 };
@@ -1561,6 +1565,7 @@ export type RegistrationWhereInput = {
   NOT?: Maybe<Array<RegistrationWhereInput>>;
   id?: Maybe<IdFilter>;
   hasPaid?: Maybe<BooleanFilter>;
+  isPremium?: Maybe<BooleanFilter>;
   contest?: Maybe<ContestWhereInput>;
   user?: Maybe<UserWhereInput>;
 };

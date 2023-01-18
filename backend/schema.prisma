@@ -101,6 +101,7 @@ model Line {
 model Registration {
   id        String   @id @default(cuid())
   hasPaid   Boolean  @default(false)
+  isPremium Boolean  @default(false)
   contest   Contest? @relation("Registration_contest", fields: [contestId], references: [id])
   contestId String?  @map("contest")
   user      User?    @relation("Registration_user", fields: [userId], references: [id])

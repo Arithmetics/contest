@@ -1513,6 +1513,7 @@ export type Registration = {
   __typename?: 'Registration';
   id: Scalars['ID'];
   hasPaid?: Maybe<Scalars['Boolean']>;
+  isPremium?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<Contest>;
   user?: Maybe<User>;
   counts?: Maybe<PointCounts>;
@@ -1520,6 +1521,7 @@ export type Registration = {
 
 export type RegistrationCreateInput = {
   hasPaid?: Maybe<Scalars['Boolean']>;
+  isPremium?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<ContestRelateToOneForCreateInput>;
   user?: Maybe<UserRelateToOneForCreateInput>;
 };
@@ -1533,6 +1535,7 @@ export type RegistrationManyRelationFilter = {
 export type RegistrationOrderByInput = {
   id?: Maybe<OrderDirection>;
   hasPaid?: Maybe<OrderDirection>;
+  isPremium?: Maybe<OrderDirection>;
 };
 
 export type RegistrationRelateToManyForCreateInput = {
@@ -1554,6 +1557,7 @@ export type RegistrationUpdateArgs = {
 
 export type RegistrationUpdateInput = {
   hasPaid?: Maybe<Scalars['Boolean']>;
+  isPremium?: Maybe<Scalars['Boolean']>;
   contest?: Maybe<ContestRelateToOneForUpdateInput>;
   user?: Maybe<UserRelateToOneForUpdateInput>;
 };
@@ -1564,6 +1568,7 @@ export type RegistrationWhereInput = {
   NOT?: Maybe<Array<RegistrationWhereInput>>;
   id?: Maybe<IdFilter>;
   hasPaid?: Maybe<BooleanFilter>;
+  isPremium?: Maybe<BooleanFilter>;
   contest?: Maybe<ContestWhereInput>;
   user?: Maybe<UserWhereInput>;
 };
@@ -2124,7 +2129,7 @@ export type ContestByIdQuery = (
       )>> }
     )>>, registrations?: Maybe<Array<(
       { __typename?: 'Registration' }
-      & Pick<Registration, 'id' | 'hasPaid'>
+      & Pick<Registration, 'id' | 'hasPaid' | 'isPremium'>
       & { user?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'id' | 'email' | 'userName'>
@@ -2379,7 +2384,7 @@ export type AtsLeaderboardQuery = (
       & Pick<RuleSet, 'id' | 'superBetPointCount' | 'maxBets' | 'maxSuperBets'>
     )>, registrations?: Maybe<Array<(
       { __typename?: 'Registration' }
-      & Pick<Registration, 'id'>
+      & Pick<Registration, 'id' | 'isPremium'>
       & { user?: Maybe<(
         { __typename?: 'User' }
         & Pick<User, 'id' | 'userName'>
@@ -3018,6 +3023,7 @@ export const ContestByIdDocument = gql`
     registrations {
       id
       hasPaid
+      isPremium
       user {
         id
         email
@@ -3475,6 +3481,7 @@ export const AtsLeaderboardQueryDocument = gql`
     }
     registrations {
       id
+      isPremium
       user {
         id
         userName
