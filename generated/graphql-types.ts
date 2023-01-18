@@ -2465,7 +2465,7 @@ export type UserContestBetsQuery = (
   { __typename?: 'Query' }
   & { contest?: Maybe<(
     { __typename?: 'Contest' }
-    & Pick<Contest, 'id' | 'contestType'>
+    & Pick<Contest, 'id'>
     & { lines?: Maybe<Array<(
       { __typename?: 'Line' }
       & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
@@ -2988,7 +2988,7 @@ export const ContestByIdDocument = gql`
       maxSuperBets
       superBetPointCount
     }
-    lines {
+    lines(orderBy: {closingTime: asc}) {
       id
       benchmark
       closingTime
@@ -3606,7 +3606,6 @@ export const UserContestBetsQueryDocument = gql`
     query UserContestBetsQuery($userId: ID!, $contestId: ID!) {
   contest(where: {id: $contestId}) {
     id
-    contestType
     lines {
       id
       benchmark
