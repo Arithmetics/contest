@@ -83,11 +83,36 @@ function getRemainingLocks(
   return remainingLocks;
 }
 
+export function sortATSLeaderboard(
+  registrations: Registration[],
+  lines: Line[],
+  ruleSet?: RuleSet | null
+): Registration[] {
+  const totalScores = scoreAllRegistrations(registrations || [], lines || [], ruleSet);
+  const remainingLocks = getRemainingLocks(registrations || [], lines || [], ruleSet);
+
+  return registrations
+    ? [...registrations]?.sort(
+        firstBy<Registration>((a, b) => {
+          const aScore = totalScores[a.user?.id || ''] || 0;
+          const bScore = totalScores[b.user?.id || ''] || 0;
+          return bScore - aScore;
+        })
+          .thenBy<Registration>((a, b) => {
+            return remainingLocks[b.user?.id || ''] - remainingLocks[a.user?.id || ''];
+          })
+          .thenBy<Registration>((a, b) => {
+            return (a.user?.email || '').localeCompare(b.user?.email || '');
+          })
+      )
+    : [];
+}
+
 type LeaderboardTabProps = {
   contestId?: string;
 };
 
-export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.Element {
+export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): JSX.Element {
   const { data, loading } = useAtsLeaderboardQuery({ variables: { contestId: contestId || '' } });
 
   const registrations = data?.contest?.registrations;
@@ -105,17 +130,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   const totalScores = scoreAllRegistrations(registrations || [], lines || [], ruleSet);
   const remainingLocks = getRemainingLocks(registrations || [], lines || [], ruleSet);
 
-  const sortedRegistrations = registrations
-    ? [...registrations]?.sort(
-        firstBy<Registration>((a, b) => {
-          const aScore = totalScores[a.user?.id || ''] || 0;
-          const bScore = totalScores[b.user?.id || ''] || 0;
-          return bScore - aScore;
-        }).thenBy<Registration>((a, b) => {
-          return (a.user?.email || '').localeCompare(b.user?.email || '');
-        })
-      )
-    : [];
+  const sortedRegistrations = sortATSLeaderboard(registrations || [], lines, ruleSet);
 
   const marginBox = useBreakpointValue({ base: 1, sm: 2, md: 6 });
 

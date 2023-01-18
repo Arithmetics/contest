@@ -2465,7 +2465,7 @@ export type UserContestBetsQuery = (
   { __typename?: 'Query' }
   & { contest?: Maybe<(
     { __typename?: 'Contest' }
-    & Pick<Contest, 'id'>
+    & Pick<Contest, 'id' | 'contestType'>
     & { lines?: Maybe<Array<(
       { __typename?: 'Line' }
       & Pick<Line, 'id' | 'benchmark' | 'closingTime' | 'title'>
@@ -3606,6 +3606,7 @@ export const UserContestBetsQueryDocument = gql`
     query UserContestBetsQuery($userId: ID!, $contestId: ID!) {
   contest(where: {id: $contestId}) {
     id
+    contestType
     lines {
       id
       benchmark
