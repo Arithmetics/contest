@@ -78,7 +78,7 @@ export const CONTEST_BY_ID_QUERY = gql`
         maxSuperBets
         superBetPointCount
       }
-      lines {
+      lines(orderBy: { closingTime: asc }) {
         id
         benchmark
         closingTime
@@ -354,7 +354,7 @@ export const ATS_LEADERBOARD_QUERY = gql`
           }
         }
       }
-      lines {
+      lines(orderBy: { closingTime: asc }) {
         id
         title
         closingTime

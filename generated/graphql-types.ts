@@ -2988,7 +2988,7 @@ export const ContestByIdDocument = gql`
       maxSuperBets
       superBetPointCount
     }
-    lines {
+    lines(orderBy: {closingTime: asc}) {
       id
       benchmark
       closingTime
@@ -3494,7 +3494,7 @@ export const AtsLeaderboardQueryDocument = gql`
         }
       }
     }
-    lines {
+    lines(orderBy: {closingTime: asc}) {
       id
       title
       closingTime
