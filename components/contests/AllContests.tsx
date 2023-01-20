@@ -125,6 +125,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
         src={contest.image?.image?.publicUrlTransformed || ''}
         objectFit={'cover'}
         objectPosition={'top'}
+        filter={contest.status === 'COMPLETE' ? 'grayscale(80%)' : ''}
       />
 
       <Box p={6}>

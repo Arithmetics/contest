@@ -334,7 +334,7 @@ export default function LineCard({
     );
   };
 
-  const cardWidth = contestType === ContestContestTypeType.NflAts ? '500px' : '350px';
+  const cardWidth = contestType === ContestContestTypeType.NflAts ? '440px' : '350px';
 
   return (
     <Box

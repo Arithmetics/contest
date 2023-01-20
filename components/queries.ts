@@ -354,7 +354,7 @@ export const ATS_LEADERBOARD_QUERY = gql`
           }
         }
       }
-      lines {
+      lines(orderBy: { closingTime: asc }) {
         id
         title
         closingTime
