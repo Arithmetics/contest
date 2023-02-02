@@ -61,6 +61,7 @@ function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
         _checked={{ filter: 'none', border: '1px', borderColor: 'teal.500' }}
         filter={hasSelection ? 'grayscale(100%)' : 'none'}
         htmlHeight="100px"
+        maxHeight="100px"
         htmlWidth="200px"
         objectFit="cover"
         bg={'gray.600'}
@@ -286,18 +287,20 @@ export default function LineCard({
               );
             })}
           </HStack>
-          <Center>
-            <Checkbox
-              onChange={() => setSuperBetSelected(!superBetSelected)}
-              isChecked={superBetSelected}
-              marginTop={4}
-              isDisabled={formDisabled || !superPickAvailable}
-              colorScheme="teal"
-              size="lg"
-            >
-              Super Pick
-            </Checkbox>
-          </Center>
+          {userId && (
+            <Center>
+              <Checkbox
+                onChange={() => setSuperBetSelected(!superBetSelected)}
+                isChecked={superBetSelected}
+                marginTop={4}
+                isDisabled={formDisabled || !superPickAvailable}
+                colorScheme="teal"
+                size="lg"
+              >
+                Super Pick
+              </Checkbox>
+            </Center>
+          )}
         </>
       );
     }
@@ -351,55 +354,57 @@ export default function LineCard({
       padding={3}
     >
       <LineCardHeader line={line} contestType={contestType} />
-      <Divider orientation="horizontal" paddingTop={3} />
+      <Divider orientation="horizontal" paddingTop={1} />
       {/* middle form */}
-      <Stack spacing={0} align={'left'} paddingTop={3}>
-        {/* Form starts here */}
-        {!lineClosed && radioGroup(contestType)}
-        {lineClosed && (
-          <>
-            <Center>
-              {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
-              {usersBet && (
-                <HStack>
-                  <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
-                  <Text fontSize="2xl">{selectedChoice?.selection}</Text>
-                </HStack>
-              )}
-            </Center>
-            {superBetSelected && (
+      {(userId || !lineClosed) && (
+        <Stack spacing={0} align={'left'} paddingTop={3}>
+          {/* Form starts here */}
+          {!lineClosed && radioGroup(contestType)}
+          {lineClosed && (
+            <>
               <Center>
-                <Badge marginLeft={2} colorScheme="purple">
-                  Super Bet
-                </Badge>
-              </Center>
-            )}
-
-            {lineHasWinner(line) && (
-              <>
+                {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
                 {usersBet && (
-                  <Center>
-                    <HStack alignItems={'baseline'}>
-                      <Text color={'whiteAlpha.600'}>Your result:</Text>
-                      {selectedChoice?.isWin ? (
-                        <Badge marginLeft={2} colorScheme="green">
-                          Win
-                        </Badge>
-                      ) : (
-                        <Badge marginLeft={2} colorScheme="red">
-                          Loss
-                        </Badge>
-                      )}
-                    </HStack>
-                  </Center>
+                  <HStack>
+                    <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
+                    <Text fontSize="2xl">{selectedChoice?.selection}</Text>
+                  </HStack>
                 )}
-              </>
-            )}
-          </>
-        )}
-      </Stack>
+              </Center>
+              {superBetSelected && (
+                <Center>
+                  <Badge marginLeft={2} colorScheme="purple">
+                    Super Bet
+                  </Badge>
+                </Center>
+              )}
+
+              {lineHasWinner(line) && (
+                <>
+                  {usersBet && (
+                    <Center>
+                      <HStack alignItems={'baseline'}>
+                        <Text color={'whiteAlpha.600'}>Your result:</Text>
+                        {selectedChoice?.isWin ? (
+                          <Badge marginLeft={2} colorScheme="green">
+                            Win
+                          </Badge>
+                        ) : (
+                          <Badge marginLeft={2} colorScheme="red">
+                            Loss
+                          </Badge>
+                        )}
+                      </HStack>
+                    </Center>
+                  )}
+                </>
+              )}
+            </>
+          )}
+        </Stack>
+      )}
       {/* Footer starts here */}
-      <Divider orientation="horizontal" paddingTop={3} />
+      {userId && <Divider orientation="horizontal" paddingTop={3} />}
       <Stack spacing={0} align={'left'}>
         {userHasEntered && !lineClosed && (
           <>
