@@ -152,14 +152,19 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
               const user = reg.user;
               const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
               return (
-                <Th key={reg.id}>
+                <Th
+                  key={reg.id}
+                  style={{
+                    padding: '15px',
+                  }}
+                >
                   <Tooltip label={user?.userName}>
                     <div
                       style={{
                         position: 'relative',
                       }}
                     >
-                      <Avatar size="sm" name={user?.userName || ''} src={avatarUrl || ''} />
+                      <Avatar size="md" name={user?.userName || ''} src={avatarUrl || ''} />
                       {reg.isPremium && (
                         <span
                           role="img"
