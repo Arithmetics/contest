@@ -65,6 +65,7 @@ export async function startDailyStandingsJob(
         line: {
           id: line.id,
           title: line.title,
+          benchmark: line.benchmark,
         },
       });
     }
@@ -112,9 +113,37 @@ export async function startDailyStandingsJob(
   });
 
   // send standings update email
-  const standings = {
-    Bulls: 'Over',
-    Trailblazers: 'Under',
-  };
-  sendStandingsUpdate(standings, 'brock.m.tillotson@gmail.com');
+  const previouslyAlerted: Record<string, boolean> = {};
+
+  filteredLineStandings?.forEach((line) => {
+    const team = line.title || '';
+    const winsNeeded = line.benchmark || 0;
+    const lossesNeeded = totalGames - winsNeeded;
+    const wins = line.standings?.[0].wins || 0;
+    const losses = (line.standings?.[0].gamesPlayed || 0) - wins;
+
+    if (wins > winsNeeded || losses > lossesNeeded) {
+      previouslyAlerted[team] = true;
+    }
+  });
+
+  const alertStandings: Record<string, string> = {};
+
+  newStandingsToInsert.forEach((standing) => {
+    const team = standing.line?.title || '';
+    const winsNeeded = standing?.line?.benchmark || 0;
+    const lossesNeeded = totalGames - winsNeeded;
+
+    const wins = standing.wins || 0;
+    const losses = (standing?.gamesPlayed || 0) - wins;
+
+    if (!previouslyAlerted[team] && wins > winsNeeded) {
+      alertStandings[team] = 'OVER';
+    }
+    if (!previouslyAlerted[team] && losses > lossesNeeded) {
+      alertStandings[team] = 'OVER';
+    }
+  });
+
+  sendStandingsUpdate(alertStandings, 'brock.m.tillotson@gmail.com');
 }
