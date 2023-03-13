@@ -25,7 +25,7 @@ export async function startDailyStandingsJob(
   const espnStandings = await fetchEspnStandings(apiUrl);
 
   // need to figure out the contests to do (active with NFL_OU enum??)
-  const linesWithStandings = (await lists.Line.findMany({
+  const linesWithStandings = (await keyStoneContext.query.Line.findMany({
     where: { contest: { id: { equals: contestId } } },
     query: graphql`
       id
@@ -141,7 +141,7 @@ export async function startDailyStandingsJob(
       alertStandings[team] = 'OVER';
     }
     if (!previouslyAlerted[team] && losses > lossesNeeded) {
-      alertStandings[team] = 'OVER';
+      alertStandings[team] = 'UNDER';
     }
   });
 

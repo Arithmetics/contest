@@ -90,7 +90,7 @@ export default auth.withAuth(
             82,
             'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings'
           );
-          console.log('NO CRON JOBS SCHEDULED');
+          // console.log('NO CRON JOBS SCHEDULED');
         });
 
         if (process.argv.includes('--seed-data')) {

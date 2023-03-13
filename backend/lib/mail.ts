@@ -56,7 +56,7 @@ export async function sendPasswordResetEmail(resetToken: string, to: string): Pr
   const info = (await usedTransport.sendMail({
     to,
     from: 'no-reply@btbets.ml',
-    subject: 'New Over Under Locked Up',
+    subject: 'Your password reset token',
     html: makeANiceEmail(`Your Password Reset Token is here ->
       <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
       `),
@@ -84,7 +84,7 @@ export async function sendStandingsUpdate(
   const info = (await usedTransport.sendMail({
     to,
     from: 'no-reply@btbets.ml',
-    subject: 'Your password reset token',
+    subject: 'New Over Under Locked Up',
     html: makeANiceEmail(htmlList),
   })) as MailResponse;
 
