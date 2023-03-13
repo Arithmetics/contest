@@ -4,6 +4,7 @@ import { KeystoneListsTypeInfo } from '.keystone/types';
 import { Line, Standing, StandingCreateInput } from './codegen/graphql-types';
 
 import fetchEspnStandings from './espnStandings';
+import { sendStandingsUpdate } from './lib/mail';
 
 export async function startDailyStandingsJob(
   keyStoneContext: KeystoneContext,
@@ -109,4 +110,11 @@ export async function startDailyStandingsJob(
   regs.forEach((r) => {
     console.log(r);
   });
+
+  // send standings update email
+  const standings = {
+    Bulls: 'Over',
+    Trailblazers: 'Under',
+  };
+  sendStandingsUpdate(standings, 'brock.m.tillotson@gmail.com');
 }
