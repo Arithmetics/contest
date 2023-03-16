@@ -1,19 +1,5 @@
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  VStack,
-  ModalHeader,
-  Badge,
-  ModalOverlay,
-  Spinner,
-  HStack,
-  Avatar,
-  Text,
-  Center,
-} from '@chakra-ui/react';
-import { Bet, Line, Choice } from '../../../generated/graphql-types';
+import { Avatar, Badge, HStack } from '@chakra-ui/react';
+import { Bet, Choice, Line } from '../../../generated/graphql-types';
 
 type UserPickEntryProps = {
   line: Line;

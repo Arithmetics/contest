@@ -11,6 +11,7 @@ import {
   Avatar,
   Text,
   Center,
+  Divider,
 } from '@chakra-ui/react';
 import { useUserContestBetsQuery, User, ChoiceStatus } from '../../../generated/graphql-types';
 import UserPickEntry from './UserPickEntry';
@@ -84,12 +85,9 @@ export default function UserPickModal({
               <VStack alignItems="start" margin={2}>
                 {lockedWinLines?.length && (
                   <>
-                    <Text>Won</Text>
+                    <Text fontSize="20px">Won</Text>
                     {lockedWinLines?.map((line) => {
                       return line?.choices?.map((choice) => {
-                        // if (!choice.bets?.length) {
-                        //   return undefined;
-                        // }
                         return choice?.bets?.map((bet) => {
                           return (
                             <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
@@ -97,16 +95,14 @@ export default function UserPickModal({
                         });
                       });
                     })}
+                    <Divider />
                   </>
                 )}
                 {winningLines?.length && (
                   <>
-                    <Text>Winning</Text>
+                    <Text fontSize="20px">Winning</Text>
                     {winningLines?.map((line) => {
                       return line?.choices?.map((choice) => {
-                        // if (!choice.bets?.length) {
-                        //   return undefined;
-                        // }
                         return choice?.bets?.map((bet) => {
                           return (
                             <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
@@ -114,16 +110,14 @@ export default function UserPickModal({
                         });
                       });
                     })}
+                    <Divider />
                   </>
                 )}
-                {winningLines?.length && (
+                {losingLines?.length && (
                   <>
-                    <Text>Losing</Text>
+                    <Text fontSize="20px">Losing</Text>
                     {losingLines?.map((line) => {
                       return line?.choices?.map((choice) => {
-                        // if (!choice.bets?.length) {
-                        //   return undefined;
-                        // }
                         return choice?.bets?.map((bet) => {
                           return (
                             <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
@@ -131,16 +125,14 @@ export default function UserPickModal({
                         });
                       });
                     })}
+                    <Divider />
                   </>
                 )}
-                {winningLines?.length && (
+                {lockedLossLines?.length && (
                   <>
-                    <Text>Lost</Text>
+                    <Text fontSize="20px">Lost</Text>
                     {lockedLossLines?.map((line) => {
                       return line?.choices?.map((choice) => {
-                        // if (!choice.bets?.length) {
-                        //   return undefined;
-                        // }
                         return choice?.bets?.map((bet) => {
                           return (
                             <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
@@ -148,16 +140,14 @@ export default function UserPickModal({
                         });
                       });
                     })}
+                    <Divider />
                   </>
                 )}
-                {winningLines?.length && (
+                {notStartedLines?.length && (
                   <>
-                    <Text>Not Started</Text>
+                    <Text fontSize="20px">Not Started</Text>
                     {notStartedLines?.map((line) => {
                       return line?.choices?.map((choice) => {
-                        // if (!choice.bets?.length) {
-                        //   return undefined;
-                        // }
                         return choice?.bets?.map((bet) => {
                           return (
                             <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
@@ -165,6 +155,7 @@ export default function UserPickModal({
                         });
                       });
                     })}
+                    <Divider />
                   </>
                 )}
                 {!anyBets && <Text>No Bets</Text>}
