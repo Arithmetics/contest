@@ -4,6 +4,7 @@ import { KeystoneListsTypeInfo } from '.keystone/types';
 import { Line, Standing, StandingCreateInput } from './codegen/graphql-types';
 
 import fetchEspnStandings from './espnStandings';
+import { sendStandingsUpdate } from './lib/mail';
 
 export async function startDailyStandingsJob(
   keyStoneContext: KeystoneContext,
@@ -24,7 +25,7 @@ export async function startDailyStandingsJob(
   const espnStandings = await fetchEspnStandings(apiUrl);
 
   // need to figure out the contests to do (active with NFL_OU enum??)
-  const linesWithStandings = (await lists.Line.findMany({
+  const linesWithStandings = (await keyStoneContext.query.Line.findMany({
     where: { contest: { id: { equals: contestId } } },
     query: graphql`
       id
@@ -64,6 +65,7 @@ export async function startDailyStandingsJob(
         line: {
           id: line.id,
           title: line.title,
+          benchmark: line.benchmark,
         },
       });
     }
@@ -109,4 +111,39 @@ export async function startDailyStandingsJob(
   regs.forEach((r) => {
     console.log(r);
   });
+
+  // send standings update email
+  const previouslyAlerted: Record<string, boolean> = {};
+
+  filteredLineStandings?.forEach((line) => {
+    const team = line.title || '';
+    const winsNeeded = line.benchmark || 0;
+    const lossesNeeded = totalGames - winsNeeded;
+    const wins = line.standings?.[0].wins || 0;
+    const losses = (line.standings?.[0].gamesPlayed || 0) - wins;
+
+    if (wins > winsNeeded || losses > lossesNeeded) {
+      previouslyAlerted[team] = true;
+    }
+  });
+
+  const alertStandings: Record<string, string> = {};
+
+  newStandingsToInsert.forEach((standing) => {
+    const team = standing.line?.title || '';
+    const winsNeeded = standing?.line?.benchmark || 0;
+    const lossesNeeded = totalGames - winsNeeded;
+
+    const wins = standing.wins || 0;
+    const losses = (standing?.gamesPlayed || 0) - wins;
+
+    if (!previouslyAlerted[team] && wins > winsNeeded) {
+      alertStandings[team] = 'OVER';
+    }
+    if (!previouslyAlerted[team] && losses > lossesNeeded) {
+      alertStandings[team] = 'UNDER';
+    }
+  });
+
+  sendStandingsUpdate(alertStandings, 'brock.m.tillotson@gmail.com');
 }
