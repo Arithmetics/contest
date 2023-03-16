@@ -5,7 +5,6 @@ import {
   ModalContent,
   VStack,
   ModalHeader,
-  Badge,
   ModalOverlay,
   Spinner,
   HStack,
@@ -13,7 +12,8 @@ import {
   Text,
   Center,
 } from '@chakra-ui/react';
-import { useUserContestBetsQuery, User } from '../../../generated/graphql-types';
+import { useUserContestBetsQuery, User, ChoiceStatus } from '../../../generated/graphql-types';
+import UserPickEntry from './UserPickEntry';
 
 type UserPickModalProps = {
   contestId?: string;
@@ -41,6 +41,28 @@ export default function UserPickModal({
     line?.choices?.some((choice) => choice?.bets?.length)
   );
 
+  const lockedWinLines = data?.contest?.lines?.filter((line) =>
+    line?.choices?.some((choice) => choice?.bets?.length && choice?.status === ChoiceStatus.Won)
+  );
+
+  const winningLines = data?.contest?.lines?.filter((line) =>
+    line?.choices?.some((choice) => choice?.bets?.length && choice?.status === ChoiceStatus.Winning)
+  );
+
+  const losingLines = data?.contest?.lines?.filter((line) =>
+    line?.choices?.some((choice) => choice?.bets?.length && choice?.status === ChoiceStatus.Losing)
+  );
+
+  const lockedLossLines = data?.contest?.lines?.filter((line) =>
+    line?.choices?.some((choice) => choice?.bets?.length && choice?.status === ChoiceStatus.Lost)
+  );
+
+  const notStartedLines = data?.contest?.lines?.filter((line) =>
+    line?.choices?.some(
+      (choice) => choice?.bets?.length && choice?.status === ChoiceStatus.NotStarted
+    )
+  );
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -60,36 +82,92 @@ export default function UserPickModal({
               </Center>
             ) : (
               <VStack alignItems="start" margin={2}>
-                {anyBets ? (
-                  data?.contest?.lines?.map((line) => {
-                    return line?.choices?.map((choice) => {
-                      if (!choice.bets?.length) {
-                        return undefined;
-                      }
-                      return choice?.bets?.map((bet) => {
-                        return (
-                          <HStack key={bet.id}>
-                            <Avatar
-                              size="sm"
-                              bg="gray.500"
-                              name={line?.title || ''}
-                              src={line?.image?.image?.publicUrlTransformed || ''}
-                            />
-                            <div>
-                              {line.title} - {line.benchmark}
-                            </div>
-                            <Badge colorScheme={choice.selection === 'OVER' ? 'green' : 'red'}>
-                              {choice.selection}
-                            </Badge>
-                            {bet.isSuper && <Badge colorScheme="purple">Super</Badge>}
-                          </HStack>
-                        );
+                {lockedWinLines?.length && (
+                  <>
+                    <Text>Won</Text>
+                    {lockedWinLines?.map((line) => {
+                      return line?.choices?.map((choice) => {
+                        // if (!choice.bets?.length) {
+                        //   return undefined;
+                        // }
+                        return choice?.bets?.map((bet) => {
+                          return (
+                            <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
+                          );
+                        });
                       });
-                    });
-                  })
-                ) : (
-                  <Text>No Bets</Text>
+                    })}
+                  </>
                 )}
+                {winningLines?.length && (
+                  <>
+                    <Text>Winning</Text>
+                    {winningLines?.map((line) => {
+                      return line?.choices?.map((choice) => {
+                        // if (!choice.bets?.length) {
+                        //   return undefined;
+                        // }
+                        return choice?.bets?.map((bet) => {
+                          return (
+                            <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
+                          );
+                        });
+                      });
+                    })}
+                  </>
+                )}
+                {winningLines?.length && (
+                  <>
+                    <Text>Losing</Text>
+                    {losingLines?.map((line) => {
+                      return line?.choices?.map((choice) => {
+                        // if (!choice.bets?.length) {
+                        //   return undefined;
+                        // }
+                        return choice?.bets?.map((bet) => {
+                          return (
+                            <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
+                          );
+                        });
+                      });
+                    })}
+                  </>
+                )}
+                {winningLines?.length && (
+                  <>
+                    <Text>Lost</Text>
+                    {lockedLossLines?.map((line) => {
+                      return line?.choices?.map((choice) => {
+                        // if (!choice.bets?.length) {
+                        //   return undefined;
+                        // }
+                        return choice?.bets?.map((bet) => {
+                          return (
+                            <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
+                          );
+                        });
+                      });
+                    })}
+                  </>
+                )}
+                {winningLines?.length && (
+                  <>
+                    <Text>Not Started</Text>
+                    {notStartedLines?.map((line) => {
+                      return line?.choices?.map((choice) => {
+                        // if (!choice.bets?.length) {
+                        //   return undefined;
+                        // }
+                        return choice?.bets?.map((bet) => {
+                          return (
+                            <UserPickEntry key={bet.id} choice={choice} line={line} bet={bet} />
+                          );
+                        });
+                      });
+                    })}
+                  </>
+                )}
+                {!anyBets && <Text>No Bets</Text>}
               </VStack>
             )}
           </ModalBody>
