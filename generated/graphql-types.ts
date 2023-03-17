@@ -2478,7 +2478,7 @@ export type UserContestBetsQuery = (
         )> }
       )>, choices?: Maybe<Array<(
         { __typename?: 'Choice' }
-        & Pick<Choice, 'id' | 'selection' | 'isWin'>
+        & Pick<Choice, 'id' | 'selection' | 'isWin' | 'status'>
         & { bets?: Maybe<Array<(
           { __typename?: 'Bet' }
           & Pick<Bet, 'id' | 'isSuper'>
@@ -3622,6 +3622,7 @@ export const UserContestBetsQueryDocument = gql`
         id
         selection
         isWin
+        status
         bets(where: {user: {id: {equals: $userId}}}) {
           id
           isSuper
