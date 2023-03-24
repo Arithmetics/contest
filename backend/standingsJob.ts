@@ -145,5 +145,7 @@ export async function startDailyStandingsJob(
     }
   });
 
-  sendStandingsUpdate(alertStandings, 'brock.m.tillotson@gmail.com');
+  if (Object.keys(alertStandings).length > 0) {
+    sendStandingsUpdate(alertStandings, 'brock.m.tillotson@gmail.com');
+  }
 }
