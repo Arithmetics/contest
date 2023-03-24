@@ -39,6 +39,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   const sortedLeaderboard = sortLeaderboard(data?.registrations || []);
 
   const tablePaddingX = useBreakpointValue({ base: 1, sm: 1, md: 6 });
+  const fontSizeX = useBreakpointValue({ base: '10px', sm: '10px', md: '12px' });
   const marginBox = useBreakpointValue({ base: 1, sm: 2, md: 6 });
 
   if (loading) {
@@ -60,15 +61,17 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
         <Table variant="simple">
           <Thead>
             <Tr>
-              <Th paddingX={tablePaddingX}></Th>
-              <Th paddingX={tablePaddingX}>User</Th>
-              <Th paddingX={tablePaddingX} isNumeric>
-                Locked Points
+              <Th paddingX={tablePaddingX} fontSize={fontSizeX}></Th>
+              <Th paddingX={tablePaddingX} fontSize={fontSizeX}>
+                User
               </Th>
-              <Th paddingX={tablePaddingX} isNumeric>
+              <Th paddingX={tablePaddingX} fontSize={fontSizeX} isNumeric>
                 Likely Points
               </Th>
-              <Th paddingX={tablePaddingX} isNumeric>
+              <Th paddingX={tablePaddingX} fontSize={fontSizeX} isNumeric>
+                Locked Points
+              </Th>
+              <Th paddingX={tablePaddingX} fontSize={fontSizeX} isNumeric>
                 Possible Points
               </Th>
             </Tr>
@@ -96,10 +99,10 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
                     </HStack>
                   </Td>
                   <Td paddingX={tablePaddingX} isNumeric>
-                    {reg.counts?.locked}
+                    {reg.counts?.likely}
                   </Td>
                   <Td paddingX={tablePaddingX} isNumeric>
-                    {reg.counts?.likely}
+                    {reg.counts?.locked}
                   </Td>
                   <Td paddingX={tablePaddingX} isNumeric>
                     {reg.counts?.possible}

@@ -17,9 +17,8 @@ export default function UserPickEntry({ bet, choice, line }: UserPickEntryProps)
         src={line?.image?.image?.publicUrlTransformed || ''}
       />
       <div>
-        {line.title} - {line.benchmark}
+        {line.title} - {choice.selection} - {line.benchmark}
       </div>
-      <Badge colorScheme={choice.selection === 'OVER' ? 'green' : 'red'}>{choice.selection}</Badge>
       {bet.isSuper && <Badge colorScheme="purple">Super</Badge>}
     </HStack>
   );
