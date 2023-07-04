@@ -1,5 +1,5 @@
-import { KeystoneContext, KeystoneListsAPI } from '@keystone-6/core/types';
-import { KeystoneListsTypeInfo } from '.keystone/types';
+import { KeystoneContext } from '@keystone-6/core/types';
+import { TypeInfo } from '.keystone/types';
 
 import { Line, Standing, StandingCreateInput } from './codegen/graphql-types';
 
@@ -7,7 +7,7 @@ import fetchEspnStandings from './espnStandings';
 import { sendStandingsUpdate } from './lib/mail';
 
 export async function startDailyStandingsJob(
-  keyStoneContext: KeystoneContext,
+  keyStoneContext: KeystoneContext<TypeInfo>,
   contestId: string,
   totalGames: number,
   apiUrl: string
@@ -20,7 +20,6 @@ export async function startDailyStandingsJob(
       },
     })
     .sudo().db;
-  // as KeystoneListsAPI<KeystoneListsTypeInfo>;
 
   const graphql = String.raw;
   const espnStandings = await fetchEspnStandings(apiUrl);

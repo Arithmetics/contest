@@ -1,7 +1,5 @@
 import { checkbox, relationship } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
-import { KeystoneListsAPI } from '@keystone-6/core/types';
-import { KeystoneListsTypeInfo } from '.keystone/types';
 import { canModifyBet, canReadBet, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { Choice } from '../codegen/graphql-types';
 
@@ -24,7 +22,7 @@ export const Bet = list({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const lists = context.query;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;

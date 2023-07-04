@@ -1,7 +1,7 @@
 import { checkbox, select, relationship, virtual } from '@keystone-6/core/fields';
 import { list, graphql } from '@keystone-6/core';
 import { KeystoneListsAPI } from '@keystone-6/core/types';
-import { KeystoneListsTypeInfo } from '.keystone/types';
+import { Context } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 
@@ -55,8 +55,9 @@ export const Choice = list({
           name: 'ChoiceStatus',
           values: graphql.enumValues(['NOT_STARTED', 'WINNING', 'LOSING', 'WON', 'LOST']),
         }),
-        async resolve(item, _args, context) {
-          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+        async resolve(item, _args, _context) {
+          const context = _context as Context;
+          const lists = context.query;
           const graphql = String.raw;
 
           const requestedLine = (await lists.Line.findOne({

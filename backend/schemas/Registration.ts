@@ -1,7 +1,7 @@
 import { checkbox, relationship, virtual } from '@keystone-6/core/fields';
 import { list, graphql } from '@keystone-6/core';
 import { KeystoneListsAPI } from '@keystone-6/core/types';
-import { KeystoneListsTypeInfo, ContestStatusType } from '.keystone/types';
+import { Context, ContestStatusType } from '.keystone/types';
 import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 import { cache } from '../cache';
@@ -47,9 +47,10 @@ export const Registration = list({
             possible: graphql.field({ type: graphql.Int }),
           },
         }),
-        async resolve(item, _args, context) {
+        async resolve(item, _args, _context) {
           console.log('starting');
           // const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const context = _context as Context;
           const graphql = String.raw;
 
           if (
