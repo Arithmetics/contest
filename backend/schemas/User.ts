@@ -1,5 +1,5 @@
-import { text, checkbox, password, relationship } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
+import { text, checkbox, password, relationship } from '@keystone-6/core/fields';
+import { list } from '@keystone-6/core';
 import { isAdmin, isOwnAccount } from '../keystoneTypeAugments';
 
 export const User = list({

@@ -1,4 +1,4 @@
-import { KeystoneContext } from '@keystone-next/keystone/types';
+import { KeystoneContext } from '@keystone-6/core/types';
 import { BetWhereInput } from '.keystone/types';
 
 export type AugKeystoneSession = {

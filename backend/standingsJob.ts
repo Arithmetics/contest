@@ -1,4 +1,4 @@
-import { KeystoneContext, KeystoneListsAPI } from '@keystone-next/keystone/types';
+import { KeystoneContext, KeystoneListsAPI } from '@keystone-6/core/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 
 import { Line, Standing, StandingCreateInput } from './codegen/graphql-types';
@@ -19,7 +19,8 @@ export async function startDailyStandingsJob(
         isAdmin: true,
       },
     })
-    .sudo().db as KeystoneListsAPI<KeystoneListsTypeInfo>;
+    .sudo().db;
+  // as KeystoneListsAPI<KeystoneListsTypeInfo>;
 
   const graphql = String.raw;
   const espnStandings = await fetchEspnStandings(apiUrl);

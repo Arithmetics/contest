@@ -1,6 +1,6 @@
-import { checkbox, relationship } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
-import { KeystoneListsAPI } from '@keystone-next/keystone/types';
+import { checkbox, relationship } from '@keystone-6/core/fields';
+import { list } from '@keystone-6/core';
+import { KeystoneListsAPI } from '@keystone-6/core/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { canModifyBet, canReadBet, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { Choice } from '../codegen/graphql-types';

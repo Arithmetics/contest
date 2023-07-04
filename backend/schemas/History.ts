@@ -1,5 +1,5 @@
-import { integer, relationship, select, text } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
+import { integer, relationship, select, text } from '@keystone-6/core/fields';
+import { list } from '@keystone-6/core';
 import { isAdmin } from '../keystoneTypeAugments';
 import { RootContestType } from './Contest';
 

@@ -1,6 +1,6 @@
-import { float, relationship, text, timestamp, virtual } from '@keystone-next/keystone/fields';
-import { list, graphql } from '@keystone-next/keystone';
-import { KeystoneListsAPI } from '@keystone-next/keystone/types';
+import { float, relationship, text, timestamp, virtual } from '@keystone-6/core/fields';
+import { list, graphql } from '@keystone-6/core';
+import { KeystoneListsAPI } from '@keystone-6/core/types';
 import { KeystoneListsTypeInfo } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 import { Contest } from '../codegen/graphql-types';
