@@ -2,8 +2,9 @@ import { checkbox, relationship } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
 import { canModifyBet, canReadBet, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { Choice } from '../codegen/graphql-types';
+import { Lists } from '.keystone/types';
 
-export const Bet = list({
+export const Bet: Lists.Bet = list({
   access: {
     operation: {
       create: isSignedIn,
@@ -32,10 +33,10 @@ export const Bet = list({
       }
 
       // use this or session id becuase we guard for mismatched userId
-      const userId = resolvedData.user.connect.id;
+      const userId = resolvedData.user?.connect?.id;
 
       const requestedChoice = await lists.Choice.findOne({
-        where: { id: resolvedData.choice.connect.id },
+        where: { id: resolvedData.choice?.connect?.id },
         query: graphql`
             id
             line {

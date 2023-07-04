@@ -1,8 +1,9 @@
 import { text, checkbox, password, relationship } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
 import { isAdmin, isOwnAccount } from '../keystoneTypeAugments';
+import { Lists } from '.keystone/types';
 
-export const User = list({
+export const User: Lists.User = list({
   access: {
     operation: {
       create: isOwnAccount,

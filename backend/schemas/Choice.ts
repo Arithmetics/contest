@@ -1,11 +1,10 @@
 import { checkbox, select, relationship, virtual } from '@keystone-6/core/fields';
 import { list, graphql } from '@keystone-6/core';
-import { KeystoneListsAPI } from '@keystone-6/core/types';
-import { Context } from '.keystone/types';
+import { Context, Lists } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 
-export const Choice = list({
+export const Choice: Lists.Choice = list({
   access: {
     operation: {
       create: isAdmin,
@@ -141,8 +140,9 @@ export const Choice = list({
     labelName: virtual({
       field: graphql.field({
         type: graphql.String,
-        async resolve(item, _args, context) {
-          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+        async resolve(item, _args, _context) {
+          const context = _context as Context;
+          const lists = context.query;
           const graphql = String.raw;
           const requestedLine = (await lists.Line.findOne({
             where: { id: (item.lineId as string) || '' },

@@ -1,8 +1,9 @@
 import { integer, relationship } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
 import { isAdmin } from '../keystoneTypeAugments';
+import { Lists } from '.keystone/types';
 
-export const Standing = list({
+export const Standing: Lists.Standing = list({
   access: {
     operation: {
       create: isAdmin,
