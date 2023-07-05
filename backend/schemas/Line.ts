@@ -1,11 +1,10 @@
-import { float, relationship, text, timestamp, virtual } from '@keystone-next/keystone/fields';
-import { list, graphql } from '@keystone-next/keystone';
-import { KeystoneListsAPI } from '@keystone-next/keystone/types';
-import { KeystoneListsTypeInfo } from '.keystone/types';
+import { float, relationship, text, timestamp, virtual } from '@keystone-6/core/fields';
+import { list, graphql } from '@keystone-6/core';
+import { Context, Lists } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 import { Contest } from '../codegen/graphql-types';
 
-export const Line = list({
+export const Line: Lists.Line = list({
   access: {
     operation: {
       create: isAdmin,
@@ -33,10 +32,10 @@ export const Line = list({
     labelName: virtual({
       field: graphql.field({
         type: graphql.String,
-        async resolve(item, _args, context) {
-          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+        async resolve(item, _args, _context) {
+          const context = _context as Context;
+          const lists = context.query;
           const graphql = String.raw;
-
           const parentContest = (await lists.Contest.findOne({
             where: { id: (item.contestId as string) || '' },
             query: graphql`

@@ -1,12 +1,11 @@
-import { checkbox, relationship, virtual } from '@keystone-next/keystone/fields';
-import { list, graphql } from '@keystone-next/keystone';
-import { KeystoneListsAPI } from '@keystone-next/keystone/types';
-import { KeystoneListsTypeInfo, ContestStatusType } from '.keystone/types';
+import { checkbox, relationship, virtual } from '@keystone-6/core/fields';
+import { list, graphql } from '@keystone-6/core';
+import { Context, ContestStatusType, Lists } from '.keystone/types';
 import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 import { cache } from '../cache';
 
-export const Registration = list({
+export const Registration: Lists.Registration = list({
   access: {
     operation: {
       query: () => true,
@@ -47,9 +46,9 @@ export const Registration = list({
             possible: graphql.field({ type: graphql.Int }),
           },
         }),
-        async resolve(item, _args, context) {
+        async resolve(item, _args, _context) {
           console.log('starting');
-          // const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+          const context = _context as Context;
           const graphql = String.raw;
 
           if (
@@ -130,7 +129,7 @@ export const Registration = list({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const lists = context.query;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
@@ -140,12 +139,12 @@ export const Registration = list({
       }
 
       // RULE: only can create for yourself
-      if (resolvedData.user.connect.id !== session?.data?.id) {
+      if (resolvedData.user?.connect?.id !== session?.data?.id) {
         addValidationError('Can only create registration for own account');
       }
 
       const requestedContest = await lists.Contest.findOne({
-        where: { id: resolvedData.contest.connect.id },
+        where: { id: resolvedData.contest?.connect?.id },
         query: graphql`
             id
             status
@@ -159,7 +158,7 @@ export const Registration = list({
       // RULE: only one registration per user per contest
       const duplicateRegistrations = await lists.Registration.findMany({
         where: {
-          contest: { id: { equals: resolvedData.contest.connect.id } },
+          contest: { id: { equals: resolvedData.contest?.connect?.id } },
           user: { id: { equals: session?.data?.id } },
         },
         query: graphql`
@@ -173,7 +172,7 @@ export const Registration = list({
     },
     validateDelete: async (args) => {
       const { item, addValidationError, context } = args;
-      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const lists = context.query;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;

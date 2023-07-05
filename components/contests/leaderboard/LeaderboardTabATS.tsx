@@ -18,13 +18,16 @@ import { firstBy } from 'thenby';
 import {
   useAtsLeaderboardQuery,
   Registration,
-  Line,
   RuleSet,
+  AtsLeaderboardQuery,
 } from '../../../generated/graphql-types';
+
+type AtsDataLinesType = NonNullable<AtsLeaderboardQuery['contest']>['lines'];
+type AtsDataLineType = NonNullable<AtsDataLinesType>[number];
 
 function scoreAllRegistrations(
   registrations: Registration[],
-  lines: Line[],
+  lines: AtsDataLinesType,
   ruleSet?: RuleSet | null
 ): Record<string, number> {
   const scores: Record<string, number> = {};
@@ -37,7 +40,7 @@ function scoreAllRegistrations(
     }
   });
 
-  lines.forEach((line) => {
+  lines?.forEach((line) => {
     line.choices?.forEach((choice) => {
       if (choice.isWin) {
         choice.bets?.forEach((bet) => {
@@ -56,7 +59,7 @@ function scoreAllRegistrations(
 
 function getRemainingLocks(
   registrations: Registration[],
-  lines: Line[],
+  lines: AtsDataLinesType,
   ruleSet?: RuleSet | null
 ): Record<string, number> {
   const remainingLocks: Record<string, number> = {};
@@ -69,8 +72,8 @@ function getRemainingLocks(
     }
   });
 
-  lines.forEach((line) => {
-    line.choices?.forEach((choice) => {
+  lines?.forEach((line) => {
+    line?.choices?.forEach((choice) => {
       choice.bets?.forEach((bet) => {
         if (bet.user?.id) {
           const counts = bet.isSuper ? 1 : 0;
@@ -85,7 +88,7 @@ function getRemainingLocks(
 
 export function sortATSLeaderboard(
   registrations: Registration[],
-  lines: Line[],
+  lines: AtsDataLinesType,
   ruleSet?: RuleSet | null
 ): Registration[] {
   const totalScores = scoreAllRegistrations(registrations || [], lines || [], ruleSet);
@@ -116,10 +119,10 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
   const { data, loading } = useAtsLeaderboardQuery({ variables: { contestId: contestId || '' } });
 
   const registrations = data?.contest?.registrations;
-  const lines = data?.contest?.lines || [];
+  const lines = data?.contest?.lines ?? [];
 
   const sortedLines = [...lines].sort(
-    firstBy<Line>((a, b) => {
+    firstBy<AtsDataLineType>((a, b) => {
       const aTime = a.closingTime || 0;
       const bTime = b.closingTime || 0;
       return bTime - aTime;
@@ -130,7 +133,7 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
   const totalScores = scoreAllRegistrations(registrations || [], lines || [], ruleSet);
   const remainingLocks = getRemainingLocks(registrations || [], lines || [], ruleSet);
 
-  const sortedRegistrations = sortATSLeaderboard(registrations || [], lines, ruleSet);
+  const sortedRegistrations = sortATSLeaderboard(registrations || [], lines || [], ruleSet);
 
   const marginBox = useBreakpointValue({ base: 1, sm: 2, md: 6 });
 

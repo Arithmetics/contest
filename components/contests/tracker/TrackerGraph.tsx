@@ -17,7 +17,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
 
   const maxX = data.reduce((acc, cur) => {
     const maxData = cur.data.reduce((acc2, cur2) => {
-      const xVal = cur2?.x || 0;
+      const xVal = (cur2?.x as number) || 0;
       if (xVal > acc2 && typeof xVal === 'number') {
         acc2 = xVal;
       }
@@ -100,7 +100,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
             boxShadow={'dark-lg'}
             rounded={'md'}
           >
-            {point.serieId} game {point.data.x} - {point.data.y}
+            {point.serieId} game {point.data.x as number} - {point.data.y as number}
           </Box>
         );
       }}

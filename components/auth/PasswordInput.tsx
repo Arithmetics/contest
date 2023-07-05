@@ -29,12 +29,12 @@ export default function PasswordInput({
   const handleClick = (): void => setShow(!show);
 
   return (
-    <FormControl id="name" isRequired isInvalid={isInvalid} errortext={errorText}>
+    <FormControl id="name" isRequired isInvalid={isInvalid}>
       <FormLabel color={'gray.500'}>{isUpdatePassword ? 'New Password' : 'Password'}</FormLabel>
       <InputGroup size="md">
         <Input
           name="password"
-          ref={register}
+          {...register('password')}
           pr="4.5rem"
           type={show ? 'text' : 'password'}
           bg={'gray.100'}

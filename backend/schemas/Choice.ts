@@ -1,11 +1,10 @@
-import { checkbox, select, relationship, virtual } from '@keystone-next/keystone/fields';
-import { list, graphql } from '@keystone-next/keystone';
-import { KeystoneListsAPI } from '@keystone-next/keystone/types';
-import { KeystoneListsTypeInfo } from '.keystone/types';
+import { checkbox, select, relationship, virtual } from '@keystone-6/core/fields';
+import { list, graphql } from '@keystone-6/core';
+import { Context, Lists } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 
-export const Choice = list({
+export const Choice: Lists.Choice = list({
   access: {
     operation: {
       create: isAdmin,
@@ -55,8 +54,9 @@ export const Choice = list({
           name: 'ChoiceStatus',
           values: graphql.enumValues(['NOT_STARTED', 'WINNING', 'LOSING', 'WON', 'LOST']),
         }),
-        async resolve(item, _args, context) {
-          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+        async resolve(item, _args, _context) {
+          const context = _context as Context;
+          const lists = context.query;
           const graphql = String.raw;
 
           const requestedLine = (await lists.Line.findOne({
@@ -79,9 +79,8 @@ export const Choice = list({
             return ChoiceStatus.NotStarted;
           }
 
-          const { gamesPlayed, wins, totalGames } = requestedLine.standings[
-            requestedLine.standings.length - 1
-          ];
+          const { gamesPlayed, wins, totalGames } =
+            requestedLine.standings[requestedLine.standings.length - 1];
 
           const safeWins = wins || 0;
           const safeGamesPlayed = gamesPlayed || 0;
@@ -140,8 +139,9 @@ export const Choice = list({
     labelName: virtual({
       field: graphql.field({
         type: graphql.String,
-        async resolve(item, _args, context) {
-          const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+        async resolve(item, _args, _context) {
+          const context = _context as Context;
+          const lists = context.query;
           const graphql = String.raw;
           const requestedLine = (await lists.Line.findOne({
             where: { id: (item.lineId as string) || '' },

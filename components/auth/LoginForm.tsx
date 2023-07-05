@@ -38,7 +38,11 @@ export default function ForgotPasswordForm(): JSX.Element {
   const router = useRouter();
   const toast = useToast();
 
-  const { register, handleSubmit, errors } = useForm<LoginFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -105,14 +109,10 @@ export default function ForgotPasswordForm(): JSX.Element {
       <Heading color={'gray.800'} lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
         Sign in to your account
       </Heading>
-      <FormControl
-        id="email"
-        isInvalid={!!errors?.email?.message}
-        errortext={errors?.email?.message}
-      >
+      <FormControl id="email" isInvalid={!!errors?.email?.message}>
         <FormLabel color={'gray.500'}>Email address</FormLabel>
         <Input
-          ref={register}
+          {...register('email')}
           name="email"
           type="email"
           bg={'gray.100'}
@@ -121,18 +121,14 @@ export default function ForgotPasswordForm(): JSX.Element {
         />
         <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
       </FormControl>
-      <FormControl
-        id="password"
-        isInvalid={!!errors?.password?.message}
-        errortext={errors?.password?.message}
-      >
+      <FormControl id="password" isInvalid={!!errors?.password?.message}>
         <FormLabel color={'gray.500'}>Password</FormLabel>
         <Input
           type="password"
           bg={'gray.100'}
           border={0}
           color={'gray.500'}
-          ref={register}
+          {...register('password')}
           name="password"
           onKeyPress={(e) => (e.key === 'Enter' ? handleSubmit(submitLogin)() : undefined)}
         />

@@ -1,5 +1,5 @@
-import { KeystoneContext } from '@keystone-next/keystone/types';
-import { BetWhereInput } from '.keystone/types';
+import { KeystoneContext } from '@keystone-6/core/types';
+import { BetWhereInput, TypeInfo } from '.keystone/types';
 
 export type AugKeystoneSession = {
   itemId: string;
@@ -11,9 +11,8 @@ export type AugKeystoneSession = {
 };
 
 export type AugListAccessArgs = {
-  itemId?: string;
   session?: AugKeystoneSession;
-  context: KeystoneContext;
+  context: KeystoneContext<TypeInfo>;
   operation: 'query' | 'update' | 'create' | 'delete';
 };
 

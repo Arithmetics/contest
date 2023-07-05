@@ -57,7 +57,11 @@ export default function UpdateAccountForm(): JSX.Element {
       ),
   });
 
-  const { register, handleSubmit, errors } = useForm<UpdateAccountInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UpdateAccountInputs>({
     mode: 'onBlur',
     defaultValues: {
       userName: user?.userName ?? '',
@@ -138,11 +142,11 @@ export default function UpdateAccountForm(): JSX.Element {
             id="realName"
             isRequired
             isInvalid={!!errors?.realName?.message}
-            errortext={errors?.realName?.message}
+            // errortext={errors?.realName?.message}
           >
             <FormLabel color={'gray.500'}>Real Name</FormLabel>
             <Input
-              ref={register}
+              {...register('realName')}
               name="realName"
               bg={'gray.100'}
               border={0}
@@ -154,15 +158,10 @@ export default function UpdateAccountForm(): JSX.Element {
             <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl
-            id="userName"
-            isRequired
-            isInvalid={!!errors?.userName?.message}
-            errortext={errors?.userName?.message}
-          >
+          <FormControl id="userName" isRequired isInvalid={!!errors?.userName?.message}>
             <FormLabel color={'gray.500'}>Display Name</FormLabel>
             <Input
-              ref={register}
+              {...register('userName')}
               name="userName"
               bg={'gray.100'}
               border={0}

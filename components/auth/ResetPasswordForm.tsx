@@ -47,7 +47,12 @@ export default function ResetPasswordForm(): JSX.Element {
   const toast = useToast();
   const { token } = router.query;
 
-  const { register, handleSubmit, errors, reset } = useForm<ResetPasswordInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ResetPasswordInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -100,17 +105,12 @@ export default function ResetPasswordForm(): JSX.Element {
       <Heading color={'gray.800'} lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
         Enter new password
       </Heading>
-      <FormControl
-        id="email"
-        isRequired
-        isInvalid={!!errors?.email?.message}
-        errortext={errors?.email?.message}
-      >
+      <FormControl id="email" isRequired isInvalid={!!errors?.email?.message}>
         <FormLabel color={'gray.500'}>Email address</FormLabel>
         <Input
           placeholder="your-email@example.com"
           _placeholder={{ color: 'gray.500' }}
-          ref={register}
+          {...register('email')}
           name="email"
           type="email"
           bg={'gray.100'}

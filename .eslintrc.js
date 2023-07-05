@@ -8,6 +8,7 @@ module.exports = {
   parserOptions: { ecmaVersion: 8, sourceType: 'module' }, // to enable features such as async/await
   ignorePatterns: [
     'node_modules/*',
+    'backend/node_modules/*',
     '.next/*',
     '.out/*',
     '!.prettierrc.js',
