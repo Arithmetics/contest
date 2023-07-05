@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
-import { onError } from '@apollo/link-error';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { onError } from '@apollo/client/link/error';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import { createUploadLink } from 'apollo-upload-client';
 import withApollo from 'next-with-apollo';
 import { endpoint, prodEndpoint } from '../config';
