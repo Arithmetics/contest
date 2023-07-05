@@ -108,6 +108,7 @@ export type ChoiceBetsArgs = {
   orderBy?: Array<BetOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<BetWhereUniqueInput>;
 };
 
 
@@ -267,7 +268,7 @@ export type CloudImageWhereUniqueInput = {
  * All options are strings as they ultimately end up in a URL.
  */
 export type CloudinaryImageFormat = {
-  /** Rewrites the filename to be this pretty string. Do not include `/` or `.` */
+  /**  Rewrites the filename to be this pretty string. Do not include `/` or `.` */
   prettyName?: Maybe<Scalars['String']>;
   width?: Maybe<Scalars['String']>;
   height?: Maybe<Scalars['String']>;
@@ -338,6 +339,7 @@ export type ContestLinesArgs = {
   orderBy?: Array<LineOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<LineWhereUniqueInput>;
 };
 
 
@@ -351,6 +353,7 @@ export type ContestRegistrationsArgs = {
   orderBy?: Array<RegistrationOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<RegistrationWhereUniqueInput>;
 };
 
 
@@ -614,8 +617,6 @@ export type IntNullableFilter = {
 
 export type KeystoneAdminMeta = {
   __typename?: 'KeystoneAdminMeta';
-  enableSignout: Scalars['Boolean'];
-  enableSessionItem: Scalars['Boolean'];
   lists: Array<KeystoneAdminUiListMeta>;
   list?: Maybe<KeystoneAdminUiListMeta>;
 };
@@ -625,12 +626,21 @@ export type KeystoneAdminMetaListArgs = {
   key: Scalars['String'];
 };
 
+export type KeystoneAdminUiFieldGroupMeta = {
+  __typename?: 'KeystoneAdminUIFieldGroupMeta';
+  label: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  fields: Array<KeystoneAdminUiFieldMeta>;
+};
+
 export type KeystoneAdminUiFieldMeta = {
   __typename?: 'KeystoneAdminUIFieldMeta';
   path: Scalars['String'];
   label: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   isOrderable: Scalars['Boolean'];
   isFilterable: Scalars['Boolean'];
+  isNonNull?: Maybe<Array<KeystoneAdminUiFieldMetaIsNonNull>>;
   fieldMeta?: Maybe<Scalars['JSON']>;
   viewsIndex: Scalars['Int'];
   customViewsIndex?: Maybe<Scalars['Int']>;
@@ -655,15 +665,27 @@ export enum KeystoneAdminUiFieldMetaCreateViewFieldMode {
   Hidden = 'hidden'
 }
 
+export enum KeystoneAdminUiFieldMetaIsNonNull {
+  Read = 'read',
+  Create = 'create',
+  Update = 'update'
+}
+
 export type KeystoneAdminUiFieldMetaItemView = {
   __typename?: 'KeystoneAdminUIFieldMetaItemView';
   fieldMode?: Maybe<KeystoneAdminUiFieldMetaItemViewFieldMode>;
+  fieldPosition?: Maybe<KeystoneAdminUiFieldMetaItemViewFieldPosition>;
 };
 
 export enum KeystoneAdminUiFieldMetaItemViewFieldMode {
   Edit = 'edit',
   Read = 'read',
   Hidden = 'hidden'
+}
+
+export enum KeystoneAdminUiFieldMetaItemViewFieldPosition {
+  Form = 'form',
+  Sidebar = 'sidebar'
 }
 
 export type KeystoneAdminUiFieldMetaListView = {
@@ -692,8 +714,10 @@ export type KeystoneAdminUiListMeta = {
   pageSize: Scalars['Int'];
   labelField: Scalars['String'];
   fields: Array<KeystoneAdminUiFieldMeta>;
+  groups: Array<KeystoneAdminUiFieldGroupMeta>;
   initialSort?: Maybe<KeystoneAdminUiSort>;
   isHidden: Scalars['Boolean'];
+  isSingleton: Scalars['Boolean'];
 };
 
 export type KeystoneAdminUiSort = {
@@ -733,6 +757,7 @@ export type LineChoicesArgs = {
   orderBy?: Array<ChoiceOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<ChoiceWhereUniqueInput>;
 };
 
 
@@ -746,6 +771,7 @@ export type LineStandingsArgs = {
   orderBy?: Array<StandingOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<StandingWhereUniqueInput>;
 };
 
 
@@ -1318,6 +1344,7 @@ export type QueryBetsArgs = {
   orderBy?: Array<BetOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<BetWhereUniqueInput>;
 };
 
 
@@ -1336,6 +1363,7 @@ export type QueryChoicesArgs = {
   orderBy?: Array<ChoiceOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<ChoiceWhereUniqueInput>;
 };
 
 
@@ -1354,6 +1382,7 @@ export type QueryCloudImagesArgs = {
   orderBy?: Array<CloudImageOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<CloudImageWhereUniqueInput>;
 };
 
 
@@ -1372,6 +1401,7 @@ export type QueryContestsArgs = {
   orderBy?: Array<ContestOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<ContestWhereUniqueInput>;
 };
 
 
@@ -1390,6 +1420,7 @@ export type QueryHistoriesArgs = {
   orderBy?: Array<HistoryOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<HistoryWhereUniqueInput>;
 };
 
 
@@ -1408,6 +1439,7 @@ export type QueryLinesArgs = {
   orderBy?: Array<LineOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<LineWhereUniqueInput>;
 };
 
 
@@ -1426,6 +1458,7 @@ export type QueryRegistrationsArgs = {
   orderBy?: Array<RegistrationOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<RegistrationWhereUniqueInput>;
 };
 
 
@@ -1444,6 +1477,7 @@ export type QueryRuleSetsArgs = {
   orderBy?: Array<RuleSetOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<RuleSetWhereUniqueInput>;
 };
 
 
@@ -1462,6 +1496,7 @@ export type QueryStandingsArgs = {
   orderBy?: Array<StandingOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<StandingWhereUniqueInput>;
 };
 
 
@@ -1480,6 +1515,7 @@ export type QueryUsersArgs = {
   orderBy?: Array<UserOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<UserWhereUniqueInput>;
 };
 
 
@@ -1748,6 +1784,7 @@ export type UserBetsArgs = {
   orderBy?: Array<BetOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<BetWhereUniqueInput>;
 };
 
 
@@ -1761,6 +1798,7 @@ export type UserRegistrationsArgs = {
   orderBy?: Array<RegistrationOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<RegistrationWhereUniqueInput>;
 };
 
 
@@ -1774,6 +1812,7 @@ export type UserHistoriesArgs = {
   orderBy?: Array<HistoryOrderByInput>;
   take?: Maybe<Scalars['Int']>;
   skip?: Scalars['Int'];
+  cursor?: Maybe<HistoryWhereUniqueInput>;
 };
 
 

@@ -28,7 +28,12 @@ export default function ForgotPasswordForm(): JSX.Element {
   const toast = useToast();
   const router = useRouter();
 
-  const { register, handleSubmit, errors, reset } = useForm<ForgotPasswordFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ForgotPasswordFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -85,15 +90,11 @@ export default function ForgotPasswordForm(): JSX.Element {
       <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
         You&apos;ll get an email with a reset link
       </Text>
-      <FormControl
-        id="email"
-        isInvalid={!!errors?.email?.message}
-        errortext={errors?.email?.message}
-      >
+      <FormControl id="email" isInvalid={!!errors?.email?.message}>
         <Input
           placeholder="your-email@example.com"
           _placeholder={{ color: 'gray.500' }}
-          ref={register}
+          {...register('email')}
           name="email"
           type="email"
           bg={'gray.100'}

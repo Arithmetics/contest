@@ -28,11 +28,5 @@
     "@types/nodemailer": "6.4.8",
     "@types/nodemailer-sendgrid": "1.0.0",
     "prisma": "4.16.2"
-  },
-  "lint-staged": {
-    "ignore": [
-      "node_modules",
-      "backend/node_modules"
-    ]
   }
 }

@@ -150,7 +150,7 @@ export default function LineCard({
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'test',
-    defaultValue: formSelectedChoiceId,
+    defaultValue: `${formSelectedChoiceId}`,
     onChange: setFormSelectedChoiceId,
   });
 
@@ -302,7 +302,7 @@ export default function LineCard({
       );
     }
     return (
-      <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
+      <RadioGroup onChange={setFormSelectedChoiceId} value={`${formSelectedChoiceId}`}>
         <HStack justifyContent="center" spacing={6} {...group}>
           {line.choices?.map((choice) => {
             return (

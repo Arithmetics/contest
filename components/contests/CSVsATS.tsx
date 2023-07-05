@@ -1,12 +1,16 @@
 import { CSVLink } from 'react-csv';
 import { Text, Button, Box, Center, Spinner, Flex, Heading } from '@chakra-ui/react';
-import { Line, useAtsTrackerStatusQuery } from '../../generated/graphql-types';
+import { useAtsTrackerStatusQuery, AtsTrackerStatusQuery } from '../../generated/graphql-types';
+
+type AtsLines = NonNullable<AtsTrackerStatusQuery['lines']>;
+
+type AtsLine = AtsLines[number];
 
 type CSVsATSProps = {
   contestId?: string;
 };
 
-function createLineCSVData(line: Line): string[][] {
+function createLineCSVData(line: AtsLine): string[][] {
   const data: string[][] = [['game', 'email', 'selection', 'isSuper']];
 
   line.choices?.forEach((choice) => {

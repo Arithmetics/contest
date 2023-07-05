@@ -82,7 +82,12 @@ export default function SignupForm(): JSX.Element {
     password: yup.string().min(8, 'Must be at least 8 characters').required('Password is required'),
   });
 
-  const { register, handleSubmit, errors, reset } = useForm<SignupFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SignupFormInputs>({
     mode: 'onBlur',
     resolver: yupResolver(schema),
   });
@@ -143,15 +148,10 @@ export default function SignupForm(): JSX.Element {
       </Stack>
       <Box as={'form'} mt={10}>
         <Stack spacing={4}>
-          <FormControl
-            id="email"
-            isRequired
-            isInvalid={!!errors?.email?.message}
-            errortext={errors?.email?.message}
-          >
+          <FormControl id="email" isRequired isInvalid={!!errors?.email?.message}>
             <FormLabel color={'gray.500'}>Email</FormLabel>
             <Input
-              ref={register}
+              {...register('email')}
               name="email"
               bg={'gray.100'}
               border={0}
@@ -169,15 +169,10 @@ export default function SignupForm(): JSX.Element {
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl
-            id="realName"
-            isRequired
-            isInvalid={!!errors?.realName?.message}
-            errortext={errors?.realName?.message}
-          >
+          <FormControl id="realName" isRequired isInvalid={!!errors?.realName?.message}>
             <FormLabel color={'gray.500'}>Real Name</FormLabel>
             <Input
-              ref={register}
+              {...register('realName')}
               name="realName"
               bg={'gray.100'}
               border={0}
@@ -189,15 +184,10 @@ export default function SignupForm(): JSX.Element {
             <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
           </FormControl>
 
-          <FormControl
-            id="userName"
-            isRequired
-            isInvalid={!!errors?.userName?.message}
-            errortext={errors?.userName?.message}
-          >
+          <FormControl id="userName" isRequired isInvalid={!!errors?.userName?.message}>
             <FormLabel color={'gray.500'}>Display Name</FormLabel>
             <Input
-              ref={register}
+              {...register('userName')}
               name="userName"
               bg={'gray.100'}
               border={0}
