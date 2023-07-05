@@ -17,7 +17,7 @@ export const Bet: Lists.Bet = list({
       create: isSignedIn,
       query: () => true,
       update: isAdmin,
-      delete: isAdmin,
+      delete: () => true,
     },
     filter: {
       query: canReadBet,

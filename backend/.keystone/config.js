@@ -487,7 +487,7 @@ var Bet = (0, import_core6.list)({
       create: isSignedIn,
       query: () => true,
       update: isAdmin,
-      delete: isAdmin
+      delete: () => true
     },
     filter: {
       query: canReadBet,

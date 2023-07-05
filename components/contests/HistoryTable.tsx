@@ -29,10 +29,14 @@ export default function HistoryTable({ contestType }: HistoryTableProps): JSX.El
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
+        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+        {/* @ts-ignore */}
         <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
       </Center>
     );
   }
+
+  const histories = data?.histories ?? [];
 
   return (
     <Box borderWidth="1px" borderRadius="lg" padding={marginBox} m={marginBox} overflowX="auto">
@@ -45,7 +49,7 @@ export default function HistoryTable({ contestType }: HistoryTableProps): JSX.El
           </Tr>
         </Thead>
         <Tbody>
-          {data?.histories?.reverse().map((his) => {
+          {[...histories]?.reverse().map((his) => {
             const user = his.user;
             const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
