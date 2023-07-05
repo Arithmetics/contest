@@ -15,17 +15,24 @@
     "@keystone-6/auth": "7.0.1",
     "@keystone-6/cloudinary": "7.0.0",
     "@keystone-6/core": "5.3.2",
-    "dotenv": "^8.2.0",
-    "got": "^11.8.2",
-    "node-cron": "^3.0.0",
-    "nodemailer": "^6.5.0",
-    "nodemailer-sendgrid": "^1.0.3",
-    "typescript": "^4.2.4"
+    "dotenv": "16.3.1",
+    "got": "13.0.0",
+    "node-cron": "3.0.2",
+    "nodemailer": "6.9.3",
+    "nodemailer-sendgrid": "1.0.3",
+    "typescript": "5.1.6"
   },
   "devDependencies": {
-    "@types/node-cron": "^2.0.4",
-    "@types/nodemailer": "^6.4.1",
-    "@types/nodemailer-sendgrid": "^1.0.0",
-    "prisma": "^3.2.1"
+    "@types/got": "9.6.12",
+    "@types/node-cron": "3.0.8",
+    "@types/nodemailer": "6.4.8",
+    "@types/nodemailer-sendgrid": "1.0.0",
+    "prisma": "4.16.2"
+  },
+  "lint-staged": {
+    "ignore": [
+      "node_modules",
+      "backend/node_modules"
+    ]
   }
 }

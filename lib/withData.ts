@@ -33,7 +33,10 @@ function createClient({ headers, initialState }: ClientArgs): ApolloClient<Norma
           credentials: 'include',
         },
         // pass the headers along from this request. This enables SSR with logged in state
-        headers,
+        headers: {
+          ...headers,
+          'apollo-require-preflight': true,
+        },
       }),
     ]),
     cache: new InMemoryCache({
@@ -41,7 +44,6 @@ function createClient({ headers, initialState }: ClientArgs): ApolloClient<Norma
         Query: {
           fields: {
             // TODO: We will add this together!
-            // allProducts: paginationField(),
           },
         },
       },
