@@ -35,7 +35,7 @@ FROM base AS setup
 
 # Install packages required for building native node modules with node-gyp and
 # also add curl and bash for docker-compose.
-RUN apk add --no-cache python make g++ curl bash
+# RUN apk add --no-cache python make g++ curl bash
 
 # Copying only required files for install command (.npmrc needed for scoped packages)
 # COPY package.json yarn.lock ./
