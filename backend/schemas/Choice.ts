@@ -79,9 +79,8 @@ export const Choice: Lists.Choice = list({
             return ChoiceStatus.NotStarted;
           }
 
-          const { gamesPlayed, wins, totalGames } = requestedLine.standings[
-            requestedLine.standings.length - 1
-          ];
+          const { gamesPlayed, wins, totalGames } =
+            requestedLine.standings[requestedLine.standings.length - 1];
 
           const safeWins = wins || 0;
           const safeGamesPlayed = gamesPlayed || 0;

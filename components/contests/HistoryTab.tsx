@@ -23,7 +23,7 @@ export default function HistoryTab({ contestId }: HistoryTabProps): JSX.Element 
     );
   }
   if (contestType) {
-    return <HistoryTable contestType={(contestType as unknown) as HistoryContestTypeType} />;
+    return <HistoryTable contestType={contestType as unknown as HistoryContestTypeType} />;
   }
 
   return <div>nope</div>;
