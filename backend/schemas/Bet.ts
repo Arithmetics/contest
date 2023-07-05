@@ -1,6 +1,13 @@
 import { checkbox, relationship } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
-import { canModifyBet, canReadBet, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
+import {
+  canModifyBet,
+  canReadBet,
+  isSignedIn,
+  isAdmin,
+  AugKeystoneSession,
+} from '../keystoneTypeAugments';
+
 import { Choice } from '../codegen/graphql-types';
 import { Lists } from '.keystone/types';
 
@@ -8,6 +15,9 @@ export const Bet: Lists.Bet = list({
   access: {
     operation: {
       create: isSignedIn,
+      query: () => true,
+      update: isAdmin,
+      delete: isAdmin,
     },
     filter: {
       query: canReadBet,

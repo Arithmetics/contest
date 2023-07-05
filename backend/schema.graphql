@@ -92,12 +92,7 @@ type Choice {
   selection: ChoiceSelectionType
   isWin: Boolean
   line: Line
-  bets(
-    where: BetWhereInput! = {}
-    orderBy: [BetOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Bet!]
+  bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
   image: CloudImage
   secondaryImage: CloudImage
@@ -234,8 +229,7 @@ Mirrors the formatting options [Cloudinary provides](https://cloudinary.com/docu
 All options are strings as they ultimately end up in a URL.
 """
 input CloudinaryImageFormat {
-  """
-   Rewrites the filename to be this pretty string. Do not include `/` or `.`
+  """ Rewrites the filename to be this pretty string. Do not include `/` or `.`
   """
   prettyName: String
   width: String
@@ -324,9 +318,7 @@ input CloudImageUpdateInput {
   altText: String
 }
 
-"""
-The `Upload` scalar type represents a file upload.
-"""
+"""The `Upload` scalar type represents a file upload."""
 scalar Upload
 
 input CloudImageUpdateArgs {
@@ -347,19 +339,9 @@ type Contest {
   entryFee: Int
   contestType: ContestContestTypeType
   image: CloudImage
-  lines(
-    where: LineWhereInput! = {}
-    orderBy: [LineOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Line!]
+  lines(where: LineWhereInput! = {}, orderBy: [LineOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LineWhereUniqueInput): [Line!]
   linesCount(where: LineWhereInput! = {}): Int
-  registrations(
-    where: RegistrationWhereInput! = {}
-    orderBy: [RegistrationOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Registration!]
+  registrations(where: RegistrationWhereInput! = {}, orderBy: [RegistrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrationWhereUniqueInput): [Registration!]
   registrationsCount(where: RegistrationWhereInput! = {}): Int
   ruleSet: RuleSet
   winner: User
@@ -590,25 +572,14 @@ type Line {
   benchmark: Float
   image: CloudImage
   contest: Contest
-  choices(
-    where: ChoiceWhereInput! = {}
-    orderBy: [ChoiceOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Choice!]
+  choices(where: ChoiceWhereInput! = {}, orderBy: [ChoiceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ChoiceWhereUniqueInput): [Choice!]
   choicesCount(where: ChoiceWhereInput! = {}): Int
-  standings(
-    where: StandingWhereInput! = {}
-    orderBy: [StandingOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Standing!]
+  standings(where: StandingWhereInput! = {}, orderBy: [StandingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StandingWhereUniqueInput): [Standing!]
   standingsCount(where: StandingWhereInput! = {}): Int
   labelName: String
 }
 
-scalar DateTime
-  @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
+scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input LineWhereUniqueInput {
   id: ID
@@ -889,27 +860,12 @@ type User {
   userName: String
   password: PasswordState
   isAdmin: Boolean
-  bets(
-    where: BetWhereInput! = {}
-    orderBy: [BetOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Bet!]
+  bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
   avatarImage: CloudImage
-  registrations(
-    where: RegistrationWhereInput! = {}
-    orderBy: [RegistrationOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Registration!]
+  registrations(where: RegistrationWhereInput! = {}, orderBy: [RegistrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrationWhereUniqueInput): [Registration!]
   registrationsCount(where: RegistrationWhereInput! = {}): Int
-  histories(
-    where: HistoryWhereInput! = {}
-    orderBy: [HistoryOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [History!]
+  histories(where: HistoryWhereInput! = {}, orderBy: [HistoryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: HistoryWhereUniqueInput): [History!]
   historiesCount(where: HistoryWhereInput! = {}): Int
   passwordResetToken: PasswordState
   passwordResetIssuedAt: DateTime
@@ -1026,10 +982,7 @@ input HistoryRelateToManyForCreateInput {
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
-scalar JSON
-  @specifiedBy(
-    url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf"
-  )
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
 
 type Mutation {
   createBet(data: BetCreateInput!): Bet
@@ -1046,28 +999,19 @@ type Mutation {
   deleteChoices(where: [ChoiceWhereUniqueInput!]!): [Choice]
   createCloudImage(data: CloudImageCreateInput!): CloudImage
   createCloudImages(data: [CloudImageCreateInput!]!): [CloudImage]
-  updateCloudImage(
-    where: CloudImageWhereUniqueInput!
-    data: CloudImageUpdateInput!
-  ): CloudImage
+  updateCloudImage(where: CloudImageWhereUniqueInput!, data: CloudImageUpdateInput!): CloudImage
   updateCloudImages(data: [CloudImageUpdateArgs!]!): [CloudImage]
   deleteCloudImage(where: CloudImageWhereUniqueInput!): CloudImage
   deleteCloudImages(where: [CloudImageWhereUniqueInput!]!): [CloudImage]
   createContest(data: ContestCreateInput!): Contest
   createContests(data: [ContestCreateInput!]!): [Contest]
-  updateContest(
-    where: ContestWhereUniqueInput!
-    data: ContestUpdateInput!
-  ): Contest
+  updateContest(where: ContestWhereUniqueInput!, data: ContestUpdateInput!): Contest
   updateContests(data: [ContestUpdateArgs!]!): [Contest]
   deleteContest(where: ContestWhereUniqueInput!): Contest
   deleteContests(where: [ContestWhereUniqueInput!]!): [Contest]
   createHistory(data: HistoryCreateInput!): History
   createHistories(data: [HistoryCreateInput!]!): [History]
-  updateHistory(
-    where: HistoryWhereUniqueInput!
-    data: HistoryUpdateInput!
-  ): History
+  updateHistory(where: HistoryWhereUniqueInput!, data: HistoryUpdateInput!): History
   updateHistories(data: [HistoryUpdateArgs!]!): [History]
   deleteHistory(where: HistoryWhereUniqueInput!): History
   deleteHistories(where: [HistoryWhereUniqueInput!]!): [History]
@@ -1079,28 +1023,19 @@ type Mutation {
   deleteLines(where: [LineWhereUniqueInput!]!): [Line]
   createRegistration(data: RegistrationCreateInput!): Registration
   createRegistrations(data: [RegistrationCreateInput!]!): [Registration]
-  updateRegistration(
-    where: RegistrationWhereUniqueInput!
-    data: RegistrationUpdateInput!
-  ): Registration
+  updateRegistration(where: RegistrationWhereUniqueInput!, data: RegistrationUpdateInput!): Registration
   updateRegistrations(data: [RegistrationUpdateArgs!]!): [Registration]
   deleteRegistration(where: RegistrationWhereUniqueInput!): Registration
   deleteRegistrations(where: [RegistrationWhereUniqueInput!]!): [Registration]
   createRuleSet(data: RuleSetCreateInput!): RuleSet
   createRuleSets(data: [RuleSetCreateInput!]!): [RuleSet]
-  updateRuleSet(
-    where: RuleSetWhereUniqueInput!
-    data: RuleSetUpdateInput!
-  ): RuleSet
+  updateRuleSet(where: RuleSetWhereUniqueInput!, data: RuleSetUpdateInput!): RuleSet
   updateRuleSets(data: [RuleSetUpdateArgs!]!): [RuleSet]
   deleteRuleSet(where: RuleSetWhereUniqueInput!): RuleSet
   deleteRuleSets(where: [RuleSetWhereUniqueInput!]!): [RuleSet]
   createStanding(data: StandingCreateInput!): Standing
   createStandings(data: [StandingCreateInput!]!): [Standing]
-  updateStanding(
-    where: StandingWhereUniqueInput!
-    data: StandingUpdateInput!
-  ): Standing
+  updateStanding(where: StandingWhereUniqueInput!, data: StandingUpdateInput!): Standing
   updateStandings(data: [StandingUpdateArgs!]!): [Standing]
   deleteStanding(where: StandingWhereUniqueInput!): Standing
   deleteStandings(where: [StandingWhereUniqueInput!]!): [Standing]
@@ -1111,24 +1046,13 @@ type Mutation {
   deleteUser(where: UserWhereUniqueInput!): User
   deleteUsers(where: [UserWhereUniqueInput!]!): [User]
   endSession: Boolean!
-  authenticateUserWithPassword(
-    email: String!
-    password: String!
-  ): UserAuthenticationWithPasswordResult
-  createInitialUser(
-    data: CreateInitialUserInput!
-  ): UserAuthenticationWithPasswordSuccess!
+  authenticateUserWithPassword(email: String!, password: String!): UserAuthenticationWithPasswordResult
+  createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   sendUserPasswordResetLink(email: String!): Boolean!
-  redeemUserPasswordResetToken(
-    email: String!
-    token: String!
-    password: String!
-  ): RedeemUserPasswordResetTokenResult
+  redeemUserPasswordResetToken(email: String!, token: String!, password: String!): RedeemUserPasswordResetTokenResult
 }
 
-union UserAuthenticationWithPasswordResult =
-    UserAuthenticationWithPasswordSuccess
-  | UserAuthenticationWithPasswordFailure
+union UserAuthenticationWithPasswordResult = UserAuthenticationWithPasswordSuccess | UserAuthenticationWithPasswordFailure
 
 type UserAuthenticationWithPasswordSuccess {
   sessionToken: String!
@@ -1158,92 +1082,39 @@ enum PasswordResetRedemptionErrorCode {
 }
 
 type Query {
-  bets(
-    where: BetWhereInput! = {}
-    orderBy: [BetOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Bet!]
+  bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   bet(where: BetWhereUniqueInput!): Bet
   betsCount(where: BetWhereInput! = {}): Int
-  choices(
-    where: ChoiceWhereInput! = {}
-    orderBy: [ChoiceOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Choice!]
+  choices(where: ChoiceWhereInput! = {}, orderBy: [ChoiceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ChoiceWhereUniqueInput): [Choice!]
   choice(where: ChoiceWhereUniqueInput!): Choice
   choicesCount(where: ChoiceWhereInput! = {}): Int
-  cloudImages(
-    where: CloudImageWhereInput! = {}
-    orderBy: [CloudImageOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [CloudImage!]
+  cloudImages(where: CloudImageWhereInput! = {}, orderBy: [CloudImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CloudImageWhereUniqueInput): [CloudImage!]
   cloudImage(where: CloudImageWhereUniqueInput!): CloudImage
   cloudImagesCount(where: CloudImageWhereInput! = {}): Int
-  contests(
-    where: ContestWhereInput! = {}
-    orderBy: [ContestOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Contest!]
+  contests(where: ContestWhereInput! = {}, orderBy: [ContestOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ContestWhereUniqueInput): [Contest!]
   contest(where: ContestWhereUniqueInput!): Contest
   contestsCount(where: ContestWhereInput! = {}): Int
-  histories(
-    where: HistoryWhereInput! = {}
-    orderBy: [HistoryOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [History!]
+  histories(where: HistoryWhereInput! = {}, orderBy: [HistoryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: HistoryWhereUniqueInput): [History!]
   history(where: HistoryWhereUniqueInput!): History
   historiesCount(where: HistoryWhereInput! = {}): Int
-  lines(
-    where: LineWhereInput! = {}
-    orderBy: [LineOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Line!]
+  lines(where: LineWhereInput! = {}, orderBy: [LineOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LineWhereUniqueInput): [Line!]
   line(where: LineWhereUniqueInput!): Line
   linesCount(where: LineWhereInput! = {}): Int
-  registrations(
-    where: RegistrationWhereInput! = {}
-    orderBy: [RegistrationOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Registration!]
+  registrations(where: RegistrationWhereInput! = {}, orderBy: [RegistrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrationWhereUniqueInput): [Registration!]
   registration(where: RegistrationWhereUniqueInput!): Registration
   registrationsCount(where: RegistrationWhereInput! = {}): Int
-  ruleSets(
-    where: RuleSetWhereInput! = {}
-    orderBy: [RuleSetOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [RuleSet!]
+  ruleSets(where: RuleSetWhereInput! = {}, orderBy: [RuleSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RuleSetWhereUniqueInput): [RuleSet!]
   ruleSet(where: RuleSetWhereUniqueInput!): RuleSet
   ruleSetsCount(where: RuleSetWhereInput! = {}): Int
-  standings(
-    where: StandingWhereInput! = {}
-    orderBy: [StandingOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [Standing!]
+  standings(where: StandingWhereInput! = {}, orderBy: [StandingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StandingWhereUniqueInput): [Standing!]
   standing(where: StandingWhereUniqueInput!): Standing
   standingsCount(where: StandingWhereInput! = {}): Int
-  users(
-    where: UserWhereInput! = {}
-    orderBy: [UserOrderByInput!]! = []
-    take: Int
-    skip: Int! = 0
-  ): [User!]
+  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
-  validateUserPasswordResetToken(
-    email: String!
-    token: String!
-  ): ValidateUserPasswordResetTokenResult
+  validateUserPasswordResetToken(email: String!, token: String!): ValidateUserPasswordResetTokenResult
 }
 
 union AuthenticatedItem = User
@@ -1258,8 +1129,6 @@ type KeystoneMeta {
 }
 
 type KeystoneAdminMeta {
-  enableSignout: Boolean!
-  enableSessionItem: Boolean!
   lists: [KeystoneAdminUIListMeta!]!
   list(key: String!): KeystoneAdminUIListMeta
 }
@@ -1279,15 +1148,19 @@ type KeystoneAdminUIListMeta {
   pageSize: Int!
   labelField: String!
   fields: [KeystoneAdminUIFieldMeta!]!
+  groups: [KeystoneAdminUIFieldGroupMeta!]!
   initialSort: KeystoneAdminUISort
   isHidden: Boolean!
+  isSingleton: Boolean!
 }
 
 type KeystoneAdminUIFieldMeta {
   path: String!
   label: String!
+  description: String
   isOrderable: Boolean!
   isFilterable: Boolean!
+  isNonNull: [KeystoneAdminUIFieldMetaIsNonNull!]
   fieldMeta: JSON
   viewsIndex: Int!
   customViewsIndex: Int
@@ -1295,6 +1168,12 @@ type KeystoneAdminUIFieldMeta {
   listView: KeystoneAdminUIFieldMetaListView!
   itemView(id: ID): KeystoneAdminUIFieldMetaItemView
   search: QueryMode
+}
+
+enum KeystoneAdminUIFieldMetaIsNonNull {
+  read
+  create
+  update
 }
 
 type KeystoneAdminUIFieldMetaCreateView {
@@ -1317,12 +1196,24 @@ enum KeystoneAdminUIFieldMetaListViewFieldMode {
 
 type KeystoneAdminUIFieldMetaItemView {
   fieldMode: KeystoneAdminUIFieldMetaItemViewFieldMode
+  fieldPosition: KeystoneAdminUIFieldMetaItemViewFieldPosition
 }
 
 enum KeystoneAdminUIFieldMetaItemViewFieldMode {
   edit
   read
   hidden
+}
+
+enum KeystoneAdminUIFieldMetaItemViewFieldPosition {
+  form
+  sidebar
+}
+
+type KeystoneAdminUIFieldGroupMeta {
+  label: String!
+  description: String
+  fields: [KeystoneAdminUIFieldMeta!]!
 }
 
 type KeystoneAdminUISort {

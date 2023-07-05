@@ -36,7 +36,6 @@ export const Line: Lists.Line = list({
           const context = _context as Context;
           const lists = context.query;
           const graphql = String.raw;
-
           const parentContest = (await lists.Contest.findOne({
             where: { id: (item.contestId as string) || '' },
             query: graphql`
