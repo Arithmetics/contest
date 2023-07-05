@@ -1,5 +1,5 @@
 # --- Base Image (all other images are based off this one) ---------------------
-FROM node:15.14.0-alpine3.10 AS base
+FROM node:16.3.0-alpine AS base
 
 ARG DATABASE_URL
 ENV DATABASE_URL="$DATABASE_URL"
@@ -23,7 +23,7 @@ ARG MAIL_PASS
 ENV MAIL_PASS=$MAIL_PASS
 ARG SENDGRID_API_KEY
 ENV SENDGRID_API_KEY=$SENDGRID_API_KEY
- 
+
 # Set working directory.
 WORKDIR /var/service
 
@@ -60,7 +60,7 @@ FROM base
 
 # Copy over everything we've built from the previous image.
 COPY --chown=node:node --from=builder /var/service /var/service
- 
+
 # Switch to the `node` user.
 USER node
 
