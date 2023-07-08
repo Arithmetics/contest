@@ -20,9 +20,12 @@ import {
   UseRadioProps,
   useRadioGroup,
   Tooltip,
+  Tag,
+  TagLabel,
+  TagRightIcon,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-
+import { BsLightning } from 'react-icons/bs';
 import {
   ChoiceSelectionType,
   Line,
@@ -292,7 +295,7 @@ export default function LineCard({
               );
             })}
           </HStack>
-          {userId && (
+          {userId && !formDisabled && (
             <Center>
               <Checkbox
                 onChange={() => setSuperBetSelected(!superBetSelected)}
@@ -302,9 +305,19 @@ export default function LineCard({
                 colorScheme="teal"
                 size="lg"
               >
-                Super Pick
+                <HStack>
+                  <Text>Super Bet</Text> <BsLightning />
+                </HStack>
               </Checkbox>
             </Center>
+          )}
+          {userId && superBetSelected && formDisabled && (
+            <HStack justifyContent="center">
+              <Tag size="md" colorScheme="purple" marginTop={4} width="110px">
+                <TagLabel>Super Bet</TagLabel>
+                <TagRightIcon as={BsLightning} />
+              </Tag>
+            </HStack>
           )}
         </>
       );
@@ -335,7 +348,7 @@ export default function LineCard({
             colorScheme="teal"
             size="lg"
           >
-            Super Pick
+            Super Bet
           </Checkbox>
         </Center>
       </RadioGroup>
@@ -372,17 +385,16 @@ export default function LineCard({
                   {usersBet && (
                     <HStack>
                       <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
-                      <Text fontSize="2xl">{selectedChoice?.selection}</Text>
+                      <Text fontSize="xl">{selectedChoice?.selection}</Text>
+                      {superBetSelected && (
+                        <Tag size="md" colorScheme="purple">
+                          <TagLabel>Super Bet</TagLabel>
+                          <TagRightIcon as={BsLightning} />
+                        </Tag>
+                      )}
                     </HStack>
                   )}
                 </Center>
-                {superBetSelected && (
-                  <Center>
-                    <Badge marginLeft={2} colorScheme="purple">
-                      Super Bet
-                    </Badge>
-                  </Center>
-                )}
 
                 {lineHasWinner(line) && (
                   <>

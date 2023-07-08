@@ -27,7 +27,14 @@ function formatLineDate(line: Line): string {
   if (!line.closingTime) {
     return 'No closing time set';
   }
-  return new Date(line.closingTime).toLocaleString();
+  return new Date(line.closingTime).toLocaleString(undefined, {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    timeZoneName: 'short',
+  });
 }
 
 type LineCardHeaderProps = {
