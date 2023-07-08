@@ -11,7 +11,7 @@ import {
 import { Choice } from '../codegen/graphql-types';
 import { Lists } from '.keystone/types';
 
-export const Bet: Lists.Bet = list({
+export const Bet: Lists.Bet<AugKeystoneSession> = list({
   access: {
     operation: {
       create: isSignedIn,
@@ -33,12 +33,13 @@ export const Bet: Lists.Bet = list({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
+
       const lists = context.query;
       const graphql = String.raw;
 
-      const session = context.session as AugKeystoneSession;
+      const session = context.session;
 
-      if (session.data.isAdmin) {
+      if (session?.data.isAdmin) {
         return;
       }
 
@@ -91,7 +92,7 @@ export const Bet: Lists.Bet = list({
 
       // RULE: user must be registered for the contest
       const usersRegistration = typedChoice?.line?.contest?.registrations?.some(
-        (r) => r?.user?.id === session.data?.id
+        (r) => r?.user?.id === session?.data?.id
       );
 
       if (!usersRegistration) {
@@ -99,7 +100,7 @@ export const Bet: Lists.Bet = list({
       }
 
       // RULE: user can only create bets for themselves
-      if (userId !== session.data?.id) {
+      if (userId !== session?.data?.id) {
         addValidationError('Can only create bet for own account');
       }
 

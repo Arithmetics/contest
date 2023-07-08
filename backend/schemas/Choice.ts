@@ -1,10 +1,11 @@
 import { checkbox, select, relationship, virtual } from '@keystone-6/core/fields';
-import { list, graphql } from '@keystone-6/core';
+import { graphql } from '@apollo/client/core';
+import { list } from '@keystone-6/core';
 import { Context, Lists } from '.keystone/types';
-import { isAdmin } from '../keystoneTypeAugments';
+import { AugKeystoneSession, isAdmin } from '../keystoneTypeAugments';
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 
-export const Choice: Lists.Choice = list({
+export const Choice: Lists.Choice<AugKeystoneSession> = list({
   access: {
     operation: {
       create: isAdmin,
@@ -142,10 +143,10 @@ export const Choice: Lists.Choice = list({
         async resolve(item, _args, _context) {
           const context = _context as Context;
           const lists = context.query;
-          const graphql = String.raw;
+          // const graphql = String.raw;
           const requestedLine = (await lists.Line.findOne({
             where: { id: (item.lineId as string) || '' },
-            query: graphql`
+            query: graphql.raw`
               id
               title
               benchmark

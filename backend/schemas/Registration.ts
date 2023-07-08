@@ -5,7 +5,7 @@ import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments
 import { ChoiceStatus, Line } from '../codegen/graphql-types';
 import { cache } from '../cache';
 
-export const Registration: Lists.Registration = list({
+export const Registration: Lists.Registration<AugKeystoneSession> = list({
   access: {
     operation: {
       query: () => true,
@@ -132,9 +132,9 @@ export const Registration: Lists.Registration = list({
       const lists = context.query;
       const graphql = String.raw;
 
-      const session = context.session as AugKeystoneSession;
+      const session = context.session;
 
-      if (session.data.isAdmin) {
+      if (session?.data.isAdmin) {
         return;
       }
 
@@ -175,13 +175,13 @@ export const Registration: Lists.Registration = list({
       const lists = context.query;
       const graphql = String.raw;
 
-      const session = context.session as AugKeystoneSession;
+      const session = context.session;
 
-      if (session.data.isAdmin) {
+      if (session?.data.isAdmin) {
         return;
       }
 
-      if (item.userId !== session.data?.id) {
+      if (item.userId !== session?.data?.id) {
         addValidationError('Can only delete your own contest');
       }
 

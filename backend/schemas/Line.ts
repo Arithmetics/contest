@@ -1,10 +1,10 @@
 import { float, relationship, text, timestamp, virtual } from '@keystone-6/core/fields';
 import { list, graphql } from '@keystone-6/core';
 import { Context, Lists } from '.keystone/types';
-import { isAdmin } from '../keystoneTypeAugments';
+import { AugKeystoneSession, isAdmin } from '../keystoneTypeAugments';
 import { Contest } from '../codegen/graphql-types';
 
-export const Line: Lists.Line = list({
+export const Line: Lists.Line<AugKeystoneSession> = list({
   access: {
     operation: {
       create: isAdmin,

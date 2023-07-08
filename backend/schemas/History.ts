@@ -1,10 +1,10 @@
 import { integer, relationship, select, text } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
-import { isAdmin } from '../keystoneTypeAugments';
+import { AugKeystoneSession, isAdmin } from '../keystoneTypeAugments';
 import { RootContestType } from './Contest';
 import { Lists } from '.keystone/types';
 
-export const History: Lists.History = list({
+export const History: Lists.History<AugKeystoneSession> = list({
   access: {
     operation: {
       create: isAdmin,

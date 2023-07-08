@@ -9,6 +9,8 @@ import { cache } from './cache';
 // import { insertSeedData } from './seedData';
 // import { startDailyStandingsJob } from './standingsJob';
 
+import type { Lists } from '.keystone/types';
+
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
 import { CloudImage } from './schemas/CloudImage';
@@ -19,6 +21,7 @@ import { Registration } from './schemas/Registration';
 import { RuleSet } from './schemas/RuleSet';
 import { Standing } from './schemas/Standing';
 import { History } from './schemas/History';
+import { AugKeystoneSession } from './keystoneTypeAugments';
 
 // import { Context } from '.keystone/types';
 
@@ -54,6 +57,19 @@ const frontendUrl = process.env.FRONTEND_URL;
 if (!frontendUrl) {
   throw new Error(`Where's your FRONTEND_URL dude`);
 }
+
+const lists: Lists<AugKeystoneSession> = {
+  Bet,
+  Choice,
+  CloudImage,
+  Contest,
+  History,
+  Line,
+  Registration,
+  Standing,
+  RuleSet,
+  User,
+};
 
 export default auth.withAuth(
   config({
@@ -106,18 +122,7 @@ export default auth.withAuth(
     ui: {
       isAccessAllowed: (context) => !!context.session?.data,
     },
-    lists: {
-      Bet,
-      Choice,
-      CloudImage,
-      Contest,
-      History,
-      Line,
-      Registration,
-      RuleSet,
-      Standing,
-      User,
-    },
+    lists,
     session: statelessSessions({
       maxAge: sessionMaxAge,
       secret: sessionSecret,

@@ -1,7 +1,7 @@
 import { text } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
 import { cloudinaryImage } from '@keystone-6/cloudinary';
-import { isAdmin, isSignedIn } from '../keystoneTypeAugments';
+import { AugKeystoneSession, isAdmin, isSignedIn } from '../keystoneTypeAugments';
 import { Lists } from '.keystone/types';
 
 export const cloudinary = {
@@ -11,7 +11,7 @@ export const cloudinary = {
   folder: 'contests',
 };
 
-export const CloudImage: Lists.CloudImage = list({
+export const CloudImage: Lists.CloudImage<AugKeystoneSession> = list({
   access: {
     operation: {
       create: isSignedIn,

@@ -35,7 +35,7 @@ __export(keystone_exports, {
 module.exports = __toCommonJS(keystone_exports);
 var import_session = require("@keystone-6/core/session");
 var import_auth = require("@keystone-6/auth");
-var import_core11 = require("@keystone-6/core");
+var import_core12 = require("@keystone-6/core");
 var import_node_cron = __toESM(require("node-cron"));
 var import_config = require("dotenv/config");
 
@@ -316,9 +316,9 @@ var Line = (0, import_core4.list)({
         type: import_core4.graphql.String,
         async resolve(item, _args, _context) {
           const context = _context;
-          const lists = context.query;
+          const lists2 = context.query;
           const graphql4 = String.raw;
-          const parentContest = await lists.Contest.findOne({
+          const parentContest = await lists2.Contest.findOne({
             where: { id: item.contestId || "" },
             query: graphql4`
               id
@@ -338,8 +338,9 @@ var Line = (0, import_core4.list)({
 
 // schemas/Choice.ts
 var import_fields5 = require("@keystone-6/core/fields");
-var import_core5 = require("@keystone-6/core");
-var Choice = (0, import_core5.list)({
+var import_core5 = require("@apollo/client/core");
+var import_core6 = require("@keystone-6/core");
+var Choice = (0, import_core6.list)({
   access: {
     operation: {
       create: isAdmin,
@@ -391,9 +392,9 @@ var Choice = (0, import_core5.list)({
         }),
         async resolve(item, _args, _context) {
           const context = _context;
-          const lists = context.query;
+          const lists2 = context.query;
           const graphql4 = String.raw;
-          const requestedLine = await lists.Line.findOne({
+          const requestedLine = await lists2.Line.findOne({
             where: { id: item.lineId || "" },
             query: graphql4`
               id
@@ -453,11 +454,10 @@ var Choice = (0, import_core5.list)({
         type: import_core5.graphql.String,
         async resolve(item, _args, _context) {
           const context = _context;
-          const lists = context.query;
-          const graphql4 = String.raw;
-          const requestedLine = await lists.Line.findOne({
+          const lists2 = context.query;
+          const requestedLine = await lists2.Line.findOne({
             where: { id: item.lineId || "" },
-            query: graphql4`
+            query: import_core5.graphql.raw`
               id
               title
               benchmark
@@ -480,8 +480,8 @@ var Choice = (0, import_core5.list)({
 
 // schemas/Bet.ts
 var import_fields6 = require("@keystone-6/core/fields");
-var import_core6 = require("@keystone-6/core");
-var Bet = (0, import_core6.list)({
+var import_core7 = require("@keystone-6/core");
+var Bet = (0, import_core7.list)({
   access: {
     operation: {
       create: isSignedIn,
@@ -503,14 +503,14 @@ var Bet = (0, import_core6.list)({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.query;
+      const lists2 = context.query;
       const graphql4 = String.raw;
       const session = context.session;
-      if (session.data.isAdmin) {
+      if (session?.data.isAdmin) {
         return;
       }
       const userId = resolvedData.user?.connect?.id;
-      const requestedChoice = await lists.Choice.findOne({
+      const requestedChoice = await lists2.Choice.findOne({
         where: { id: resolvedData.choice?.connect?.id },
         query: graphql4`
             id
@@ -552,12 +552,12 @@ var Bet = (0, import_core6.list)({
         });
       });
       const usersRegistration = typedChoice?.line?.contest?.registrations?.some(
-        (r) => r?.user?.id === session.data?.id
+        (r) => r?.user?.id === session?.data?.id
       );
       if (!usersRegistration) {
         addValidationError("User must be registered for the contest.");
       }
-      if (userId !== session.data?.id) {
+      if (userId !== session?.data?.id) {
         addValidationError("Can only create bet for own account");
       }
       if (typedChoice.line?.closingTime) {
@@ -568,7 +568,7 @@ var Bet = (0, import_core6.list)({
         }
       }
       const contest = typedChoice.line?.contest;
-      const usersBets = await lists.Bet.findMany({
+      const usersBets = await lists2.Bet.findMany({
         where: {
           user: { id: { equals: userId } },
           choice: { line: { contest: { id: { equals: contest?.id } } } }
@@ -594,8 +594,8 @@ var Bet = (0, import_core6.list)({
 
 // schemas/Registration.ts
 var import_fields7 = require("@keystone-6/core/fields");
-var import_core7 = require("@keystone-6/core");
-var Registration = (0, import_core7.list)({
+var import_core8 = require("@keystone-6/core");
+var Registration = (0, import_core8.list)({
   access: {
     operation: {
       query: () => true,
@@ -622,13 +622,13 @@ var Registration = (0, import_core7.list)({
     contest: (0, import_fields7.relationship)({ ref: "Contest.registrations", many: false }),
     user: (0, import_fields7.relationship)({ ref: "User.registrations", many: false }),
     counts: (0, import_fields7.virtual)({
-      field: import_core7.graphql.field({
-        type: import_core7.graphql.object()({
+      field: import_core8.graphql.field({
+        type: import_core8.graphql.object()({
           name: "PointCounts",
           fields: {
-            locked: import_core7.graphql.field({ type: import_core7.graphql.Int }),
-            likely: import_core7.graphql.field({ type: import_core7.graphql.Int }),
-            possible: import_core7.graphql.field({ type: import_core7.graphql.Int })
+            locked: import_core8.graphql.field({ type: import_core8.graphql.Int }),
+            likely: import_core8.graphql.field({ type: import_core8.graphql.Int }),
+            possible: import_core8.graphql.field({ type: import_core8.graphql.Int })
           }
         }),
         async resolve(item, _args, _context) {
@@ -706,16 +706,16 @@ var Registration = (0, import_core7.list)({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.query;
+      const lists2 = context.query;
       const graphql4 = String.raw;
       const session = context.session;
-      if (session.data.isAdmin) {
+      if (session?.data.isAdmin) {
         return;
       }
       if (resolvedData.user?.connect?.id !== session?.data?.id) {
         addValidationError("Can only create registration for own account");
       }
-      const requestedContest = await lists.Contest.findOne({
+      const requestedContest = await lists2.Contest.findOne({
         where: { id: resolvedData.contest?.connect?.id },
         query: graphql4`
             id
@@ -725,7 +725,7 @@ var Registration = (0, import_core7.list)({
       if (requestedContest.status !== "OPEN") {
         addValidationError("The contest is closed");
       }
-      const duplicateRegistrations = await lists.Registration.findMany({
+      const duplicateRegistrations = await lists2.Registration.findMany({
         where: {
           contest: { id: { equals: resolvedData.contest?.connect?.id } },
           user: { id: { equals: session?.data?.id } }
@@ -740,16 +740,16 @@ var Registration = (0, import_core7.list)({
     },
     validateDelete: async (args) => {
       const { item, addValidationError, context } = args;
-      const lists = context.query;
+      const lists2 = context.query;
       const graphql4 = String.raw;
       const session = context.session;
-      if (session.data.isAdmin) {
+      if (session?.data.isAdmin) {
         return;
       }
-      if (item.userId !== session.data?.id) {
+      if (item.userId !== session?.data?.id) {
         addValidationError("Can only delete your own contest");
       }
-      const requestedContest = await lists.Contest.findOne({
+      const requestedContest = await lists2.Contest.findOne({
         where: { id: item.contestId },
         query: graphql4`
             id
@@ -770,8 +770,8 @@ var Registration = (0, import_core7.list)({
 
 // schemas/RuleSet.ts
 var import_fields8 = require("@keystone-6/core/fields");
-var import_core8 = require("@keystone-6/core");
-var RuleSet = (0, import_core8.list)({
+var import_core9 = require("@keystone-6/core");
+var RuleSet = (0, import_core9.list)({
   access: {
     operation: {
       create: isAdmin,
@@ -790,8 +790,8 @@ var RuleSet = (0, import_core8.list)({
 
 // schemas/Standing.ts
 var import_fields9 = require("@keystone-6/core/fields");
-var import_core9 = require("@keystone-6/core");
-var Standing = (0, import_core9.list)({
+var import_core10 = require("@keystone-6/core");
+var Standing = (0, import_core10.list)({
   access: {
     operation: {
       create: isAdmin,
@@ -810,8 +810,8 @@ var Standing = (0, import_core9.list)({
 
 // schemas/History.ts
 var import_fields10 = require("@keystone-6/core/fields");
-var import_core10 = require("@keystone-6/core");
-var History = (0, import_core10.list)({
+var import_core11 = require("@keystone-6/core");
+var History = (0, import_core11.list)({
   access: {
     operation: {
       create: isAdmin,
@@ -866,8 +866,20 @@ var frontendUrl = process.env.FRONTEND_URL;
 if (!frontendUrl) {
   throw new Error(`Where's your FRONTEND_URL dude`);
 }
+var lists = {
+  Bet,
+  Choice,
+  CloudImage,
+  Contest,
+  History,
+  Line,
+  Registration,
+  Standing,
+  RuleSet,
+  User
+};
 var keystone_default = auth.withAuth(
-  (0, import_core11.config)({
+  (0, import_core12.config)({
     server: {
       cors: {
         origin: [frontendUrl],
@@ -894,18 +906,7 @@ var keystone_default = auth.withAuth(
     ui: {
       isAccessAllowed: (context) => !!context.session?.data
     },
-    lists: {
-      Bet,
-      Choice,
-      CloudImage,
-      Contest,
-      History,
-      Line,
-      Registration,
-      RuleSet,
-      Standing,
-      User
-    },
+    lists,
     session: (0, import_session.statelessSessions)({
       maxAge: sessionMaxAge,
       secret: sessionSecret

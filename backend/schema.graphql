@@ -755,55 +755,6 @@ input RegistrationCreateInput {
   user: UserRelateToOneForCreateInput
 }
 
-type RuleSet {
-  id: ID!
-  maxBets: Int
-  maxSuperBets: Int
-  superBetPointCount: Int
-  contest: Contest
-}
-
-input RuleSetWhereUniqueInput {
-  id: ID
-}
-
-input RuleSetWhereInput {
-  AND: [RuleSetWhereInput!]
-  OR: [RuleSetWhereInput!]
-  NOT: [RuleSetWhereInput!]
-  id: IDFilter
-  maxBets: IntNullableFilter
-  maxSuperBets: IntNullableFilter
-  superBetPointCount: IntNullableFilter
-  contest: ContestWhereInput
-}
-
-input RuleSetOrderByInput {
-  id: OrderDirection
-  maxBets: OrderDirection
-  maxSuperBets: OrderDirection
-  superBetPointCount: OrderDirection
-}
-
-input RuleSetUpdateInput {
-  maxBets: Int
-  maxSuperBets: Int
-  superBetPointCount: Int
-  contest: ContestRelateToOneForUpdateInput
-}
-
-input RuleSetUpdateArgs {
-  where: RuleSetWhereUniqueInput!
-  data: RuleSetUpdateInput!
-}
-
-input RuleSetCreateInput {
-  maxBets: Int
-  maxSuperBets: Int
-  superBetPointCount: Int
-  contest: ContestRelateToOneForCreateInput
-}
-
 type Standing {
   id: ID!
   gamesPlayed: Int
@@ -851,6 +802,55 @@ input StandingCreateInput {
   wins: Int
   totalGames: Int
   line: LineRelateToOneForCreateInput
+}
+
+type RuleSet {
+  id: ID!
+  maxBets: Int
+  maxSuperBets: Int
+  superBetPointCount: Int
+  contest: Contest
+}
+
+input RuleSetWhereUniqueInput {
+  id: ID
+}
+
+input RuleSetWhereInput {
+  AND: [RuleSetWhereInput!]
+  OR: [RuleSetWhereInput!]
+  NOT: [RuleSetWhereInput!]
+  id: IDFilter
+  maxBets: IntNullableFilter
+  maxSuperBets: IntNullableFilter
+  superBetPointCount: IntNullableFilter
+  contest: ContestWhereInput
+}
+
+input RuleSetOrderByInput {
+  id: OrderDirection
+  maxBets: OrderDirection
+  maxSuperBets: OrderDirection
+  superBetPointCount: OrderDirection
+}
+
+input RuleSetUpdateInput {
+  maxBets: Int
+  maxSuperBets: Int
+  superBetPointCount: Int
+  contest: ContestRelateToOneForUpdateInput
+}
+
+input RuleSetUpdateArgs {
+  where: RuleSetWhereUniqueInput!
+  data: RuleSetUpdateInput!
+}
+
+input RuleSetCreateInput {
+  maxBets: Int
+  maxSuperBets: Int
+  superBetPointCount: Int
+  contest: ContestRelateToOneForCreateInput
 }
 
 type User {
@@ -1027,18 +1027,18 @@ type Mutation {
   updateRegistrations(data: [RegistrationUpdateArgs!]!): [Registration]
   deleteRegistration(where: RegistrationWhereUniqueInput!): Registration
   deleteRegistrations(where: [RegistrationWhereUniqueInput!]!): [Registration]
-  createRuleSet(data: RuleSetCreateInput!): RuleSet
-  createRuleSets(data: [RuleSetCreateInput!]!): [RuleSet]
-  updateRuleSet(where: RuleSetWhereUniqueInput!, data: RuleSetUpdateInput!): RuleSet
-  updateRuleSets(data: [RuleSetUpdateArgs!]!): [RuleSet]
-  deleteRuleSet(where: RuleSetWhereUniqueInput!): RuleSet
-  deleteRuleSets(where: [RuleSetWhereUniqueInput!]!): [RuleSet]
   createStanding(data: StandingCreateInput!): Standing
   createStandings(data: [StandingCreateInput!]!): [Standing]
   updateStanding(where: StandingWhereUniqueInput!, data: StandingUpdateInput!): Standing
   updateStandings(data: [StandingUpdateArgs!]!): [Standing]
   deleteStanding(where: StandingWhereUniqueInput!): Standing
   deleteStandings(where: [StandingWhereUniqueInput!]!): [Standing]
+  createRuleSet(data: RuleSetCreateInput!): RuleSet
+  createRuleSets(data: [RuleSetCreateInput!]!): [RuleSet]
+  updateRuleSet(where: RuleSetWhereUniqueInput!, data: RuleSetUpdateInput!): RuleSet
+  updateRuleSets(data: [RuleSetUpdateArgs!]!): [RuleSet]
+  deleteRuleSet(where: RuleSetWhereUniqueInput!): RuleSet
+  deleteRuleSets(where: [RuleSetWhereUniqueInput!]!): [RuleSet]
   createUser(data: UserCreateInput!): User
   createUsers(data: [UserCreateInput!]!): [User]
   updateUser(where: UserWhereUniqueInput!, data: UserUpdateInput!): User
@@ -1103,12 +1103,12 @@ type Query {
   registrations(where: RegistrationWhereInput! = {}, orderBy: [RegistrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrationWhereUniqueInput): [Registration!]
   registration(where: RegistrationWhereUniqueInput!): Registration
   registrationsCount(where: RegistrationWhereInput! = {}): Int
-  ruleSets(where: RuleSetWhereInput! = {}, orderBy: [RuleSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RuleSetWhereUniqueInput): [RuleSet!]
-  ruleSet(where: RuleSetWhereUniqueInput!): RuleSet
-  ruleSetsCount(where: RuleSetWhereInput! = {}): Int
   standings(where: StandingWhereInput! = {}, orderBy: [StandingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StandingWhereUniqueInput): [Standing!]
   standing(where: StandingWhereUniqueInput!): Standing
   standingsCount(where: StandingWhereInput! = {}): Int
+  ruleSets(where: RuleSetWhereInput! = {}, orderBy: [RuleSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RuleSetWhereUniqueInput): [RuleSet!]
+  ruleSet(where: RuleSetWhereUniqueInput!): RuleSet
+  ruleSetsCount(where: RuleSetWhereInput! = {}): Int
   users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
   usersCount(where: UserWhereInput! = {}): Int

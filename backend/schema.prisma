@@ -111,14 +111,6 @@ model Registration {
   @@index([userId])
 }
 
-model RuleSet {
-  id                 String   @id @default(cuid())
-  maxBets            Int?
-  maxSuperBets       Int?
-  superBetPointCount Int?
-  contest            Contest? @relation("Contest_ruleSet")
-}
-
 model Standing {
   id          String  @id @default(cuid())
   gamesPlayed Int
@@ -128,6 +120,14 @@ model Standing {
   lineId      String? @map("line")
 
   @@index([lineId])
+}
+
+model RuleSet {
+  id                 String   @id @default(cuid())
+  maxBets            Int?
+  maxSuperBets       Int?
+  superBetPointCount Int?
+  contest            Contest? @relation("Contest_ruleSet")
 }
 
 model User {

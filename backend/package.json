@@ -6,6 +6,7 @@
     "dev": "keystone dev",
     "start": "keystone start",
     "build": "keystone build",
+    "test": "jest --runInBand --testTimeout=60000",
     "postinstall": "keystone postinstall",
     "seed-data": "keystone --seed-data",
     "reset-data": "keystone dev --reset-db",
@@ -17,16 +18,24 @@
     "@keystone-6/core": "5.3.2",
     "dotenv": "16.3.1",
     "got": "13.0.0",
+    "jest": "29.6.1",
     "node-cron": "3.0.2",
     "nodemailer": "6.9.3",
     "nodemailer-sendgrid": "1.0.3",
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@babel/core": "^7.22.8",
+    "@babel/plugin-transform-runtime": "^7.22.7",
+    "@babel/preset-env": "^7.22.7",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.5",
     "@types/got": "9.6.12",
+    "@types/jest": "29.5.2",
     "@types/node-cron": "3.0.8",
     "@types/nodemailer": "6.4.8",
     "@types/nodemailer-sendgrid": "1.0.0",
+    "babel-jest": "^29.6.1",
     "prisma": "4.16.2"
   }
 }
