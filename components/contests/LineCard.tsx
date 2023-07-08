@@ -20,9 +20,12 @@ import {
   UseRadioProps,
   useRadioGroup,
   Tooltip,
+  Tag,
+  TagLabel,
+  TagRightIcon,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-
+import { BsLightning } from 'react-icons/bs';
 import {
   ChoiceSelectionType,
   Line,
@@ -35,6 +38,7 @@ import {
 
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
 import LineCardHeader, { formatATS } from './LineCardHeader';
+import { LineCardFooterTicketCutouts } from './LineCardFooterTicketCutouts';
 
 type RadioImageProps = {
   hasSelection: boolean;
@@ -50,9 +54,6 @@ function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
 
   const input = getInputProps();
   const checkbox = getCheckboxProps();
-
-  // border={'1px'}
-  //     borderColor={'teal.500'}
 
   return (
     <Box as="label" position="relative">
@@ -294,7 +295,7 @@ export default function LineCard({
               );
             })}
           </HStack>
-          {userId && (
+          {userId && !formDisabled && (
             <Center>
               <Checkbox
                 onChange={() => setSuperBetSelected(!superBetSelected)}
@@ -304,9 +305,19 @@ export default function LineCard({
                 colorScheme="teal"
                 size="lg"
               >
-                Super Pick
+                <HStack>
+                  <Text>Super Bet</Text> <BsLightning />
+                </HStack>
               </Checkbox>
             </Center>
+          )}
+          {userId && superBetSelected && formDisabled && (
+            <HStack justifyContent="center">
+              <Tag size="md" colorScheme="purple" marginTop={4} width="110px">
+                <TagLabel>Super Bet</TagLabel>
+                <TagRightIcon as={BsLightning} />
+              </Tag>
+            </HStack>
           )}
         </>
       );
@@ -319,7 +330,7 @@ export default function LineCard({
               <Radio
                 key={choice.id}
                 value={choice.id}
-                disabled={formDisabled}
+                isDisabled={formDisabled}
                 colorScheme="teal"
                 size="lg"
               >
@@ -337,7 +348,7 @@ export default function LineCard({
             colorScheme="teal"
             size="lg"
           >
-            Super Pick
+            Super Bet
           </Checkbox>
         </Center>
       </RadioGroup>
@@ -362,7 +373,6 @@ export default function LineCard({
         padding={3}
       >
         <LineCardHeader line={line} contestType={contestType} />
-        <Divider orientation="horizontal" paddingTop={1} />
         {/* middle form */}
         {(userId || !lineClosed) && (
           <Stack spacing={0} align={'left'} paddingTop={3}>
@@ -375,17 +385,16 @@ export default function LineCard({
                   {usersBet && (
                     <HStack>
                       <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
-                      <Text fontSize="2xl">{selectedChoice?.selection}</Text>
+                      <Text fontSize="xl">{selectedChoice?.selection}</Text>
+                      {superBetSelected && (
+                        <Tag size="md" colorScheme="purple">
+                          <TagLabel>Super Bet</TagLabel>
+                          <TagRightIcon as={BsLightning} />
+                        </Tag>
+                      )}
                     </HStack>
                   )}
                 </Center>
-                {superBetSelected && (
-                  <Center>
-                    <Badge marginLeft={2} colorScheme="purple">
-                      Super Bet
-                    </Badge>
-                  </Center>
-                )}
 
                 {lineHasWinner(line) && (
                   <>
@@ -412,15 +421,22 @@ export default function LineCard({
           </Stack>
         )}
         {/* Footer starts here */}
-        {userId && <Divider orientation="horizontal" paddingTop={3} />}
+        {userId && <Divider orientation="horizontal" paddingTop={3} borderStyle="dashed" />}
         <Stack spacing={0} align={'left'}>
           {userHasEntered && !lineClosed && (
             <>
-              <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
+              <HStack
+                position="relative"
+                display="flex"
+                spacing={3}
+                paddingTop={3}
+                justifyContent="center"
+              >
+                <LineCardFooterTicketCutouts useBorder={!!usersBet} />
                 {!selectedChoice ? (
                   <Button
                     onClick={onClickMakeBet}
-                    disabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
+                    isDisabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
                     isLoading={makeBetLoading}
                     flexGrow={1}
                     variant="outline"
@@ -436,7 +452,7 @@ export default function LineCard({
                 ) : (
                   <Button
                     onClick={onClickDeleteBet}
-                    disabled={deleteBetLoading}
+                    isDisabled={deleteBetLoading}
                     isLoading={deleteBetLoading}
                     variant="outline"
                     bg="red.500"

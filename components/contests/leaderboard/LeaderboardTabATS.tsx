@@ -206,7 +206,7 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                     bgc = 'green.600';
                   }
                   if (winningChoice && winningChoice.id !== usersChoice?.id) {
-                    bgc = 'red.700';
+                    bgc = 'red.800';
                   }
                   return (
                     <Td key={reg.id} bg={bgc} position="relative">
@@ -221,7 +221,7 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                           {isSuper ? (
                             <Box position="absolute" top="15%" left="45%">
                               <Tooltip label="Super Bet">
-                                <Avatar icon={<BsLightning />} size="xs" bg="teal.300" />
+                                <Avatar icon={<BsLightning />} size="xs" bg="purple.600" />
                               </Tooltip>
                             </Box>
                           ) : undefined}

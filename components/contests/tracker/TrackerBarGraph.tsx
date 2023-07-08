@@ -100,7 +100,7 @@ export default function TrackerBarGraph({ data, homeWin, awayWin }: TrackerBarGr
         tickSize: 1,
         tickPadding: 2,
         tickRotation: 0,
-        legend: 'Picks / Super Picks',
+        legend: 'Bets / Super Bets',
         legendOffset: -40,
         legendPosition: 'middle',
       }}

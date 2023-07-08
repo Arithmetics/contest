@@ -124,7 +124,7 @@ export default function ResetPasswordForm(): JSX.Element {
         register={register}
         isInvalid={!!errors?.password?.message}
         errorText={errors?.password?.message}
-        disabled={loading}
+        isDisabled={loading}
       />
       <Stack spacing={6}>
         <Button

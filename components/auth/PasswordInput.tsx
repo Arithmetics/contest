@@ -13,7 +13,7 @@ type PasswordInputProps = {
   isUpdatePassword?: boolean;
   isInvalid?: boolean;
   errorText?: string | undefined;
-  disabled?: boolean;
+  isDisabled?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: any;
 };
@@ -22,7 +22,7 @@ export default function PasswordInput({
   isInvalid,
   errorText,
   register,
-  disabled,
+  isDisabled,
   isUpdatePassword,
 }: PasswordInputProps): JSX.Element {
   const [show, setShow] = useState(false);
@@ -40,7 +40,7 @@ export default function PasswordInput({
           bg={'gray.100'}
           border={0}
           color={'gray.500'}
-          disabled={disabled}
+          disabled={isDisabled}
         />
         <InputRightElement width="4.5rem">
           <Button

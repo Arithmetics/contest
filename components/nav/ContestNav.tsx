@@ -197,7 +197,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
         <Center padding={2}>
           <Button
             onClick={enterContest}
-            disabled={registerLoading || getUserLoading || getContestLoading}
+            isDisabled={registerLoading || getUserLoading || getContestLoading}
             isLoading={registerLoading}
             variant="outline"
             bg="teal.500"
@@ -319,12 +319,12 @@ function DeleteRegistrationConfirmModal({
               variant="red-gradient"
               marginRight={3}
               onClick={onClick}
-              disabled={loading}
+              isDisabled={loading}
               isLoading={loading}
             >
               Confirm
             </Button>
-            <Button variant="ghost" onClick={onClose} disabled={loading}>
+            <Button variant="ghost" onClick={onClose} isDisabled={loading}>
               Cancel
             </Button>
           </ModalFooter>
