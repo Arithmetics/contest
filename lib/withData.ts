@@ -1,6 +1,6 @@
 import { ApolloClient, ApolloLink, InMemoryCache, NormalizedCacheObject } from '@apollo/client';
-import { onError } from '@apollo/link-error';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { onError } from '@apollo/client/link/error';
+import { getDataFromTree } from '@apollo/client/react/ssr';
 import { createUploadLink } from 'apollo-upload-client';
 import withApollo from 'next-with-apollo';
 import { endpoint, prodEndpoint } from '../config';
@@ -33,7 +33,10 @@ function createClient({ headers, initialState }: ClientArgs): ApolloClient<Norma
           credentials: 'include',
         },
         // pass the headers along from this request. This enables SSR with logged in state
-        headers,
+        headers: {
+          ...headers,
+          'apollo-require-preflight': true,
+        },
       }),
     ]),
     cache: new InMemoryCache({
@@ -41,7 +44,6 @@ function createClient({ headers, initialState }: ClientArgs): ApolloClient<Norma
         Query: {
           fields: {
             // TODO: We will add this together!
-            // allProducts: paginationField(),
           },
         },
       },

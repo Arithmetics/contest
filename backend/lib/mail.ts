@@ -68,3 +68,29 @@ export async function sendPasswordResetEmail(resetToken: string, to: string): Pr
     console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
   }
 }
+
+export async function sendStandingsUpdate(
+  updates: Record<string, string>,
+  to: string
+): Promise<void> {
+  // email updates to standings
+
+  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
+
+  const htmlList = `<ul>${Object.keys(updates).map(
+    (team) => `<li>${team}: ${updates[team]}</li>`
+  )}</ul>`;
+
+  const info = (await usedTransport.sendMail({
+    to,
+    from: 'no-reply@btbets.ml',
+    subject: 'New Over Under Locked Up',
+    html: makeANiceEmail(htmlList),
+  })) as MailResponse;
+
+  if (!process.env.SENDGRID_API_KEY) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
+  }
+}

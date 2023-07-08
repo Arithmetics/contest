@@ -1,8 +1,7 @@
 import NextApp, { AppInitialProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { Analytics } from '@vercel/analytics/dist/react';
+
+import { Analytics } from '@vercel/analytics/react';
 import Router from 'next/router';
 import NProgress from 'nprogress';
 import { ApolloProvider } from '@apollo/client';

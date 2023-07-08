@@ -116,7 +116,11 @@ export default function LineCard({
   ruleSet,
   contestType,
 }: LineCardProps): JSX.Element {
-  const { data: contestBetsData, loading: contestBetsLoading, refetch } = useContestBetsQuery({
+  const {
+    data: contestBetsData,
+    loading: contestBetsLoading,
+    refetch,
+  } = useContestBetsQuery({
     variables: { contestId: contestId || '' },
   });
 
@@ -152,7 +156,7 @@ export default function LineCard({
 
   const { getRootProps, getRadioProps } = useRadioGroup({
     name: 'test',
-    defaultValue: formSelectedChoiceId,
+    defaultValue: `${formSelectedChoiceId}`,
     onChange: setFormSelectedChoiceId,
   });
 
@@ -174,11 +178,13 @@ export default function LineCard({
   const winningChoice = line.choices?.find((c) => c.isWin);
   const losingChoice = line.choices?.find((c) => !c.isWin);
 
-  const winningBetCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === winningChoice?.id)
-    .length;
+  const winningBetCount = contestBetsData?.bets?.filter(
+    (b) => b?.choice?.id === winningChoice?.id
+  ).length;
 
-  const losingBetCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === losingChoice?.id)
-    .length;
+  const losingBetCount = contestBetsData?.bets?.filter(
+    (b) => b?.choice?.id === losingChoice?.id
+  ).length;
 
   const pickAvailable = !contestBetsLoading && betsRemaining(usersBets, ruleSet) > 0;
   const superPickAvailable = !contestBetsLoading && superBetsRemaining(usersBets, ruleSet) > 0;
@@ -306,7 +312,7 @@ export default function LineCard({
       );
     }
     return (
-      <RadioGroup onChange={setFormSelectedChoiceId} value={formSelectedChoiceId}>
+      <RadioGroup onChange={setFormSelectedChoiceId} value={`${formSelectedChoiceId}`}>
         <HStack justifyContent="center" spacing={6} {...group}>
           {line.choices?.map((choice) => {
             return (

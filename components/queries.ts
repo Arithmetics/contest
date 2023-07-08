@@ -428,6 +428,7 @@ export const USERS_CONTEST_BETS_QUERY = gql`
           id
           selection
           isWin
+          status
           bets(where: { user: { id: { equals: $userId } } }) {
             id
             isSuper

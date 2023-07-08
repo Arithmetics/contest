@@ -1,6 +1,7 @@
-import { integer, relationship, select, text } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
+import { integer, relationship, select, text } from '@keystone-6/core/fields';
+import { list } from '@keystone-6/core';
 import { isAdmin } from '../keystoneTypeAugments';
+import { Lists } from '.keystone/types';
 
 export enum RootContestType {
   NBA_OVER_UNDER = 'NBA_OVER_UNDER',
@@ -8,7 +9,7 @@ export enum RootContestType {
   NFL_ATS = 'NFL_ATS',
 }
 
-export const Contest = list({
+export const Contest: Lists.Contest = list({
   access: {
     operation: {
       create: isAdmin,

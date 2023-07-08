@@ -1,14 +1,23 @@
-import { checkbox, relationship } from '@keystone-next/keystone/fields';
-import { list } from '@keystone-next/keystone';
-import { KeystoneListsAPI } from '@keystone-next/keystone/types';
-import { KeystoneListsTypeInfo } from '.keystone/types';
-import { canModifyBet, canReadBet, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
-import { Choice } from '../codegen/graphql-types';
+import { checkbox, relationship } from '@keystone-6/core/fields';
+import { list } from '@keystone-6/core';
+import {
+  canModifyBet,
+  canReadBet,
+  isSignedIn,
+  isAdmin,
+  AugKeystoneSession,
+} from '../keystoneTypeAugments';
 
-export const Bet = list({
+import { Choice } from '../codegen/graphql-types';
+import { Lists } from '.keystone/types';
+
+export const Bet: Lists.Bet = list({
   access: {
     operation: {
       create: isSignedIn,
+      query: () => true,
+      update: isAdmin,
+      delete: () => true,
     },
     filter: {
       query: canReadBet,
@@ -24,7 +33,7 @@ export const Bet = list({
   hooks: {
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
-      const lists = context.query as KeystoneListsAPI<KeystoneListsTypeInfo>;
+      const lists = context.query;
       const graphql = String.raw;
 
       const session = context.session as AugKeystoneSession;
@@ -34,10 +43,10 @@ export const Bet = list({
       }
 
       // use this or session id becuase we guard for mismatched userId
-      const userId = resolvedData.user.connect.id;
+      const userId = resolvedData.user?.connect?.id;
 
       const requestedChoice = await lists.Choice.findOne({
-        where: { id: resolvedData.choice.connect.id },
+        where: { id: resolvedData.choice?.connect?.id },
         query: graphql`
             id
             line {
