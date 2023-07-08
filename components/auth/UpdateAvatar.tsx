@@ -97,7 +97,7 @@ export default function UpdateAvatar(): JSX.Element {
           mt={8}
           w={'full'}
           onClick={submitUpdateAvatar}
-          disabled={loading}
+          isDisabled={loading}
           isLoading={loading}
         >
           Submit

@@ -165,7 +165,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
           {showEnterContestButton ? (
             <Button
               onClick={enterContest}
-              disabled={loading}
+              isDisabled={loading}
               isLoading={loading}
               flexGrow={1}
               variant="outline"

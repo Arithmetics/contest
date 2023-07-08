@@ -37,7 +37,6 @@ type LineCardHeaderProps = {
 
 export default function LineCardHeader({ line, contestType }: LineCardHeaderProps): JSX.Element {
   const lineFontSize = useBreakpointValue({ base: 'md', md: 'xl' });
-  const titleFontSize = useBreakpointValue({ base: 'xl', md: '2xl' });
 
   if (contestType === ContestContestTypeType.NflAts) {
     const awayChoice = line?.choices?.find((c) => c.selection === 'AWAY');
@@ -46,7 +45,6 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
       <HStack>
         <Stat>
           <StatNumber>
-            <Text fontSize={titleFontSize}>{line.title}</Text>
             <HStack>
               <Text fontSize={lineFontSize}>{formatATS(false, line.benchmark)}</Text>
               {awayChoice && (

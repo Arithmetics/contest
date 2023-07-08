@@ -35,6 +35,7 @@ import {
 
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
 import LineCardHeader, { formatATS } from './LineCardHeader';
+import { LineCardFooterTicketCutouts } from './LineCardFooterTicketCutouts';
 
 type RadioImageProps = {
   hasSelection: boolean;
@@ -50,9 +51,6 @@ function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
 
   const input = getInputProps();
   const checkbox = getCheckboxProps();
-
-  // border={'1px'}
-  //     borderColor={'teal.500'}
 
   return (
     <Box as="label" position="relative">
@@ -319,7 +317,7 @@ export default function LineCard({
               <Radio
                 key={choice.id}
                 value={choice.id}
-                disabled={formDisabled}
+                isDisabled={formDisabled}
                 colorScheme="teal"
                 size="lg"
               >
@@ -362,7 +360,6 @@ export default function LineCard({
         padding={3}
       >
         <LineCardHeader line={line} contestType={contestType} />
-        <Divider orientation="horizontal" paddingTop={1} />
         {/* middle form */}
         {(userId || !lineClosed) && (
           <Stack spacing={0} align={'left'} paddingTop={3}>
@@ -412,15 +409,22 @@ export default function LineCard({
           </Stack>
         )}
         {/* Footer starts here */}
-        {userId && <Divider orientation="horizontal" paddingTop={3} />}
+        {userId && <Divider orientation="horizontal" paddingTop={3} borderStyle="dashed" />}
         <Stack spacing={0} align={'left'}>
           {userHasEntered && !lineClosed && (
             <>
-              <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
+              <HStack
+                position="relative"
+                display="flex"
+                spacing={3}
+                paddingTop={3}
+                justifyContent="center"
+              >
+                <LineCardFooterTicketCutouts useBorder={!!usersBet} />
                 {!selectedChoice ? (
                   <Button
                     onClick={onClickMakeBet}
-                    disabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
+                    isDisabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
                     isLoading={makeBetLoading}
                     flexGrow={1}
                     variant="outline"
@@ -436,7 +440,7 @@ export default function LineCard({
                 ) : (
                   <Button
                     onClick={onClickDeleteBet}
-                    disabled={deleteBetLoading}
+                    isDisabled={deleteBetLoading}
                     isLoading={deleteBetLoading}
                     variant="outline"
                     bg="red.500"

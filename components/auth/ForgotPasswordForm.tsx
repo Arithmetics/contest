@@ -107,7 +107,7 @@ export default function ForgotPasswordForm(): JSX.Element {
         <Button
           variant="red-gradient"
           onClick={handleSubmit(submitForgotPassword)}
-          disabled={loading}
+          isDisabled={loading}
           isLoading={loading}
         >
           Request Reset

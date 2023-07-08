@@ -208,7 +208,7 @@ export default function SignupForm(): JSX.Element {
             register={register}
             isInvalid={!!errors?.password?.message}
             errorText={errors?.password?.message}
-            disabled={signupLoading}
+            isDisabled={signupLoading}
           />
         </Stack>
         <Button

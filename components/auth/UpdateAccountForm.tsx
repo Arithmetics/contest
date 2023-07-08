@@ -183,7 +183,7 @@ export default function UpdateAccountForm(): JSX.Element {
           mt={8}
           w={'full'}
           onClick={handleSubmit(submitUpdateAccount)}
-          disabled={!!errors.realName || !!errors.userName}
+          isDisabled={!!errors.realName || !!errors.userName}
           isLoading={updateUserLoading}
         >
           Submit

@@ -91,7 +91,7 @@ export default function UpdatePasswordForm(): JSX.Element {
               register={register}
               isInvalid={!!errors?.password?.message}
               errorText={errors?.password?.message}
-              disabled={updatePasswordLoading}
+              isDisabled={updatePasswordLoading}
               isUpdatePassword
             />
           </FormControl>
@@ -101,7 +101,7 @@ export default function UpdatePasswordForm(): JSX.Element {
           mt={8}
           w={'full'}
           onClick={handleSubmit(submitUpdatePassword)}
-          disabled={!!errors.password}
+          isDisabled={!!errors.password}
           isLoading={updatePasswordLoading}
         >
           Submit
