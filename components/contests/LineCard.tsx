@@ -19,6 +19,7 @@ import {
   useRadio,
   UseRadioProps,
   useRadioGroup,
+  Tooltip,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
@@ -61,6 +62,7 @@ function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
         _checked={{ filter: 'none', border: '1px', borderColor: 'teal.500' }}
         filter={hasSelection ? 'grayscale(100%)' : 'none'}
         htmlHeight="100px"
+        maxHeight="100px"
         htmlWidth="200px"
         objectFit="cover"
         bg={'gray.600'}
@@ -292,18 +294,20 @@ export default function LineCard({
               );
             })}
           </HStack>
-          <Center>
-            <Checkbox
-              onChange={() => setSuperBetSelected(!superBetSelected)}
-              isChecked={superBetSelected}
-              marginTop={4}
-              isDisabled={formDisabled || !superPickAvailable}
-              colorScheme="teal"
-              size="lg"
-            >
-              Super Pick
-            </Checkbox>
-          </Center>
+          {userId && (
+            <Center>
+              <Checkbox
+                onChange={() => setSuperBetSelected(!superBetSelected)}
+                isChecked={superBetSelected}
+                marginTop={4}
+                isDisabled={formDisabled || !superPickAvailable}
+                colorScheme="teal"
+                size="lg"
+              >
+                Super Pick
+              </Checkbox>
+            </Center>
+          )}
         </>
       );
     }
@@ -343,151 +347,155 @@ export default function LineCard({
   const cardWidth = contestType === ContestContestTypeType.NflAts ? '440px' : '350px';
 
   return (
-    <Box
-      maxW={cardWidth}
-      width={'full'}
-      bg={'gray.600'}
-      border={usersBet ? '1px' : ''}
-      borderColor={usersBet ? 'teal.500' : ''}
-      boxShadow={usersBet ? 'dark-lg' : 'lg'}
-      rounded={'md'}
-      position={'relative'}
-      margin={3}
-      marginTop={6}
-      padding={3}
-    >
-      <LineCardHeader line={line} contestType={contestType} />
-      <Divider orientation="horizontal" paddingTop={3} />
-      {/* middle form */}
-      <Stack spacing={0} align={'left'} paddingTop={3}>
-        {/* Form starts here */}
-        {!lineClosed && radioGroup(contestType)}
-        {lineClosed && (
-          <>
-            <Center>
-              {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
-              {usersBet && (
-                <HStack>
-                  <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
-                  <Text fontSize="2xl">{selectedChoice?.selection}</Text>
-                </HStack>
-              )}
-            </Center>
-            {superBetSelected && (
-              <Center>
-                <Badge marginLeft={2} colorScheme="purple">
-                  Super Bet
-                </Badge>
-              </Center>
-            )}
-
-            {lineHasWinner(line) && (
+    <Tooltip label={!userId && 'Log in to bet'}>
+      <Box
+        maxW={cardWidth}
+        width={'full'}
+        bg={'gray.600'}
+        border={usersBet ? '1px' : ''}
+        borderColor={usersBet ? 'teal.500' : ''}
+        boxShadow={usersBet ? 'dark-lg' : 'lg'}
+        rounded={'md'}
+        position={'relative'}
+        margin={3}
+        marginTop={6}
+        padding={3}
+      >
+        <LineCardHeader line={line} contestType={contestType} />
+        <Divider orientation="horizontal" paddingTop={1} />
+        {/* middle form */}
+        {(userId || !lineClosed) && (
+          <Stack spacing={0} align={'left'} paddingTop={3}>
+            {/* Form starts here */}
+            {!lineClosed && radioGroup(contestType)}
+            {lineClosed && (
               <>
-                {usersBet && (
-                  <Center>
-                    <HStack alignItems={'baseline'}>
-                      <Text color={'whiteAlpha.600'}>Your result:</Text>
-                      {selectedChoice?.isWin ? (
-                        <Badge marginLeft={2} colorScheme="green">
-                          Win
-                        </Badge>
-                      ) : (
-                        <Badge marginLeft={2} colorScheme="red">
-                          Loss
-                        </Badge>
-                      )}
+                <Center>
+                  {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
+                  {usersBet && (
+                    <HStack>
+                      <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
+                      <Text fontSize="2xl">{selectedChoice?.selection}</Text>
                     </HStack>
+                  )}
+                </Center>
+                {superBetSelected && (
+                  <Center>
+                    <Badge marginLeft={2} colorScheme="purple">
+                      Super Bet
+                    </Badge>
                   </Center>
+                )}
+
+                {lineHasWinner(line) && (
+                  <>
+                    {usersBet && (
+                      <Center>
+                        <HStack alignItems={'baseline'}>
+                          <Text color={'whiteAlpha.600'}>Your result:</Text>
+                          {selectedChoice?.isWin ? (
+                            <Badge marginLeft={2} colorScheme="green">
+                              Win
+                            </Badge>
+                          ) : (
+                            <Badge marginLeft={2} colorScheme="red">
+                              Loss
+                            </Badge>
+                          )}
+                        </HStack>
+                      </Center>
+                    )}
+                  </>
                 )}
               </>
             )}
-          </>
+          </Stack>
         )}
-      </Stack>
-      {/* Footer starts here */}
-      <Divider orientation="horizontal" paddingTop={3} />
-      <Stack spacing={0} align={'left'}>
-        {userHasEntered && !lineClosed && (
-          <>
-            <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
-              {!selectedChoice ? (
-                <Button
-                  onClick={onClickMakeBet}
-                  disabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
-                  isLoading={makeBetLoading}
-                  flexGrow={1}
-                  variant="outline"
-                  bg="teal.500"
-                  color={'white'}
-                  rounded={'md'}
-                  _hover={{
-                    boxShadow: 'lg',
-                  }}
-                >
-                  Make Bet
-                </Button>
-              ) : (
-                <Button
-                  onClick={onClickDeleteBet}
-                  disabled={deleteBetLoading}
-                  isLoading={deleteBetLoading}
-                  variant="outline"
-                  bg="red.500"
-                  color={'white'}
-                  rounded={'md'}
-                  _hover={{
-                    boxShadow: 'lg',
-                  }}
-                >
-                  Remove Bet
-                </Button>
-              )}
-            </HStack>
-          </>
-        )}
-        {lineClosed && !winningChoice && (
-          <>
-            <HStack justifyContent="space-evenly" paddingTop={3}>
-              <Stat textAlign="center">
-                <StatLabel>
-                  {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Over'} Bet Volume
-                </StatLabel>
-                <StatNumber>
-                  {contestType === ContestContestTypeType.NflAts ? awayBetVolume : overBetVolume}
-                </StatNumber>
-              </Stat>
-              <Stat textAlign="center">
-                <StatLabel>
-                  {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Under'} Bet Volume
-                </StatLabel>
-                <StatNumber>
-                  {contestType === ContestContestTypeType.NflAts ? homeBetVolume : underBetVolume}
-                </StatNumber>
-              </Stat>
-            </HStack>
-          </>
-        )}
-        {lineClosed && winningChoice && (
-          <>
-            <HStack justifyContent="space-evenly" paddingTop={3}>
-              <Stat textAlign="center">
-                <StatLabel>Correct Bet Volume</StatLabel>
-                <StatNumber>
-                  <StatArrow type="increase" />
-                  {winningBetCount}
-                </StatNumber>
-              </Stat>
-              <Stat textAlign="center">
-                <StatLabel>Incorrect Bet Volume</StatLabel>
-                <StatNumber>
-                  <StatArrow type="decrease" />
-                  {losingBetCount}
-                </StatNumber>
-              </Stat>
-            </HStack>
-          </>
-        )}
-      </Stack>
-    </Box>
+        {/* Footer starts here */}
+        {userId && <Divider orientation="horizontal" paddingTop={3} />}
+        <Stack spacing={0} align={'left'}>
+          {userHasEntered && !lineClosed && (
+            <>
+              <HStack display="flex" spacing={3} paddingTop={3} justifyContent="center">
+                {!selectedChoice ? (
+                  <Button
+                    onClick={onClickMakeBet}
+                    disabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
+                    isLoading={makeBetLoading}
+                    flexGrow={1}
+                    variant="outline"
+                    bg="teal.500"
+                    color={'white'}
+                    rounded={'md'}
+                    _hover={{
+                      boxShadow: 'lg',
+                    }}
+                  >
+                    Make Bet
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={onClickDeleteBet}
+                    disabled={deleteBetLoading}
+                    isLoading={deleteBetLoading}
+                    variant="outline"
+                    bg="red.500"
+                    color={'white'}
+                    rounded={'md'}
+                    _hover={{
+                      boxShadow: 'lg',
+                    }}
+                  >
+                    Remove Bet
+                  </Button>
+                )}
+              </HStack>
+            </>
+          )}
+          {lineClosed && !winningChoice && (
+            <>
+              <HStack justifyContent="space-evenly" paddingTop={3}>
+                <Stat textAlign="center">
+                  <StatLabel>
+                    {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Over'} Bet Volume
+                  </StatLabel>
+                  <StatNumber>
+                    {contestType === ContestContestTypeType.NflAts ? awayBetVolume : overBetVolume}
+                  </StatNumber>
+                </Stat>
+                <Stat textAlign="center">
+                  <StatLabel>
+                    {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Under'} Bet Volume
+                  </StatLabel>
+                  <StatNumber>
+                    {contestType === ContestContestTypeType.NflAts ? homeBetVolume : underBetVolume}
+                  </StatNumber>
+                </Stat>
+              </HStack>
+            </>
+          )}
+          {lineClosed && winningChoice && (
+            <>
+              <HStack justifyContent="space-evenly" paddingTop={3}>
+                <Stat textAlign="center">
+                  <StatLabel>Correct Bet Volume</StatLabel>
+                  <StatNumber>
+                    <StatArrow type="increase" />
+                    {winningBetCount}
+                  </StatNumber>
+                </Stat>
+                <Stat textAlign="center">
+                  <StatLabel>Incorrect Bet Volume</StatLabel>
+                  <StatNumber>
+                    <StatArrow type="decrease" />
+                    {losingBetCount}
+                  </StatNumber>
+                </Stat>
+              </HStack>
+            </>
+          )}
+        </Stack>
+      </Box>
+    </Tooltip>
   );
 }
