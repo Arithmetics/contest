@@ -23,6 +23,7 @@ import {
   Tag,
   TagLabel,
   TagRightIcon,
+  keyframes,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { BsLightning } from 'react-icons/bs';
@@ -35,10 +36,29 @@ import {
   useDeleteBetMutation,
   useContestBetsQuery,
 } from '../../generated/graphql-types';
-
 import { betsRemaining, superBetsRemaining } from './BetsStatusLine';
 import LineCardHeader, { formatATS } from './LineCardHeader';
 import { LineCardFooterTicketCutouts } from './LineCardFooterTicketCutouts';
+
+const drop = keyframes`
+    0% {
+      transform: rotate(0deg);
+      top: 0;
+      opacity: 1;
+    }
+    20% {
+      transform: rotate(9deg);
+      top: 0;
+      opacity: 1;
+    }
+    70% {
+      opacity: 1;
+    }
+    100% {
+      top: 200px;
+      opacity: 0;
+    }
+`;
 
 type RadioImageProps = {
   hasSelection: boolean;
@@ -422,7 +442,8 @@ export default function LineCard({
         )}
         {/* Footer starts here */}
         {userId && <Divider orientation="horizontal" paddingTop={3} borderStyle="dashed" />}
-        <Stack spacing={0} align={'left'}>
+
+        <Stack spacing={0} align={'left'} animation={`${drop} infinite 5s linear`}>
           {userHasEntered && !lineClosed && (
             <>
               <HStack
