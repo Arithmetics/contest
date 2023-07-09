@@ -455,8 +455,7 @@ export default function LineCard({
                     isDisabled={deleteBetLoading}
                     isLoading={deleteBetLoading}
                     variant="outline"
-                    bg="red.500"
-                    color={'white'}
+                    colorScheme="red"
                     rounded={'md'}
                     _hover={{
                       boxShadow: 'lg',

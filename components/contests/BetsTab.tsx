@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import {
-  Button,
   Collapse,
   Box,
   Flex,
@@ -39,13 +38,13 @@ type BetsTabProps = {
 };
 
 export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
-  const { isOpen: isAvailableOpen, onToggle: onAvailableToggle } = useDisclosure({
+  const { isOpen: isAvailableOpen } = useDisclosure({
     defaultIsOpen: true,
   });
-  const { isOpen: isPendingOpen, onToggle: onPendingToggle } = useDisclosure({
+  const { isOpen: isPendingOpen } = useDisclosure({
     defaultIsOpen: true,
   });
-  const { isOpen: isSettledOpen, onToggle: onSettledToggle } = useDisclosure({
+  const { isOpen: isSettledOpen } = useDisclosure({
     defaultIsOpen: true,
   });
 
@@ -141,9 +140,6 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
           <Heading as="h3" size="lg">
             Available Lines
           </Heading>
-          <Button marginTop={2} onClick={onAvailableToggle}>
-            {isAvailableOpen ? 'Hide' : 'Reveal'}
-          </Button>
           <Collapse in={isAvailableOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {availableLines.map((line) => {
@@ -168,9 +164,6 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
           <Heading as="h3" size="lg">
             Pending Lines
           </Heading>
-          <Button marginTop={2} onClick={onPendingToggle}>
-            {isPendingOpen ? 'Hide' : 'Reveal'}
-          </Button>
           <Collapse in={isPendingOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {pendingLines.map((line) => {
@@ -195,9 +188,6 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
           <Heading as="h3" size="lg">
             Settled Lines
           </Heading>
-          <Button marginTop={2} onClick={onSettledToggle}>
-            {isSettledOpen ? 'Hide' : 'Reveal'}
-          </Button>
           <Collapse in={isSettledOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap">
               {settledLines.map((line) => {

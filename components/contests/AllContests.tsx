@@ -105,6 +105,11 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
       router.push(`/${Routes.CONTESTS}/${contest.id}`);
     }
   };
+
+  const contestHasStarted =
+    contest.status === ContestStatusType.InProgress ||
+    contest.status === ContestStatusType.Complete;
+
   return (
     <Box
       maxW={'500px'}
@@ -185,7 +190,11 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
                 ? 'See Contest Results'
                 : 'Go to Contest'
             }
-            href={`/${Routes.CONTESTS}/${contest.id}`}
+            href={
+              contestHasStarted
+                ? `/${Routes.CONTESTS}/${contest.id}?contestNav=leaderboard`
+                : `/${Routes.CONTESTS}/${contest.id}`
+            }
             buttonTheme={{ variant: 'outline' }}
           />
         </HStack>

@@ -24,7 +24,7 @@ export const CURRENT_USER_QUERY = gql`
 
 export const ALL_CONTESTS_QUERY = gql`
   query AllContests {
-    contests {
+    contests(orderBy: { name: desc }) {
       id
       name
       description

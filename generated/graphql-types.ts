@@ -2517,7 +2517,7 @@ export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLaz
 export type CurrentUserQueryResult = Apollo.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
 export const AllContestsDocument = gql`
     query AllContests {
-  contests {
+  contests(orderBy: {name: desc}) {
     id
     name
     description
