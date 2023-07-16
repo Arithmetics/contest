@@ -141,7 +141,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
             Available Lines
           </Heading>
           <Collapse in={isAvailableOpen} animateOpacity>
-            <Flex justifyContent="center" flexWrap="wrap">
+            <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {availableLines.map((line) => {
                 return (
                   <LineCard
@@ -165,7 +165,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
             Pending Lines
           </Heading>
           <Collapse in={isPendingOpen} animateOpacity>
-            <Flex justifyContent="center" flexWrap="wrap">
+            <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {pendingLines.map((line) => {
                 return (
                   <LineCard
@@ -189,7 +189,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
             Settled Lines
           </Heading>
           <Collapse in={isSettledOpen} animateOpacity>
-            <Flex justifyContent="center" flexWrap="wrap">
+            <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {settledLines.map((line) => {
                 return (
                   <LineCard

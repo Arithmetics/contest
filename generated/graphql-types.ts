@@ -2817,7 +2817,7 @@ export const ContestByIdDocument = gql`
       maxSuperBets
       superBetPointCount
     }
-    lines(orderBy: {closingTime: asc}) {
+    lines(orderBy: [{closingTime: asc}, {benchmark: desc}]) {
       id
       benchmark
       closingTime
