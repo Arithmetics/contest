@@ -8,7 +8,7 @@ import {
   Text,
   useBreakpointValue,
 } from '@chakra-ui/react';
-import { Line, ContestContestTypeType } from '../../generated/graphql-types';
+import { Line, ContestContestTypeType } from '../../../generated/graphql-types';
 
 export function formatATS(home: boolean, benchmark?: number | null): string {
   if (!benchmark) {

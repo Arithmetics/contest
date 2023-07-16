@@ -7,7 +7,7 @@ import {
   useAtsTrackerStatusQuery,
 } from '../../../generated/graphql-types';
 
-import LineCardHeader from '../LineCardHeader';
+import LineCardHeader from '../lineCard/LineCardHeader';
 import { UserBetGroup } from './TrackerOU';
 import TrackerBarGraph, { BarData } from './TrackerBarGraph';
 

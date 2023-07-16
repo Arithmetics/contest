@@ -89,7 +89,7 @@ export default function ForgotPasswordForm(): JSX.Element {
       toast({
         title: 'Error',
         description:
-          'There was an error on the backend. Try again and then Email Brock if it percists',
+          'There was an error on the backend. Try again and then Email Brock if it persists',
         status: 'error',
         duration: 5000,
         isClosable: true,
