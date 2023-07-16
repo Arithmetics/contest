@@ -310,21 +310,19 @@ export default function LineCard({
     );
   };
 
-  const cardWidth = contestType === ContestContestTypeType.NflAts ? '440px' : '350px';
+  const cardWidth = contestType === ContestContestTypeType.NflAts ? '440px' : '335px';
 
   return (
     <Tooltip label={!userId && 'Log in to bet'}>
       <Box
         maxW={cardWidth}
-        width={'full'}
+        width="full"
         bg={'gray.600'}
         border={usersBet ? '1px' : ''}
         borderColor={usersBet ? 'teal.500' : ''}
         boxShadow={usersBet ? 'dark-lg' : 'lg'}
         rounded={'md'}
         position={'relative'}
-        margin={3}
-        marginTop={6}
         padding={3}
       >
         <LineCardHeader line={line} contestType={contestType} />
