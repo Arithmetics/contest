@@ -233,13 +233,7 @@ export default function LineCard({
       }
       return (
         <>
-          <Box
-            {...group}
-            display="grid"
-            gap="8px"
-            width="width: calc(2*360*8)"
-            gridAutoFlow="column"
-          >
+          <HStack justifyContent="center" spacing={6} {...group}>
             {choices.map((choice) => {
               const radio = getRadioProps({ value: choice.id });
               return (
@@ -255,7 +249,7 @@ export default function LineCard({
                 />
               );
             })}
-          </Box>
+          </HStack>
           {userId && !formDisabled && (
             <Center>
               <Checkbox
