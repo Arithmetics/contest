@@ -14,87 +14,91 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { ChoiceSelectionType, useCreateNbaContestMutation } from '../../generated/graphql-types';
+import { ChoiceSelectionType, useCreateNflContestMutation } from '../../generated/graphql-types';
 import { useState } from 'react';
 import { Routes } from '../../constants';
 
 const teams = [
-  'atlantaHawksBenchmark',
-  'bostonCelticsBenchmark',
-  'brooklynNetsBenchmark',
-  'charlotteHornetsBenchmark',
-  'chicagoBullsBenchmark',
-  'clevelandCavaliersBenchmark',
-  'dallasMavericksBenchmark',
-  'denverNuggetsBenchmark',
-  'detroitPistonsBenchmark',
-  'goldenStateWarriorsBenchmark',
-  'houstonRocketsBenchmark',
-  'indianaPacersBenchmark',
-  'lAClippersBenchmark',
-  'losAngelesLakersBenchmark',
-  'memphisGrizzliesBenchmark',
-  'miamiHeatBenchmark',
-  'milwaukeeBucksBenchmark',
-  'minnesotaTimberwolvesBenchmark',
-  'newOrleansPelicansBenchmark',
-  'newYorkKnicksBenchmark',
-  'oklahomaCityThunderBenchmark',
-  'orlandoMagicBenchmark',
-  'philadelphia76ersBenchmark',
-  'phoenixSunsBenchmark',
-  'portlandTrailBlazersBenchmark',
-  'sacramentoKingsBenchmark',
-  'sanAntonioSpursBenchmark',
-  'torontoRaptorsBenchmark',
-  'utahJazzBenchmark',
-  'washingtonWizardsBenchmark',
+  'arizonaCardinalsBenchmark',
+  'atlantaFalconsBenchmark',
+  'baltimoreRavensBenchmark',
+  'buffaloBillsBenchmark',
+  'carolinaPanthersBenchmark',
+  'chicagoBearsBenchmark',
+  'cincinnatiBengalsBenchmark',
+  'clevelandBrownsBenchmark',
+  'dallasCowboysBenchmark',
+  'denverBroncosBenchmark',
+  'detroitLionsBenchmark',
+  'greenBayPackersBenchmark',
+  'houstonTexansBenchmark',
+  'indianapolisColtsBenchmark',
+  'jacksonvilleJaguarsBenchmark',
+  'kansasCityChiefsBenchmark',
+  'lasVegasRaidersBenchmark',
+  'losAngelesChargersBenchmark',
+  'losAngelesRamsBenchmark',
+  'miamiDolphinsBenchmark',
+  'minnesotaVikingsBenchmark',
+  'newEnglandPatriotsBenchmark',
+  'newOrleansSaintsBenchmark',
+  'newYorkGiantsBenchmark',
+  'newYorkJetsBenchmark',
+  'philadelphiaEaglesBenchmark',
+  'pittsburghSteelersBenchmark',
+  'sanFrancisco49ersBenchmark',
+  'seattleSeahawksBenchmark',
+  'tampaBayBuccaneersBenchmark',
+  'tennesseeTitansBenchmark',
+  'washingtonCommandersBenchmark',
 ];
 
-export default function NBAOverUnderForm(): JSX.Element {
+export default function NFLOverUnderForm(): JSX.Element {
   const toast = useToast();
   const router = useRouter();
   const [contestName, setContestName] = useState('');
   const [closingTime, setClosingTime] = useState('2024-10-18T23:00:00Z');
   const [benchmarks, setBenchmarks] = useState<Record<string, number>>({});
 
-  const [createContest, { loading }] = useCreateNbaContestMutation();
+  const [createContest, { loading }] = useCreateNflContestMutation();
 
   const submitCreateContest = async (): Promise<void> => {
     const res = await createContest({
       variables: {
         contestName: contestName,
         closingTime: closingTime,
-        atlantaHawksBenchmark: benchmarks.atlantaHawksBenchmark ?? 0,
-        bostonCelticsBenchmark: benchmarks.bostonCelticsBenchmark ?? 0,
-        brooklynNetsBenchmark: benchmarks.brooklynNetsBenchmark ?? 0,
-        charlotteHornetsBenchmark: benchmarks.charlotteHornetsBenchmark ?? 0,
-        chicagoBullsBenchmark: benchmarks.chicagoBullsBenchmark ?? 0,
-        clevelandCavaliersBenchmark: benchmarks.clevelandCavaliersBenchmark ?? 0,
-        dallasMavericksBenchmark: benchmarks.dallasMavericksBenchmark ?? 0,
-        denverNuggetsBenchmark: benchmarks.denverNuggetsBenchmark ?? 0,
-        detroitPistonsBenchmark: benchmarks.detroitPistonsBenchmark ?? 0,
-        goldenStateWarriorsBenchmark: benchmarks.goldenStateWarriorsBenchmark ?? 0,
-        houstonRocketsBenchmark: benchmarks.houstonRocketsBenchmark ?? 0,
-        indianaPacersBenchmark: benchmarks.indianaPacersBenchmark ?? 0,
-        lAClippersBenchmark: benchmarks.lAClippersBenchmark ?? 0,
-        losAngelesLakersBenchmark: benchmarks.losAngelesLakersBenchmark ?? 0,
-        memphisGrizzliesBenchmark: benchmarks.memphisGrizzliesBenchmark ?? 0,
-        miamiHeatBenchmark: benchmarks.miamiHeatBenchmark ?? 0,
-        milwaukeeBucksBenchmark: benchmarks.milwaukeeBucksBenchmark ?? 0,
-        minnesotaTimberwolvesBenchmark: benchmarks.minnesotaTimberwolvesBenchmark ?? 0,
-        newOrleansPelicansBenchmark: benchmarks.newOrleansPelicansBenchmark ?? 0,
-        newYorkKnicksBenchmark: benchmarks.newYorkKnicksBenchmark ?? 0,
-        oklahomaCityThunderBenchmark: benchmarks.oklahomaCityThunderBenchmark ?? 0,
-        orlandoMagicBenchmark: benchmarks.orlandoMagicBenchmark ?? 0,
-        philadelphia76ersBenchmark: benchmarks.philadelphia76ersBenchmark ?? 0,
-        phoenixSunsBenchmark: benchmarks.phoenixSunsBenchmark ?? 0,
-        portlandTrailBlazersBenchmark: benchmarks.portlandTrailBlazersBenchmark ?? 0,
-        sacramentoKingsBenchmark: benchmarks.sacramentoKingsBenchmark ?? 0,
-        sanAntonioSpursBenchmark: benchmarks.sanAntonioSpursBenchmark ?? 0,
-        torontoRaptorsBenchmark: benchmarks.torontoRaptorsBenchmark ?? 0,
-        utahJazzBenchmark: benchmarks.utahJazzBenchmark ?? 0,
-        washingtonWizardsBenchmark: benchmarks.washingtonWizardsBenchmark ?? 0,
+        arizonaCardinalsBenchmark: benchmarks.arizonaCardinalsBenchmark ?? 0,
+        atlantaFalconsBenchmark: benchmarks.atlantaFalconsBenchmark ?? 0,
+        baltimoreRavensBenchmark: benchmarks.baltimoreRavensBenchmark ?? 0,
+        buffaloBillsBenchmark: benchmarks.buffaloBillsBenchmark ?? 0,
+        carolinaPanthersBenchmark: benchmarks.carolinaPanthersBenchmark ?? 0,
+        chicagoBearsBenchmark: benchmarks.chicagoBearsBenchmark ?? 0,
+        cincinnatiBengalsBenchmark: benchmarks.cincinnatiBengalsBenchmark ?? 0,
+        clevelandBrownsBenchmark: benchmarks.clevelandBrownsBenchmark ?? 0,
+        dallasCowboysBenchmark: benchmarks.dallasCowboysBenchmark ?? 0,
+        denverBroncosBenchmark: benchmarks.denverBroncosBenchmark ?? 0,
+        detroitLionsBenchmark: benchmarks.detroitLionsBenchmark ?? 0,
+        greenBayPackersBenchmark: benchmarks.greenBayPackersBenchmark ?? 0,
+        houstonTexansBenchmark: benchmarks.houstonTexansBenchmark ?? 0,
+        indianapolisColtsBenchmark: benchmarks.indianapolisColtsBenchmark ?? 0,
+        jacksonvilleJaguarsBenchmark: benchmarks.jacksonvilleJaguarsBenchmark ?? 0,
+        kansasCityChiefsBenchmark: benchmarks.kansasCityChiefsBenchmark ?? 0,
+        lasVegasRaidersBenchmark: benchmarks.lasVegasRaidersBenchmark ?? 0,
+        losAngelesChargersBenchmark: benchmarks.losAngelesChargersBenchmark ?? 0,
+        losAngelesRamsBenchmark: benchmarks.losAngelesRamsBenchmark ?? 0,
+        miamiDolphinsBenchmark: benchmarks.miamiDolphinsBenchmark ?? 0,
+        minnesotaVikingsBenchmark: benchmarks.minnesotaVikingsBenchmark ?? 0,
+        newEnglandPatriotsBenchmark: benchmarks.newEnglandPatriotsBenchmark ?? 0,
+        newOrleansSaintsBenchmark: benchmarks.newOrleansSaintsBenchmark ?? 0,
+        newYorkGiantsBenchmark: benchmarks.newYorkGiantsBenchmark ?? 0,
+        newYorkJetsBenchmark: benchmarks.newYorkJetsBenchmark ?? 0,
+        philadelphiaEaglesBenchmark: benchmarks.philadelphiaEaglesBenchmark ?? 0,
+        pittsburghSteelersBenchmark: benchmarks.pittsburghSteelersBenchmark ?? 0,
+        sanFrancisco49ersBenchmark: benchmarks.sanFrancisco49ersBenchmark ?? 0,
+        seattleSeahawksBenchmark: benchmarks.seattleSeahawksBenchmark ?? 0,
+        tampaBayBuccaneersBenchmark: benchmarks.tampaBayBuccaneersBenchmark ?? 0,
+        tennesseeTitansBenchmark: benchmarks.tennesseeTitansBenchmark ?? 0,
+        washingtonCommandersBenchmark: benchmarks.washingtonCommandersBenchmark ?? 0,
         overSelection: {
           selection: ChoiceSelectionType.Over,
           isWin: false,
@@ -145,11 +149,11 @@ export default function NBAOverUnderForm(): JSX.Element {
           gap: '8px',
         }}
       >
-        <Text fontSize="xl">🏀 NBA Over Under Generator</Text>
+        <Text fontSize="xl">🏈 NFL Over Under Generator</Text>
         <FormControl id="title" isRequired>
           <FormLabel color={'gray.500'}>Title</FormLabel>
           <Input
-            placeholder="NBA Over Under..."
+            placeholder="NFL Over Under..."
             _placeholder={{ color: 'gray.500' }}
             name="title"
             type="text"
@@ -184,7 +188,7 @@ export default function NBAOverUnderForm(): JSX.Element {
                 <NumberInput
                   value={benchmarks[team]}
                   min={0}
-                  max={82}
+                  max={32}
                   onChange={onBenchMarkChange(team)}
                 >
                   <NumberInputField disabled={loading} />

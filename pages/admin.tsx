@@ -4,6 +4,7 @@ import { useUser } from '../components/User';
 import { useRouter } from 'next/router';
 
 import NBAOverUnderForm from '../components/admin/NBAOverUnderForm';
+import NFLOverUnderForm from '../components/admin/NFLOverUnderForm';
 
 export default function Admin(): JSX.Element {
   const user = useUser();
@@ -17,6 +18,8 @@ export default function Admin(): JSX.Element {
     <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
       <Flex flex={1} flexDirection={'column'} alignItems={'center'} justifyContent={'start'}>
         <NBAOverUnderForm />
+        <hr />
+        <NFLOverUnderForm />
       </Flex>
     </Stack>
   );
