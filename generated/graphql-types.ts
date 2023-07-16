@@ -1920,6 +1920,88 @@ export type ValidateUserPasswordResetTokenResult = {
   message: Scalars['String']['output'];
 };
 
+export type CreateNbaContestMutationVariables = Exact<{
+  contestName?: InputMaybe<Scalars['String']['input']>;
+  overSelection: ChoiceCreateInput;
+  underSelection: ChoiceCreateInput;
+  closingTime?: InputMaybe<Scalars['DateTime']['input']>;
+  atlantaHawksBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  bostonCelticsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  brooklynNetsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  charlotteHornetsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  chicagoBullsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  clevelandCavaliersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  dallasMavericksBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  denverNuggetsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  detroitPistonsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  goldenStateWarriorsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  houstonRocketsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  indianaPacersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  lAClippersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  losAngelesLakersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  memphisGrizzliesBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  miamiHeatBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  milwaukeeBucksBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  minnesotaTimberwolvesBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  newOrleansPelicansBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  newYorkKnicksBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  oklahomaCityThunderBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  orlandoMagicBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  philadelphia76ersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  phoenixSunsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  portlandTrailBlazersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  sacramentoKingsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  sanAntonioSpursBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  torontoRaptorsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  utahJazzBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  washingtonWizardsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+}>;
+
+
+export type CreateNbaContestMutation = { __typename?: 'Mutation', createContest?: { __typename?: 'Contest', id: string } | null };
+
+export type CreateNflContestMutationVariables = Exact<{
+  contestName?: InputMaybe<Scalars['String']['input']>;
+  overSelection: ChoiceCreateInput;
+  underSelection: ChoiceCreateInput;
+  closingTime?: InputMaybe<Scalars['DateTime']['input']>;
+  arizonaCardinalsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  atlantaFalconsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  baltimoreRavensBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  buffaloBillsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  carolinaPanthersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  chicagoBearsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  cincinnatiBengalsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  clevelandBrownsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  dallasCowboysBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  denverBroncosBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  detroitLionsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  greenBayPackersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  houstonTexansBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  indianapolisColtsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  jacksonvilleJaguarsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  kansasCityChiefsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  lasVegasRaidersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  losAngelesChargersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  losAngelesRamsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  miamiDolphinsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  minnesotaVikingsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  newEnglandPatriotsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  newOrleansSaintsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  newYorkGiantsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  newYorkJetsBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  philadelphiaEaglesBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  pittsburghSteelersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  sanFrancisco49ersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  seattleSeahawksBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  tampaBayBuccaneersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  tennesseeTitansBenchmark?: InputMaybe<Scalars['Float']['input']>;
+  washingtonCommandersBenchmark?: InputMaybe<Scalars['Float']['input']>;
+}>;
+
+
+export type CreateNflContestMutation = { __typename?: 'Mutation', createContest?: { __typename?: 'Contest', id: string } | null };
+
 export type CheckIfEmailAvailableQueryVariables = Exact<{
   email: Scalars['String']['input'];
 }>;
@@ -2098,6 +2180,144 @@ export type UserContestBetsQueryVariables = Exact<{
 export type UserContestBetsQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, isWin?: boolean | null, status?: ChoiceStatus | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null }> | null }> | null }> | null } | null };
 
 
+export const CreateNbaContestDocument = gql`
+    mutation CreateNbaContest($contestName: String, $overSelection: ChoiceCreateInput!, $underSelection: ChoiceCreateInput!, $closingTime: DateTime, $atlantaHawksBenchmark: Float, $bostonCelticsBenchmark: Float, $brooklynNetsBenchmark: Float, $charlotteHornetsBenchmark: Float, $chicagoBullsBenchmark: Float, $clevelandCavaliersBenchmark: Float, $dallasMavericksBenchmark: Float, $denverNuggetsBenchmark: Float, $detroitPistonsBenchmark: Float, $goldenStateWarriorsBenchmark: Float, $houstonRocketsBenchmark: Float, $indianaPacersBenchmark: Float, $lAClippersBenchmark: Float, $losAngelesLakersBenchmark: Float, $memphisGrizzliesBenchmark: Float, $miamiHeatBenchmark: Float, $milwaukeeBucksBenchmark: Float, $minnesotaTimberwolvesBenchmark: Float, $newOrleansPelicansBenchmark: Float, $newYorkKnicksBenchmark: Float, $oklahomaCityThunderBenchmark: Float, $orlandoMagicBenchmark: Float, $philadelphia76ersBenchmark: Float, $phoenixSunsBenchmark: Float, $portlandTrailBlazersBenchmark: Float, $sacramentoKingsBenchmark: Float, $sanAntonioSpursBenchmark: Float, $torontoRaptorsBenchmark: Float, $utahJazzBenchmark: Float, $washingtonWizardsBenchmark: Float) {
+  createContest(
+    data: {name: $contestName, description: "Pick over or under season win totals for NBA", status: OPEN, entryFee: 25, contestType: NBA_OVER_UNDER, ruleSet: {create: {maxBets: 10, maxSuperBets: 5, superBetPointCount: 2}}, lines: {create: [{title: "Atlanta Hawks", benchmark: $atlantaHawksBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tln643791650imcmdfk267i"}}}, {title: "Boston Celtics", benchmark: $bostonCelticsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pvrt13248480imc1pk7nvkd"}}}, {title: "Brooklyn Nets", benchmark: $brooklynNetsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93px1783261880imcxrq7oh6v"}}}, {title: "Charlotte Hornets", benchmark: $charlotteHornetsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93puudp3240950imc405ceklf"}}}, {title: "Chicago Bulls", benchmark: $chicagoBullsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94to6nd3809910imck5mxxfsp"}}}, {title: "Cleveland Cavaliers", benchmark: $clevelandCavaliersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tn9ju3801870imcdof9nvm3"}}}, {title: "Dallas Mavericks", benchmark: $dallasMavericksBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tkf3w3769030imcpl0wtgdz"}}}, {title: "Denver Nuggets", benchmark: $denverNuggetsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tjwm53763670imc9xbdby5h"}}}, {title: "Detroit Pistons", benchmark: $detroitPistonsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93ptyxq3232910imcoyv0kdyp"}}}, {title: "Golden State Warriors", benchmark: $goldenStateWarriorsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pwshp3259200imcfkh7kz71"}}}, {title: "Houston Rockets", benchmark: $houstonRocketsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93prni23215700imcuqz79t17"}}}, {title: "Indiana Pacers", benchmark: $indianaPacersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pscxg3222190imco1gey96u"}}}, {title: "LA Clippers", benchmark: $lAClippersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pwk0h3256520imcafo73r4k"}}}, {title: "Los Angeles Lakers", benchmark: $losAngelesLakersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tl4ij3786540imcvwf12een"}}}, {title: "Memphis Grizzlies", benchmark: $memphisGrizzliesBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tk5pl3766350imcfl1nuq3z"}}}, {title: "Miami Heat", benchmark: $miamiHeatBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tksr23771710imc7uw9o7nj"}}}, {title: "Milwaukee Bucks", benchmark: $milwaukeeBucksBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pw1y43251160imc6rbkysij"}}}, {title: "Minnesota Timberwolves", benchmark: $minnesotaTimberwolvesBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tm82x3794330imc8hgttvpg"}}}, {title: "New Orleans Pelicans", benchmark: $newOrleansPelicansBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tnyfv3807230imcjao003ly"}}}, {title: "New York Knicks", benchmark: $newYorkKnicksBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tofsa3812590imc2d04yql7"}}}, {title: "Oklahoma City Thunder", benchmark: $oklahomaCityThunderBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pspm63224870imcejeut5ia"}}}, {title: "Orlando Magic", benchmark: $orlandoMagicBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93psyw93227550imcmmdt7s9c"}}}, {title: "Philadelphia 76ers", benchmark: $philadelphia76ersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tjhgy3715400imc5jig7w16"}}}, {title: "Phoenix Suns", benchmark: $phoenixSunsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pwbg33253840imc9hs2lwuq"}}}, {title: "Portland Trail Blazers", benchmark: $portlandTrailBlazersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pv6o43243630imc9pcloz9u"}}}, {title: "Sacramento Kings", benchmark: $sacramentoKingsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pua0n3235590imcnt5au3kz"}}}, {title: "San Antonio Spurs", benchmark: $sanAntonioSpursBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93ps3sz3219510imcr7sn4pd6"}}}, {title: "Toronto Raptors", benchmark: $torontoRaptorsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl94tnlpi3804550imcn9hqbfot"}}}, {title: "Utah Jazz", benchmark: $utahJazzBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93ptl4o3230230imcic3598k2"}}}, {title: "Washington Wizards", benchmark: $washingtonWizardsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "cl93pulfn3238270imctt5o7rh1"}}}]}}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateNbaContestMutationFn = Apollo.MutationFunction<CreateNbaContestMutation, CreateNbaContestMutationVariables>;
+
+/**
+ * __useCreateNbaContestMutation__
+ *
+ * To run a mutation, you first call `useCreateNbaContestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNbaContestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNbaContestMutation, { data, loading, error }] = useCreateNbaContestMutation({
+ *   variables: {
+ *      contestName: // value for 'contestName'
+ *      overSelection: // value for 'overSelection'
+ *      underSelection: // value for 'underSelection'
+ *      closingTime: // value for 'closingTime'
+ *      atlantaHawksBenchmark: // value for 'atlantaHawksBenchmark'
+ *      bostonCelticsBenchmark: // value for 'bostonCelticsBenchmark'
+ *      brooklynNetsBenchmark: // value for 'brooklynNetsBenchmark'
+ *      charlotteHornetsBenchmark: // value for 'charlotteHornetsBenchmark'
+ *      chicagoBullsBenchmark: // value for 'chicagoBullsBenchmark'
+ *      clevelandCavaliersBenchmark: // value for 'clevelandCavaliersBenchmark'
+ *      dallasMavericksBenchmark: // value for 'dallasMavericksBenchmark'
+ *      denverNuggetsBenchmark: // value for 'denverNuggetsBenchmark'
+ *      detroitPistonsBenchmark: // value for 'detroitPistonsBenchmark'
+ *      goldenStateWarriorsBenchmark: // value for 'goldenStateWarriorsBenchmark'
+ *      houstonRocketsBenchmark: // value for 'houstonRocketsBenchmark'
+ *      indianaPacersBenchmark: // value for 'indianaPacersBenchmark'
+ *      lAClippersBenchmark: // value for 'lAClippersBenchmark'
+ *      losAngelesLakersBenchmark: // value for 'losAngelesLakersBenchmark'
+ *      memphisGrizzliesBenchmark: // value for 'memphisGrizzliesBenchmark'
+ *      miamiHeatBenchmark: // value for 'miamiHeatBenchmark'
+ *      milwaukeeBucksBenchmark: // value for 'milwaukeeBucksBenchmark'
+ *      minnesotaTimberwolvesBenchmark: // value for 'minnesotaTimberwolvesBenchmark'
+ *      newOrleansPelicansBenchmark: // value for 'newOrleansPelicansBenchmark'
+ *      newYorkKnicksBenchmark: // value for 'newYorkKnicksBenchmark'
+ *      oklahomaCityThunderBenchmark: // value for 'oklahomaCityThunderBenchmark'
+ *      orlandoMagicBenchmark: // value for 'orlandoMagicBenchmark'
+ *      philadelphia76ersBenchmark: // value for 'philadelphia76ersBenchmark'
+ *      phoenixSunsBenchmark: // value for 'phoenixSunsBenchmark'
+ *      portlandTrailBlazersBenchmark: // value for 'portlandTrailBlazersBenchmark'
+ *      sacramentoKingsBenchmark: // value for 'sacramentoKingsBenchmark'
+ *      sanAntonioSpursBenchmark: // value for 'sanAntonioSpursBenchmark'
+ *      torontoRaptorsBenchmark: // value for 'torontoRaptorsBenchmark'
+ *      utahJazzBenchmark: // value for 'utahJazzBenchmark'
+ *      washingtonWizardsBenchmark: // value for 'washingtonWizardsBenchmark'
+ *   },
+ * });
+ */
+export function useCreateNbaContestMutation(baseOptions?: Apollo.MutationHookOptions<CreateNbaContestMutation, CreateNbaContestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNbaContestMutation, CreateNbaContestMutationVariables>(CreateNbaContestDocument, options);
+      }
+export type CreateNbaContestMutationHookResult = ReturnType<typeof useCreateNbaContestMutation>;
+export type CreateNbaContestMutationResult = Apollo.MutationResult<CreateNbaContestMutation>;
+export type CreateNbaContestMutationOptions = Apollo.BaseMutationOptions<CreateNbaContestMutation, CreateNbaContestMutationVariables>;
+export const CreateNflContestDocument = gql`
+    mutation CreateNFLContest($contestName: String, $overSelection: ChoiceCreateInput!, $underSelection: ChoiceCreateInput!, $closingTime: DateTime, $arizonaCardinalsBenchmark: Float, $atlantaFalconsBenchmark: Float, $baltimoreRavensBenchmark: Float, $buffaloBillsBenchmark: Float, $carolinaPanthersBenchmark: Float, $chicagoBearsBenchmark: Float, $cincinnatiBengalsBenchmark: Float, $clevelandBrownsBenchmark: Float, $dallasCowboysBenchmark: Float, $denverBroncosBenchmark: Float, $detroitLionsBenchmark: Float, $greenBayPackersBenchmark: Float, $houstonTexansBenchmark: Float, $indianapolisColtsBenchmark: Float, $jacksonvilleJaguarsBenchmark: Float, $kansasCityChiefsBenchmark: Float, $lasVegasRaidersBenchmark: Float, $losAngelesChargersBenchmark: Float, $losAngelesRamsBenchmark: Float, $miamiDolphinsBenchmark: Float, $minnesotaVikingsBenchmark: Float, $newEnglandPatriotsBenchmark: Float, $newOrleansSaintsBenchmark: Float, $newYorkGiantsBenchmark: Float, $newYorkJetsBenchmark: Float, $philadelphiaEaglesBenchmark: Float, $pittsburghSteelersBenchmark: Float, $sanFrancisco49ersBenchmark: Float, $seattleSeahawksBenchmark: Float, $tampaBayBuccaneersBenchmark: Float, $tennesseeTitansBenchmark: Float, $washingtonCommandersBenchmark: Float) {
+  createContest(
+    data: {name: $contestName, description: "Pick over or under season win totals for NFL", status: OPEN, entryFee: 25, contestType: NBA_OVER_UNDER, ruleSet: {create: {maxBets: 10, maxSuperBets: 5, superBetPointCount: 2}}, lines: {create: [{title: "Arizona Cardinals", benchmark: $arizonaCardinalsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4swnp2364813q16iiosh1c"}}}, {title: "Atlanta Falcons", benchmark: $atlantaFalconsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4zxc53588813q166z3wze4"}}}, {title: "Baltimore Ravens", benchmark: $baltimoreRavensBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4it4z1148113q1qgkqwis9"}}}, {title: "Buffalo Bills", benchmark: $buffaloBillsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4k4f21283013q1wozaksk6"}}}, {title: "Carolina Panthers", benchmark: $carolinaPanthersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4v4uh2946013q1iqzttxty"}}}, {title: "Chicago Bears", benchmark: $chicagoBearsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4u41t2800013q13fp5q44t"}}}, {title: "Cincinnati Bengals", benchmark: $cincinnatiBengalsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4zlgq3541113q1hxeksh44"}}}, {title: "Cleveland Browns", benchmark: $clevelandBrownsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4resn2085913q14ug526na"}}}, {title: "Dallas Cowboys", benchmark: $dallasCowboysBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4se8o2317113q11clcqs3q"}}}, {title: "Denver Broncos", benchmark: $denverBroncosBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3fgcq3773813q1jeydsg6i"}}}, {title: "Detroit Lions", benchmark: $detroitLionsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4w17m3004613q1gfq96g97"}}}, {title: "Green Bay Packers", benchmark: $greenBayPackersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4gpn8888513q1y0fbipvz"}}}, {title: "Houston Texans", benchmark: $houstonTexansBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3ejpu3726113q1e2hm3h6s"}}}, {title: "Indianapolis Colts", benchmark: $indianapolisColtsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4s2vu2269413q196vxhvoi"}}}, {title: "Jacksonville Jaguars", benchmark: $jacksonvilleJaguarsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3hsgp4012313q1tuxh5jr2"}}}, {title: "Kansas City Chiefs", benchmark: $kansasCityChiefsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3hff53964613q1jj5ifz8r"}}}, {title: "Las Vegas Raiders", benchmark: $lasVegasRaidersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4yx9p3445713q152xtqngx"}}}, {title: "Los Angeles Chargers", benchmark: $losAngelesChargersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4rrf12162613q1l67t9m11"}}}, {title: "Los Angeles Rams", benchmark: $losAngelesRamsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4hoa91013213q11tanue27"}}}, {title: "Miami Dolphins", benchmark: $miamiDolphinsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4tccg2704613q1gip4firz"}}}, {title: "Minnesota Vikings", benchmark: $minnesotaVikingsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4tmhp2752313q1x8xgc8xo"}}}, {title: "New England Patriots", benchmark: $newEnglandPatriotsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4qqaq2038213q1y07h02ct"}}}, {title: "New Orleans Saints", benchmark: $newOrleansSaintsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3gmbe3869213q1urif9iu9"}}}, {title: "New York Giants", benchmark: $newYorkGiantsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4ujdk2848913q107eokhib"}}}, {title: "New York Jets", benchmark: $newYorkJetsBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3h1zm3916913q1hntxo0s7"}}}, {title: "Philadelphia Eagles", benchmark: $philadelphiaEaglesBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4utls2898113q1nkf0xqw6"}}}, {title: "Pittsburgh Steelers", benchmark: $pittsburghSteelersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3gbg13821513q16vjxsmhf"}}}, {title: "San Francisco 49ers", benchmark: $sanFrancisco49ersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4l4sh1368413q1n858od9s"}}}, {title: "Seattle Seahawks", benchmark: $seattleSeahawksBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4qd161990513q1h40fpel8"}}}, {title: "Tampa Bay Buccaneers", benchmark: $tampaBayBuccaneersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4x9e93057713q1w1es8euj"}}}, {title: "Tennessee Titans", benchmark: $tennesseeTitansBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckre4zb933493413q18cdiu54w"}}}, {title: "Washington Commanders", benchmark: $washingtonCommandersBenchmark, closingTime: $closingTime, choices: {create: [$overSelection, $underSelection]}, image: {connect: {id: "ckrf3e6ji3678413q1u9ffp1ho"}}}]}}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateNflContestMutationFn = Apollo.MutationFunction<CreateNflContestMutation, CreateNflContestMutationVariables>;
+
+/**
+ * __useCreateNflContestMutation__
+ *
+ * To run a mutation, you first call `useCreateNflContestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateNflContestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createNflContestMutation, { data, loading, error }] = useCreateNflContestMutation({
+ *   variables: {
+ *      contestName: // value for 'contestName'
+ *      overSelection: // value for 'overSelection'
+ *      underSelection: // value for 'underSelection'
+ *      closingTime: // value for 'closingTime'
+ *      arizonaCardinalsBenchmark: // value for 'arizonaCardinalsBenchmark'
+ *      atlantaFalconsBenchmark: // value for 'atlantaFalconsBenchmark'
+ *      baltimoreRavensBenchmark: // value for 'baltimoreRavensBenchmark'
+ *      buffaloBillsBenchmark: // value for 'buffaloBillsBenchmark'
+ *      carolinaPanthersBenchmark: // value for 'carolinaPanthersBenchmark'
+ *      chicagoBearsBenchmark: // value for 'chicagoBearsBenchmark'
+ *      cincinnatiBengalsBenchmark: // value for 'cincinnatiBengalsBenchmark'
+ *      clevelandBrownsBenchmark: // value for 'clevelandBrownsBenchmark'
+ *      dallasCowboysBenchmark: // value for 'dallasCowboysBenchmark'
+ *      denverBroncosBenchmark: // value for 'denverBroncosBenchmark'
+ *      detroitLionsBenchmark: // value for 'detroitLionsBenchmark'
+ *      greenBayPackersBenchmark: // value for 'greenBayPackersBenchmark'
+ *      houstonTexansBenchmark: // value for 'houstonTexansBenchmark'
+ *      indianapolisColtsBenchmark: // value for 'indianapolisColtsBenchmark'
+ *      jacksonvilleJaguarsBenchmark: // value for 'jacksonvilleJaguarsBenchmark'
+ *      kansasCityChiefsBenchmark: // value for 'kansasCityChiefsBenchmark'
+ *      lasVegasRaidersBenchmark: // value for 'lasVegasRaidersBenchmark'
+ *      losAngelesChargersBenchmark: // value for 'losAngelesChargersBenchmark'
+ *      losAngelesRamsBenchmark: // value for 'losAngelesRamsBenchmark'
+ *      miamiDolphinsBenchmark: // value for 'miamiDolphinsBenchmark'
+ *      minnesotaVikingsBenchmark: // value for 'minnesotaVikingsBenchmark'
+ *      newEnglandPatriotsBenchmark: // value for 'newEnglandPatriotsBenchmark'
+ *      newOrleansSaintsBenchmark: // value for 'newOrleansSaintsBenchmark'
+ *      newYorkGiantsBenchmark: // value for 'newYorkGiantsBenchmark'
+ *      newYorkJetsBenchmark: // value for 'newYorkJetsBenchmark'
+ *      philadelphiaEaglesBenchmark: // value for 'philadelphiaEaglesBenchmark'
+ *      pittsburghSteelersBenchmark: // value for 'pittsburghSteelersBenchmark'
+ *      sanFrancisco49ersBenchmark: // value for 'sanFrancisco49ersBenchmark'
+ *      seattleSeahawksBenchmark: // value for 'seattleSeahawksBenchmark'
+ *      tampaBayBuccaneersBenchmark: // value for 'tampaBayBuccaneersBenchmark'
+ *      tennesseeTitansBenchmark: // value for 'tennesseeTitansBenchmark'
+ *      washingtonCommandersBenchmark: // value for 'washingtonCommandersBenchmark'
+ *   },
+ * });
+ */
+export function useCreateNflContestMutation(baseOptions?: Apollo.MutationHookOptions<CreateNflContestMutation, CreateNflContestMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateNflContestMutation, CreateNflContestMutationVariables>(CreateNflContestDocument, options);
+      }
+export type CreateNflContestMutationHookResult = ReturnType<typeof useCreateNflContestMutation>;
+export type CreateNflContestMutationResult = Apollo.MutationResult<CreateNflContestMutation>;
+export type CreateNflContestMutationOptions = Apollo.BaseMutationOptions<CreateNflContestMutation, CreateNflContestMutationVariables>;
 export const CheckIfEmailAvailableDocument = gql`
     query CheckIfEmailAvailable($email: String!) {
   usersCount(where: {email: {equals: $email}})

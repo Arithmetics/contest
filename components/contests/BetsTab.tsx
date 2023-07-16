@@ -13,7 +13,7 @@ import {
   Fade,
 } from '@chakra-ui/react';
 import { useIntersectionObserver } from 'react-intersection-observer-hook';
-import LineCard, { hasLineClosed, lineHasWinner } from './LineCard';
+import LineCard, { hasLineClosed, lineHasWinner } from './lineCard/LineCard';
 import BetsStatusLine from './BetsStatusLine';
 import {
   Line,
