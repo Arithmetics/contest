@@ -318,26 +318,6 @@ export default function LineCard({
 
   const cardWidth = contestType === ContestContestTypeType.NflAts ? '440px' : '350px';
 
-  const newLocal = newFunction(
-    userHasEntered,
-    lineClosed,
-    usersBet,
-    selectedChoice,
-    onClickMakeBet,
-    pickAvailable,
-    makeBetLoading,
-    formSelectedChoiceId,
-    onClickDeleteBet,
-    deleteBetLoading,
-    winningChoice,
-    contestType,
-    awayBetVolume,
-    overBetVolume,
-    homeBetVolume,
-    underBetVolume,
-    winningBetCount,
-    losingBetCount
-  );
   return (
     <Tooltip label={!userId && 'Log in to bet'}>
       <Box
@@ -403,153 +383,95 @@ export default function LineCard({
         )}
         {/* Footer starts here */}
         {userId && <Divider orientation="horizontal" paddingTop={3} borderStyle="dashed" />}
-        {newLocal}
+        <Stack spacing={0} align={'left'}>
+          {userHasEntered && !lineClosed && (
+            <>
+              <HStack
+                position="relative"
+                display="flex"
+                spacing={3}
+                paddingTop={3}
+                justifyContent="center"
+              >
+                <LineCardFooterTicketCutouts useBorder={!!usersBet} />
+                {!selectedChoice ? (
+                  <Button
+                    onClick={onClickMakeBet}
+                    isDisabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
+                    isLoading={makeBetLoading}
+                    flexGrow={1}
+                    variant="outline"
+                    bg="teal.500"
+                    color={'white'}
+                    rounded={'md'}
+                    _hover={{
+                      boxShadow: 'lg',
+                    }}
+                  >
+                    Make Bet
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={onClickDeleteBet}
+                    isDisabled={deleteBetLoading}
+                    isLoading={deleteBetLoading}
+                    variant="outline"
+                    colorScheme="red"
+                    rounded={'md'}
+                    _hover={{
+                      boxShadow: 'lg',
+                    }}
+                  >
+                    Remove Bet
+                  </Button>
+                )}
+              </HStack>
+            </>
+          )}
+          {lineClosed && !winningChoice && (
+            <>
+              <HStack justifyContent="space-evenly" paddingTop={3}>
+                <Stat textAlign="center">
+                  <StatLabel>
+                    {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Over'} Bet Volume
+                  </StatLabel>
+                  <StatNumber>
+                    {contestType === ContestContestTypeType.NflAts ? awayBetVolume : overBetVolume}
+                  </StatNumber>
+                </Stat>
+                <Stat textAlign="center">
+                  <StatLabel>
+                    {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Under'} Bet Volume
+                  </StatLabel>
+                  <StatNumber>
+                    {contestType === ContestContestTypeType.NflAts ? homeBetVolume : underBetVolume}
+                  </StatNumber>
+                </Stat>
+              </HStack>
+            </>
+          )}
+          {lineClosed && winningChoice && (
+            <>
+              <HStack justifyContent="space-evenly" paddingTop={3}>
+                <Stat textAlign="center">
+                  <StatLabel>Correct Bet Volume</StatLabel>
+                  <StatNumber>
+                    <StatArrow type="increase" />
+                    {winningBetCount}
+                  </StatNumber>
+                </Stat>
+                <Stat textAlign="center">
+                  <StatLabel>Incorrect Bet Volume</StatLabel>
+                  <StatNumber>
+                    <StatArrow type="decrease" />
+                    {losingBetCount}
+                  </StatNumber>
+                </Stat>
+              </HStack>
+            </>
+          )}
+        </Stack>
       </Box>
     </Tooltip>
-  );
-}
-function newFunction(
-  userHasEntered: boolean | undefined,
-  lineClosed: boolean,
-  usersBet:
-    | {
-        __typename?: 'Bet' | undefined;
-        id: string;
-        isSuper?: boolean | null | undefined;
-        choice?: { __typename?: 'Choice' | undefined; id: string } | null | undefined;
-        user?:
-          | {
-              __typename?: 'User' | undefined;
-              id: string;
-              userName?: string | null | undefined;
-              avatarImage?:
-                | {
-                    __typename?: 'CloudImage' | undefined;
-                    id: string;
-                    altText?: string | null | undefined;
-                    image?:
-                      | {
-                          __typename?: 'CloudinaryImage_File' | undefined;
-                          publicUrlTransformed?: string | null | undefined;
-                        }
-                      | null
-                      | undefined;
-                  }
-                | null
-                | undefined;
-            }
-          | null
-          | undefined;
-      }
-    | undefined,
-  selectedChoice:
-    | import('/Users/brocktillotson/workspace/contest/generated/graphql-types').Choice
-    | undefined,
-  onClickMakeBet: () => Promise<void>,
-  pickAvailable: boolean,
-  makeBetLoading: boolean,
-  formSelectedChoiceId: string | number,
-  onClickDeleteBet: () => Promise<void>,
-  deleteBetLoading: boolean,
-  winningChoice:
-    | import('/Users/brocktillotson/workspace/contest/generated/graphql-types').Choice
-    | undefined,
-  contestType: ContestContestTypeType | null | undefined,
-  awayBetVolume: number | undefined,
-  overBetVolume: number | undefined,
-  homeBetVolume: number | undefined,
-  underBetVolume: number | undefined,
-  winningBetCount: number | undefined,
-  losingBetCount: number | undefined
-) {
-  return (
-    <Stack spacing={0} align={'left'}>
-      {userHasEntered && !lineClosed && (
-        <>
-          <HStack
-            position="relative"
-            display="flex"
-            spacing={3}
-            paddingTop={3}
-            justifyContent="center"
-          >
-            <LineCardFooterTicketCutouts useBorder={!!usersBet} />
-            {!selectedChoice ? (
-              <Button
-                onClick={onClickMakeBet}
-                isDisabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
-                isLoading={makeBetLoading}
-                flexGrow={1}
-                variant="outline"
-                bg="teal.500"
-                color={'white'}
-                rounded={'md'}
-                _hover={{
-                  boxShadow: 'lg',
-                }}
-              >
-                Make Bet
-              </Button>
-            ) : (
-              <Button
-                onClick={onClickDeleteBet}
-                isDisabled={deleteBetLoading}
-                isLoading={deleteBetLoading}
-                variant="outline"
-                colorScheme="red"
-                rounded={'md'}
-                _hover={{
-                  boxShadow: 'lg',
-                }}
-              >
-                Remove Bet
-              </Button>
-            )}
-          </HStack>
-        </>
-      )}
-      {lineClosed && !winningChoice && (
-        <>
-          <HStack justifyContent="space-evenly" paddingTop={3}>
-            <Stat textAlign="center">
-              <StatLabel>
-                {contestType === ContestContestTypeType.NflAts ? 'Away' : 'Over'} Bet Volume
-              </StatLabel>
-              <StatNumber>
-                {contestType === ContestContestTypeType.NflAts ? awayBetVolume : overBetVolume}
-              </StatNumber>
-            </Stat>
-            <Stat textAlign="center">
-              <StatLabel>
-                {contestType === ContestContestTypeType.NflAts ? 'Home' : 'Under'} Bet Volume
-              </StatLabel>
-              <StatNumber>
-                {contestType === ContestContestTypeType.NflAts ? homeBetVolume : underBetVolume}
-              </StatNumber>
-            </Stat>
-          </HStack>
-        </>
-      )}
-      {lineClosed && winningChoice && (
-        <>
-          <HStack justifyContent="space-evenly" paddingTop={3}>
-            <Stat textAlign="center">
-              <StatLabel>Correct Bet Volume</StatLabel>
-              <StatNumber>
-                <StatArrow type="increase" />
-                {winningBetCount}
-              </StatNumber>
-            </Stat>
-            <Stat textAlign="center">
-              <StatLabel>Incorrect Bet Volume</StatLabel>
-              <StatNumber>
-                <StatArrow type="decrease" />
-                {losingBetCount}
-              </StatNumber>
-            </Stat>
-          </HStack>
-        </>
-      )}
-    </Stack>
   );
 }
