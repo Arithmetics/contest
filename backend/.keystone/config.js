@@ -75,7 +75,7 @@ async function sendPasswordResetEmail(resetToken, to) {
   const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
   const info = await usedTransport.sendMail({
     to,
-    from: "no-reply@btbets.ml",
+    from: "no-reply@btbets.dev",
     subject: "Your password reset token",
     html: makeANiceEmail(`Your Password Reset Token is here ->
       <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>

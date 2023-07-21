@@ -15,7 +15,7 @@ export default class MyDocument extends Document {
           />
           <title>BTBets</title>
           <meta property="og:title" content="BT Bets" />
-          <meta property="og:image" content="https://www.btbets.ml/images/bt-bets-imessage.png" />
+          <meta property="og:image" content="https://www.btbets.dev/images/bt-bets-imessage.png" />
         </Head>
         <body>
           <ColorModeScript initialColorMode={theme.config.initialColorMode} />

@@ -50,12 +50,12 @@ export interface Envelope {
 
 export async function sendPasswordResetEmail(resetToken: string, to: string): Promise<void> {
   // email the user a token
-
+  console.log("sendPasswordResetEmail got here")
   const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
 
   const info = (await usedTransport.sendMail({
     to,
-    from: 'no-reply@btbets.ml',
+    from: 'no-reply@btbets.dev',
     subject: 'Your password reset token',
     html: makeANiceEmail(`Your Password Reset Token is here ->
       <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
@@ -83,7 +83,7 @@ export async function sendStandingsUpdate(
 
   const info = (await usedTransport.sendMail({
     to,
-    from: 'no-reply@btbets.ml',
+    from: 'no-reply@btbets.dev',
     subject: 'New Over Under Locked Up',
     html: makeANiceEmail(htmlList),
   })) as MailResponse;
