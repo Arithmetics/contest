@@ -50,7 +50,7 @@ export interface Envelope {
 
 export async function sendPasswordResetEmail(resetToken: string, to: string): Promise<void> {
   // email the user a token
-  console.log("sendPasswordResetEmail got here")
+  console.log('sendPasswordResetEmail got here');
   const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
 
   const info = (await usedTransport.sendMail({

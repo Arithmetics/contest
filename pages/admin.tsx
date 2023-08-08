@@ -1,7 +1,7 @@
 import { Flex, Stack } from '@chakra-ui/react';
 
-import { useUser } from '../components/User';
-import { useRouter } from 'next/router';
+// import { useUser } from '../components/User';
+// import { useRouter } from 'next/router';
 
 import NBAOverUnderForm from '../components/admin/NBAOverUnderForm';
 import NFLOverUnderForm from '../components/admin/NFLOverUnderForm';
