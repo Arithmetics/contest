@@ -72,6 +72,7 @@ function makeANiceEmail(text6) {
   `;
 }
 async function sendPasswordResetEmail(resetToken, to) {
+  console.log("sendPasswordResetEmail got here");
   const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
   const info = await usedTransport.sendMail({
     to,
