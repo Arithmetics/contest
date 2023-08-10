@@ -88,6 +88,68 @@ export type BooleanFilter = {
   not?: InputMaybe<BooleanFilter>;
 };
 
+export type Chat = {
+  __typename?: 'Chat';
+  content?: Maybe<Scalars['String']['output']>;
+  contest?: Maybe<Contest>;
+  id: Scalars['ID']['output'];
+  user?: Maybe<User>;
+};
+
+export type ChatCreateInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  contest?: InputMaybe<ContestRelateToOneForCreateInput>;
+  user?: InputMaybe<UserRelateToOneForCreateInput>;
+};
+
+export type ChatManyRelationFilter = {
+  every?: InputMaybe<ChatWhereInput>;
+  none?: InputMaybe<ChatWhereInput>;
+  some?: InputMaybe<ChatWhereInput>;
+};
+
+export type ChatOrderByInput = {
+  content?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+};
+
+export type ChatRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<ChatWhereUniqueInput>>;
+  create?: InputMaybe<Array<ChatCreateInput>>;
+};
+
+export type ChatRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<ChatWhereUniqueInput>>;
+  create?: InputMaybe<Array<ChatCreateInput>>;
+  disconnect?: InputMaybe<Array<ChatWhereUniqueInput>>;
+  set?: InputMaybe<Array<ChatWhereUniqueInput>>;
+};
+
+export type ChatUpdateArgs = {
+  data: ChatUpdateInput;
+  where: ChatWhereUniqueInput;
+};
+
+export type ChatUpdateInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  contest?: InputMaybe<ContestRelateToOneForUpdateInput>;
+  user?: InputMaybe<UserRelateToOneForUpdateInput>;
+};
+
+export type ChatWhereInput = {
+  AND?: InputMaybe<Array<ChatWhereInput>>;
+  NOT?: InputMaybe<Array<ChatWhereInput>>;
+  OR?: InputMaybe<Array<ChatWhereInput>>;
+  content?: InputMaybe<StringFilter>;
+  contest?: InputMaybe<ContestWhereInput>;
+  id?: InputMaybe<IdFilter>;
+  user?: InputMaybe<UserWhereInput>;
+};
+
+export type ChatWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type Choice = {
   __typename?: 'Choice';
   bets?: Maybe<Array<Bet>>;
@@ -318,6 +380,8 @@ export type CloudinaryImage_FilePublicUrlTransformedArgs = {
 
 export type Contest = {
   __typename?: 'Contest';
+  chats?: Maybe<Array<Chat>>;
+  chatsCount?: Maybe<Scalars['Int']['output']>;
   contestType?: Maybe<ContestContestTypeType>;
   description?: Maybe<Scalars['String']['output']>;
   entryFee?: Maybe<Scalars['Int']['output']>;
@@ -331,6 +395,20 @@ export type Contest = {
   ruleSet?: Maybe<RuleSet>;
   status?: Maybe<ContestStatusType>;
   winner?: Maybe<User>;
+};
+
+
+export type ContestChatsArgs = {
+  cursor?: InputMaybe<ChatWhereUniqueInput>;
+  orderBy?: Array<ChatOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: ChatWhereInput;
+};
+
+
+export type ContestChatsCountArgs = {
+  where?: ChatWhereInput;
 };
 
 
@@ -375,6 +453,7 @@ export type ContestContestTypeTypeNullableFilter = {
 };
 
 export type ContestCreateInput = {
+  chats?: InputMaybe<ChatRelateToManyForCreateInput>;
   contestType?: InputMaybe<ContestContestTypeType>;
   description?: InputMaybe<Scalars['String']['input']>;
   entryFee?: InputMaybe<Scalars['Int']['input']>;
@@ -426,6 +505,7 @@ export type ContestUpdateArgs = {
 };
 
 export type ContestUpdateInput = {
+  chats?: InputMaybe<ChatRelateToManyForUpdateInput>;
   contestType?: InputMaybe<ContestContestTypeType>;
   description?: InputMaybe<Scalars['String']['input']>;
   entryFee?: InputMaybe<Scalars['Int']['input']>;
@@ -442,6 +522,7 @@ export type ContestWhereInput = {
   AND?: InputMaybe<Array<ContestWhereInput>>;
   NOT?: InputMaybe<Array<ContestWhereInput>>;
   OR?: InputMaybe<Array<ContestWhereInput>>;
+  chats?: InputMaybe<ChatManyRelationFilter>;
   contestType?: InputMaybe<ContestContestTypeTypeNullableFilter>;
   description?: InputMaybe<StringFilter>;
   entryFee?: InputMaybe<IntNullableFilter>;
@@ -861,6 +942,8 @@ export type Mutation = {
   authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
   createBet?: Maybe<Bet>;
   createBets?: Maybe<Array<Maybe<Bet>>>;
+  createChat?: Maybe<Chat>;
+  createChats?: Maybe<Array<Maybe<Chat>>>;
   createChoice?: Maybe<Choice>;
   createChoices?: Maybe<Array<Maybe<Choice>>>;
   createCloudImage?: Maybe<CloudImage>;
@@ -882,6 +965,8 @@ export type Mutation = {
   createUsers?: Maybe<Array<Maybe<User>>>;
   deleteBet?: Maybe<Bet>;
   deleteBets?: Maybe<Array<Maybe<Bet>>>;
+  deleteChat?: Maybe<Chat>;
+  deleteChats?: Maybe<Array<Maybe<Chat>>>;
   deleteChoice?: Maybe<Choice>;
   deleteChoices?: Maybe<Array<Maybe<Choice>>>;
   deleteCloudImage?: Maybe<CloudImage>;
@@ -905,6 +990,8 @@ export type Mutation = {
   sendUserPasswordResetLink: Scalars['Boolean']['output'];
   updateBet?: Maybe<Bet>;
   updateBets?: Maybe<Array<Maybe<Bet>>>;
+  updateChat?: Maybe<Chat>;
+  updateChats?: Maybe<Array<Maybe<Chat>>>;
   updateChoice?: Maybe<Choice>;
   updateChoices?: Maybe<Array<Maybe<Choice>>>;
   updateCloudImage?: Maybe<CloudImage>;
@@ -939,6 +1026,16 @@ export type MutationCreateBetArgs = {
 
 export type MutationCreateBetsArgs = {
   data: Array<BetCreateInput>;
+};
+
+
+export type MutationCreateChatArgs = {
+  data: ChatCreateInput;
+};
+
+
+export type MutationCreateChatsArgs = {
+  data: Array<ChatCreateInput>;
 };
 
 
@@ -1044,6 +1141,16 @@ export type MutationDeleteBetArgs = {
 
 export type MutationDeleteBetsArgs = {
   where: Array<BetWhereUniqueInput>;
+};
+
+
+export type MutationDeleteChatArgs = {
+  where: ChatWhereUniqueInput;
+};
+
+
+export type MutationDeleteChatsArgs = {
+  where: Array<ChatWhereUniqueInput>;
 };
 
 
@@ -1157,6 +1264,17 @@ export type MutationUpdateBetArgs = {
 
 export type MutationUpdateBetsArgs = {
   data: Array<BetUpdateArgs>;
+};
+
+
+export type MutationUpdateChatArgs = {
+  data: ChatUpdateInput;
+  where: ChatWhereUniqueInput;
+};
+
+
+export type MutationUpdateChatsArgs = {
+  data: Array<ChatUpdateArgs>;
 };
 
 
@@ -1305,6 +1423,9 @@ export type Query = {
   bet?: Maybe<Bet>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']['output']>;
+  chat?: Maybe<Chat>;
+  chats?: Maybe<Array<Chat>>;
+  chatsCount?: Maybe<Scalars['Int']['output']>;
   choice?: Maybe<Choice>;
   choices?: Maybe<Array<Choice>>;
   choicesCount?: Maybe<Scalars['Int']['output']>;
@@ -1353,6 +1474,25 @@ export type QueryBetsArgs = {
 
 export type QueryBetsCountArgs = {
   where?: BetWhereInput;
+};
+
+
+export type QueryChatArgs = {
+  where: ChatWhereUniqueInput;
+};
+
+
+export type QueryChatsArgs = {
+  cursor?: InputMaybe<ChatWhereUniqueInput>;
+  orderBy?: Array<ChatOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: ChatWhereInput;
+};
+
+
+export type QueryChatsCountArgs = {
+  where?: ChatWhereInput;
 };
 
 
@@ -1760,6 +1900,8 @@ export type User = {
   avatarImage?: Maybe<CloudImage>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']['output']>;
+  chats?: Maybe<Array<Chat>>;
+  chatsCount?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   histories?: Maybe<Array<History>>;
   historiesCount?: Maybe<Scalars['Int']['output']>;
@@ -1787,6 +1929,20 @@ export type UserBetsArgs = {
 
 export type UserBetsCountArgs = {
   where?: BetWhereInput;
+};
+
+
+export type UserChatsArgs = {
+  cursor?: InputMaybe<ChatWhereUniqueInput>;
+  orderBy?: Array<ChatOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: ChatWhereInput;
+};
+
+
+export type UserChatsCountArgs = {
+  where?: ChatWhereInput;
 };
 
 
@@ -1833,6 +1989,7 @@ export type UserAuthenticationWithPasswordSuccess = {
 export type UserCreateInput = {
   avatarImage?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   bets?: InputMaybe<BetRelateToManyForCreateInput>;
+  chats?: InputMaybe<ChatRelateToManyForCreateInput>;
   email?: InputMaybe<Scalars['String']['input']>;
   histories?: InputMaybe<HistoryRelateToManyForCreateInput>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1874,6 +2031,7 @@ export type UserUpdateArgs = {
 export type UserUpdateInput = {
   avatarImage?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   bets?: InputMaybe<BetRelateToManyForUpdateInput>;
+  chats?: InputMaybe<ChatRelateToManyForUpdateInput>;
   email?: InputMaybe<Scalars['String']['input']>;
   histories?: InputMaybe<HistoryRelateToManyForUpdateInput>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1892,6 +2050,7 @@ export type UserWhereInput = {
   OR?: InputMaybe<Array<UserWhereInput>>;
   avatarImage?: InputMaybe<CloudImageWhereInput>;
   bets?: InputMaybe<BetManyRelationFilter>;
+  chats?: InputMaybe<ChatManyRelationFilter>;
   email?: InputMaybe<StringFilter>;
   histories?: InputMaybe<HistoryManyRelationFilter>;
   id?: InputMaybe<IdFilter>;

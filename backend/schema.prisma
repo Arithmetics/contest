@@ -23,6 +23,18 @@ model Bet {
   @@index([choiceId])
 }
 
+model Chat {
+  id        String   @id @default(cuid())
+  content   String   @default("")
+  user      User?    @relation("Chat_user", fields: [userId], references: [id])
+  userId    String?  @map("user")
+  contest   Contest? @relation("Chat_contest", fields: [contestId], references: [id])
+  contestId String?  @map("contest")
+
+  @@index([userId])
+  @@index([contestId])
+}
+
 model Choice {
   id               String              @id @default(cuid())
   selection        ChoiceSelectionType
@@ -66,6 +78,7 @@ model Contest {
   ruleSetId     String?                @unique @map("ruleSet")
   winner        User?                  @relation("Contest_winner", fields: [winnerId], references: [id])
   winnerId      String?                @map("winner")
+  chats         Chat[]                 @relation("Chat_contest")
 
   @@index([imageId])
   @@index([winnerId])
@@ -138,6 +151,7 @@ model User {
   password                String?
   isAdmin                 Boolean        @default(false)
   bets                    Bet[]          @relation("Bet_user")
+  chats                   Chat[]         @relation("Chat_user")
   avatarImage             CloudImage?    @relation("User_avatarImage", fields: [avatarImageId], references: [id])
   avatarImageId           String?        @map("avatarImage")
   registrations           Registration[] @relation("Registration_user")

@@ -65,5 +65,6 @@ export const Contest: Lists.Contest = list({
     registrations: relationship({ ref: 'Registration.contest', many: true }),
     ruleSet: relationship({ ref: 'RuleSet.contest', many: false }),
     winner: relationship({ ref: 'User', many: false }),
+    chats: relationship({ ref: 'Chat.contest', many: true }),
   },
 });

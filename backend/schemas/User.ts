@@ -22,6 +22,7 @@ export const User: Lists.User = list({
       access: { read: () => true, update: isAdmin, create: isAdmin },
     }),
     bets: relationship({ ref: 'Bet.user', many: true }),
+    chats: relationship({ ref: 'Chat.user', many: true }),
     avatarImage: relationship({
       ref: 'CloudImage',
       ui: {

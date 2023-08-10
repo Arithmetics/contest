@@ -7,6 +7,7 @@ import HistoryTab from './HistoryTab';
 import TrackerTab from './tracker/TrackerTab';
 import RulesTab from './RulesTab';
 import AdminTab from './AdminTab';
+import Chat from '../chat/Chat';
 
 type ContestProps = {
   id?: string;
@@ -42,6 +43,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
     <>
       <ContestNav contestId={id} selectedTab={contestNav as ContestTabs} />
       {activeTab()}
+      <Chat contestId={id} />
     </>
   );
 }

@@ -35,7 +35,7 @@ __export(keystone_exports, {
 module.exports = __toCommonJS(keystone_exports);
 var import_session = require("@keystone-6/core/session");
 var import_auth = require("@keystone-6/auth");
-var import_core11 = require("@keystone-6/core");
+var import_core12 = require("@keystone-6/core");
 var import_node_cron = __toESM(require("node-cron"));
 var import_config = require("dotenv/config");
 
@@ -55,7 +55,7 @@ var prodTransport = (0, import_nodemailer.createTransport)(
     apiKey: process.env.SENDGRID_API_KEY || ""
   })
 );
-function makeANiceEmail(text6) {
+function makeANiceEmail(text7) {
   return `
     <div className="email" style="
       border: 1px solid black;
@@ -65,7 +65,7 @@ function makeANiceEmail(text6) {
       font-size: 20px;
     ">
       <h2>Hello,</h2>
-      <p>${text6}</p>
+      <p>${text7}</p>
       <p>\u{1F44D}\u{1F3FB},</p> 
       <p>Brock</p>
     </div>
@@ -170,6 +170,7 @@ var User = (0, import_core.list)({
       access: { read: () => true, update: isAdmin, create: isAdmin }
     }),
     bets: (0, import_fields.relationship)({ ref: "Bet.user", many: true }),
+    chats: (0, import_fields.relationship)({ ref: "Chat.user", many: true }),
     avatarImage: (0, import_fields.relationship)({
       ref: "CloudImage",
       ui: {
@@ -247,7 +248,8 @@ var Contest = (0, import_core2.list)({
     lines: (0, import_fields2.relationship)({ ref: "Line.contest", many: true }),
     registrations: (0, import_fields2.relationship)({ ref: "Registration.contest", many: true }),
     ruleSet: (0, import_fields2.relationship)({ ref: "RuleSet.contest", many: false }),
-    winner: (0, import_fields2.relationship)({ ref: "User", many: false })
+    winner: (0, import_fields2.relationship)({ ref: "User", many: false }),
+    chats: (0, import_fields2.relationship)({ ref: "Chat.contest", many: true })
   }
 });
 
@@ -839,6 +841,63 @@ var History = (0, import_core10.list)({
   }
 });
 
+// schemas/Chat.ts
+var import_fields11 = require("@keystone-6/core/fields");
+var import_core11 = require("@keystone-6/core");
+var Chat = (0, import_core11.list)({
+  access: {
+    operation: {
+      create: isSignedIn,
+      query: () => true,
+      update: isAdmin,
+      delete: isAdmin
+    }
+  },
+  fields: {
+    content: (0, import_fields11.text)({ validation: { isRequired: true } }),
+    user: (0, import_fields11.relationship)({ ref: "User.chats", many: false }),
+    contest: (0, import_fields11.relationship)({ ref: "Contest.chats", many: false })
+  },
+  hooks: {
+    validateInput: async (args) => {
+      const { resolvedData, addValidationError, context } = args;
+      const lists = context.query;
+      const graphql4 = String.raw;
+      console.log({ resolvedData });
+      const session = context.session;
+      if (session.data.isAdmin) {
+        return;
+      }
+      const userId = resolvedData.user?.connect?.id;
+      const contestId = resolvedData.contest?.connect?.id;
+      if (!userId || !contestId) {
+        addValidationError("User and contest must be provided");
+      }
+      const contest = await lists.Contest.findOne({
+        where: { id: contestId },
+        query: graphql4`
+        id
+        registrations {
+            id
+            user {
+                id
+                name
+            }
+        }
+      `
+      });
+      const typedContest = contest;
+      const usersRegistration = typedContest?.registrations?.find((r) => r.user?.id === userId);
+      if (!usersRegistration) {
+        addValidationError("User must be registered for the contest.");
+      }
+      if (userId !== session.data?.id) {
+        addValidationError("Can only create chat for own account");
+      }
+    }
+  }
+});
+
 // keystone.ts
 var sessionSecret = process.env.SESSION_SECRET;
 if (!sessionSecret) {
@@ -868,7 +927,7 @@ if (!frontendUrl) {
   throw new Error(`Where's your FRONTEND_URL dude`);
 }
 var keystone_default = auth.withAuth(
-  (0, import_core11.config)({
+  (0, import_core12.config)({
     server: {
       cors: {
         origin: [frontendUrl],
@@ -897,6 +956,7 @@ var keystone_default = auth.withAuth(
     },
     lists: {
       Bet,
+      Chat,
       Choice,
       CloudImage,
       Contest,

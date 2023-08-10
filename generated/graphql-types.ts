@@ -91,6 +91,68 @@ export type BooleanFilter = {
   not?: InputMaybe<BooleanFilter>;
 };
 
+export type Chat = {
+  __typename?: 'Chat';
+  content?: Maybe<Scalars['String']['output']>;
+  contest?: Maybe<Contest>;
+  id: Scalars['ID']['output'];
+  user?: Maybe<User>;
+};
+
+export type ChatCreateInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  contest?: InputMaybe<ContestRelateToOneForCreateInput>;
+  user?: InputMaybe<UserRelateToOneForCreateInput>;
+};
+
+export type ChatManyRelationFilter = {
+  every?: InputMaybe<ChatWhereInput>;
+  none?: InputMaybe<ChatWhereInput>;
+  some?: InputMaybe<ChatWhereInput>;
+};
+
+export type ChatOrderByInput = {
+  content?: InputMaybe<OrderDirection>;
+  id?: InputMaybe<OrderDirection>;
+};
+
+export type ChatRelateToManyForCreateInput = {
+  connect?: InputMaybe<Array<ChatWhereUniqueInput>>;
+  create?: InputMaybe<Array<ChatCreateInput>>;
+};
+
+export type ChatRelateToManyForUpdateInput = {
+  connect?: InputMaybe<Array<ChatWhereUniqueInput>>;
+  create?: InputMaybe<Array<ChatCreateInput>>;
+  disconnect?: InputMaybe<Array<ChatWhereUniqueInput>>;
+  set?: InputMaybe<Array<ChatWhereUniqueInput>>;
+};
+
+export type ChatUpdateArgs = {
+  data: ChatUpdateInput;
+  where: ChatWhereUniqueInput;
+};
+
+export type ChatUpdateInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  contest?: InputMaybe<ContestRelateToOneForUpdateInput>;
+  user?: InputMaybe<UserRelateToOneForUpdateInput>;
+};
+
+export type ChatWhereInput = {
+  AND?: InputMaybe<Array<ChatWhereInput>>;
+  NOT?: InputMaybe<Array<ChatWhereInput>>;
+  OR?: InputMaybe<Array<ChatWhereInput>>;
+  content?: InputMaybe<StringFilter>;
+  contest?: InputMaybe<ContestWhereInput>;
+  id?: InputMaybe<IdFilter>;
+  user?: InputMaybe<UserWhereInput>;
+};
+
+export type ChatWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+};
+
 export type Choice = {
   __typename?: 'Choice';
   bets?: Maybe<Array<Bet>>;
@@ -321,6 +383,8 @@ export type CloudinaryImage_FilePublicUrlTransformedArgs = {
 
 export type Contest = {
   __typename?: 'Contest';
+  chats?: Maybe<Array<Chat>>;
+  chatsCount?: Maybe<Scalars['Int']['output']>;
   contestType?: Maybe<ContestContestTypeType>;
   description?: Maybe<Scalars['String']['output']>;
   entryFee?: Maybe<Scalars['Int']['output']>;
@@ -334,6 +398,20 @@ export type Contest = {
   ruleSet?: Maybe<RuleSet>;
   status?: Maybe<ContestStatusType>;
   winner?: Maybe<User>;
+};
+
+
+export type ContestChatsArgs = {
+  cursor?: InputMaybe<ChatWhereUniqueInput>;
+  orderBy?: Array<ChatOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: ChatWhereInput;
+};
+
+
+export type ContestChatsCountArgs = {
+  where?: ChatWhereInput;
 };
 
 
@@ -378,6 +456,7 @@ export type ContestContestTypeTypeNullableFilter = {
 };
 
 export type ContestCreateInput = {
+  chats?: InputMaybe<ChatRelateToManyForCreateInput>;
   contestType?: InputMaybe<ContestContestTypeType>;
   description?: InputMaybe<Scalars['String']['input']>;
   entryFee?: InputMaybe<Scalars['Int']['input']>;
@@ -429,6 +508,7 @@ export type ContestUpdateArgs = {
 };
 
 export type ContestUpdateInput = {
+  chats?: InputMaybe<ChatRelateToManyForUpdateInput>;
   contestType?: InputMaybe<ContestContestTypeType>;
   description?: InputMaybe<Scalars['String']['input']>;
   entryFee?: InputMaybe<Scalars['Int']['input']>;
@@ -445,6 +525,7 @@ export type ContestWhereInput = {
   AND?: InputMaybe<Array<ContestWhereInput>>;
   NOT?: InputMaybe<Array<ContestWhereInput>>;
   OR?: InputMaybe<Array<ContestWhereInput>>;
+  chats?: InputMaybe<ChatManyRelationFilter>;
   contestType?: InputMaybe<ContestContestTypeTypeNullableFilter>;
   description?: InputMaybe<StringFilter>;
   entryFee?: InputMaybe<IntNullableFilter>;
@@ -864,6 +945,8 @@ export type Mutation = {
   authenticateUserWithPassword?: Maybe<UserAuthenticationWithPasswordResult>;
   createBet?: Maybe<Bet>;
   createBets?: Maybe<Array<Maybe<Bet>>>;
+  createChat?: Maybe<Chat>;
+  createChats?: Maybe<Array<Maybe<Chat>>>;
   createChoice?: Maybe<Choice>;
   createChoices?: Maybe<Array<Maybe<Choice>>>;
   createCloudImage?: Maybe<CloudImage>;
@@ -885,6 +968,8 @@ export type Mutation = {
   createUsers?: Maybe<Array<Maybe<User>>>;
   deleteBet?: Maybe<Bet>;
   deleteBets?: Maybe<Array<Maybe<Bet>>>;
+  deleteChat?: Maybe<Chat>;
+  deleteChats?: Maybe<Array<Maybe<Chat>>>;
   deleteChoice?: Maybe<Choice>;
   deleteChoices?: Maybe<Array<Maybe<Choice>>>;
   deleteCloudImage?: Maybe<CloudImage>;
@@ -908,6 +993,8 @@ export type Mutation = {
   sendUserPasswordResetLink: Scalars['Boolean']['output'];
   updateBet?: Maybe<Bet>;
   updateBets?: Maybe<Array<Maybe<Bet>>>;
+  updateChat?: Maybe<Chat>;
+  updateChats?: Maybe<Array<Maybe<Chat>>>;
   updateChoice?: Maybe<Choice>;
   updateChoices?: Maybe<Array<Maybe<Choice>>>;
   updateCloudImage?: Maybe<CloudImage>;
@@ -942,6 +1029,16 @@ export type MutationCreateBetArgs = {
 
 export type MutationCreateBetsArgs = {
   data: Array<BetCreateInput>;
+};
+
+
+export type MutationCreateChatArgs = {
+  data: ChatCreateInput;
+};
+
+
+export type MutationCreateChatsArgs = {
+  data: Array<ChatCreateInput>;
 };
 
 
@@ -1047,6 +1144,16 @@ export type MutationDeleteBetArgs = {
 
 export type MutationDeleteBetsArgs = {
   where: Array<BetWhereUniqueInput>;
+};
+
+
+export type MutationDeleteChatArgs = {
+  where: ChatWhereUniqueInput;
+};
+
+
+export type MutationDeleteChatsArgs = {
+  where: Array<ChatWhereUniqueInput>;
 };
 
 
@@ -1160,6 +1267,17 @@ export type MutationUpdateBetArgs = {
 
 export type MutationUpdateBetsArgs = {
   data: Array<BetUpdateArgs>;
+};
+
+
+export type MutationUpdateChatArgs = {
+  data: ChatUpdateInput;
+  where: ChatWhereUniqueInput;
+};
+
+
+export type MutationUpdateChatsArgs = {
+  data: Array<ChatUpdateArgs>;
 };
 
 
@@ -1308,6 +1426,9 @@ export type Query = {
   bet?: Maybe<Bet>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']['output']>;
+  chat?: Maybe<Chat>;
+  chats?: Maybe<Array<Chat>>;
+  chatsCount?: Maybe<Scalars['Int']['output']>;
   choice?: Maybe<Choice>;
   choices?: Maybe<Array<Choice>>;
   choicesCount?: Maybe<Scalars['Int']['output']>;
@@ -1356,6 +1477,25 @@ export type QueryBetsArgs = {
 
 export type QueryBetsCountArgs = {
   where?: BetWhereInput;
+};
+
+
+export type QueryChatArgs = {
+  where: ChatWhereUniqueInput;
+};
+
+
+export type QueryChatsArgs = {
+  cursor?: InputMaybe<ChatWhereUniqueInput>;
+  orderBy?: Array<ChatOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: ChatWhereInput;
+};
+
+
+export type QueryChatsCountArgs = {
+  where?: ChatWhereInput;
 };
 
 
@@ -1763,6 +1903,8 @@ export type User = {
   avatarImage?: Maybe<CloudImage>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']['output']>;
+  chats?: Maybe<Array<Chat>>;
+  chatsCount?: Maybe<Scalars['Int']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   histories?: Maybe<Array<History>>;
   historiesCount?: Maybe<Scalars['Int']['output']>;
@@ -1790,6 +1932,20 @@ export type UserBetsArgs = {
 
 export type UserBetsCountArgs = {
   where?: BetWhereInput;
+};
+
+
+export type UserChatsArgs = {
+  cursor?: InputMaybe<ChatWhereUniqueInput>;
+  orderBy?: Array<ChatOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: ChatWhereInput;
+};
+
+
+export type UserChatsCountArgs = {
+  where?: ChatWhereInput;
 };
 
 
@@ -1836,6 +1992,7 @@ export type UserAuthenticationWithPasswordSuccess = {
 export type UserCreateInput = {
   avatarImage?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   bets?: InputMaybe<BetRelateToManyForCreateInput>;
+  chats?: InputMaybe<ChatRelateToManyForCreateInput>;
   email?: InputMaybe<Scalars['String']['input']>;
   histories?: InputMaybe<HistoryRelateToManyForCreateInput>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1877,6 +2034,7 @@ export type UserUpdateArgs = {
 export type UserUpdateInput = {
   avatarImage?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   bets?: InputMaybe<BetRelateToManyForUpdateInput>;
+  chats?: InputMaybe<ChatRelateToManyForUpdateInput>;
   email?: InputMaybe<Scalars['String']['input']>;
   histories?: InputMaybe<HistoryRelateToManyForUpdateInput>;
   isAdmin?: InputMaybe<Scalars['Boolean']['input']>;
@@ -1895,6 +2053,7 @@ export type UserWhereInput = {
   OR?: InputMaybe<Array<UserWhereInput>>;
   avatarImage?: InputMaybe<CloudImageWhereInput>;
   bets?: InputMaybe<BetManyRelationFilter>;
+  chats?: InputMaybe<ChatManyRelationFilter>;
   email?: InputMaybe<StringFilter>;
   histories?: InputMaybe<HistoryManyRelationFilter>;
   id?: InputMaybe<IdFilter>;
@@ -2080,6 +2239,22 @@ export type UpdateUserAvatarMutationVariables = Exact<{
 
 
 export type UpdateUserAvatarMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, email?: string | null, userName?: string | null, name?: string | null, avatarImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null };
+
+export type GetContestChatQueryVariables = Exact<{
+  contestId: Scalars['ID']['input'];
+}>;
+
+
+export type GetContestChatQuery = { __typename?: 'Query', chats?: Array<{ __typename?: 'Chat', id: string, content?: string | null, user?: { __typename?: 'User', id: string, userName?: string | null, name?: string | null, avatarImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
+
+export type CreateChatMutationVariables = Exact<{
+  content: Scalars['String']['input'];
+  contestId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type CreateChatMutation = { __typename?: 'Mutation', createChat?: { __typename?: 'Chat', id: string, content?: string | null, contest?: { __typename?: 'Contest', id: string, name?: string | null } | null, user?: { __typename?: 'User', id: string, name?: string | null } | null } | null };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -2688,6 +2863,99 @@ export function useUpdateUserAvatarMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpdateUserAvatarMutationHookResult = ReturnType<typeof useUpdateUserAvatarMutation>;
 export type UpdateUserAvatarMutationResult = Apollo.MutationResult<UpdateUserAvatarMutation>;
 export type UpdateUserAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>;
+export const GetContestChatDocument = gql`
+    query GetContestChat($contestId: ID!) {
+  chats(where: {contest: {id: {equals: $contestId}}}) {
+    id
+    content
+    user {
+      id
+      userName
+      name
+      avatarImage {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetContestChatQuery__
+ *
+ * To run a query within a React component, call `useGetContestChatQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContestChatQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContestChatQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useGetContestChatQuery(baseOptions: Apollo.QueryHookOptions<GetContestChatQuery, GetContestChatQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContestChatQuery, GetContestChatQueryVariables>(GetContestChatDocument, options);
+      }
+export function useGetContestChatLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContestChatQuery, GetContestChatQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContestChatQuery, GetContestChatQueryVariables>(GetContestChatDocument, options);
+        }
+export type GetContestChatQueryHookResult = ReturnType<typeof useGetContestChatQuery>;
+export type GetContestChatLazyQueryHookResult = ReturnType<typeof useGetContestChatLazyQuery>;
+export type GetContestChatQueryResult = Apollo.QueryResult<GetContestChatQuery, GetContestChatQueryVariables>;
+export const CreateChatDocument = gql`
+    mutation CreateChat($content: String!, $contestId: ID!, $userId: ID!) {
+  createChat(
+    data: {content: $content, user: {connect: {id: $userId}}, contest: {connect: {id: $contestId}}}
+  ) {
+    id
+    content
+    contest {
+      id
+      name
+    }
+    user {
+      id
+      name
+    }
+  }
+}
+    `;
+export type CreateChatMutationFn = Apollo.MutationFunction<CreateChatMutation, CreateChatMutationVariables>;
+
+/**
+ * __useCreateChatMutation__
+ *
+ * To run a mutation, you first call `useCreateChatMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateChatMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createChatMutation, { data, loading, error }] = useCreateChatMutation({
+ *   variables: {
+ *      content: // value for 'content'
+ *      contestId: // value for 'contestId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useCreateChatMutation(baseOptions?: Apollo.MutationHookOptions<CreateChatMutation, CreateChatMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateChatMutation, CreateChatMutationVariables>(CreateChatDocument, options);
+      }
+export type CreateChatMutationHookResult = ReturnType<typeof useCreateChatMutation>;
+export type CreateChatMutationResult = Apollo.MutationResult<CreateChatMutation>;
+export type CreateChatMutationOptions = Apollo.BaseMutationOptions<CreateChatMutation, CreateChatMutationVariables>;
 export const CurrentUserDocument = gql`
     query CurrentUser {
   authenticatedItem {

@@ -19,6 +19,7 @@ import { Registration } from './schemas/Registration';
 import { RuleSet } from './schemas/RuleSet';
 import { Standing } from './schemas/Standing';
 import { History } from './schemas/History';
+import { Chat } from './schemas/Chat';
 
 // import { Context } from '.keystone/types';
 
@@ -108,6 +109,7 @@ export default auth.withAuth(
     },
     lists: {
       Bet,
+      Chat,
       Choice,
       CloudImage,
       Contest,
