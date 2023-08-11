@@ -15,6 +15,7 @@ import {
   Text,
   VStack,
   Box,
+  useToast,
 } from '@chakra-ui/react';
 import React, { useState, useRef } from 'react';
 import {
@@ -30,6 +31,7 @@ type ChatProps = {
 };
 
 export const Chat = ({ contestId }: ChatProps): JSX.Element => {
+  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const counter = useRef<number>(0);
   const bottomEl = useRef<any>(null);
@@ -54,6 +56,15 @@ export const Chat = ({ contestId }: ChatProps): JSX.Element => {
       const unseenChats = data?.chats?.filter((chat) => !seenChatIds.includes(chat.id));
       setAlertCount(unseenChats?.length || 0);
       setSeenChatIds([...seenChatIds, ...(unseenChats?.map((chat) => chat.id) || [])]);
+    },
+    onError: () => {
+      toast({
+        title: 'Error',
+        description: 'error chatting',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
     },
   });
 
@@ -89,6 +100,15 @@ export const Chat = ({ contestId }: ChatProps): JSX.Element => {
         setContent('');
         setSeenChatIds([...seenChatIds, data.createChat?.id || '']);
         scrollToBottom();
+      },
+      onError: () => {
+        toast({
+          title: 'Error',
+          description: 'error chatting',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
       },
     });
   };

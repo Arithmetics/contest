@@ -854,7 +854,7 @@ var Chat = (0, import_core11.list)({
     }
   },
   fields: {
-    content: (0, import_fields11.text)({ validation: { isRequired: true } }),
+    content: (0, import_fields11.text)({ validation: { isRequired: true, length: { max: 1e3 } } }),
     user: (0, import_fields11.relationship)({ ref: "User.chats", many: false }),
     contest: (0, import_fields11.relationship)({ ref: "Contest.chats", many: false }),
     createdAt: (0, import_fields11.timestamp)({ defaultValue: { kind: "now" } })

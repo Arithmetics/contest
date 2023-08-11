@@ -16,7 +16,7 @@ export const Chat: Lists.Chat = list({
     },
   },
   fields: {
-    content: text({ validation: { isRequired: true } }),
+    content: text({ validation: { isRequired: true, length: { max: 1000 } } }),
     user: relationship({ ref: 'User.chats', many: false }),
     contest: relationship({ ref: 'Contest.chats', many: false }),
     createdAt: timestamp({ defaultValue: { kind: 'now' } }),
