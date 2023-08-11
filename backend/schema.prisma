@@ -24,12 +24,13 @@ model Bet {
 }
 
 model Chat {
-  id        String   @id @default(cuid())
-  content   String   @default("")
-  user      User?    @relation("Chat_user", fields: [userId], references: [id])
-  userId    String?  @map("user")
-  contest   Contest? @relation("Chat_contest", fields: [contestId], references: [id])
-  contestId String?  @map("contest")
+  id        String    @id @default(cuid())
+  content   String    @default("")
+  user      User?     @relation("Chat_user", fields: [userId], references: [id])
+  userId    String?   @map("user")
+  contest   Contest?  @relation("Chat_contest", fields: [contestId], references: [id])
+  contestId String?   @map("contest")
+  createdAt DateTime? @default(now())
 
   @@index([userId])
   @@index([contestId])

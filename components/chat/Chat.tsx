@@ -32,6 +32,13 @@ type ChatProps = {
 export const Chat = ({ contestId }: ChatProps): JSX.Element => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const counter = useRef<number>(0);
+  const bottomEl = useRef<any>(null);
+
+  const scrollToBottom = (): void => {
+    console.log('scroll');
+    bottomEl?.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const [seenChatIds, setSeenChatIds] = useLocalStorage<string[]>(`seenChatIds-${contestId}`, []);
 
   const [alertCount, setAlertCount] = useState(0);
@@ -44,7 +51,6 @@ export const Chat = ({ contestId }: ChatProps): JSX.Element => {
       contestId: contestId || '',
     },
     onCompleted: (data) => {
-      console.log(seenChatIds);
       const unseenChats = data?.chats?.filter((chat) => !seenChatIds.includes(chat.id));
       setAlertCount(unseenChats?.length || 0);
       setSeenChatIds([...seenChatIds, ...(unseenChats?.map((chat) => chat.id) || [])]);
@@ -58,6 +64,9 @@ export const Chat = ({ contestId }: ChatProps): JSX.Element => {
   const handleOpen = (): void => {
     setAlertCount(0);
     onOpen();
+    setTimeout(() => {
+      scrollToBottom();
+    }, 500);
   };
 
   const handleSend = (): void => {
@@ -79,6 +88,7 @@ export const Chat = ({ contestId }: ChatProps): JSX.Element => {
         counter.current += 1;
         setContent('');
         setSeenChatIds([...seenChatIds, data.createChat?.id || '']);
+        scrollToBottom();
       },
     });
   };
@@ -119,7 +129,9 @@ export const Chat = ({ contestId }: ChatProps): JSX.Element => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Chat</ModalHeader>
+          <ModalHeader borderBottom="1px solid" borderColor="teal.500">
+            Chat
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box maxHeight="400px" overflow="scroll">
@@ -141,21 +153,27 @@ export const Chat = ({ contestId }: ChatProps): JSX.Element => {
                         src={user?.avatarImage?.image?.publicUrlTransformed || ''}
                       />
                       <Text fontSize="md">{user?.userName}</Text>
+                      <Text fontSize="sm" color="whiteAlpha.400" textAlign="right" flex={1}>
+                        {new Date(chat.createdAt).toLocaleString()}
+                      </Text>
                     </HStack>
                     <Text>{chat?.content}</Text>
                   </VStack>
                 );
               })}
+              <div ref={bottomEl}></div>
             </Box>
             <HStack marginY={5}>
               <Input
+                colorScheme="teal"
                 placeholder="Chat here"
-                disabled={mutateLoading}
+                isDisabled={mutateLoading}
                 onChange={handleChange}
                 value={content}
                 onKeyPress={(e) => (e.key === 'Enter' ? handleSend() : undefined)}
               />
               <Button
+                isDisabled={mutateLoading || content.length === 0}
                 isLoading={mutateLoading}
                 size="md"
                 rightIcon={<AddIcon />}

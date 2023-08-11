@@ -92,7 +92,10 @@ type Chat {
   content: String
   user: User
   contest: Contest
+  createdAt: DateTime
 }
+
+scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
 
 input ChatWhereUniqueInput {
   id: ID
@@ -106,6 +109,7 @@ input ChatWhereInput {
   content: StringFilter
   user: UserWhereInput
   contest: ContestWhereInput
+  createdAt: DateTimeNullableFilter
 }
 
 input StringFilter {
@@ -142,15 +146,28 @@ input NestedStringFilter {
   not: NestedStringFilter
 }
 
+input DateTimeNullableFilter {
+  equals: DateTime
+  in: [DateTime!]
+  notIn: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  gt: DateTime
+  gte: DateTime
+  not: DateTimeNullableFilter
+}
+
 input ChatOrderByInput {
   id: OrderDirection
   content: OrderDirection
+  createdAt: OrderDirection
 }
 
 input ChatUpdateInput {
   content: String
   user: UserRelateToOneForUpdateInput
   contest: ContestRelateToOneForUpdateInput
+  createdAt: DateTime
 }
 
 input ContestRelateToOneForUpdateInput {
@@ -168,6 +185,7 @@ input ChatCreateInput {
   content: String
   user: UserRelateToOneForCreateInput
   contest: ContestRelateToOneForCreateInput
+  createdAt: DateTime
 }
 
 input ContestRelateToOneForCreateInput {
@@ -656,8 +674,6 @@ type Line {
   labelName: String
 }
 
-scalar DateTime @specifiedBy(url: "https://datatracker.ietf.org/doc/html/rfc3339#section-5.6")
-
 input LineWhereUniqueInput {
   id: ID
 }
@@ -978,17 +994,6 @@ input HistoryManyRelationFilter {
   every: HistoryWhereInput
   some: HistoryWhereInput
   none: HistoryWhereInput
-}
-
-input DateTimeNullableFilter {
-  equals: DateTime
-  in: [DateTime!]
-  notIn: [DateTime!]
-  lt: DateTime
-  lte: DateTime
-  gt: DateTime
-  gte: DateTime
-  not: DateTimeNullableFilter
 }
 
 input UserOrderByInput {

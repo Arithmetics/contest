@@ -408,6 +408,51 @@ export const HISTORIES_BY_TYPE_QUERY = gql`
   }
 `;
 
+export const GET_CONTEST_CHAT_QUERY = gql`
+  query GetContestChat($contestId: ID!) {
+    chats(where: { contest: { id: { equals: $contestId } } }) {
+      id
+      content
+      createdAt
+      user {
+        id
+        userName
+        name
+        avatarImage {
+          image {
+            publicUrlTransformed
+          }
+          altText
+        }
+      }
+    }
+  }
+`;
+
+export const CREATE_CHAT_MUTATION = gql`
+  mutation CreateChat($content: String!, $contestId: ID!, $userId: ID!) {
+    createChat(
+      data: {
+        content: $content
+        user: { connect: { id: $userId } }
+        contest: { connect: { id: $contestId } }
+      }
+    ) {
+      id
+      content
+      createdAt
+      contest {
+        id
+        name
+      }
+      user {
+        id
+        name
+      }
+    }
+  }
+`;
+
 export const USERS_CONTEST_BETS_QUERY = gql`
   query UserContestBetsQuery($userId: ID!, $contestId: ID!) {
     contest(where: { id: $contestId }) {
@@ -435,6 +480,14 @@ export const USERS_CONTEST_BETS_QUERY = gql`
           }
         }
       }
+    }
+  }
+`;
+
+export const XXX_QUERY = gql`
+  query XXX {
+    users {
+      id
     }
   }
 `;

@@ -92,6 +92,7 @@ export type Chat = {
   __typename?: 'Chat';
   content?: Maybe<Scalars['String']['output']>;
   contest?: Maybe<Contest>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['ID']['output'];
   user?: Maybe<User>;
 };
@@ -99,6 +100,7 @@ export type Chat = {
 export type ChatCreateInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   contest?: InputMaybe<ContestRelateToOneForCreateInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   user?: InputMaybe<UserRelateToOneForCreateInput>;
 };
 
@@ -110,6 +112,7 @@ export type ChatManyRelationFilter = {
 
 export type ChatOrderByInput = {
   content?: InputMaybe<OrderDirection>;
+  createdAt?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
 };
 
@@ -133,6 +136,7 @@ export type ChatUpdateArgs = {
 export type ChatUpdateInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   contest?: InputMaybe<ContestRelateToOneForUpdateInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   user?: InputMaybe<UserRelateToOneForUpdateInput>;
 };
 
@@ -142,6 +146,7 @@ export type ChatWhereInput = {
   OR?: InputMaybe<Array<ChatWhereInput>>;
   content?: InputMaybe<StringFilter>;
   contest?: InputMaybe<ContestWhereInput>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
   id?: InputMaybe<IdFilter>;
   user?: InputMaybe<UserWhereInput>;
 };

@@ -1,4 +1,4 @@
-import { relationship, text } from '@keystone-6/core/fields';
+import { relationship, text, timestamp } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
 import { isSignedIn, isAdmin, AugKeystoneSession } from '../keystoneTypeAugments';
 
@@ -19,6 +19,7 @@ export const Chat: Lists.Chat = list({
     content: text({ validation: { isRequired: true } }),
     user: relationship({ ref: 'User.chats', many: false }),
     contest: relationship({ ref: 'Contest.chats', many: false }),
+    createdAt: timestamp({ defaultValue: { kind: 'now' } }),
   },
   hooks: {
     validateInput: async (args) => {

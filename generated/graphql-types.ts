@@ -95,6 +95,7 @@ export type Chat = {
   __typename?: 'Chat';
   content?: Maybe<Scalars['String']['output']>;
   contest?: Maybe<Contest>;
+  createdAt?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['ID']['output'];
   user?: Maybe<User>;
 };
@@ -102,6 +103,7 @@ export type Chat = {
 export type ChatCreateInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   contest?: InputMaybe<ContestRelateToOneForCreateInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   user?: InputMaybe<UserRelateToOneForCreateInput>;
 };
 
@@ -113,6 +115,7 @@ export type ChatManyRelationFilter = {
 
 export type ChatOrderByInput = {
   content?: InputMaybe<OrderDirection>;
+  createdAt?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
 };
 
@@ -136,6 +139,7 @@ export type ChatUpdateArgs = {
 export type ChatUpdateInput = {
   content?: InputMaybe<Scalars['String']['input']>;
   contest?: InputMaybe<ContestRelateToOneForUpdateInput>;
+  createdAt?: InputMaybe<Scalars['DateTime']['input']>;
   user?: InputMaybe<UserRelateToOneForUpdateInput>;
 };
 
@@ -145,6 +149,7 @@ export type ChatWhereInput = {
   OR?: InputMaybe<Array<ChatWhereInput>>;
   content?: InputMaybe<StringFilter>;
   contest?: InputMaybe<ContestWhereInput>;
+  createdAt?: InputMaybe<DateTimeNullableFilter>;
   id?: InputMaybe<IdFilter>;
   user?: InputMaybe<UserWhereInput>;
 };
@@ -2240,22 +2245,6 @@ export type UpdateUserAvatarMutationVariables = Exact<{
 
 export type UpdateUserAvatarMutation = { __typename?: 'Mutation', updateUser?: { __typename?: 'User', id: string, email?: string | null, userName?: string | null, name?: string | null, avatarImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null };
 
-export type GetContestChatQueryVariables = Exact<{
-  contestId: Scalars['ID']['input'];
-}>;
-
-
-export type GetContestChatQuery = { __typename?: 'Query', chats?: Array<{ __typename?: 'Chat', id: string, content?: string | null, user?: { __typename?: 'User', id: string, userName?: string | null, name?: string | null, avatarImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
-
-export type CreateChatMutationVariables = Exact<{
-  content: Scalars['String']['input'];
-  contestId: Scalars['ID']['input'];
-  userId: Scalars['ID']['input'];
-}>;
-
-
-export type CreateChatMutation = { __typename?: 'Mutation', createChat?: { __typename?: 'Chat', id: string, content?: string | null, contest?: { __typename?: 'Contest', id: string, name?: string | null } | null, user?: { __typename?: 'User', id: string, name?: string | null } | null } | null };
-
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2346,6 +2335,22 @@ export type HistoriesByTypeQueryVariables = Exact<{
 
 export type HistoriesByTypeQuery = { __typename?: 'Query', histories?: Array<{ __typename?: 'History', id: string, display?: string | null, year?: number | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
 
+export type GetContestChatQueryVariables = Exact<{
+  contestId: Scalars['ID']['input'];
+}>;
+
+
+export type GetContestChatQuery = { __typename?: 'Query', chats?: Array<{ __typename?: 'Chat', id: string, content?: string | null, createdAt?: any | null, user?: { __typename?: 'User', id: string, userName?: string | null, name?: string | null, avatarImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
+
+export type CreateChatMutationVariables = Exact<{
+  content: Scalars['String']['input'];
+  contestId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type CreateChatMutation = { __typename?: 'Mutation', createChat?: { __typename?: 'Chat', id: string, content?: string | null, createdAt?: any | null, contest?: { __typename?: 'Contest', id: string, name?: string | null } | null, user?: { __typename?: 'User', id: string, name?: string | null } | null } | null };
+
 export type UserContestBetsQueryVariables = Exact<{
   userId: Scalars['ID']['input'];
   contestId: Scalars['ID']['input'];
@@ -2353,6 +2358,11 @@ export type UserContestBetsQueryVariables = Exact<{
 
 
 export type UserContestBetsQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, isWin?: boolean | null, status?: ChoiceStatus | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null }> | null }> | null }> | null } | null };
+
+export type XxxQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type XxxQuery = { __typename?: 'Query', users?: Array<{ __typename?: 'User', id: string }> | null };
 
 
 export const CreateNbaContestDocument = gql`
@@ -2863,99 +2873,6 @@ export function useUpdateUserAvatarMutation(baseOptions?: Apollo.MutationHookOpt
 export type UpdateUserAvatarMutationHookResult = ReturnType<typeof useUpdateUserAvatarMutation>;
 export type UpdateUserAvatarMutationResult = Apollo.MutationResult<UpdateUserAvatarMutation>;
 export type UpdateUserAvatarMutationOptions = Apollo.BaseMutationOptions<UpdateUserAvatarMutation, UpdateUserAvatarMutationVariables>;
-export const GetContestChatDocument = gql`
-    query GetContestChat($contestId: ID!) {
-  chats(where: {contest: {id: {equals: $contestId}}}) {
-    id
-    content
-    user {
-      id
-      userName
-      name
-      avatarImage {
-        image {
-          publicUrlTransformed
-        }
-        altText
-      }
-    }
-  }
-}
-    `;
-
-/**
- * __useGetContestChatQuery__
- *
- * To run a query within a React component, call `useGetContestChatQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetContestChatQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetContestChatQuery({
- *   variables: {
- *      contestId: // value for 'contestId'
- *   },
- * });
- */
-export function useGetContestChatQuery(baseOptions: Apollo.QueryHookOptions<GetContestChatQuery, GetContestChatQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetContestChatQuery, GetContestChatQueryVariables>(GetContestChatDocument, options);
-      }
-export function useGetContestChatLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContestChatQuery, GetContestChatQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetContestChatQuery, GetContestChatQueryVariables>(GetContestChatDocument, options);
-        }
-export type GetContestChatQueryHookResult = ReturnType<typeof useGetContestChatQuery>;
-export type GetContestChatLazyQueryHookResult = ReturnType<typeof useGetContestChatLazyQuery>;
-export type GetContestChatQueryResult = Apollo.QueryResult<GetContestChatQuery, GetContestChatQueryVariables>;
-export const CreateChatDocument = gql`
-    mutation CreateChat($content: String!, $contestId: ID!, $userId: ID!) {
-  createChat(
-    data: {content: $content, user: {connect: {id: $userId}}, contest: {connect: {id: $contestId}}}
-  ) {
-    id
-    content
-    contest {
-      id
-      name
-    }
-    user {
-      id
-      name
-    }
-  }
-}
-    `;
-export type CreateChatMutationFn = Apollo.MutationFunction<CreateChatMutation, CreateChatMutationVariables>;
-
-/**
- * __useCreateChatMutation__
- *
- * To run a mutation, you first call `useCreateChatMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreateChatMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createChatMutation, { data, loading, error }] = useCreateChatMutation({
- *   variables: {
- *      content: // value for 'content'
- *      contestId: // value for 'contestId'
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useCreateChatMutation(baseOptions?: Apollo.MutationHookOptions<CreateChatMutation, CreateChatMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreateChatMutation, CreateChatMutationVariables>(CreateChatDocument, options);
-      }
-export type CreateChatMutationHookResult = ReturnType<typeof useCreateChatMutation>;
-export type CreateChatMutationResult = Apollo.MutationResult<CreateChatMutation>;
-export type CreateChatMutationOptions = Apollo.BaseMutationOptions<CreateChatMutation, CreateChatMutationVariables>;
 export const CurrentUserDocument = gql`
     query CurrentUser {
   authenticatedItem {
@@ -3699,6 +3616,101 @@ export function useHistoriesByTypeQueryLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type HistoriesByTypeQueryHookResult = ReturnType<typeof useHistoriesByTypeQuery>;
 export type HistoriesByTypeQueryLazyQueryHookResult = ReturnType<typeof useHistoriesByTypeQueryLazyQuery>;
 export type HistoriesByTypeQueryQueryResult = Apollo.QueryResult<HistoriesByTypeQuery, HistoriesByTypeQueryVariables>;
+export const GetContestChatDocument = gql`
+    query GetContestChat($contestId: ID!) {
+  chats(where: {contest: {id: {equals: $contestId}}}) {
+    id
+    content
+    createdAt
+    user {
+      id
+      userName
+      name
+      avatarImage {
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetContestChatQuery__
+ *
+ * To run a query within a React component, call `useGetContestChatQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetContestChatQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetContestChatQuery({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *   },
+ * });
+ */
+export function useGetContestChatQuery(baseOptions: Apollo.QueryHookOptions<GetContestChatQuery, GetContestChatQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetContestChatQuery, GetContestChatQueryVariables>(GetContestChatDocument, options);
+      }
+export function useGetContestChatLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetContestChatQuery, GetContestChatQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetContestChatQuery, GetContestChatQueryVariables>(GetContestChatDocument, options);
+        }
+export type GetContestChatQueryHookResult = ReturnType<typeof useGetContestChatQuery>;
+export type GetContestChatLazyQueryHookResult = ReturnType<typeof useGetContestChatLazyQuery>;
+export type GetContestChatQueryResult = Apollo.QueryResult<GetContestChatQuery, GetContestChatQueryVariables>;
+export const CreateChatDocument = gql`
+    mutation CreateChat($content: String!, $contestId: ID!, $userId: ID!) {
+  createChat(
+    data: {content: $content, user: {connect: {id: $userId}}, contest: {connect: {id: $contestId}}}
+  ) {
+    id
+    content
+    createdAt
+    contest {
+      id
+      name
+    }
+    user {
+      id
+      name
+    }
+  }
+}
+    `;
+export type CreateChatMutationFn = Apollo.MutationFunction<CreateChatMutation, CreateChatMutationVariables>;
+
+/**
+ * __useCreateChatMutation__
+ *
+ * To run a mutation, you first call `useCreateChatMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateChatMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createChatMutation, { data, loading, error }] = useCreateChatMutation({
+ *   variables: {
+ *      content: // value for 'content'
+ *      contestId: // value for 'contestId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useCreateChatMutation(baseOptions?: Apollo.MutationHookOptions<CreateChatMutation, CreateChatMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateChatMutation, CreateChatMutationVariables>(CreateChatDocument, options);
+      }
+export type CreateChatMutationHookResult = ReturnType<typeof useCreateChatMutation>;
+export type CreateChatMutationResult = Apollo.MutationResult<CreateChatMutation>;
+export type CreateChatMutationOptions = Apollo.BaseMutationOptions<CreateChatMutation, CreateChatMutationVariables>;
 export const UserContestBetsQueryDocument = gql`
     query UserContestBetsQuery($userId: ID!, $contestId: ID!) {
   contest(where: {id: $contestId}) {
@@ -3758,3 +3770,37 @@ export function useUserContestBetsQueryLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type UserContestBetsQueryHookResult = ReturnType<typeof useUserContestBetsQuery>;
 export type UserContestBetsQueryLazyQueryHookResult = ReturnType<typeof useUserContestBetsQueryLazyQuery>;
 export type UserContestBetsQueryQueryResult = Apollo.QueryResult<UserContestBetsQuery, UserContestBetsQueryVariables>;
+export const XxxDocument = gql`
+    query XXX {
+  users {
+    id
+  }
+}
+    `;
+
+/**
+ * __useXxxQuery__
+ *
+ * To run a query within a React component, call `useXxxQuery` and pass it any options that fit your needs.
+ * When your component renders, `useXxxQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useXxxQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useXxxQuery(baseOptions?: Apollo.QueryHookOptions<XxxQuery, XxxQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<XxxQuery, XxxQueryVariables>(XxxDocument, options);
+      }
+export function useXxxLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<XxxQuery, XxxQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<XxxQuery, XxxQueryVariables>(XxxDocument, options);
+        }
+export type XxxQueryHookResult = ReturnType<typeof useXxxQuery>;
+export type XxxLazyQueryHookResult = ReturnType<typeof useXxxLazyQuery>;
+export type XxxQueryResult = Apollo.QueryResult<XxxQuery, XxxQueryVariables>;
