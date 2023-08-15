@@ -2148,7 +2148,7 @@ export type LeaderboardQueryVariables = Exact<{
 }>;
 
 
-export type LeaderboardQuery = { __typename?: 'Query', registrations?: Array<{ __typename?: 'Registration', id: string, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null, counts?: { __typename?: 'PointCounts', locked?: number | null, likely?: number | null, possible?: number | null } | null }> | null };
+export type LeaderboardQuery = { __typename?: 'Query', registrations?: Array<{ __typename?: 'Registration', id: string, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null, counts?: { __typename?: 'PointCounts', locked?: number | null, likely?: number | null, possible?: number | null } | null }> | null };
 
 export type ContestBetsQueryVariables = Exact<{
   contestId: Scalars['ID']['input'];
@@ -3202,6 +3202,7 @@ export const LeaderboardDocument = gql`
     query Leaderboard($contestId: ID!) {
   registrations(where: {contest: {id: {equals: $contestId}}}) {
     id
+    isPremium
     user {
       id
       userName
