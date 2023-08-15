@@ -287,6 +287,7 @@ export const LEADERBOARD_QUERY = gql`
   query Leaderboard($contestId: ID!) {
     registrations(where: { contest: { id: { equals: $contestId } } }) {
       id
+      isPremium
       user {
         id
         userName
