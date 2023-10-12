@@ -642,7 +642,7 @@ var Bet = (0, import_core6.list)({
     operation: {
       create: isSignedIn,
       query: () => true,
-      update: isAdmin,
+      update: isSignedIn,
       delete: () => true
     },
     filter: {
@@ -658,7 +658,7 @@ var Bet = (0, import_core6.list)({
   },
   hooks: {
     validateInput: async (args) => {
-      const { resolvedData, addValidationError, context } = args;
+      const { resolvedData, addValidationError, context, operation } = args;
       const lists = context.query;
       const graphql4 = String.raw;
       const session = context.session;
@@ -700,13 +700,15 @@ var Bet = (0, import_core6.list)({
           `
       });
       const typedChoice = requestedChoice;
-      typedChoice.line?.choices?.forEach((choice) => {
-        choice.bets?.forEach((bet) => {
-          if (bet.user?.id === userId) {
-            addValidationError("User already has a bet on this line");
-          }
+      if (operation === "create") {
+        typedChoice.line?.choices?.forEach((choice) => {
+          choice.bets?.forEach((bet) => {
+            if (bet.user?.id === userId) {
+              addValidationError("User already has a bet on this line");
+            }
+          });
         });
-      });
+      }
       const usersRegistration = typedChoice?.line?.contest?.registrations?.some(
         (r) => r?.user?.id === session.data?.id
       );
@@ -736,13 +738,19 @@ var Bet = (0, import_core6.list)({
       });
       const normalBetLimit = contest?.ruleSet?.maxBets || 0;
       const usersCurrentBets = usersBets.length || 0;
-      if (usersCurrentBets === normalBetLimit || usersCurrentBets > normalBetLimit) {
+      if (operation === "create" && (usersCurrentBets === normalBetLimit || usersCurrentBets > normalBetLimit)) {
         addValidationError("User is out of bets.");
       }
       const normalSuperBetLimt = contest?.ruleSet?.maxSuperBets || 0;
       const usersCurrentSuperBets = usersBets.filter((b) => b.isSuper).length || 0;
-      if (resolvedData.isSuper && (usersCurrentSuperBets === normalSuperBetLimt || usersCurrentSuperBets > normalSuperBetLimt)) {
+      if (operation === "create" && resolvedData.isSuper && (usersCurrentSuperBets === normalSuperBetLimt || usersCurrentSuperBets > normalSuperBetLimt)) {
         addValidationError("User is out of super bets.");
+      }
+      if (operation === "update") {
+        const betBeingUpdated = usersBets.find((b) => b.id === resolvedData.id);
+        if (betBeingUpdated?.isSuper !== resolvedData.isSuper) {
+          addValidationError("Cannot change bet type in update.");
+        }
       }
     }
   }

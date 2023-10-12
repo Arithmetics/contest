@@ -36,7 +36,7 @@ export default function StatusCard({
       rounded={'md'}
       p={3}
       border="1px solid"
-      borderColor={floatMode ? 'cyan.500' : ''}
+      borderColor={floatMode ? 'teal.500' : ''}
       minHeight={minHeight}
     >
       <HStack>

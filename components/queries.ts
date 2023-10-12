@@ -198,6 +198,17 @@ export const MAKE_BET_MUTATION = gql`
   }
 `;
 
+export const UPDATE_BET_MUTATION = gql`
+  mutation UpdateBet($betId: ID!, $choiceId: ID!, $userId: ID!) {
+    updateBet(
+      where: { id: $betId }
+      data: { user: { connect: { id: $userId } }, choice: { connect: { id: $choiceId } } }
+    ) {
+      id
+    }
+  }
+`;
+
 export const DELETE_BET_MUTATION = gql`
   mutation DeleteBet($betId: ID!) {
     deleteBet(where: { id: $betId }) {
@@ -315,6 +326,10 @@ export const CONTEST_BETS_QUERY = gql`
       isSuper
       choice {
         id
+        selection
+        line {
+          id
+        }
       }
       user {
         id

@@ -219,7 +219,7 @@ export function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps)
                           {bet.isSuper && (
                             <Tooltip label="Super Bet">
                               <AvatarBadge
-                                borderColor={'cyan.200'}
+                                borderColor={'teal.200'}
                                 bg={'blue.400'}
                                 boxSize="1.25em"
                               />
