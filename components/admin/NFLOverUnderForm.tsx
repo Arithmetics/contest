@@ -135,7 +135,7 @@ export default function NFLOverUnderForm(): JSX.Element {
     return (valueString: string) => {
       setBenchmarks({
         ...benchmarks,
-        [name]: parseInt(valueString),
+        [name]: parseFloat(valueString),
       });
     };
   };
