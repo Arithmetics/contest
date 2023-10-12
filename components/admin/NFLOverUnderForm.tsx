@@ -189,6 +189,8 @@ export default function NFLOverUnderForm(): JSX.Element {
                   value={benchmarks[team]}
                   min={0}
                   max={32}
+                  precision={2}
+                  step={0.5}
                   onChange={onBenchMarkChange(team)}
                 >
                   <NumberInputField disabled={loading} />

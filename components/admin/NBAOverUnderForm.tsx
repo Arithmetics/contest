@@ -186,6 +186,8 @@ export default function NBAOverUnderForm(): JSX.Element {
                   min={0}
                   max={82}
                   onChange={onBenchMarkChange(team)}
+                  precision={2}
+                  step={0.5}
                 >
                   <NumberInputField disabled={loading} />
                   <NumberInputStepper>
