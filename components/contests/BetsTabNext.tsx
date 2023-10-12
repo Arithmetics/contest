@@ -32,6 +32,7 @@ import PayToast from './PayToast';
 import { AddBetButton } from './overUnder/AddBetButton';
 import { LinesPicker } from './overUnder/LinesPicker';
 import { BetCard } from './overUnder/BetCard';
+import { formatLineDate } from './lineCard/LineCardHeader';
 
 function soryById(a: Bet, b: Bet): number {
   if (a.id && b.id) {
@@ -60,8 +61,6 @@ export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [pickingSuper, setPickingSuper] = useState(false);
   const [updatingBet, setUpdatingBet] = useState<Bet | undefined>(undefined);
-  // const [superBetPositions, setSuperBetPositions] = useState<string[]>(['', '', '', '', '']);
-  // const [regularBetPositions, setRegularBetPositions] = useState<string[]>(['', '', '', '', '']);
 
   const { data: contestData, loading: getContestLoading } = useContestByIdQuery({
     variables: {
@@ -136,7 +135,7 @@ export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
       <VStack>
         <Flex flexDirection="column" gap="12px">
           <HStack>
-            <Box alignSelf={'start'} padding="12px" borderRadius="5px" width={'100%'}>
+            <Box alignSelf={'start'} paddingY="12px" borderRadius="5px" width={'100%'}>
               <Text fontSize="2xl" marginBottom={'4px'}>
                 {userHasEntered ? 'Your Entry:' : 'Register to enter picks:'}
               </Text>
@@ -160,6 +159,9 @@ export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
                   />
                 </Box>
               </Flex>
+              <Text marginTop={2} color={'gray.500'}>
+                Lines close: {formatLineDate(lines[0])}
+              </Text>
             </Box>
           </HStack>
           <HStack flex={1} wrap={'wrap'} gap="12px" alignItems={'center'} justifyContent={'center'}>

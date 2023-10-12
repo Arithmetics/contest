@@ -7,7 +7,7 @@ import HistoryTab from './HistoryTab';
 import TrackerTab from './tracker/TrackerTab';
 import RulesTab from './RulesTab';
 import AdminTab from './AdminTab';
-import BetsTabNext from './BetsTabNext';
+import BetsTabSwapper from './BetsTabSwapper';
 
 type ContestProps = {
   id?: string;
@@ -20,7 +20,7 @@ export default function ContestUI({ id }: ContestProps): JSX.Element {
 
   const activeTab = (): JSX.Element | undefined => {
     if (!typedContestNav || typedContestNav === ContestTabs.BETS) {
-      return <BetsTabNext contestId={id} />;
+      return <BetsTabSwapper contestId={id} />;
     }
     if (typedContestNav === ContestTabs.LEADERBOARD) {
       return <LeaderboardTab contestId={id} />;
