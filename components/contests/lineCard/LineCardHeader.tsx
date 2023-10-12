@@ -23,7 +23,7 @@ export function formatATS(home: boolean, benchmark?: number | null): string {
   return `(+${xBenchmark})`;
 }
 
-function formatLineDate(line: Line): string {
+export function formatLineDate(line: Line): string {
   if (!line.closingTime) {
     return 'No closing time set';
   }

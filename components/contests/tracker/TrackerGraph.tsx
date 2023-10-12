@@ -42,7 +42,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
         theme.colors.green['400'],
         theme.colors.yellow['400'],
         theme.colors.blue['200'],
-        theme.colors.cyan['400'],
+        theme.colors.teal['400'],
       ]}
       margin={{ top: 50, right: marginRight, bottom: marginBottom, left: 60 }}
       xScale={{ type: 'linear', min: 1, max: maxX }}

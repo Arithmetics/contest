@@ -2122,6 +2122,15 @@ export type MakeBetMutationVariables = Exact<{
 
 export type MakeBetMutation = { __typename?: 'Mutation', createBet?: { __typename?: 'Bet', id: string, isSuper?: boolean | null, user?: { __typename?: 'User', id: string } | null, choice?: { __typename?: 'Choice', id: string } | null } | null };
 
+export type UpdateBetMutationVariables = Exact<{
+  betId: Scalars['ID']['input'];
+  choiceId: Scalars['ID']['input'];
+  userId: Scalars['ID']['input'];
+}>;
+
+
+export type UpdateBetMutation = { __typename?: 'Mutation', updateBet?: { __typename?: 'Bet', id: string } | null };
+
 export type DeleteBetMutationVariables = Exact<{
   betId: Scalars['ID']['input'];
 }>;
@@ -2155,7 +2164,7 @@ export type ContestBetsQueryVariables = Exact<{
 }>;
 
 
-export type ContestBetsQuery = { __typename?: 'Query', bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, choice?: { __typename?: 'Choice', id: string } | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
+export type ContestBetsQuery = { __typename?: 'Query', bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, choice?: { __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, line?: { __typename?: 'Line', id: string } | null } | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
 
 export type AtsLeaderboardQueryVariables = Exact<{
   contestId: Scalars['ID']['input'];
@@ -3034,6 +3043,44 @@ export function useMakeBetMutation(baseOptions?: Apollo.MutationHookOptions<Make
 export type MakeBetMutationHookResult = ReturnType<typeof useMakeBetMutation>;
 export type MakeBetMutationResult = Apollo.MutationResult<MakeBetMutation>;
 export type MakeBetMutationOptions = Apollo.BaseMutationOptions<MakeBetMutation, MakeBetMutationVariables>;
+export const UpdateBetDocument = gql`
+    mutation UpdateBet($betId: ID!, $choiceId: ID!, $userId: ID!) {
+  updateBet(
+    where: {id: $betId}
+    data: {user: {connect: {id: $userId}}, choice: {connect: {id: $choiceId}}}
+  ) {
+    id
+  }
+}
+    `;
+export type UpdateBetMutationFn = Apollo.MutationFunction<UpdateBetMutation, UpdateBetMutationVariables>;
+
+/**
+ * __useUpdateBetMutation__
+ *
+ * To run a mutation, you first call `useUpdateBetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateBetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateBetMutation, { data, loading, error }] = useUpdateBetMutation({
+ *   variables: {
+ *      betId: // value for 'betId'
+ *      choiceId: // value for 'choiceId'
+ *      userId: // value for 'userId'
+ *   },
+ * });
+ */
+export function useUpdateBetMutation(baseOptions?: Apollo.MutationHookOptions<UpdateBetMutation, UpdateBetMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateBetMutation, UpdateBetMutationVariables>(UpdateBetDocument, options);
+      }
+export type UpdateBetMutationHookResult = ReturnType<typeof useUpdateBetMutation>;
+export type UpdateBetMutationResult = Apollo.MutationResult<UpdateBetMutation>;
+export type UpdateBetMutationOptions = Apollo.BaseMutationOptions<UpdateBetMutation, UpdateBetMutationVariables>;
 export const DeleteBetDocument = gql`
     mutation DeleteBet($betId: ID!) {
   deleteBet(where: {id: $betId}) {
@@ -3257,6 +3304,10 @@ export const ContestBetsDocument = gql`
     isSuper
     choice {
       id
+      selection
+      line {
+        id
+      }
     }
     user {
       id

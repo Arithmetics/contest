@@ -175,9 +175,11 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
           </Center>
 
           <Center>
-            <Text fontSize="lg" textAlign="center">
-              {contest.status === ContestStatusType.Complete ? 'Winner' : contest?.description}
-            </Text>
+            {contest.status === ContestStatusType.Complete && (
+              <Text fontSize="lg" textAlign="center">
+                Winner
+              </Text>
+            )}
           </Center>
           {contest.status === ContestStatusType.Complete && contest.winner ? (
             <Center>
