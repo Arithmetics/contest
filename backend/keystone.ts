@@ -87,13 +87,13 @@ export default auth.withAuth(
             'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
           );
 
-          // console.log('running NBA standing job!');
-          // startDailyStandingsJob(
-          //   context,
-          //   'clnmljg2f0052mc0i7inm1wby',
-          //   82,
-          //   'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings'
-          // );
+          console.log('running NBA standing job!');
+          startDailyStandingsJob(
+            context,
+            'clnmljg2f0052mc0i7inm1wby',
+            82,
+            'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings'
+          );
           // console.log('NO CRON JOBS SCHEDULED');
         });
 
