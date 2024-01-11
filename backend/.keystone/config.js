@@ -1048,12 +1048,12 @@ var keystone_default = auth.withAuth(
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
           });
-          console.log("running NFL standing job!");
+          console.log("running NBA standing job!");
           startDailyStandingsJob(
             context,
-            "cll1n0veg005emc0i3yckbc2x",
-            17,
-            "https://site.api.espn.com/apis/v2/sports/football/nfl/standings"
+            "clnmljg2f0052mc0i7inm1wby",
+            82,
+            "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
           );
         });
         if (process.argv.includes("--seed-data")) {
