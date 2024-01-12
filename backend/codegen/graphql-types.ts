@@ -1297,6 +1297,7 @@ export type PointCounts = {
   likely?: Maybe<Scalars['Int']['output']>;
   locked?: Maybe<Scalars['Int']['output']>;
   possible?: Maybe<Scalars['Int']['output']>;
+  tiebreaker?: Maybe<Scalars['Int']['output']>;
 };
 
 export type Query = {

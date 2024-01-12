@@ -314,6 +314,7 @@ export const LEADERBOARD_QUERY = gql`
         locked
         likely
         possible
+        tiebreaker
       }
     }
   }

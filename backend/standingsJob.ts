@@ -103,6 +103,7 @@ export async function startDailyStandingsJob(
         locked
         likely
         possible
+        tiebreaker
       }
     `,
   });

@@ -713,6 +713,7 @@ type PointCounts {
   locked: Int
   likely: Int
   possible: Int
+  tiebreaker: Float
 }
 
 input RegistrationWhereUniqueInput {

@@ -24,6 +24,7 @@ export function sortLeaderboard(registrations: Registration[]): Registration[] {
     firstBy<Registration>((a, b) => (b.counts?.likely || 0) - (a.counts?.likely || 0))
       .thenBy<Registration>((a, b) => (b.counts?.locked || 0) - (a.counts?.locked || 0))
       .thenBy<Registration>((a, b) => (b.counts?.possible || 0) - (a.counts?.possible || 0))
+      .thenBy<Registration>((a, b) => (b.counts?.tiebreaker || 0) - (a.counts?.tiebreaker || 0))
   );
 }
 
@@ -73,6 +74,9 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
               </Th>
               <Th paddingX={tablePaddingX} fontSize={fontSizeX} isNumeric>
                 Possible Points
+              </Th>
+              <Th paddingX={tablePaddingX} fontSize={fontSizeX} isNumeric>
+                Tiebreaker Points
               </Th>
             </Tr>
           </Thead>
@@ -126,6 +130,9 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
                   </Td>
                   <Td paddingX={tablePaddingX} isNumeric>
                     {reg.counts?.possible}
+                  </Td>
+                  <Td paddingX={tablePaddingX} isNumeric>
+                    {reg.counts?.tiebreaker}
                   </Td>
                 </Tr>
               );
