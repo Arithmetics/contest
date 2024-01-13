@@ -250,30 +250,6 @@ export default function LineCard({
               );
             })}
           </HStack>
-          {userId && !formDisabled && (
-            <Center>
-              <Checkbox
-                onChange={() => setSuperBetSelected(!superBetSelected)}
-                isChecked={superBetSelected}
-                marginTop={4}
-                isDisabled={formDisabled || !superPickAvailable}
-                colorScheme="teal"
-                size="lg"
-              >
-                <HStack>
-                  <Text>Super Bet</Text> <BsLightning />
-                </HStack>
-              </Checkbox>
-            </Center>
-          )}
-          {userId && superBetSelected && formDisabled && (
-            <HStack justifyContent="center">
-              <Tag size="md" colorScheme="purple" marginTop={4} width="110px">
-                <TagLabel>Super Bet</TagLabel>
-                <TagRightIcon as={BsLightning} />
-              </Tag>
-            </HStack>
-          )}
         </>
       );
     }
@@ -325,7 +301,11 @@ export default function LineCard({
         position={'relative'}
         padding={3}
       >
-        <LineCardHeader line={line} contestType={contestType} />
+        <LineCardHeader
+          line={line}
+          contestType={contestType}
+          isSuperSelected={superBetSelected && !lineClosed}
+        />
         {/* middle form */}
         {(userId || !lineClosed) && (
           <Stack spacing={0} align={'left'} paddingTop={3}>
@@ -340,7 +320,7 @@ export default function LineCard({
                       <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
                       <Text fontSize="xl">{selectedChoice?.selection}</Text>
                       {superBetSelected && (
-                        <Tag size="md" colorScheme="purple">
+                        <Tag size="md" colorScheme="purple" border="1px solid red">
                           <TagLabel>Super Bet</TagLabel>
                           <TagRightIcon as={BsLightning} />
                         </Tag>
@@ -387,21 +367,37 @@ export default function LineCard({
               >
                 <LineCardFooterTicketCutouts useBorder={!!usersBet} />
                 {!selectedChoice ? (
-                  <Button
-                    onClick={onClickMakeBet}
-                    isDisabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
-                    isLoading={makeBetLoading}
-                    flexGrow={1}
-                    variant="outline"
-                    bg="teal.500"
-                    color={'white'}
-                    rounded={'md'}
-                    _hover={{
-                      boxShadow: 'lg',
-                    }}
-                  >
-                    Make Bet
-                  </Button>
+                  <HStack justifyContent={'center'}>
+                    <Button
+                      onClick={onClickMakeBet}
+                      isDisabled={!pickAvailable || makeBetLoading || formSelectedChoiceId === '0'}
+                      isLoading={makeBetLoading}
+                      flexGrow={1}
+                      variant="outline"
+                      bg="teal.500"
+                      color={'white'}
+                      rounded={'md'}
+                      _hover={{
+                        boxShadow: 'lg',
+                      }}
+                    >
+                      Make Bet
+                    </Button>
+                    <Center>
+                      <Checkbox
+                        onChange={() => setSuperBetSelected(!superBetSelected)}
+                        isChecked={superBetSelected}
+                        marginTop={4}
+                        isDisabled={formDisabled || !superPickAvailable}
+                        colorScheme="teal"
+                        size="lg"
+                      >
+                        <HStack>
+                          <Text>Super Bet</Text> <BsLightning />
+                        </HStack>
+                      </Checkbox>
+                    </Center>
+                  </HStack>
                 ) : (
                   <Button
                     onClick={onClickDeleteBet}
@@ -410,11 +406,12 @@ export default function LineCard({
                     variant="outline"
                     colorScheme="red"
                     rounded={'md'}
+                    size={'sm'}
                     _hover={{
                       boxShadow: 'lg',
                     }}
                   >
-                    Remove Bet
+                    Repick Bet
                   </Button>
                 )}
               </HStack>

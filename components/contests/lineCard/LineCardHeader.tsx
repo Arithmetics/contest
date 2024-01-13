@@ -7,8 +7,12 @@ import {
   StatHelpText,
   Text,
   useBreakpointValue,
+  Tag,
+  TagLabel,
+  TagRightIcon,
 } from '@chakra-ui/react';
 import { Line, ContestContestTypeType } from '../../../generated/graphql-types';
+import { BsLightning } from 'react-icons/bs';
 
 export function formatATS(home: boolean, benchmark?: number | null): string {
   if (!benchmark) {
@@ -39,10 +43,15 @@ export function formatLineDate(line: Line): string {
 
 type LineCardHeaderProps = {
   line: Line;
+  isSuperSelected?: boolean;
   contestType?: ContestContestTypeType | null;
 };
 
-export default function LineCardHeader({ line, contestType }: LineCardHeaderProps): JSX.Element {
+export default function LineCardHeader({
+  line,
+  isSuperSelected,
+  contestType,
+}: LineCardHeaderProps): JSX.Element {
   const lineFontSize = useBreakpointValue({ base: 'md', md: 'xl' });
 
   if (contestType === ContestContestTypeType.NflAts) {
@@ -78,6 +87,12 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
           </StatNumber>
           <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
         </Stat>
+        {isSuperSelected && (
+          <Tag size="md" colorScheme="purple" alignSelf="flex-start">
+            <TagLabel>Super Bet</TagLabel>
+            <TagRightIcon as={BsLightning} />
+          </Tag>
+        )}
       </HStack>
     );
   }
