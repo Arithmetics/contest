@@ -23,10 +23,14 @@ export default function AdminTab({ contestId }: AdminTabProps): JSX.Element {
   }
 
   let emails = '';
+  let premiumEmails = '';
   const reg = contestData?.contest?.registrations;
   reg?.forEach((r) => {
     if (r.user?.email) {
       emails = `${emails} ${r.user?.email},`;
+      if (r.isPremium) {
+        premiumEmails = `${premiumEmails} ${r.user?.email},`;
+      }
     }
   });
 
@@ -44,6 +48,12 @@ export default function AdminTab({ contestId }: AdminTabProps): JSX.Element {
         </Heading>
         <Center>
           <Code>{emails}</Code>
+        </Center>
+        <Heading as="h4" size="md">
+          Premium Emails
+        </Heading>
+        <Center>
+          <Code>{premiumEmails}</Code>
         </Center>
         {contestData?.contest?.contestType === ContestContestTypeType.NflAts ? (
           <CSVsATS contestId={contestData?.contest?.id} />
