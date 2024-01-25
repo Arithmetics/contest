@@ -99,7 +99,7 @@ const atsRules = (
       icon={<Icon as={FaDiceFive} color={'teal.500'} w={5} h={5} />}
       iconBg={'gray.700'}
       text={
-        'Tie breaker two is picking Superbowl final scores. Differential of each score will be used (Prediction: SEA 27 - PIT 12, Result: PIT 20 - SEA 19, Final: (20-8 + 27-19 = 16)'
+        'Tie breaker two is a custom Superbowl Prop Sheet I will send out to all eligble. Most props hit wins.'
       }
     />
     <Rule
