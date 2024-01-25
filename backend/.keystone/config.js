@@ -71,6 +71,22 @@ function makeANiceEmail(text6) {
     </div>
   `;
 }
+function makeAtsAuditEmail(text6) {
+  return `
+    <div className="email" style="
+      border: 1px solid black;
+      padding: 20px;
+      font-family: sans-serif;
+      line-height: 2;
+      font-size: 14px;
+    ">
+      <p>For your reference:</p>
+      ${text6}
+      <p>\u{1F44D}\u{1F3FB},</p> 
+      <p>Brock</p>
+    </div>
+  `;
+}
 async function sendPasswordResetEmail(resetToken, to) {
   console.log("sendPasswordResetEmail got here");
   const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
@@ -96,6 +112,20 @@ async function sendStandingsUpdate(updates, to) {
     from: "no-reply@btbets.dev",
     subject: "New Over Under Locked Up",
     html: makeANiceEmail(htmlList)
+  });
+  if (!process.env.SENDGRID_API_KEY) {
+    console.log(`\u{1F48C} Message Sent!  Preview it at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
+  }
+}
+async function mailOutLineAudit(bets, users) {
+  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
+  const htmlList = `<ul>${bets.map((bet) => `<li>${bet}</li>`).join("")}</ul>`;
+  const info = await usedTransport.sendMail({
+    to: "brock.m.tillotson@gmail.com",
+    from: "no-reply@btbets.dev",
+    subject: "NFL ATS Line Locked",
+    bcc: users,
+    html: makeAtsAuditEmail(htmlList)
   });
   if (!process.env.SENDGRID_API_KEY) {
     console.log(`\u{1F48C} Message Sent!  Preview it at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
@@ -243,6 +273,91 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
   if (Object.keys(alertStandings).length > 0) {
     sendStandingsUpdate(alertStandings, "brock.m.tillotson@gmail.com");
   }
+}
+
+// atsAuditJob.ts
+function createEmailData(line) {
+  const data = ["game, email, selection, isSuper"];
+  line.choices?.forEach((choice) => {
+    choice?.bets?.forEach((bet) => {
+      const betData = [
+        line?.title || "",
+        bet?.user?.email || "",
+        choice?.selection || "",
+        bet.isSuper ? "Yes" : "No"
+      ];
+      data.push(betData.join(", "));
+    });
+  });
+  return data;
+}
+async function emailAtsAuditTables(keyStoneContext, contestId) {
+  const graphql4 = String.raw;
+  const contest = await keyStoneContext.query.Contest.findOne({
+    where: { id: contestId },
+    query: graphql4`
+      id
+      registrations {
+        user {
+          id
+          email
+        }
+      }
+    `
+  });
+  const emails = contest?.registrations?.map((registration) => registration?.user?.email)?.filter((email) => email !== null) ?? [];
+  const linesWithStandings = await keyStoneContext.query.Line.findMany({
+    where: { contest: { id: { equals: contestId } } },
+    query: graphql4`
+        id
+        title
+        benchmark
+        closingTime
+        image {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
+        choices {
+          id
+          selection
+          isWin
+          image {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
+          secondaryImage {
+            image {
+              publicUrlTransformed
+            }
+            altText
+          }
+          bets {
+            id
+            isSuper
+            user {
+              id
+              email
+            }
+          }
+      }
+    `
+  });
+  const linesThatStartedInLast15Minutes = linesWithStandings?.filter((line) => {
+    const now = /* @__PURE__ */ new Date();
+    const fifteenMinutesAgo = new Date(now.getTime() - 15 * 6e4);
+    return new Date(line.closingTime) > fifteenMinutesAgo;
+  });
+  const linesWithStandingsAndBets = linesThatStartedInLast15Minutes?.map((line) => {
+    return createEmailData(line);
+  }) ?? [];
+  linesWithStandingsAndBets.forEach((betsToPrint) => {
+    mailOutLineAudit(betsToPrint, emails ?? []);
+  });
 }
 
 // schemas/User.ts
@@ -1055,6 +1170,10 @@ var keystone_default = auth.withAuth(
             82,
             "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
           );
+        });
+        import_node_cron.default.schedule("*/15 * * * *", () => {
+          console.log("RUNNING ATS");
+          emailAtsAuditTables(context, "clr5al1bp00t0mc0ilwlmm42e");
         });
         if (process.argv.includes("--seed-data")) {
           console.log("NO SEED DATA");

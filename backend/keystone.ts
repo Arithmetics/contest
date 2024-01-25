@@ -8,6 +8,7 @@ import { sendPasswordResetEmail } from './lib/mail';
 import { cache } from './cache';
 // import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
+import { emailAtsAuditTables } from './atsAuditJob';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -95,6 +96,12 @@ export default auth.withAuth(
             'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings'
           );
           // console.log('NO CRON JOBS SCHEDULED');
+        });
+
+        // while playoff ats is live
+        cron.schedule('*/15 * * * *', () => {
+          console.log('RUNNING ATS');
+          emailAtsAuditTables(context, 'clr5al1bp00t0mc0ilwlmm42e');
         });
 
         if (process.argv.includes('--seed-data')) {

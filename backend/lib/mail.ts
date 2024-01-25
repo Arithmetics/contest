@@ -33,6 +33,23 @@ function makeANiceEmail(text: string): string {
   `;
 }
 
+function makeAtsAuditEmail(text: string): string {
+  return `
+    <div className="email" style="
+      border: 1px solid black;
+      padding: 20px;
+      font-family: sans-serif;
+      line-height: 2;
+      font-size: 14px;
+    ">
+      <p>For your reference:</p>
+      ${text}
+      <p>👍🏻,</p> 
+      <p>Brock</p>
+    </div>
+  `;
+}
+
 export interface MailResponse {
   accepted?: string[] | null;
   rejected?: null[] | null;
@@ -86,6 +103,26 @@ export async function sendStandingsUpdate(
     from: 'no-reply@btbets.dev',
     subject: 'New Over Under Locked Up',
     html: makeANiceEmail(htmlList),
+  })) as MailResponse;
+
+  if (!process.env.SENDGRID_API_KEY) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
+  }
+}
+
+export async function mailOutLineAudit(bets: string[], users: string[]): Promise<void> {
+  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
+
+  const htmlList = `<ul>${bets.map((bet) => `<li>${bet}</li>`).join('')}</ul>`;
+
+  const info = (await usedTransport.sendMail({
+    to: 'brock.m.tillotson@gmail.com',
+    from: 'no-reply@btbets.dev',
+    subject: 'NFL ATS Line Locked',
+    bcc: users,
+    html: makeAtsAuditEmail(htmlList),
   })) as MailResponse;
 
   if (!process.env.SENDGRID_API_KEY) {
