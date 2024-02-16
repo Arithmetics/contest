@@ -38,12 +38,14 @@ export const Registration: Lists.Registration = list({
           locked: number;
           likely: number;
           possible: number;
+          tiebreaker: number;
         }>()({
           name: 'PointCounts',
           fields: {
             locked: graphql.field({ type: graphql.Int }),
             likely: graphql.field({ type: graphql.Int }),
             possible: graphql.field({ type: graphql.Int }),
+            tiebreaker: graphql.field({ type: graphql.Float }),
           },
         }),
         async resolve(item, _args, _context) {
@@ -63,6 +65,13 @@ export const Registration: Lists.Registration = list({
             query: graphql`
               id
               title
+              benchmark
+              standings(orderBy: { gamesPlayed: desc }, take: 1) {
+                id
+                wins
+                gamesPlayed
+                totalGames
+              }
               choices {
                 selection
                 status
@@ -80,24 +89,50 @@ export const Registration: Lists.Registration = list({
           let locked = 0;
           let likely = 0;
           let possible = 0;
+          let tiebreaker = 0;
 
           contestLines?.forEach((line) => {
             line.choices?.forEach((choice) => {
+              let lineDiff = 0;
               // only add points if user has a bet on the choice
               const usersBet = choice.bets?.find((bet) => bet?.user?.id === item.userId);
               if (usersBet) {
                 const points = usersBet.isSuper ? 2 : 1;
+                const standing = line.standings?.[0];
+                if (standing) {
+                  const totalGames = line.standings?.[0].totalGames || 0;
+                  const gamesPlayed = line.standings?.[0].gamesPlayed || 0;
+                  const wins = line.standings?.[0].wins || 0;
+
+                  const winPercentage = wins / (gamesPlayed || 1);
+                  const projectedWins = Math.round(winPercentage * totalGames);
+
+                  const benchmark = line.benchmark || 0;
+
+                  lineDiff = Math.abs(projectedWins - benchmark);
+                }
+
                 if (choice.status === ChoiceStatus.Won) {
                   locked += points;
                   likely += points;
                   possible += points;
+                  tiebreaker += lineDiff;
                 }
                 if (choice.status === ChoiceStatus.Winning) {
                   likely += points;
                   possible += points;
+                  tiebreaker += lineDiff;
                 }
                 if (choice.status === ChoiceStatus.Losing) {
                   possible += points;
+                  tiebreaker = tiebreaker - lineDiff;
+                }
+                if (choice.status === ChoiceStatus.Losing) {
+                  possible += points;
+                  tiebreaker = tiebreaker - lineDiff;
+                }
+                if (choice.status === ChoiceStatus.Lost) {
+                  tiebreaker = tiebreaker - lineDiff;
                 }
                 if (choice.status === ChoiceStatus.NotStarted) {
                   possible += points;
@@ -112,18 +147,20 @@ export const Registration: Lists.Registration = list({
             locked,
             likely,
             possible,
+            tiebreaker,
           };
           console.log(
-            `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible}`
+            `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible},${tiebreaker}`
           );
           return {
             locked,
             likely,
             possible,
+            tiebreaker,
           };
         },
       }),
-      ui: { query: '{ locked likely possible }' },
+      ui: { query: '{ locked likely possible tiebreaker }' },
     }),
   },
   hooks: {

@@ -208,6 +208,7 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
         locked
         likely
         possible
+        tiebreaker
       }
     `
   });
@@ -792,7 +793,8 @@ var Registration = (0, import_core7.list)({
           fields: {
             locked: import_core7.graphql.field({ type: import_core7.graphql.Int }),
             likely: import_core7.graphql.field({ type: import_core7.graphql.Int }),
-            possible: import_core7.graphql.field({ type: import_core7.graphql.Int })
+            possible: import_core7.graphql.field({ type: import_core7.graphql.Int }),
+            tiebreaker: import_core7.graphql.field({ type: import_core7.graphql.Float })
           }
         }),
         async resolve(item, _args, _context) {
@@ -807,6 +809,13 @@ var Registration = (0, import_core7.list)({
             query: graphql4`
               id
               title
+              benchmark
+              standings(orderBy: { gamesPlayed: desc }, take: 1) {
+                id
+                wins
+                gamesPlayed
+                totalGames
+              }
               choices {
                 selection
                 status
@@ -823,22 +832,44 @@ var Registration = (0, import_core7.list)({
           let locked = 0;
           let likely = 0;
           let possible = 0;
+          let tiebreaker = 0;
           contestLines?.forEach((line) => {
             line.choices?.forEach((choice) => {
+              let lineDiff = 0;
               const usersBet = choice.bets?.find((bet) => bet?.user?.id === item.userId);
               if (usersBet) {
                 const points = usersBet.isSuper ? 2 : 1;
+                const standing = line.standings?.[0];
+                if (standing) {
+                  const totalGames = line.standings?.[0].totalGames || 0;
+                  const gamesPlayed = line.standings?.[0].gamesPlayed || 0;
+                  const wins = line.standings?.[0].wins || 0;
+                  const winPercentage = wins / (gamesPlayed || 1);
+                  const projectedWins = Math.round(winPercentage * totalGames);
+                  const benchmark = line.benchmark || 0;
+                  lineDiff = Math.abs(projectedWins - benchmark);
+                }
                 if (choice.status === "WON" /* Won */) {
                   locked += points;
                   likely += points;
                   possible += points;
+                  tiebreaker += lineDiff;
                 }
                 if (choice.status === "WINNING" /* Winning */) {
                   likely += points;
                   possible += points;
+                  tiebreaker += lineDiff;
                 }
                 if (choice.status === "LOSING" /* Losing */) {
                   possible += points;
+                  tiebreaker = tiebreaker - lineDiff;
+                }
+                if (choice.status === "LOSING" /* Losing */) {
+                  possible += points;
+                  tiebreaker = tiebreaker - lineDiff;
+                }
+                if (choice.status === "LOST" /* Lost */) {
+                  tiebreaker = tiebreaker - lineDiff;
                 }
                 if (choice.status === "NOT_STARTED" /* NotStarted */) {
                   possible += points;
@@ -852,19 +883,21 @@ var Registration = (0, import_core7.list)({
           cache[item.contestId][item.userId] = {
             locked,
             likely,
-            possible
+            possible,
+            tiebreaker
           };
           console.log(
-            `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible}`
+            `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible},${tiebreaker}`
           );
           return {
             locked,
             likely,
-            possible
+            possible,
+            tiebreaker
           };
         }
       }),
-      ui: { query: "{ locked likely possible }" }
+      ui: { query: "{ locked likely possible tiebreaker }" }
     })
   },
   hooks: {
