@@ -127,10 +127,6 @@ export const Registration: Lists.Registration = list({
                   possible += points;
                   tiebreaker = tiebreaker - lineDiff;
                 }
-                if (choice.status === ChoiceStatus.Losing) {
-                  possible += points;
-                  tiebreaker = tiebreaker - lineDiff;
-                }
                 if (choice.status === ChoiceStatus.Lost) {
                   tiebreaker = tiebreaker - lineDiff;
                 }
