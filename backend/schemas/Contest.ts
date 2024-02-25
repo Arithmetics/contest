@@ -7,6 +7,7 @@ export enum RootContestType {
   NBA_OVER_UNDER = 'NBA_OVER_UNDER',
   NFL_OVER_UNDER = 'NFL_OVER_UNDER',
   NFL_ATS = 'NFL_ATS',
+  NBA_PLAYOFFS = 'NBA_PLAYOFFS',
 }
 
 export const Contest: Lists.Contest = list({
@@ -47,6 +48,7 @@ export const Contest: Lists.Contest = list({
         { label: 'NBA Over Under', value: RootContestType.NBA_OVER_UNDER },
         { label: 'NFL Over Under', value: RootContestType.NFL_OVER_UNDER },
         { label: 'NFL ATS', value: RootContestType.NFL_ATS },
+        { label: 'NBA Playoffs', value: RootContestType.NBA_PLAYOFFS },
       ],
       validation: {
         isRequired: true,

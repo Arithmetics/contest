@@ -385,7 +385,8 @@ var Contest = (0, import_core2.list)({
       options: [
         { label: "NBA Over Under", value: "NBA_OVER_UNDER" /* NBA_OVER_UNDER */ },
         { label: "NFL Over Under", value: "NFL_OVER_UNDER" /* NFL_OVER_UNDER */ },
-        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ }
+        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ },
+        { label: "NBA Playoffs", value: "NBA_PLAYOFFS" /* NBA_PLAYOFFS */ }
       ],
       validation: {
         isRequired: true
@@ -520,6 +521,7 @@ var Choice = (0, import_core5.list)({
       ui: { displayMode: "select" }
     }),
     isWin: (0, import_fields5.checkbox)({ defaultValue: false }),
+    points: (0, import_fields5.integer)({ validation: { isRequired: true }, defaultValue: 1 }),
     line: (0, import_fields5.relationship)({ ref: "Line.choices", many: false }),
     bets: (0, import_fields5.relationship)({ ref: "Bet.choice", many: true }),
     image: (0, import_fields5.relationship)({
@@ -864,10 +866,6 @@ var Registration = (0, import_core7.list)({
                   possible += points;
                   tiebreaker = tiebreaker - lineDiff;
                 }
-                if (choice.status === "LOSING" /* Losing */) {
-                  possible += points;
-                  tiebreaker = tiebreaker - lineDiff;
-                }
                 if (choice.status === "LOST" /* Lost */) {
                   tiebreaker = tiebreaker - lineDiff;
                 }
@@ -1024,7 +1022,8 @@ var History = (0, import_core10.list)({
       options: [
         { label: "NBA Over Under", value: "NBA_OVER_UNDER" /* NBA_OVER_UNDER */ },
         { label: "NFL Over Under", value: "NFL_OVER_UNDER" /* NFL_OVER_UNDER */ },
-        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ }
+        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ },
+        { label: "NFL Playoffs", value: "NBA_PLAYOFFS" /* NBA_PLAYOFFS */ }
       ],
       validation: {
         isRequired: true

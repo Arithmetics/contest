@@ -1,4 +1,4 @@
-import { checkbox, select, relationship, virtual } from '@keystone-6/core/fields';
+import { checkbox, select, relationship, virtual, integer } from '@keystone-6/core/fields';
 import { list, graphql } from '@keystone-6/core';
 import { Context, Lists } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
@@ -28,6 +28,7 @@ export const Choice: Lists.Choice = list({
       ui: { displayMode: 'select' },
     }),
     isWin: checkbox({ defaultValue: false }),
+    points: integer({ validation: { isRequired: true }, defaultValue: 1 }),
     line: relationship({ ref: 'Line.choices', many: false }),
     bets: relationship({ ref: 'Bet.choice', many: true }),
     image: relationship({

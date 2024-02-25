@@ -34,7 +34,7 @@ import {
 } from '../../../generated/graphql-types';
 
 import { betsRemaining, superBetsRemaining } from '../BetsStatusLine';
-import LineCardHeader from './LineCardHeader';
+import LineCardHeader, { formatATS, formatNbaPoints } from './LineCardHeader';
 import { LineCardFooterTicketCutouts } from './LineCardFooterTicketCutouts';
 import RadioImage from './RadioImage';
 
@@ -96,6 +96,10 @@ export default function LineCard({
       });
     },
   });
+
+  const isOverUnderContest =
+    contestType === ContestContestTypeType.NflOverUnder ||
+    contestType === ContestContestTypeType.NbaOverUnder;
 
   const usersBets = contestBetsData?.bets?.filter((bet) => bet?.user?.id === userId);
 
@@ -220,8 +224,8 @@ export default function LineCard({
     }
   };
 
-  const radioGroup = (contestType?: ContestContestTypeType | null): JSX.Element => {
-    if (contestType === ContestContestTypeType.NflAts) {
+  const radioGroup = (): JSX.Element => {
+    if (!isOverUnderContest) {
       const awayChoice = line.choices?.find((c) => c.selection === 'AWAY');
       const homeChoice = line.choices?.find((c) => c.selection === 'HOME');
       const choices = [];
@@ -236,6 +240,10 @@ export default function LineCard({
           <HStack justifyContent="center" spacing={6} {...group}>
             {choices.map((choice) => {
               const radio = getRadioProps({ value: choice.id });
+              const display =
+                contestType === ContestContestTypeType.NbaPlayoffs
+                  ? formatNbaPoints(choice.selection === 'HOME', choice.points)
+                  : formatATS(choice.selection === 'HOME', line.benchmark);
               return (
                 <RadioImage
                   key={choice.id}
@@ -245,6 +253,7 @@ export default function LineCard({
                   isDisabled={formDisabled}
                   spread={line.benchmark}
                   isHome={choice.selection === 'HOME'}
+                  display={display}
                   {...radio}
                 />
               );
@@ -310,7 +319,7 @@ export default function LineCard({
     );
   };
 
-  const cardWidth = contestType === ContestContestTypeType.NflAts ? '440px' : '335px';
+  const cardWidth = !isOverUnderContest ? '440px' : '335px';
 
   return (
     <Tooltip label={!userId && 'Log in to bet'}>
@@ -330,7 +339,7 @@ export default function LineCard({
         {(userId || !lineClosed) && (
           <Stack spacing={0} align={'left'} paddingTop={3}>
             {/* Form starts here */}
-            {!lineClosed && radioGroup(contestType)}
+            {!lineClosed && radioGroup()}
             {lineClosed && (
               <>
                 <Center>

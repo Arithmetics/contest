@@ -2,7 +2,14 @@ import { Box, HStack, Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 import { BsLightning } from 'react-icons/bs';
 import { RiCoinLine } from 'react-icons/ri';
-import { Bet, Contest, RuleSet, useContestBetsQuery, User } from '../../generated/graphql-types';
+import {
+  Bet,
+  Contest,
+  ContestContestTypeType,
+  RuleSet,
+  useContestBetsQuery,
+  User,
+} from '../../generated/graphql-types';
 import StatusCard from './StatusCard';
 import ATSLeadboardStatusCard from './ATSLeaderboardStatusCard';
 import OULeadboardStatusCard from './OULeaderboardStatusCard';
@@ -40,6 +47,8 @@ function BetStatusLine(
 
   const margin = useBreakpointValue({ base: 1, md: 6 }, 'md');
 
+  const showBetsLeft = contest?.contestType !== ContestContestTypeType.NbaPlayoffs;
+
   return (
     <Box
       overflow="hidden"
@@ -52,18 +61,11 @@ function BetStatusLine(
       <HStack justifyContent="center" flexWrap={'wrap'} gridGap={1} marginRight={2}>
         {/* bug fix span */}
         <span></span>
-        {contestBetsLoading ? (
+        {showBetsLeft && (
           <StatusCard
-            icon={<Spinner />}
+            icon={contestBetsLoading ? <Spinner /> : <RiCoinLine fontSize="1.5rem" />}
             statLabel="Bets Left"
-            statNumber="--"
-            floatMode={floatMode}
-          />
-        ) : (
-          <StatusCard
-            icon={<RiCoinLine fontSize="1.5rem" />}
-            statLabel="Bets Left"
-            statNumber={betsLeft}
+            statNumber={contestBetsLoading ? '--' : betsLeft}
             floatMode={floatMode}
           />
         )}

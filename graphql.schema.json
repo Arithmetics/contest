@@ -835,6 +835,18 @@
             "deprecationReason": null
           },
           {
+            "name": "points",
+            "description": null,
+            "args": [],
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "secondaryImage",
             "description": null,
             "args": [],
@@ -924,6 +936,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "LineRelateToOneForCreateInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "points",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
               "ofType": null
             },
             "defaultValue": null,
@@ -1026,6 +1050,18 @@
           },
           {
             "name": "isWin",
+            "description": null,
+            "type": {
+              "kind": "ENUM",
+              "name": "OrderDirection",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "points",
             "description": null,
             "type": {
               "kind": "ENUM",
@@ -1526,6 +1562,18 @@
             "deprecationReason": null
           },
           {
+            "name": "points",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "Int",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "secondaryImage",
             "description": null,
             "type": {
@@ -1674,6 +1722,18 @@
             "type": {
               "kind": "INPUT_OBJECT",
               "name": "LineWhereInput",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "points",
+            "description": null,
+            "type": {
+              "kind": "INPUT_OBJECT",
+              "name": "IntFilter",
               "ofType": null
             },
             "defaultValue": null,
@@ -2991,6 +3051,12 @@
         "enumValues": [
           {
             "name": "NBA_OVER_UNDER",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NBA_PLAYOFFS",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -4418,6 +4484,12 @@
         "enumValues": [
           {
             "name": "NBA_OVER_UNDER",
+            "description": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "NBA_PLAYOFFS",
             "description": null,
             "isDeprecated": false,
             "deprecationReason": null
@@ -10324,7 +10396,7 @@
             "args": [],
             "type": {
               "kind": "SCALAR",
-              "name": "Int",
+              "name": "Float",
               "ofType": null
             },
             "isDeprecated": false,

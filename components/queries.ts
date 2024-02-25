@@ -94,6 +94,7 @@ export const CONTEST_BY_ID_QUERY = gql`
           id
           selection
           isWin
+          points
           image {
             id
             image {

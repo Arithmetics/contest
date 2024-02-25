@@ -97,6 +97,7 @@ export type Choice = {
   isWin?: Maybe<Scalars['Boolean']['output']>;
   labelName?: Maybe<Scalars['String']['output']>;
   line?: Maybe<Line>;
+  points?: Maybe<Scalars['Int']['output']>;
   secondaryImage?: Maybe<CloudImage>;
   selection?: Maybe<ChoiceSelectionType>;
   status?: Maybe<ChoiceStatus>;
@@ -121,6 +122,7 @@ export type ChoiceCreateInput = {
   image?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   isWin?: InputMaybe<Scalars['Boolean']['input']>;
   line?: InputMaybe<LineRelateToOneForCreateInput>;
+  points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
 };
@@ -134,6 +136,7 @@ export type ChoiceManyRelationFilter = {
 export type ChoiceOrderByInput = {
   id?: InputMaybe<OrderDirection>;
   isWin?: InputMaybe<OrderDirection>;
+  points?: InputMaybe<OrderDirection>;
   selection?: InputMaybe<OrderDirection>;
 };
 
@@ -192,6 +195,7 @@ export type ChoiceUpdateInput = {
   image?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   isWin?: InputMaybe<Scalars['Boolean']['input']>;
   line?: InputMaybe<LineRelateToOneForUpdateInput>;
+  points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
 };
@@ -205,6 +209,7 @@ export type ChoiceWhereInput = {
   image?: InputMaybe<CloudImageWhereInput>;
   isWin?: InputMaybe<BooleanFilter>;
   line?: InputMaybe<LineWhereInput>;
+  points?: InputMaybe<IntFilter>;
   secondaryImage?: InputMaybe<CloudImageWhereInput>;
   selection?: InputMaybe<ChoiceSelectionTypeNullableFilter>;
 };
@@ -363,6 +368,7 @@ export type ContestRegistrationsCountArgs = {
 
 export enum ContestContestTypeType {
   NbaOverUnder = 'NBA_OVER_UNDER',
+  NbaPlayoffs = 'NBA_PLAYOFFS',
   NflAts = 'NFL_ATS',
   NflOverUnder = 'NFL_OVER_UNDER'
 }
@@ -510,6 +516,7 @@ export type History = {
 
 export enum HistoryContestTypeType {
   NbaOverUnder = 'NBA_OVER_UNDER',
+  NbaPlayoffs = 'NBA_PLAYOFFS',
   NflAts = 'NFL_ATS',
   NflOverUnder = 'NFL_OVER_UNDER'
 }
@@ -1297,7 +1304,7 @@ export type PointCounts = {
   likely?: Maybe<Scalars['Int']['output']>;
   locked?: Maybe<Scalars['Int']['output']>;
   possible?: Maybe<Scalars['Int']['output']>;
-  tiebreaker?: Maybe<Scalars['Int']['output']>;
+  tiebreaker?: Maybe<Scalars['Float']['output']>;
 };
 
 export type Query = {

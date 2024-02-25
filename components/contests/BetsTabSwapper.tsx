@@ -22,7 +22,10 @@ export default function BetsTabSwapper({ contestId }: BetsTabProps): JSX.Element
     );
   }
 
-  if (data?.contest?.contestType !== ContestContestTypeType.NflAts) {
+  if (
+    data?.contest?.contestType === ContestContestTypeType.NbaOverUnder ||
+    data?.contest?.contestType === ContestContestTypeType.NflOverUnder
+  ) {
     return <BetsTabNext contestId={contestId} />;
   }
   return <BetsTab contestId={contestId} />;

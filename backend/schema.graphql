@@ -91,6 +91,7 @@ type Choice {
   id: ID!
   selection: ChoiceSelectionType
   isWin: Boolean
+  points: Int
   line: Line
   bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
@@ -126,6 +127,7 @@ input ChoiceWhereInput {
   id: IDFilter
   selection: ChoiceSelectionTypeNullableFilter
   isWin: BooleanFilter
+  points: IntFilter
   line: LineWhereInput
   bets: BetManyRelationFilter
   image: CloudImageWhereInput
@@ -139,6 +141,17 @@ input ChoiceSelectionTypeNullableFilter {
   not: ChoiceSelectionTypeNullableFilter
 }
 
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
+}
+
 input BetManyRelationFilter {
   every: BetWhereInput
   some: BetWhereInput
@@ -149,11 +162,13 @@ input ChoiceOrderByInput {
   id: OrderDirection
   selection: OrderDirection
   isWin: OrderDirection
+  points: OrderDirection
 }
 
 input ChoiceUpdateInput {
   selection: ChoiceSelectionType
   isWin: Boolean
+  points: Int
   line: LineRelateToOneForUpdateInput
   bets: BetRelateToManyForUpdateInput
   image: CloudImageRelateToOneForUpdateInput
@@ -187,6 +202,7 @@ input ChoiceUpdateArgs {
 input ChoiceCreateInput {
   selection: ChoiceSelectionType
   isWin: Boolean
+  points: Int
   line: LineRelateToOneForCreateInput
   bets: BetRelateToManyForCreateInput
   image: CloudImageRelateToOneForCreateInput
@@ -357,6 +373,7 @@ enum ContestContestTypeType {
   NBA_OVER_UNDER
   NFL_OVER_UNDER
   NFL_ATS
+  NBA_PLAYOFFS
 }
 
 input ContestWhereUniqueInput {
@@ -504,6 +521,7 @@ enum HistoryContestTypeType {
   NBA_OVER_UNDER
   NFL_OVER_UNDER
   NFL_ATS
+  NBA_PLAYOFFS
 }
 
 input HistoryWhereUniqueInput {
@@ -526,17 +544,6 @@ input HistoryContestTypeTypeNullableFilter {
   in: [HistoryContestTypeType!]
   notIn: [HistoryContestTypeType!]
   not: HistoryContestTypeTypeNullableFilter
-}
-
-input IntFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntFilter
 }
 
 input HistoryOrderByInput {
