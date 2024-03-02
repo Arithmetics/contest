@@ -8,6 +8,7 @@ import {
 } from '../../../generated/graphql-types';
 import LeaderboardTabATS from './LeaderboardTabATS';
 import LeaderboardTabOU from './LeaderboardTabOU';
+import LeaderboardTabNbaPlayoffs from './LeaderboardTabNbaPlayoffs';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(
@@ -38,6 +39,9 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
     );
   }
 
+  if (contest?.contestType === ContestContestTypeType.NbaPlayoffs) {
+    return <LeaderboardTabNbaPlayoffs contestId={contestId} />;
+  }
   if (contest?.contestType === ContestContestTypeType.NflAts) {
     return <LeaderboardTabATS contestId={contestId} />;
   }

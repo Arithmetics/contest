@@ -20,6 +20,8 @@ import {
   Tag,
   TagLabel,
   TagRightIcon,
+  Image,
+  VStack,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { BsLightning } from 'react-icons/bs';
@@ -228,17 +230,28 @@ export default function LineCard({
     if (!isOverUnderContest) {
       const awayChoice = line.choices?.find((c) => c.selection === 'AWAY');
       const homeChoice = line.choices?.find((c) => c.selection === 'HOME');
-      const choices = [];
+      const underChoice = line.choices?.find((c) => c.selection === 'UNDER');
+      const overChoice = line.choices?.find((c) => c.selection === 'OVER');
+
+      const homeAwayChoices = [];
       if (awayChoice) {
-        choices.push(awayChoice);
+        homeAwayChoices.push(awayChoice);
       }
       if (homeChoice) {
-        choices.push(homeChoice);
+        homeAwayChoices.push(homeChoice);
+      }
+
+      const overUnderChoices = [];
+      if (underChoice) {
+        overUnderChoices.push(underChoice);
+      }
+      if (overChoice) {
+        overUnderChoices.push(overChoice);
       }
       return (
         <>
           <HStack justifyContent="center" spacing={6} {...group}>
-            {choices.map((choice) => {
+            {homeAwayChoices.map((choice) => {
               const radio = getRadioProps({ value: choice.id });
               const display =
                 contestType === ContestContestTypeType.NbaPlayoffs
@@ -253,6 +266,24 @@ export default function LineCard({
                   isDisabled={formDisabled}
                   spread={line.benchmark}
                   isHome={choice.selection === 'HOME'}
+                  display={display}
+                  {...radio}
+                />
+              );
+            })}
+
+            {overUnderChoices.map((choice) => {
+              const radio = getRadioProps({ value: choice.id });
+              const display = formatNbaPoints(choice.selection === 'OVER', choice.points);
+              return (
+                <RadioImage
+                  key={choice.id}
+                  altText={choice.image?.altText}
+                  imageUrl={choice.image?.image?.publicUrlTransformed}
+                  hasSelection={formSelectedChoiceId !== '0'}
+                  isDisabled={formDisabled}
+                  spread={line.benchmark}
+                  isHome={choice.selection === 'OVER'}
                   display={display}
                   {...radio}
                 />
@@ -344,7 +375,7 @@ export default function LineCard({
               <>
                 <Center>
                   {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
-                  {usersBet && (
+                  {usersBet && contestType !== ContestContestTypeType.NbaPlayoffs && (
                     <HStack>
                       <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
                       <Text fontSize="xl">{selectedChoice?.selection}</Text>
@@ -355,6 +386,35 @@ export default function LineCard({
                         </Tag>
                       )}
                     </HStack>
+                  )}
+                  {usersBet && contestType === ContestContestTypeType.NbaPlayoffs && (
+                    <VStack>
+                      <Box as="label" position="relative">
+                        <Image
+                          _checked={{ filter: 'none', border: '1px', borderColor: 'teal.500' }}
+                          htmlHeight="100px"
+                          maxHeight="100px"
+                          htmlWidth="200px"
+                          objectFit="cover"
+                          bg={'gray.600'}
+                          borderRadius="md"
+                          alt={selectedChoice?.image?.altText || 'unknown'}
+                          src={selectedChoice?.image?.image?.publicUrlTransformed || ''}
+                          transitionProperty="transform"
+                          transitionDuration="0.3s"
+                          transitionTimingFunction="ease-in-out"
+                        />
+                        <Badge position="absolute" variant="solid" left="6px" top="6px">
+                          {selectedChoice?.points} Points
+                        </Badge>
+                      </Box>
+                      {superBetSelected && (
+                        <Tag size="md" colorScheme="purple">
+                          <TagLabel>Super Bet</TagLabel>
+                          <TagRightIcon as={BsLightning} />
+                        </Tag>
+                      )}
+                    </VStack>
                   )}
                 </Center>
 

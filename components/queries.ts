@@ -351,6 +351,8 @@ export const CONTEST_BETS_QUERY = gql`
 export const ATS_LEADERBOARD_QUERY = gql`
   query ATSLeaderboardQuery($contestId: ID!) {
     contest(where: { id: $contestId }) {
+      id
+      entryFee
       ruleSet {
         id
         superBetPointCount
@@ -376,10 +378,12 @@ export const ATS_LEADERBOARD_QUERY = gql`
         id
         title
         closingTime
+        benchmark
         choices {
           id
           selection
           isWin
+          points
           image {
             image {
               publicUrlTransformed

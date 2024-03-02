@@ -60,25 +60,29 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
   if (!isOverUnderContest) {
     const awayChoice = line?.choices?.find((c) => c.selection === 'AWAY');
     const homeChoice = line?.choices?.find((c) => c.selection === 'HOME');
+    const underChoice = line?.choices?.find((c) => c.selection === 'UNDER');
+    const overChoice = line?.choices?.find((c) => c.selection === 'OVER');
 
-    const usedAwayBenchmark =
-      contestType === ContestContestTypeType.NflAts
-        ? formatATS(false, line.benchmark)
-        : formatNbaPoints(false, awayChoice?.points);
+    if (contestType === ContestContestTypeType.NbaPlayoffs && awayChoice && homeChoice) {
+      return <Text fontSize={lineFontSize}>{line.title}</Text>;
+    }
 
-    const usedHomeBenchmark =
-      contestType === ContestContestTypeType.NflAts
-        ? formatATS(true, line.benchmark)
-        : formatNbaPoints(true, homeChoice?.points);
-
-    console.log('usedAwayBenchmark', usedAwayBenchmark);
+    if (contestType === ContestContestTypeType.NbaPlayoffs && overChoice && underChoice) {
+      return (
+        <Text fontSize={lineFontSize}>
+          {line.title} - {line.benchmark} Games
+        </Text>
+      );
+    }
 
     return (
       <HStack>
         <Stat>
           <StatNumber>
             <HStack>
-              <Text fontSize={lineFontSize}>{usedAwayBenchmark}</Text>
+              {contestType === ContestContestTypeType.NflAts && (
+                <Text fontSize={lineFontSize}>{formatATS(false, line.benchmark)}</Text>
+              )}
               {awayChoice && (
                 <Image
                   boxSize="40px"
@@ -98,7 +102,9 @@ export default function LineCardHeader({ line, contestType }: LineCardHeaderProp
                   src={homeChoice.secondaryImage?.image?.publicUrlTransformed || ''}
                 />
               )}
-              <Text fontSize={lineFontSize}>{usedHomeBenchmark}</Text>
+              {contestType === ContestContestTypeType.NflAts && (
+                <Text fontSize={lineFontSize}>{formatATS(true, line.benchmark)}</Text>
+              )}
             </HStack>
           </StatNumber>
           <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
