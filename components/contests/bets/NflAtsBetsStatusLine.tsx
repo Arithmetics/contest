@@ -2,17 +2,9 @@ import { Box, HStack, Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 import { BsLightning } from 'react-icons/bs';
 import { RiCoinLine } from 'react-icons/ri';
-import {
-  Bet,
-  Contest,
-  ContestContestTypeType,
-  RuleSet,
-  useContestBetsQuery,
-  User,
-} from '../../generated/graphql-types';
-import StatusCard from './StatusCard';
-import ATSLeadboardStatusCard from './ATSLeaderboardStatusCard';
-import OULeadboardStatusCard from './OULeaderboardStatusCard';
+import { Bet, Contest, RuleSet, User, useContestBetsQuery } from '../../../generated/graphql-types';
+import ATSLeadboardStatusCard from '../ATSLeaderboardStatusCard';
+import StatusCard from '../StatusCard';
 
 export function betsRemaining(userBets?: Bet[] | null, ruleSet?: RuleSet | null): number {
   const maxBets = ruleSet?.maxBets || 0;
@@ -47,8 +39,6 @@ function BetStatusLine(
 
   const margin = useBreakpointValue({ base: 1, md: 6 }, 'md');
 
-  const showBetsLeft = contest?.contestType !== ContestContestTypeType.NbaPlayoffs;
-
   return (
     <Box
       overflow="hidden"
@@ -61,14 +51,12 @@ function BetStatusLine(
       <HStack justifyContent="center" flexWrap={'wrap'} gridGap={1} marginRight={2}>
         {/* bug fix span */}
         <span></span>
-        {showBetsLeft && (
-          <StatusCard
-            icon={contestBetsLoading ? <Spinner /> : <RiCoinLine fontSize="1.5rem" />}
-            statLabel="Bets Left"
-            statNumber={contestBetsLoading ? '--' : betsLeft}
-            floatMode={floatMode}
-          />
-        )}
+        <StatusCard
+          icon={contestBetsLoading ? <Spinner /> : <RiCoinLine fontSize="1.5rem" />}
+          statLabel="Bets Left"
+          statNumber={contestBetsLoading ? '--' : betsLeft}
+          floatMode={floatMode}
+        />
         {contestBetsLoading ? (
           <StatusCard
             icon={<Spinner />}
@@ -84,11 +72,7 @@ function BetStatusLine(
             floatMode={floatMode}
           />
         )}
-        {contest?.contestType === 'NFL_ATS' ? (
-          <ATSLeadboardStatusCard contest={contest} user={user} floatMode={floatMode} />
-        ) : (
-          <OULeadboardStatusCard contest={contest} user={user} floatMode={floatMode} />
-        )}
+        <ATSLeadboardStatusCard contest={contest} user={user} floatMode={floatMode} />
       </HStack>
     </Box>
   );

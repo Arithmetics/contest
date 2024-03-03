@@ -1,29 +1,27 @@
-import { useEffect } from 'react';
 import {
-  Collapse,
   Box,
+  Collapse,
+  Fade,
   Flex,
   Heading,
-  Text,
-  Center,
-  Spinner,
-  useDisclosure,
-  useToast,
   useBreakpointValue,
-  Fade,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useIntersectionObserver } from 'react-intersection-observer-hook';
-import LineCard, { hasLineClosed, lineHasWinner } from './lineCard/LineCard';
-import BetsStatusLine from './BetsStatusLine';
 import {
-  Line,
   Contest,
+  Line,
   User,
+  useContestBetsQuery,
   useContestByIdQuery,
   useCurrentUserQuery,
-  useContestBetsQuery,
-} from '../../generated/graphql-types';
-import PayToast from './PayToast';
+} from '../../../generated/graphql-types';
+import BetsStatusLine from './NflAtsBetsStatusLine';
+import { hasLineClosed, lineHasWinner } from '../lineCard/lineCardUtils';
+import NbaPlayoffsLineCard from '../lineCard/NbaPlayoffsLineCard';
+import NoLinesForContest from './NoLinesForContest';
+import PageLoader from './PageLoader';
+import { useHavePaidToast } from './useHavePaidToast';
 
 export enum ContestTabs {
   BETS = 'bets',
@@ -37,7 +35,7 @@ type BetsTabProps = {
   contestId?: string;
 };
 
-export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
+export default function NBAPlayoffsBets({ contestId }: BetsTabProps): JSX.Element {
   const { isOpen: isAvailableOpen } = useDisclosure({
     defaultIsOpen: true,
   });
@@ -68,42 +66,19 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
     (r) => r.user?.id === userData?.authenticatedItem?.id
   );
 
-  const toast = useToast();
+  useHavePaidToast(usersRegistration);
 
   const [ref, { entry }] = useIntersectionObserver();
   const isVisible = entry && entry.isIntersecting;
 
   const margin = useBreakpointValue({ base: 2, md: 6 }, 'md');
 
-  useEffect(() => {
-    if (usersRegistration && !usersRegistration.hasPaid) {
-      toast({
-        title: 'Have you paid yet?',
-        description: <PayToast />,
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usersRegistration?.id]);
-
   if (getContestLoading || getUserLoading || contestBetsLoading) {
-    return (
-      <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
-      </Center>
-    );
+    return <PageLoader />;
   }
 
   if (!lines || lines.length === 0) {
-    return (
-      <>
-        <Center marginTop={'30vh'}>
-          <Text fontSize="2xl">No lines set for this contest.</Text>
-        </Center>
-      </>
-    );
+    return <NoLinesForContest />;
   }
 
   const availableLines = lines.filter((l) => !hasLineClosed(l as Line));
@@ -144,7 +119,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
             <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {availableLines.map((line) => {
                 return (
-                  <LineCard
+                  <NbaPlayoffsLineCard
                     key={line.id}
                     line={line as Line}
                     userId={userId}
@@ -168,7 +143,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
             <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {pendingLines.map((line) => {
                 return (
-                  <LineCard
+                  <NbaPlayoffsLineCard
                     key={line.id}
                     line={line as Line}
                     userId={userId}
@@ -192,7 +167,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
             <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {settledLines.map((line) => {
                 return (
-                  <LineCard
+                  <NbaPlayoffsLineCard
                     key={line.id}
                     line={line as Line}
                     userId={userId}

@@ -5,7 +5,6 @@ type RadioImageProps = {
   imageUrl?: string | null;
   altText?: string | null;
   spread?: number | null;
-  isHome: boolean;
   display: string;
 };
 
