@@ -5,8 +5,11 @@ import {
   Center,
   Checkbox,
   Divider,
+  Flex,
   HStack,
   Image,
+  Radio,
+  RadioGroup,
   Stack,
   Stat,
   StatArrow,
@@ -186,6 +189,34 @@ export default function NflPlayoffsLineCard({
     const homeChoice = line.choices?.find((c) => c.selection === 'HOME');
     const underChoice = line.choices?.find((c) => c.selection === 'UNDER');
     const overChoice = line.choices?.find((c) => c.selection === 'OVER');
+    const customChoices = line.choices?.filter((c) => c.selection === 'CUSTOM');
+
+    if (customChoices?.length) {
+      return (
+        <HStack justifyContent="center" spacing={6}>
+          <RadioGroup colorScheme="teal" isDisabled={formDisabled}>
+            <VStack alignItems="start">
+              {customChoices
+                .sort((a, b) => (a?.points ?? 0) - (b?.points ?? 0))
+                .map((choice) => {
+                  return (
+                    <Radio
+                      key={choice.id}
+                      value={choice.id}
+                      onChange={() => setFormSelectedChoiceId(choice.id)}
+                    >
+                      <Flex gap="2" alignItems="center" width="100%" justifyContent="space-between">
+                        {choice.title}
+                        <Badge variant="solid">{formatNbaPoints(choice?.points)}</Badge>
+                      </Flex>
+                    </Radio>
+                  );
+                })}
+            </VStack>
+          </RadioGroup>
+        </HStack>
+      );
+    }
 
     const homeAwayChoices = [];
     if (awayChoice) {
@@ -293,7 +324,7 @@ export default function NflPlayoffsLineCard({
                       transitionTimingFunction="ease-in-out"
                     />
                     <Badge position="absolute" variant="solid" left="6px" top="6px">
-                      {selectedChoice?.points} Points
+                      {formatNbaPoints(selectedChoice?.points)}
                     </Badge>
                   </Box>
                   {superBetSelected && <SuperBetTag />}

@@ -55,7 +55,7 @@ var prodTransport = (0, import_nodemailer.createTransport)(
     apiKey: process.env.SENDGRID_API_KEY || ""
   })
 );
-function makeANiceEmail(text6) {
+function makeANiceEmail(text7) {
   return `
     <div className="email" style="
       border: 1px solid black;
@@ -65,7 +65,7 @@ function makeANiceEmail(text6) {
       font-size: 20px;
     ">
       <h2>Hello,</h2>
-      <p>${text6}</p>
+      <p>${text7}</p>
       <p>\u{1F44D}\u{1F3FB},</p> 
       <p>Brock</p>
     </div>
@@ -507,13 +507,15 @@ var Choice = (0, import_core5.list)({
     }
   },
   fields: {
+    title: (0, import_fields5.text)({ validation: { isRequired: true } }),
     selection: (0, import_fields5.select)({
       type: "enum",
       options: [
         { label: "Over", value: "OVER" },
         { label: "Under", value: "UNDER" },
         { label: "Away", value: "AWAY" },
-        { label: "Home", value: "HOME" }
+        { label: "Home", value: "HOME" },
+        { label: "Custom", value: "CUSTOM" }
       ],
       validation: {
         isRequired: true

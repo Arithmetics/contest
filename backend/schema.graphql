@@ -89,6 +89,7 @@ input ChoiceRelateToOneForCreateInput {
 
 type Choice {
   id: ID!
+  title: String
   selection: ChoiceSelectionType
   isWin: Boolean
   points: Int
@@ -106,6 +107,7 @@ enum ChoiceSelectionType {
   UNDER
   AWAY
   HOME
+  CUSTOM
 }
 
 enum ChoiceStatus {
@@ -125,6 +127,7 @@ input ChoiceWhereInput {
   OR: [ChoiceWhereInput!]
   NOT: [ChoiceWhereInput!]
   id: IDFilter
+  title: StringFilter
   selection: ChoiceSelectionTypeNullableFilter
   isWin: BooleanFilter
   points: IntFilter
@@ -132,6 +135,40 @@ input ChoiceWhereInput {
   bets: BetManyRelationFilter
   image: CloudImageWhereInput
   secondaryImage: CloudImageWhereInput
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
 }
 
 input ChoiceSelectionTypeNullableFilter {
@@ -160,12 +197,14 @@ input BetManyRelationFilter {
 
 input ChoiceOrderByInput {
   id: OrderDirection
+  title: OrderDirection
   selection: OrderDirection
   isWin: OrderDirection
   points: OrderDirection
 }
 
 input ChoiceUpdateInput {
+  title: String
   selection: ChoiceSelectionType
   isWin: Boolean
   points: Int
@@ -200,6 +239,7 @@ input ChoiceUpdateArgs {
 }
 
 input ChoiceCreateInput {
+  title: String
   selection: ChoiceSelectionType
   isWin: Boolean
   points: Int
@@ -288,40 +328,6 @@ input CloudImageWhereInput {
   NOT: [CloudImageWhereInput!]
   id: IDFilter
   altText: StringFilter
-}
-
-input StringFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  mode: QueryMode
-  not: NestedStringFilter
-}
-
-enum QueryMode {
-  default
-  insensitive
-}
-
-input NestedStringFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringFilter
 }
 
 input CloudImageOrderByInput {

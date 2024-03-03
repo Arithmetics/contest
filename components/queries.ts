@@ -92,6 +92,7 @@ export const CONTEST_BY_ID_QUERY = gql`
         }
         choices {
           id
+          title
           selection
           isWin
           points
@@ -239,6 +240,7 @@ export const TRACKER_STATUS_QUERY = gql`
       }
       choices {
         id
+        title
         selection
         isWin
         image {
@@ -268,6 +270,7 @@ export const ATS_TRACKER_STATUS_QUERY = gql`
       }
       choices {
         id
+        title
         selection
         isWin
         image {
@@ -328,6 +331,7 @@ export const CONTEST_BETS_QUERY = gql`
       isSuper
       choice {
         id
+        title
         selection
         line {
           id
@@ -381,6 +385,7 @@ export const ATS_LEADERBOARD_QUERY = gql`
         benchmark
         choices {
           id
+          title
           selection
           isWin
           points
@@ -448,6 +453,7 @@ export const USERS_CONTEST_BETS_QUERY = gql`
         }
         choices {
           id
+          title
           selection
           isWin
           status

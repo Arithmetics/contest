@@ -1,4 +1,4 @@
-import { checkbox, select, relationship, virtual, integer } from '@keystone-6/core/fields';
+import { checkbox, select, relationship, virtual, integer, text } from '@keystone-6/core/fields';
 import { list, graphql } from '@keystone-6/core';
 import { Context, Lists } from '.keystone/types';
 import { isAdmin } from '../keystoneTypeAugments';
@@ -14,6 +14,7 @@ export const Choice: Lists.Choice = list({
     },
   },
   fields: {
+    title: text({ validation: { isRequired: true } }),
     selection: select({
       type: 'enum',
       options: [
@@ -21,6 +22,7 @@ export const Choice: Lists.Choice = list({
         { label: 'Under', value: 'UNDER' },
         { label: 'Away', value: 'AWAY' },
         { label: 'Home', value: 'HOME' },
+        { label: 'Custom', value: 'CUSTOM' },
       ],
       validation: {
         isRequired: true,

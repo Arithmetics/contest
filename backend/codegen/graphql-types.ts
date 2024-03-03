@@ -101,6 +101,7 @@ export type Choice = {
   secondaryImage?: Maybe<CloudImage>;
   selection?: Maybe<ChoiceSelectionType>;
   status?: Maybe<ChoiceStatus>;
+  title?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -125,6 +126,7 @@ export type ChoiceCreateInput = {
   points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ChoiceManyRelationFilter = {
@@ -138,6 +140,7 @@ export type ChoiceOrderByInput = {
   isWin?: InputMaybe<OrderDirection>;
   points?: InputMaybe<OrderDirection>;
   selection?: InputMaybe<OrderDirection>;
+  title?: InputMaybe<OrderDirection>;
 };
 
 export type ChoiceRelateToManyForCreateInput = {
@@ -165,6 +168,7 @@ export type ChoiceRelateToOneForUpdateInput = {
 
 export enum ChoiceSelectionType {
   Away = 'AWAY',
+  Custom = 'CUSTOM',
   Home = 'HOME',
   Over = 'OVER',
   Under = 'UNDER'
@@ -198,6 +202,7 @@ export type ChoiceUpdateInput = {
   points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ChoiceWhereInput = {
@@ -212,6 +217,7 @@ export type ChoiceWhereInput = {
   points?: InputMaybe<IntFilter>;
   secondaryImage?: InputMaybe<CloudImageWhereInput>;
   selection?: InputMaybe<ChoiceSelectionTypeNullableFilter>;
+  title?: InputMaybe<StringFilter>;
 };
 
 export type ChoiceWhereUniqueInput = {

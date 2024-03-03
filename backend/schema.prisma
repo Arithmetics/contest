@@ -25,6 +25,7 @@ model Bet {
 
 model Choice {
   id               String              @id @default(cuid())
+  title            String              @default("")
   selection        ChoiceSelectionType
   isWin            Boolean             @default(false)
   points           Int                 @default(1)
@@ -156,6 +157,7 @@ enum ChoiceSelectionType {
   UNDER
   AWAY
   HOME
+  CUSTOM
 }
 
 enum ContestStatusType {
