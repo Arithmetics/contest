@@ -5,7 +5,8 @@ import {
   Center,
   Checkbox,
   Divider,
-  Flex,
+  Grid,
+  GridItem,
   HStack,
   Image,
   Radio,
@@ -17,6 +18,7 @@ import {
   StatNumber,
   Text,
   VStack,
+  useBreakpointValue,
   useRadioGroup,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
@@ -55,6 +57,8 @@ export default function NflPlayoffsLineCard({
   userHasEntered,
   ruleSet,
 }: NflPlayoffsLineCardProps): JSX.Element {
+  const columns = useBreakpointValue({ base: 1, md: 2 }, 'md');
+
   const {
     data: contestBetsData,
     loading: contestBetsLoading,
@@ -193,26 +197,41 @@ export default function NflPlayoffsLineCard({
 
     if (customChoices?.length) {
       return (
-        <HStack justifyContent="center" spacing={6}>
-          <RadioGroup colorScheme="teal" isDisabled={formDisabled}>
-            <VStack alignItems="start">
+        <HStack justifyContent="center" spacing={6} width="100%" padding={1}>
+          <RadioGroup
+            colorScheme="teal"
+            isDisabled={formDisabled}
+            width="100%"
+            onChange={setFormSelectedChoiceId}
+            value={formSelectedChoiceId.toString()}
+          >
+            <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={2}>
               {customChoices
                 .sort((a, b) => (a?.points ?? 0) - (b?.points ?? 0))
                 .map((choice) => {
                   return (
-                    <Radio
-                      key={choice.id}
-                      value={choice.id}
-                      onChange={() => setFormSelectedChoiceId(choice.id)}
-                    >
-                      <Flex gap="2" alignItems="center" width="100%" justifyContent="space-between">
-                        {choice.title}
-                        <Badge variant="solid">{formatNbaPoints(choice?.points)}</Badge>
-                      </Flex>
-                    </Radio>
+                    <GridItem w="100%" key={choice.id}>
+                      <Radio value={choice.id} onChange={() => setFormSelectedChoiceId(choice.id)}>
+                        <HStack gap="4px">
+                          <VStack alignItems="start" gap="2px">
+                            <Text>{choice.title}</Text>
+
+                            <Badge variant="solid">{formatNbaPoints(choice?.points)}</Badge>
+                          </VStack>
+                          {(!formDisabled || formSelectedChoiceId === choice.id) && (
+                            <Image
+                              boxSize="35px"
+                              fit="scale-down"
+                              alt={choice?.image?.altText || 'unknown'}
+                              src={choice?.image?.image?.publicUrlTransformed || ''}
+                            />
+                          )}
+                        </HStack>
+                      </Radio>
+                    </GridItem>
                   );
                 })}
-            </VStack>
+            </Grid>
           </RadioGroup>
         </HStack>
       );

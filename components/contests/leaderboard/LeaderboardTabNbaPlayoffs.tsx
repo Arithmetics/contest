@@ -25,7 +25,7 @@ import {
   AtsLeaderboardQuery,
 } from '../../../generated/graphql-types';
 
-const ENTRY_BONUS = 0;
+const ENTRY_BONUS = 1;
 
 type AtsDataLinesType = NonNullable<AtsLeaderboardQuery['contest']>['lines'];
 type AtsDataLineType = NonNullable<AtsDataLinesType>[number];
@@ -93,7 +93,7 @@ function getProjectedWinnings(
     if (index < top50cutoffIndex) {
       award += (pointMap[userId] / totalPointsAmongTop50) * availablePot;
     }
-    projectedWinnings[userId] = award;
+    projectedWinnings[userId] = Math.round(award);
   });
   return projectedWinnings;
 }
@@ -190,7 +190,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
 
   return (
     <Box borderWidth="1px" borderRadius="lg" padding={marginBox} m={marginBox} overflowX="auto">
-      <Table variant="simple">
+      <Table variant="simple" height="1px">
         <Thead>
           <Tr>
             <Th>Game</Th>
@@ -260,7 +260,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                   }
                   return (
                     <Td key={reg.id} bg={bgc} position="relative">
-                      <VStack>
+                      <VStack height="100%">
                         {usersChoice ? (
                           <>
                             {usersChoice.selection === 'HOME' ||
@@ -276,10 +276,23 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                             {usersChoice.selection === 'UNDER' && (
                               <Text>Under {line.benchmark}</Text>
                             )}
-                            {isSuper ? <Badge colorScheme="purple">Super</Badge> : undefined}
+                            {usersChoice.selection !== 'HOME' &&
+                              usersChoice.selection !== 'AWAY' &&
+                              usersChoice.selection !== 'OVER' &&
+                              usersChoice.selection !== 'UNDER' && (
+                                <Image
+                                  boxSize="35px"
+                                  fit="scale-down"
+                                  alt={usersChoice?.secondaryImage?.altText || 'unknown'}
+                                  src={
+                                    usersChoice?.secondaryImage?.image?.publicUrlTransformed || ''
+                                  }
+                                />
+                              )}
                             <Badge variant="solid" left="6px" top="6px">
                               {isSuper ? (usersChoice.points ?? 0) * 2 : usersChoice.points} Points
                             </Badge>
+                            {isSuper ? <Badge colorScheme="purple">Super</Badge> : undefined}
                           </>
                         ) : (
                           '?'
@@ -303,7 +316,12 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                     padding: '15px',
                   }}
                 >
-                  <Flex alignItems="center" justifyContent="center">
+                  <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    flexDirection="column"
+                    gap="4px"
+                  >
                     <Tooltip label={user?.userName}>
                       <div
                         style={{
@@ -327,6 +345,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                         )}
                       </div>
                     </Tooltip>
+                    <Text>{user?.userName}</Text>
                   </Flex>
                 </Th>
               );
@@ -361,7 +380,6 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
           <Tr>
             <Td>Current Payout</Td>
             {sortedRegistrations?.map((reg) => {
-              // const userId = reg?.user?.id || '';
               return (
                 <Td key={reg.id}>
                   <Flex alignItems="center" justifyContent="center">

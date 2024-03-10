@@ -2,7 +2,8 @@ import { Box, HStack, Spinner, useBreakpointValue } from '@chakra-ui/react';
 import { forwardRef } from 'react';
 import { BsLightning } from 'react-icons/bs';
 import { Contest, User, useContestBetsQuery } from '../../../generated/graphql-types';
-import OULeadboardStatusCard from '../OULeaderboardStatusCard';
+import NbaPlayoffLeaderboardStatusCard from '../NbaPlayoffsLeaderboardStatusCard';
+import NbaPlayoffsProjectWinningsStatusCard from '../NbaPlayoffsProjectWinningsStatusCard';
 import StatusCard from '../StatusCard';
 import { superBetsRemaining } from './NflAtsBetsStatusLine';
 
@@ -53,7 +54,8 @@ function BetStatusLine(
             floatMode={floatMode}
           />
         )}
-        <OULeadboardStatusCard contest={contest} user={user} floatMode={floatMode} />
+        <NbaPlayoffLeaderboardStatusCard contest={contest} user={user} floatMode={floatMode} />
+        <NbaPlayoffsProjectWinningsStatusCard contest={contest} user={user} floatMode={floatMode} />
       </HStack>
     </Box>
   );

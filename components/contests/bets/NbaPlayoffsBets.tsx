@@ -16,7 +16,7 @@ import {
   useContestByIdQuery,
   useCurrentUserQuery,
 } from '../../../generated/graphql-types';
-import BetsStatusLine from './NflAtsBetsStatusLine';
+import NbaPlayoffsBetsStatusLine from './NbaPlayoffsBetsStatusLine';
 import { hasLineClosed, lineHasWinner } from '../lineCard/lineCardUtils';
 import NbaPlayoffsLineCard from '../lineCard/NbaPlayoffsLineCard';
 import NoLinesForContest from './NoLinesForContest';
@@ -91,7 +91,7 @@ export default function NBAPlayoffsBets({ contestId }: BetsTabProps): JSX.Elemen
     <>
       {/* top thing */}
       {userHasEntered ? (
-        <BetsStatusLine ref={ref} contest={contest} user={user} floatMode={false} />
+        <NbaPlayoffsBetsStatusLine ref={ref} contest={contest} user={user} floatMode={false} />
       ) : undefined}
       {/* absolute stuff */}
       {userHasEntered && !isVisible ? (
@@ -106,7 +106,7 @@ export default function NBAPlayoffsBets({ contestId }: BetsTabProps): JSX.Elemen
               zIndex: 1,
             }}
           >
-            <BetsStatusLine contest={contest} user={user} floatMode={true} />
+            <NbaPlayoffsBetsStatusLine contest={contest} user={user} floatMode={true} />
           </div>
         </Fade>
       ) : undefined}
