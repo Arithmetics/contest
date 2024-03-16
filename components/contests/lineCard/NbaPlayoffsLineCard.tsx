@@ -1,6 +1,5 @@
 import {
   Badge,
-  Box,
   Button,
   Center,
   Checkbox,
@@ -40,6 +39,13 @@ import NbaPlayoffLineHeader from './NbaPlayoffLineHeader';
 import RadioImage from './RadioImage';
 import SuperBetTag from './SuperBetTag';
 import { formatNbaPoints, hasLineClosed, lineHasWinner } from './lineCardUtils';
+
+type PickFooterLabel = {
+  leftVolume: number;
+  rightVolume: number;
+  leftLabel: string;
+  rightLabel: string;
+};
 
 type NflPlayoffsLineCardProps = {
   line: Line;
@@ -134,33 +140,80 @@ export default function NflPlayoffsLineCard({
 
   const formDisabled = lineClosed || !!selectedChoice || !userHasEntered || !pickAvailable;
 
-  const overBetVolume = line.choices
-    ?.filter((c) => c.selection === ChoiceSelectionType.Over)
-    .reduce((acc, c) => {
-      const overCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-      return acc + (overCount || 0);
-    }, 0);
+  const pickVolumes = (): PickFooterLabel => {
+    const overBetVolume =
+      line.choices
+        ?.filter((c) => c.selection === ChoiceSelectionType.Over)
+        .reduce((acc, c) => {
+          const overCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+          return acc + (overCount || 0);
+        }, 0) ?? 0;
 
-  const underBetVolume = line.choices
-    ?.filter((c) => c.selection === ChoiceSelectionType.Under)
-    .reduce((acc, c) => {
-      const underCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-      return acc + (underCount || 0);
-    }, 0);
+    const underBetVolume =
+      line.choices
+        ?.filter((c) => c.selection === ChoiceSelectionType.Under)
+        .reduce((acc, c) => {
+          const underCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+          return acc + (underCount || 0);
+        }, 0) ?? 0;
 
-  //   const awayBetVolume = line.choices
-  //     ?.filter((c) => c.selection === ChoiceSelectionType.Away)
-  //     .reduce((acc, c) => {
-  //       const awayCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-  //       return acc + (awayCount || 0);
-  //     }, 0);
+    const awayBetVolume =
+      line.choices
+        ?.filter((c) => c.selection === ChoiceSelectionType.Away)
+        .reduce((acc, c) => {
+          const awayCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+          return acc + (awayCount || 0);
+        }, 0) ?? 0;
 
-  //   const homeBetVolume = line.choices
-  //     ?.filter((c) => c.selection === ChoiceSelectionType.Home)
-  //     .reduce((acc, c) => {
-  //       const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-  //       return acc + (homeCount || 0);
-  //     }, 0);
+    const homeBetVolume =
+      line.choices
+        ?.filter((c) => c.selection === ChoiceSelectionType.Home)
+        .reduce((acc, c) => {
+          const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+          return acc + (homeCount || 0);
+        }, 0) ?? 0;
+
+    const customMatchVolume =
+      line.choices
+        ?.filter((c) => c.selection === selectedChoice?.selection)
+        .reduce((acc, c) => {
+          const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+          return acc + (homeCount || 0);
+        }, 0) ?? 0;
+
+    const customFadeVolume =
+      line.choices
+        ?.filter((c) => c.selection !== selectedChoice?.selection)
+        .reduce((acc, c) => {
+          const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
+          return acc + (homeCount || 0);
+        }, 0) ?? 0;
+
+    if (awayBetVolume > 0 || homeBetVolume > 0) {
+      return {
+        leftVolume: awayBetVolume,
+        rightVolume: homeBetVolume,
+        leftLabel: 'Away Volume',
+        rightLabel: 'Home Volume',
+      };
+    }
+
+    if (overBetVolume > 0 || underBetVolume > 0) {
+      return {
+        leftVolume: overBetVolume,
+        rightVolume: underBetVolume,
+        leftLabel: 'Over Volume',
+        rightLabel: 'Under Volume',
+      };
+    }
+
+    return {
+      leftVolume: customMatchVolume,
+      rightVolume: customFadeVolume,
+      leftLabel: 'Matching Volume',
+      rightLabel: 'Opposing Volume',
+    };
+  };
 
   const onClickMakeBet = async (): Promise<void> => {
     try {
@@ -314,6 +367,8 @@ export default function NflPlayoffsLineCard({
     );
   };
 
+  const { leftVolume, rightVolume, leftLabel, rightLabel } = pickVolumes();
+
   if (lineClosed) {
     return (
       <LineCardContainer userHasBet={!!usersBet} userIsLoggedIn={!!userId}>
@@ -321,33 +376,28 @@ export default function NflPlayoffsLineCard({
         <NbaPlayoffLineHeader line={line} />
         {/* Body */}
         {userId && (
-          <Stack spacing={0} align={'left'} paddingTop={3}>
+          <Stack spacing={0} align={'left'} paddingY={3}>
             <Center>
               {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
 
               {usersBet && (
-                <VStack>
-                  <Box as="label" position="relative">
-                    <Image
-                      _checked={{ filter: 'none', border: '1px', borderColor: 'teal.500' }}
-                      htmlHeight="100px"
-                      maxHeight="100px"
-                      htmlWidth="200px"
-                      objectFit="cover"
-                      bg={'gray.600'}
-                      borderRadius="md"
-                      alt={selectedChoice?.image?.altText || 'unknown'}
-                      src={selectedChoice?.image?.image?.publicUrlTransformed || ''}
-                      transitionProperty="transform"
-                      transitionDuration="0.3s"
-                      transitionTimingFunction="ease-in-out"
-                    />
-                    <Badge position="absolute" variant="solid" left="6px" top="6px">
-                      {formatNbaPoints(selectedChoice?.points)}
-                    </Badge>
-                  </Box>
+                <HStack>
+                  <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
+                  {usersBet.choice?.selection !== ChoiceSelectionType.Over &&
+                    usersBet.choice?.selection !== ChoiceSelectionType.Under && (
+                      <Image
+                        boxSize="40px"
+                        fit="scale-down"
+                        bg={'gray.600'}
+                        alt={selectedChoice?.secondaryImage?.altText || 'unknown'}
+                        src={selectedChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
+                      />
+                    )}
+                  {usersBet.choice?.selection == ChoiceSelectionType.Over && <Text>Over</Text>}
+                  {usersBet.choice?.selection == ChoiceSelectionType.Under && <Text>Under</Text>}
+                  <Badge>{formatNbaPoints(selectedChoice?.points)}</Badge>
                   {superBetSelected && <SuperBetTag />}
-                </VStack>
+                </HStack>
               )}
             </Center>
 
@@ -364,6 +414,7 @@ export default function NflPlayoffsLineCard({
                       Loss
                     </Badge>
                   )}
+                  {/* <Badge>{formatNbaPoints(selectedChoice?.points)}</Badge> */}
                 </HStack>
               </Center>
             )}
@@ -375,12 +426,12 @@ export default function NflPlayoffsLineCard({
           {!winningChoice && (
             <HStack justifyContent="space-evenly" paddingTop={3}>
               <Stat textAlign="center">
-                <StatLabel>Over Bet Volume</StatLabel>
-                <StatNumber>{overBetVolume}</StatNumber>
+                <StatLabel>{leftLabel}</StatLabel>
+                <StatNumber>{leftVolume}</StatNumber>
               </Stat>
               <Stat textAlign="center">
-                <StatLabel>Under Bet Volume</StatLabel>
-                <StatNumber>{underBetVolume}</StatNumber>
+                <StatLabel>{rightLabel}</StatLabel>
+                <StatNumber>{rightVolume}</StatNumber>
               </Stat>
             </HStack>
           )}

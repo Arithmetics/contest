@@ -114,7 +114,7 @@ export default function Nav(): JSX.Element {
             </Box>
 
             <ChakraLink href="/" title="LOGO">
-              <Image width={logoWidth} bg={'gray.600'} src="/images/bt-bets-logo.png" />
+              <Image width={logoWidth} bg={'gray.600'} mr={10} src="/images/bt-bets-logo.png" />
             </ChakraLink>
 
             <HStack spacing={1} display={{ base: 'none', md: 'inline-flex' }}>

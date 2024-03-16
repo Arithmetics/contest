@@ -24,7 +24,6 @@ import {
   useDeleteBetMutation,
   useMakeBetMutation,
 } from '../../../generated/graphql-types';
-
 import { betsRemaining, superBetsRemaining } from '../bets/NflAtsBetsStatusLine';
 import { LineCardContainer } from './LineCardContainer';
 import { LineCardFooterTicketCutouts } from './LineCardFooterTicketCutouts';
