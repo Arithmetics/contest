@@ -14,6 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { AiOutlineMenu } from 'react-icons/ai';
 import { IoIosBasketball } from 'react-icons/io';
+import { CgCardClubs } from 'react-icons/cg';
 import { GiAmericanFootballHelmet, GiAmericanFootballBall } from 'react-icons/gi';
 import { useRouter } from 'next/router';
 
@@ -36,7 +37,9 @@ export default function Nav(): JSX.Element {
   const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
   const determineLinkStyle = (link: string): ThemingProps<'Button'> => {
-    if (router.pathname === link) {
+    console.log(router.asPath === link);
+    console.log(router.asPath, link);
+    if (router.asPath === link) {
       return { variant: 'solid', size: 'sm', colorScheme: 'teal' };
     }
     return { variant: 'ghost', size: 'sm', colorScheme: 'white' };
@@ -68,7 +71,7 @@ export default function Nav(): JSX.Element {
                 paddingBottom={4}
                 margin={0}
                 bg="gray.900"
-                spacing={3}
+                spacing={1}
                 rounded="sm"
                 shadow="sm"
                 zIndex={10}
@@ -79,12 +82,20 @@ export default function Nav(): JSX.Element {
                   onClick={mobileNav.onClose}
                 />
                 <ButtonLink
+                  title="NBA Playoff Club"
+                  leftIcon={<CgCardClubs />}
+                  href={`/${Routes.CONTESTS}/clt0ki6yc0002s07zxyapw0f1`}
+                  buttonTheme={{ variant: 'ghost' }}
+                  layoutProps={{ w: 'full' }}
+                />
+                <ButtonLink
                   title="NFL ATS"
                   leftIcon={<GiAmericanFootballBall />}
                   href={`/${Routes.CONTESTS}/clr5al1bp00t0mc0ilwlmm42e`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
+
                 <ButtonLink
                   title="NFL Over Under"
                   leftIcon={<GiAmericanFootballHelmet />}
@@ -106,7 +117,13 @@ export default function Nav(): JSX.Element {
               <Image width={logoWidth} bg={'gray.600'} src="/images/bt-bets-logo.png" />
             </ChakraLink>
 
-            <HStack spacing={3} display={{ base: 'none', md: 'inline-flex' }}>
+            <HStack spacing={1} display={{ base: 'none', md: 'inline-flex' }}>
+              <ButtonLink
+                title="NBA Playoff Club"
+                leftIcon={<CgCardClubs />}
+                href={`/${Routes.CONTESTS}/clt0ki6yc0002s07zxyapw0f1`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/clt0ki6yc0002s07zxyapw0f1`)}
+              />
               <ButtonLink
                 title="NFL ATS"
                 leftIcon={<GiAmericanFootballBall />}
