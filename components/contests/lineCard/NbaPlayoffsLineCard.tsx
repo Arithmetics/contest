@@ -15,6 +15,7 @@ import {
   StatArrow,
   StatLabel,
   StatNumber,
+  Tag,
   Text,
   VStack,
   useBreakpointValue,
@@ -382,19 +383,32 @@ export default function NflPlayoffsLineCard({
 
               {usersBet && (
                 <HStack>
-                  <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
-                  {usersBet.choice?.selection !== ChoiceSelectionType.Over &&
-                    usersBet.choice?.selection !== ChoiceSelectionType.Under && (
-                      <Image
-                        boxSize="40px"
-                        fit="scale-down"
-                        bg={'gray.600'}
-                        alt={selectedChoice?.secondaryImage?.altText || 'unknown'}
-                        src={selectedChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
-                      />
-                    )}
-                  {usersBet.choice?.selection == ChoiceSelectionType.Over && <Text>Over</Text>}
-                  {usersBet.choice?.selection == ChoiceSelectionType.Under && <Text>Under</Text>}
+                  <Text color={'whiteAlpha.600'}>Selection:</Text>{' '}
+                  {(usersBet.choice?.selection === ChoiceSelectionType.Away ||
+                    usersBet.choice?.selection === ChoiceSelectionType.Home) && (
+                    <Image
+                      boxSize="40px"
+                      fit="scale-down"
+                      bg={'gray.600'}
+                      alt={selectedChoice?.image?.altText || 'unknown'}
+                      src={selectedChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
+                    />
+                  )}
+                  {usersBet.choice?.selection === ChoiceSelectionType.Custom && (
+                    <Image
+                      boxSize="40px"
+                      fit="scale-down"
+                      bg={'gray.600'}
+                      alt={selectedChoice?.image?.altText || 'unknown'}
+                      src={selectedChoice?.image?.image?.publicUrlTransformed || ''}
+                    />
+                  )}
+                  {usersBet.choice?.selection == ChoiceSelectionType.Over && (
+                    <Tag colorScheme="teal">Over</Tag>
+                  )}
+                  {usersBet.choice?.selection == ChoiceSelectionType.Under && (
+                    <Tag colorScheme="teal">Under</Tag>
+                  )}
                   <Badge>{formatNbaPoints(selectedChoice?.points)}</Badge>
                   {superBetSelected && <SuperBetTag />}
                 </HStack>
@@ -404,7 +418,7 @@ export default function NflPlayoffsLineCard({
             {lineHasWinner(line) && usersBet && (
               <Center>
                 <HStack alignItems={'baseline'}>
-                  <Text color={'whiteAlpha.600'}>Your result:</Text>
+                  <Text color={'whiteAlpha.600'}>Result:</Text>
                   {selectedChoice?.isWin ? (
                     <Badge marginLeft={2} colorScheme="green">
                       Win

@@ -31,7 +31,8 @@ export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element 
   return (
     <Center>
       <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'stretch'}>
-        {contest?.contestType === ContestContestTypeType.NflAts ? (
+        {contest?.contestType === ContestContestTypeType.NflAts ||
+        contest?.contestType === ContestContestTypeType.NbaPlayoffs ? (
           <TrackerATS contestId={contestId} />
         ) : (
           <TrackerOU contestId={contestId} />

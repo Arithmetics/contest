@@ -27,7 +27,7 @@ export default function NbaPlayoffLineCardHeader({
   if (overChoice || underChoice) {
     return (
       <Text fontSize={lineFontSize}>
-        {line.title} - {line.benchmark} Games
+        {line.title}: {line.benchmark} Games
       </Text>
     );
   }
