@@ -6,6 +6,7 @@ import {
 } from '../../../generated/graphql-types';
 import TrackerATS from './TrackerATS';
 import TrackerOU from './TrackerOU';
+import TrackerNbaPlayoffs from './TrackerNbaPlayoffs';
 
 type TrackerTabProps = {
   contestId?: string;
@@ -31,10 +32,14 @@ export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element 
   return (
     <Center>
       <Box display={'flex'} flexWrap={'wrap'} justifyContent={'center'} alignItems={'stretch'}>
-        {contest?.contestType === ContestContestTypeType.NflAts ||
-        contest?.contestType === ContestContestTypeType.NbaPlayoffs ? (
+        {contest?.contestType === ContestContestTypeType.NbaPlayoffs && (
+          <TrackerNbaPlayoffs contestId={contestId} />
+        )}
+        {contest?.contestType === ContestContestTypeType.NflAts && (
           <TrackerATS contestId={contestId} />
-        ) : (
+        )}
+        {(contest?.contestType === ContestContestTypeType.NbaOverUnder ||
+          contest?.contestType === ContestContestTypeType.NflOverUnder) && (
           <TrackerOU contestId={contestId} />
         )}
       </Box>

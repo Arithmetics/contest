@@ -37,8 +37,6 @@ export default function Nav(): JSX.Element {
   const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
 
   const determineLinkStyle = (link: string): ThemingProps<'Button'> => {
-    console.log(router.asPath === link);
-    console.log(router.asPath, link);
     if (router.asPath === link) {
       return { variant: 'solid', size: 'sm', colorScheme: 'teal' };
     }
