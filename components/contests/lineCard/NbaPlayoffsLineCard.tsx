@@ -11,11 +11,6 @@ import {
   Radio,
   RadioGroup,
   Stack,
-  Stat,
-  StatArrow,
-  StatLabel,
-  StatNumber,
-  Tag,
   Text,
   VStack,
   useBreakpointValue,
@@ -33,20 +28,15 @@ import {
   useMakeBetMutation,
 } from '../../../generated/graphql-types';
 
+import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
 import { betsRemaining, superBetsRemaining } from '../bets/NflAtsBetsStatusLine';
 import { LineCardContainer } from './LineCardContainer';
 import { LineCardFooterTicketCutouts } from './LineCardFooterTicketCutouts';
+import { NbaPlayoffClosedLineContainer } from './NbaPlayoffClosedLineContainer';
 import NbaPlayoffLineHeader from './NbaPlayoffLineHeader';
 import RadioImage from './RadioImage';
 import SuperBetTag from './SuperBetTag';
 import { formatNbaPoints, hasLineClosed, lineHasWinner } from './lineCardUtils';
-
-type PickFooterLabel = {
-  leftVolume: number;
-  rightVolume: number;
-  leftLabel: string;
-  rightLabel: string;
-};
 
 type NflPlayoffsLineCardProps = {
   line: Line;
@@ -57,7 +47,7 @@ type NflPlayoffsLineCardProps = {
   contestType?: ContestContestTypeType | null;
 };
 
-export default function NflPlayoffsLineCard({
+export default function NbaPlayoffsLineCard({
   line,
   userId,
   contestId,
@@ -125,96 +115,11 @@ export default function NflPlayoffsLineCard({
   }, [usersBet]);
 
   const lineClosed = hasLineClosed(line);
-  const winningChoice = line.choices?.find((c) => c.isWin);
-  const losingChoice = line.choices?.find((c) => !c.isWin);
-
-  const winningBetCount = contestBetsData?.bets?.filter(
-    (b) => b?.choice?.id === winningChoice?.id
-  ).length;
-
-  const losingBetCount = contestBetsData?.bets?.filter(
-    (b) => b?.choice?.id === losingChoice?.id
-  ).length;
 
   const pickAvailable = !contestBetsLoading && betsRemaining(usersBets, ruleSet) > 0;
   const superPickAvailable = !contestBetsLoading && superBetsRemaining(usersBets, ruleSet) > 0;
 
   const formDisabled = lineClosed || !!selectedChoice || !userHasEntered || !pickAvailable;
-
-  const pickVolumes = (): PickFooterLabel => {
-    const overBetVolume =
-      line.choices
-        ?.filter((c) => c.selection === ChoiceSelectionType.Over)
-        .reduce((acc, c) => {
-          const overCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-          return acc + (overCount || 0);
-        }, 0) ?? 0;
-
-    const underBetVolume =
-      line.choices
-        ?.filter((c) => c.selection === ChoiceSelectionType.Under)
-        .reduce((acc, c) => {
-          const underCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-          return acc + (underCount || 0);
-        }, 0) ?? 0;
-
-    const awayBetVolume =
-      line.choices
-        ?.filter((c) => c.selection === ChoiceSelectionType.Away)
-        .reduce((acc, c) => {
-          const awayCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-          return acc + (awayCount || 0);
-        }, 0) ?? 0;
-
-    const homeBetVolume =
-      line.choices
-        ?.filter((c) => c.selection === ChoiceSelectionType.Home)
-        .reduce((acc, c) => {
-          const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-          return acc + (homeCount || 0);
-        }, 0) ?? 0;
-
-    const customMatchVolume =
-      line.choices
-        ?.filter((c) => c.selection === selectedChoice?.selection)
-        .reduce((acc, c) => {
-          const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-          return acc + (homeCount || 0);
-        }, 0) ?? 0;
-
-    const customFadeVolume =
-      line.choices
-        ?.filter((c) => c.selection !== selectedChoice?.selection)
-        .reduce((acc, c) => {
-          const homeCount = contestBetsData?.bets?.filter((b) => b?.choice?.id === c.id).length;
-          return acc + (homeCount || 0);
-        }, 0) ?? 0;
-
-    if (awayBetVolume > 0 || homeBetVolume > 0) {
-      return {
-        leftVolume: awayBetVolume,
-        rightVolume: homeBetVolume,
-        leftLabel: 'Away Volume',
-        rightLabel: 'Home Volume',
-      };
-    }
-
-    if (overBetVolume > 0 || underBetVolume > 0) {
-      return {
-        leftVolume: overBetVolume,
-        rightVolume: underBetVolume,
-        leftLabel: 'Over Volume',
-        rightLabel: 'Under Volume',
-      };
-    }
-
-    return {
-      leftVolume: customMatchVolume,
-      rightVolume: customFadeVolume,
-      leftLabel: 'Matching Volume',
-      rightLabel: 'Opposing Volume',
-    };
-  };
 
   const onClickMakeBet = async (): Promise<void> => {
     try {
@@ -259,14 +164,14 @@ export default function NflPlayoffsLineCard({
             onChange={setFormSelectedChoiceId}
             value={formSelectedChoiceId.toString()}
           >
-            <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={2}>
+            <Grid templateColumns={`repeat(${columns}, 1fr)`} gap={2} w="100%">
               {customChoices
                 .sort((a, b) => (a?.points ?? 0) - (b?.points ?? 0))
                 .map((choice) => {
                   return (
                     <GridItem w="100%" key={choice.id}>
                       <Radio value={choice.id} onChange={() => setFormSelectedChoiceId(choice.id)}>
-                        <HStack gap="4px">
+                        <HStack gap="12px">
                           <VStack alignItems="start" gap="2px">
                             <Text>{choice.title}</Text>
 
@@ -308,7 +213,7 @@ export default function NflPlayoffsLineCard({
     }
     return (
       <Stack spacing={0} align={'left'} paddingTop={3}>
-        <HStack justifyContent="center" spacing={6} {...group}>
+        <HStack justifyContent="center" spacing={6} {...group} paddingTop={3}>
           {homeAwayChoices.map((choice) => {
             const radio = getRadioProps({ value: choice.id });
 
@@ -360,7 +265,7 @@ export default function NflPlayoffsLineCard({
           </Center>
         )}
         {userId && superBetSelected && formDisabled && (
-          <HStack justifyContent="center">
+          <HStack justifyContent="center" marginTop={3}>
             <SuperBetTag />
           </HStack>
         )}
@@ -368,107 +273,138 @@ export default function NflPlayoffsLineCard({
     );
   };
 
-  const { leftVolume, rightVolume, leftLabel, rightLabel } = pickVolumes();
-
   if (lineClosed) {
     return (
-      <LineCardContainer userHasBet={!!usersBet} userIsLoggedIn={!!userId}>
-        {/* Header */}
-        <NbaPlayoffLineHeader line={line} />
-        {/* Body */}
-        {userId && (
-          <Stack spacing={0} align={'left'} paddingY={3}>
-            <Center>
-              {!usersBet && <Text color={'whiteAlpha.500'}>Unselected</Text>}
-
-              {usersBet && (
-                <HStack>
-                  <Text color={'whiteAlpha.600'}>Selection:</Text>{' '}
-                  {(usersBet.choice?.selection === ChoiceSelectionType.Away ||
-                    usersBet.choice?.selection === ChoiceSelectionType.Home) && (
-                    <Image
-                      boxSize="40px"
-                      fit="scale-down"
-                      bg={'gray.600'}
-                      alt={selectedChoice?.image?.altText || 'unknown'}
-                      src={selectedChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
-                    />
-                  )}
-                  {usersBet.choice?.selection === ChoiceSelectionType.Custom && (
-                    <Image
-                      boxSize="40px"
-                      fit="scale-down"
-                      bg={'gray.600'}
-                      alt={selectedChoice?.image?.altText || 'unknown'}
-                      src={selectedChoice?.image?.image?.publicUrlTransformed || ''}
-                    />
-                  )}
-                  {usersBet.choice?.selection == ChoiceSelectionType.Over && (
-                    <Tag colorScheme="teal">Over</Tag>
-                  )}
-                  {usersBet.choice?.selection == ChoiceSelectionType.Under && (
-                    <Tag colorScheme="teal">Under</Tag>
-                  )}
-                  <Badge>{formatNbaPoints(selectedChoice?.points)}</Badge>
-                  {superBetSelected && <SuperBetTag />}
-                </HStack>
-              )}
-            </Center>
-
-            {lineHasWinner(line) && usersBet && (
-              <Center>
-                <HStack alignItems={'baseline'}>
-                  <Text color={'whiteAlpha.600'}>Result:</Text>
-                  {selectedChoice?.isWin ? (
-                    <Badge marginLeft={2} colorScheme="green">
-                      Win
-                    </Badge>
-                  ) : (
-                    <Badge marginLeft={2} colorScheme="red">
-                      Loss
-                    </Badge>
-                  )}
-                  {/* <Badge>{formatNbaPoints(selectedChoice?.points)}</Badge> */}
-                </HStack>
-              </Center>
-            )}
-          </Stack>
-        )}
-        {/* Footer  */}
-        {userId && <Divider orientation="horizontal" paddingTop={3} borderStyle="dashed" />}
-        <Stack spacing={0} align={'left'}>
-          {!winningChoice && (
-            <HStack justifyContent="space-evenly" paddingTop={3}>
-              <Stat textAlign="center">
-                <StatLabel>{leftLabel}</StatLabel>
-                <StatNumber>{leftVolume}</StatNumber>
-              </Stat>
-              <Stat textAlign="center">
-                <StatLabel>{rightLabel}</StatLabel>
-                <StatNumber>{rightVolume}</StatNumber>
-              </Stat>
+      <NbaPlayoffClosedLineContainer userHasBet={!!usersBet} userIsLoggedIn={!!userId}>
+        <VStack>
+          {/* points */}
+          {lineHasWinner(line) && selectedChoice?.isWin && (
+            <Badge variant="solid" colorScheme="teal">
+              {formatNbaPoints(selectedChoice?.points)}
+              <ArrowUpIcon mb={'2px'} ml={'8px'} />
+            </Badge>
+          )}
+          {lineHasWinner(line) && !selectedChoice?.isWin && (
+            <Badge variant="solid" colorScheme="red">
+              {formatNbaPoints(selectedChoice?.points)}
+              <ArrowDownIcon mb={'2px'} ml={'8px'} />
+            </Badge>
+          )}
+          {!lineHasWinner(line) && (
+            <Badge px="20px" variant="solid">
+              {formatNbaPoints(selectedChoice?.points)}
+            </Badge>
+          )}
+          {/* super */}
+          {superBetSelected && (
+            <HStack mt={3}>
+              <SuperBetTag />
             </HStack>
           )}
-          {winningChoice && (
-            <HStack justifyContent="space-evenly" paddingTop={3}>
-              <Stat textAlign="center">
-                <StatLabel>Correct Bet Volume</StatLabel>
-                <StatNumber>
-                  <StatArrow type="increase" />
-                  {winningBetCount}
-                </StatNumber>
-              </Stat>
-              <Stat textAlign="center">
-                <StatLabel>Incorrect Bet Volume</StatLabel>
-                <StatNumber>
-                  <StatArrow type="decrease" />
-                  {losingBetCount}
-                </StatNumber>
-              </Stat>
+          {/* logo */}
+          {(usersBet?.choice?.selection === ChoiceSelectionType.Away ||
+            usersBet?.choice?.selection === ChoiceSelectionType.Home) && (
+            <HStack>
+              <Image
+                boxSize="50px"
+                fit="scale-down"
+                bg={'gray.600'}
+                opacity={usersBet?.choice?.selection === ChoiceSelectionType.Away ? 1 : 0.4}
+                alt={
+                  line.choices?.find((c) => c.selection === ChoiceSelectionType.Away)
+                    ?.secondaryImage?.altText || 'unknown'
+                }
+                src={
+                  line?.choices?.find((c) => c.selection === ChoiceSelectionType.Away)
+                    ?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                }
+              />
+              <Text>@</Text>
+              <Image
+                boxSize="50px"
+                fit="scale-down"
+                bg={'gray.600'}
+                opacity={usersBet?.choice?.selection === ChoiceSelectionType.Home ? 1 : 0.4}
+                alt={
+                  line.choices?.find((c) => c.selection === ChoiceSelectionType.Home)
+                    ?.secondaryImage?.altText || 'unknown'
+                }
+                src={
+                  line?.choices?.find((c) => c.selection === ChoiceSelectionType.Home)
+                    ?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                }
+              />
             </HStack>
           )}
-        </Stack>
-      </LineCardContainer>
+          {usersBet?.choice?.selection === ChoiceSelectionType.Custom && (
+            <>
+              <Image
+                boxSize="100px"
+                fit="scale-down"
+                bg={'gray.600'}
+                alt={selectedChoice?.image?.altText || 'unknown'}
+                src={selectedChoice?.image?.image?.publicUrlTransformed || ''}
+              />
+              <Text fontSize="lg">{line?.title}</Text>
+            </>
+          )}
+          {(usersBet?.choice?.selection === ChoiceSelectionType.Away ||
+            usersBet?.choice?.selection === ChoiceSelectionType.Home) && (
+            <Text fontSize="lg">{line?.title}</Text>
+          )}
+          {usersBet?.choice?.selection === ChoiceSelectionType.Over ||
+            (usersBet?.choice?.selection === ChoiceSelectionType.Under && (
+              <HStack>
+                <Image
+                  boxSize="50px"
+                  fit="scale-down"
+                  bg={'gray.600'}
+                  alt={
+                    line.choices?.find((c) => c.selection === ChoiceSelectionType.Over)
+                      ?.secondaryImage?.altText || 'unknown'
+                  }
+                  src={
+                    line?.choices?.find((c) => c.selection === ChoiceSelectionType.Over)
+                      ?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                  }
+                />
+                <Text>@</Text>
+                <Image
+                  boxSize="50px"
+                  fit="scale-down"
+                  bg={'gray.600'}
+                  alt={
+                    line.choices?.find((c) => c.selection === ChoiceSelectionType.Under)
+                      ?.secondaryImage?.altText || 'unknown'
+                  }
+                  src={
+                    line?.choices?.find((c) => c.selection === ChoiceSelectionType.Under)
+                      ?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                  }
+                />
+              </HStack>
+            ))}
+          {/* text */}
+
+          {usersBet?.choice?.selection === ChoiceSelectionType.Over && (
+            <>
+              <Text fontSize="2xl" as="b">
+                Over
+              </Text>
+            </>
+          )}
+          {usersBet?.choice?.selection === ChoiceSelectionType.Under && (
+            <VStack gap={1}>
+              <Text fontSize="2xl" as="b" m={0}>
+                Under {line.benchmark}
+              </Text>
+              <Text fontSize="md" as="b" mt={-2}>
+                Games
+              </Text>
+            </VStack>
+          )}
+        </VStack>
+      </NbaPlayoffClosedLineContainer>
     );
   }
 

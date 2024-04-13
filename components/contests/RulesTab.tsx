@@ -116,7 +116,7 @@ const nbaPlayoffRules = (
       icon={<Icon as={FaDiceOne} color={'teal.500'} w={5} h={5} />}
       iconBg={'gray.700'}
       text={
-        'Pick Play in and Finals games ATS, all series winner and game totals, and Finals / Conference future winners.'
+        'Pick all series winners and game totals as well as Finals / Conference future winners.'
       }
     />
     <Rule
