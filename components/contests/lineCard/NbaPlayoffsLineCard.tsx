@@ -11,6 +11,7 @@ import {
   Radio,
   RadioGroup,
   Stack,
+  Tag,
   Text,
   VStack,
   useBreakpointValue,
@@ -264,9 +265,13 @@ export default function NbaPlayoffsLineCard({
             </Checkbox>
           </Center>
         )}
-        {userId && superBetSelected && formDisabled && (
+        {userId && superBetSelected && formDisabled ? (
           <HStack justifyContent="center" marginTop={3}>
             <SuperBetTag />
+          </HStack>
+        ) : (
+          <HStack justifyContent="center" marginTop={3}>
+            xxx
           </HStack>
         )}
       </Stack>
@@ -276,7 +281,7 @@ export default function NbaPlayoffsLineCard({
   if (lineClosed) {
     return (
       <NbaPlayoffClosedLineContainer userHasBet={!!usersBet} userIsLoggedIn={!!userId}>
-        <VStack>
+        <VStack gap={4}>
           {/* points */}
           {lineHasWinner(line) && selectedChoice?.isWin && (
             <Badge variant="solid" colorScheme="teal">
@@ -295,12 +300,7 @@ export default function NbaPlayoffsLineCard({
               {formatNbaPoints(selectedChoice?.points)}
             </Badge>
           )}
-          {/* super */}
-          {superBetSelected && (
-            <HStack mt={3}>
-              <SuperBetTag />
-            </HStack>
-          )}
+
           {/* logo */}
           {(usersBet?.choice?.selection === ChoiceSelectionType.Away ||
             usersBet?.choice?.selection === ChoiceSelectionType.Home) && (
@@ -345,53 +345,60 @@ export default function NbaPlayoffsLineCard({
                 alt={selectedChoice?.image?.altText || 'unknown'}
                 src={selectedChoice?.image?.image?.publicUrlTransformed || ''}
               />
-              <Text fontSize="lg">{line?.title}</Text>
+              <Text fontSize="xl" textAlign="center">
+                {line?.title}
+              </Text>
             </>
           )}
           {(usersBet?.choice?.selection === ChoiceSelectionType.Away ||
             usersBet?.choice?.selection === ChoiceSelectionType.Home) && (
-            <Text fontSize="lg">{line?.title}</Text>
+            <Text fontSize="xl" textAlign="center">
+              {line?.title}
+            </Text>
           )}
-          {usersBet?.choice?.selection === ChoiceSelectionType.Over ||
-            (usersBet?.choice?.selection === ChoiceSelectionType.Under && (
-              <HStack>
-                <Image
-                  boxSize="50px"
-                  fit="scale-down"
-                  bg={'gray.600'}
-                  alt={
-                    line.choices?.find((c) => c.selection === ChoiceSelectionType.Over)
-                      ?.secondaryImage?.altText || 'unknown'
-                  }
-                  src={
-                    line?.choices?.find((c) => c.selection === ChoiceSelectionType.Over)
-                      ?.secondaryImage?.image?.publicUrlTransformed ?? ''
-                  }
-                />
-                <Text>@</Text>
-                <Image
-                  boxSize="50px"
-                  fit="scale-down"
-                  bg={'gray.600'}
-                  alt={
-                    line.choices?.find((c) => c.selection === ChoiceSelectionType.Under)
-                      ?.secondaryImage?.altText || 'unknown'
-                  }
-                  src={
-                    line?.choices?.find((c) => c.selection === ChoiceSelectionType.Under)
-                      ?.secondaryImage?.image?.publicUrlTransformed ?? ''
-                  }
-                />
-              </HStack>
-            ))}
+          {(usersBet?.choice?.selection === ChoiceSelectionType.Over ||
+            usersBet?.choice?.selection === ChoiceSelectionType.Under) && (
+            <HStack>
+              <Image
+                boxSize="50px"
+                fit="scale-down"
+                bg={'gray.600'}
+                alt={
+                  line.choices?.find((c) => c.selection === ChoiceSelectionType.Over)
+                    ?.secondaryImage?.altText || 'unknown'
+                }
+                src={
+                  line?.choices?.find((c) => c.selection === ChoiceSelectionType.Over)
+                    ?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                }
+              />
+              <Text>@</Text>
+              <Image
+                boxSize="50px"
+                fit="scale-down"
+                bg={'gray.600'}
+                alt={
+                  line.choices?.find((c) => c.selection === ChoiceSelectionType.Under)
+                    ?.secondaryImage?.altText || 'unknown'
+                }
+                src={
+                  line?.choices?.find((c) => c.selection === ChoiceSelectionType.Under)
+                    ?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                }
+              />
+            </HStack>
+          )}
           {/* text */}
 
           {usersBet?.choice?.selection === ChoiceSelectionType.Over && (
-            <>
-              <Text fontSize="2xl" as="b">
-                Over
+            <VStack gap={1}>
+              <Text fontSize="2xl" as="b" m={0}>
+                Over {line.benchmark}
               </Text>
-            </>
+              <Text fontSize="md" as="b" mt={-2}>
+                Games
+              </Text>
+            </VStack>
           )}
           {usersBet?.choice?.selection === ChoiceSelectionType.Under && (
             <VStack gap={1}>
@@ -402,6 +409,12 @@ export default function NbaPlayoffsLineCard({
                 Games
               </Text>
             </VStack>
+          )}
+          {/* super */}
+          {superBetSelected && (
+            <HStack minHeight={3}>
+              <SuperBetTag />
+            </HStack>
           )}
         </VStack>
       </NbaPlayoffClosedLineContainer>

@@ -14,7 +14,7 @@ export function NbaPlayoffClosedLineContainer({
   return (
     <Tooltip label={!userIsLoggedIn && 'Log in to bet'}>
       <Box
-        // maxW="440px"
+        maxW="200px"
         // width="full"
         bg={'gray.600'}
         border={userHasBet ? '1px' : ''}
