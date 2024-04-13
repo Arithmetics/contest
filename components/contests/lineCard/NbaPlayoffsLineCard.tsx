@@ -222,6 +222,7 @@ export default function NbaPlayoffsLineCard({
                 key={choice.id}
                 altText={choice.image?.altText}
                 imageUrl={choice.image?.image?.publicUrlTransformed}
+                logoImageUrl={choice.secondaryImage?.image?.publicUrlTransformed}
                 hasSelection={formSelectedChoiceId !== '0'}
                 isDisabled={formDisabled}
                 spread={line.benchmark}
