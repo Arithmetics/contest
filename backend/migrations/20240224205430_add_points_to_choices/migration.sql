@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Choice" ADD COLUMN     "points" INTEGER NOT NULL DEFAULT 1;

@@ -55,7 +55,7 @@ var prodTransport = (0, import_nodemailer.createTransport)(
     apiKey: process.env.SENDGRID_API_KEY || ""
   })
 );
-function makeANiceEmail(text6) {
+function makeANiceEmail(text7) {
   return `
     <div className="email" style="
       border: 1px solid black;
@@ -65,7 +65,7 @@ function makeANiceEmail(text6) {
       font-size: 20px;
     ">
       <h2>Hello,</h2>
-      <p>${text6}</p>
+      <p>${text7}</p>
       <p>\u{1F44D}\u{1F3FB},</p> 
       <p>Brock</p>
     </div>
@@ -385,7 +385,8 @@ var Contest = (0, import_core2.list)({
       options: [
         { label: "NBA Over Under", value: "NBA_OVER_UNDER" /* NBA_OVER_UNDER */ },
         { label: "NFL Over Under", value: "NFL_OVER_UNDER" /* NFL_OVER_UNDER */ },
-        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ }
+        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ },
+        { label: "NBA Playoffs", value: "NBA_PLAYOFFS" /* NBA_PLAYOFFS */ }
       ],
       validation: {
         isRequired: true
@@ -506,13 +507,15 @@ var Choice = (0, import_core5.list)({
     }
   },
   fields: {
+    title: (0, import_fields5.text)({ validation: { isRequired: true } }),
     selection: (0, import_fields5.select)({
       type: "enum",
       options: [
         { label: "Over", value: "OVER" },
         { label: "Under", value: "UNDER" },
         { label: "Away", value: "AWAY" },
-        { label: "Home", value: "HOME" }
+        { label: "Home", value: "HOME" },
+        { label: "Custom", value: "CUSTOM" }
       ],
       validation: {
         isRequired: true
@@ -520,6 +523,7 @@ var Choice = (0, import_core5.list)({
       ui: { displayMode: "select" }
     }),
     isWin: (0, import_fields5.checkbox)({ defaultValue: false }),
+    points: (0, import_fields5.integer)({ validation: { isRequired: true }, defaultValue: 1 }),
     line: (0, import_fields5.relationship)({ ref: "Line.choices", many: false }),
     bets: (0, import_fields5.relationship)({ ref: "Bet.choice", many: true }),
     image: (0, import_fields5.relationship)({
@@ -864,10 +868,6 @@ var Registration = (0, import_core7.list)({
                   possible += points;
                   tiebreaker = tiebreaker - lineDiff;
                 }
-                if (choice.status === "LOSING" /* Losing */) {
-                  possible += points;
-                  tiebreaker = tiebreaker - lineDiff;
-                }
                 if (choice.status === "LOST" /* Lost */) {
                   tiebreaker = tiebreaker - lineDiff;
                 }
@@ -1024,7 +1024,8 @@ var History = (0, import_core10.list)({
       options: [
         { label: "NBA Over Under", value: "NBA_OVER_UNDER" /* NBA_OVER_UNDER */ },
         { label: "NFL Over Under", value: "NFL_OVER_UNDER" /* NFL_OVER_UNDER */ },
-        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ }
+        { label: "NFL ATS", value: "NFL_ATS" /* NFL_ATS */ },
+        { label: "NFL Playoffs", value: "NBA_PLAYOFFS" /* NBA_PLAYOFFS */ }
       ],
       validation: {
         isRequired: true

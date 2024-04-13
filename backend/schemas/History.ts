@@ -21,6 +21,7 @@ export const History: Lists.History = list({
         { label: 'NBA Over Under', value: RootContestType.NBA_OVER_UNDER },
         { label: 'NFL Over Under', value: RootContestType.NFL_OVER_UNDER },
         { label: 'NFL ATS', value: RootContestType.NFL_ATS },
+        { label: 'NFL Playoffs', value: RootContestType.NBA_PLAYOFFS },
       ],
       validation: {
         isRequired: true,

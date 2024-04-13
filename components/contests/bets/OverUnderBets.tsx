@@ -1,6 +1,7 @@
 import {
   Badge,
-  Center,
+  Box,
+  Flex,
   HStack,
   Modal,
   ModalBody,
@@ -8,31 +9,29 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Spinner,
+  Progress,
   Text,
   VStack,
-  Box,
   useBreakpointValue,
   useDisclosure,
-  useToast,
-  Progress,
-  Flex,
 } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
+  Bet,
   Contest,
   Line,
   User,
-  Bet,
   useContestBetsQuery,
   useContestByIdQuery,
   useCurrentUserQuery,
-} from '../../generated/graphql-types';
-import PayToast from './PayToast';
-import { AddBetButton } from './overUnder/AddBetButton';
-import { LinesPicker } from './overUnder/LinesPicker';
-import { BetCard } from './overUnder/BetCard';
-import { formatLineDate } from './lineCard/LineCardHeader';
+} from '../../../generated/graphql-types';
+import { formatLineDate } from '../lineCard/lineCardUtils';
+import { AddBetButton } from '../overUnder/AddBetButton';
+import { BetCard } from '../overUnder/BetCard';
+import { LinesPicker } from '../overUnder/LinesPicker';
+import NoLinesForContest from './NoLinesForContest';
+import PageLoader from './PageLoader';
+import { useHavePaidToast } from './useHavePaidToast';
 
 function soryById(a: Bet, b: Bet): number {
   if (a.id && b.id) {
@@ -54,8 +53,6 @@ type BetsTabProps = {
 };
 
 export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
-  const toast = useToast();
-
   const barWidth = useBreakpointValue({ base: '450%', md: '300px' });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -82,6 +79,8 @@ export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
     (r) => r.user?.id === userData?.authenticatedItem?.id
   );
 
+  useHavePaidToast(usersRegistration);
+
   const userId = user?.id;
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
 
@@ -99,35 +98,12 @@ export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
     onOpen();
   };
 
-  useEffect(() => {
-    if (usersRegistration && !usersRegistration.hasPaid) {
-      toast({
-        title: 'Have you paid yet?',
-        description: <PayToast />,
-        status: 'warning',
-        duration: 5000,
-        isClosable: true,
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [usersRegistration?.id]);
-
   if (getContestLoading || getUserLoading || contestBetsLoading) {
-    return (
-      <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
-      </Center>
-    );
+    return <PageLoader />;
   }
 
   if (!lines || lines.length === 0) {
-    return (
-      <>
-        <Center marginTop={'30vh'}>
-          <Text fontSize="2xl">No lines set for this contest.</Text>
-        </Center>
-      </>
-    );
+    return <NoLinesForContest />;
   }
 
   return (

@@ -110,6 +110,47 @@ const atsRules = (
   </>
 );
 
+const nbaPlayoffRules = (
+  <>
+    <Rule
+      icon={<Icon as={FaDiceOne} color={'teal.500'} w={5} h={5} />}
+      iconBg={'gray.700'}
+      text={
+        'Pick all series winners and game totals as well as Finals / Conference future winners.'
+      }
+    />
+    <Rule
+      icon={<Icon as={FaDiceTwo} color={'teal.500'} w={5} h={5} />}
+      iconBg={'gray.700'}
+      text={'You get 5 super picks which double the point value of your pick.'}
+    />
+    <Rule
+      icon={<Icon as={FaDiceThree} color={'teal.500'} w={5} h={5} />}
+      iconBg={'gray.700'}
+      text={
+        'Top 50% of players (rounded down) will split the pot as a ratio of their total points scored.'
+      }
+    />
+    <Rule
+      icon={<Icon as={FaDiceFour} color={'teal.500'} w={5} h={5} />}
+      iconBg={'gray.700'}
+      text={'Winner of the contest will receive a X entry bonus.'}
+    />
+    <Rule
+      icon={<Icon as={FaDiceFive} color={'teal.500'} w={5} h={5} />}
+      iconBg={'gray.700'}
+      text={
+        'Any missing picks will be entered as the largest underdog or the under on the game total. (Ex: If you miss a game total, it will be entered as the under).'
+      }
+    />
+    <Rule
+      icon={<Icon as={FaDiceSix} color={'teal.500'} w={5} h={5} />}
+      iconBg={'gray.700'}
+      text={'Have fun.'}
+    />
+  </>
+);
+
 type RulesProps = {
   contestId?: string;
 };
@@ -134,7 +175,10 @@ export default function Rules({ contestId }: RulesProps): JSX.Element {
   return (
     <Center p={3}>
       <Stack spacing={4} divider={<StackDivider borderColor={'gray.700'} />}>
-        {contest?.contestType === ContestContestTypeType.NflAts ? atsRules : overUnderRules}
+        {contest?.contestType === ContestContestTypeType.NbaPlayoffs && nbaPlayoffRules}
+        {contest?.contestType === ContestContestTypeType.NflAts && atsRules}
+        {contest?.contestType === ContestContestTypeType.NbaOverUnder && overUnderRules}
+        {contest?.contestType === ContestContestTypeType.NflOverUnder && overUnderRules}
       </Stack>
     </Center>
   );

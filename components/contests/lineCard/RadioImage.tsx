@@ -1,17 +1,16 @@
 import { Badge, Box, Image, UseRadioProps, useRadio } from '@chakra-ui/react';
 
-import { formatATS } from './LineCardHeader';
-
 type RadioImageProps = {
   hasSelection: boolean;
   imageUrl?: string | null;
+  logoImageUrl?: string | null;
   altText?: string | null;
   spread?: number | null;
-  isHome: boolean;
+  display: string;
 };
 
 export default function RadioImage(props: RadioImageProps & UseRadioProps): JSX.Element {
-  const { altText, imageUrl, hasSelection, spread, isHome, isDisabled } = props;
+  const { altText, imageUrl, logoImageUrl, hasSelection, isDisabled, display } = props;
   const { getInputProps, getCheckboxProps } = useRadio(props);
 
   const input = getInputProps();
@@ -44,8 +43,18 @@ export default function RadioImage(props: RadioImageProps & UseRadioProps): JSX.
         transitionTimingFunction="ease-in-out"
         _hover={{ transform: isDisabled ? 'scale(1.0)' : 'scale(1.02)' }}
       />
+      {logoImageUrl && (
+        <Image
+          position="absolute"
+          height="40px"
+          right="6px"
+          top="2px"
+          alt={altText || 'unknown'}
+          src={logoImageUrl || ''}
+        />
+      )}
       <Badge position="absolute" variant="solid" left="6px" top="6px">
-        {formatATS(isHome, spread)}
+        {display}
       </Badge>
     </Box>
   );

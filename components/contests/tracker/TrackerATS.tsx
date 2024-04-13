@@ -1,13 +1,12 @@
 import { Center, Spinner, Box, Divider, Flex } from '@chakra-ui/react';
 import {
-  ContestContestTypeType,
   Line,
   Bet,
   ChoiceSelectionType,
   useAtsTrackerStatusQuery,
 } from '../../../generated/graphql-types';
 
-import LineCardHeader from '../lineCard/LineCardHeader';
+import NflAtsLineCardHeader from '../lineCard/NflAtsLineCardHeader';
 import { UserBetGroup } from './TrackerOU';
 import TrackerBarGraph, { BarData } from './TrackerBarGraph';
 
@@ -94,7 +93,7 @@ function TrackerBarGraphCard({ line, contestId }: GenericLineProps): JSX.Element
       marginTop={6}
       p={4}
     >
-      <LineCardHeader line={line} contestType={ContestContestTypeType.NflAts} />
+      <NflAtsLineCardHeader line={line} />
       <Divider orientation="horizontal" paddingTop={3} />
       <Box height={'400px'} width={'650px'} maxW={'80vw'}>
         <TrackerBarGraph data={prepLineData(line)} homeWin={homeWin} awayWin={awayWin} />

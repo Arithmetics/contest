@@ -92,8 +92,10 @@ export const CONTEST_BY_ID_QUERY = gql`
         }
         choices {
           id
+          title
           selection
           isWin
+          points
           image {
             id
             image {
@@ -238,6 +240,7 @@ export const TRACKER_STATUS_QUERY = gql`
       }
       choices {
         id
+        title
         selection
         isWin
         image {
@@ -267,6 +270,7 @@ export const ATS_TRACKER_STATUS_QUERY = gql`
       }
       choices {
         id
+        title
         selection
         isWin
         image {
@@ -327,6 +331,7 @@ export const CONTEST_BETS_QUERY = gql`
       isSuper
       choice {
         id
+        title
         selection
         line {
           id
@@ -350,6 +355,8 @@ export const CONTEST_BETS_QUERY = gql`
 export const ATS_LEADERBOARD_QUERY = gql`
   query ATSLeaderboardQuery($contestId: ID!) {
     contest(where: { id: $contestId }) {
+      id
+      entryFee
       ruleSet {
         id
         superBetPointCount
@@ -375,10 +382,13 @@ export const ATS_LEADERBOARD_QUERY = gql`
         id
         title
         closingTime
+        benchmark
         choices {
           id
+          title
           selection
           isWin
+          points
           image {
             image {
               publicUrlTransformed
@@ -443,6 +453,7 @@ export const USERS_CONTEST_BETS_QUERY = gql`
         }
         choices {
           id
+          title
           selection
           isWin
           status

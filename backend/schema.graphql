@@ -89,8 +89,10 @@ input ChoiceRelateToOneForCreateInput {
 
 type Choice {
   id: ID!
+  title: String
   selection: ChoiceSelectionType
   isWin: Boolean
+  points: Int
   line: Line
   bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
@@ -105,6 +107,7 @@ enum ChoiceSelectionType {
   UNDER
   AWAY
   HOME
+  CUSTOM
 }
 
 enum ChoiceStatus {
@@ -124,12 +127,48 @@ input ChoiceWhereInput {
   OR: [ChoiceWhereInput!]
   NOT: [ChoiceWhereInput!]
   id: IDFilter
+  title: StringFilter
   selection: ChoiceSelectionTypeNullableFilter
   isWin: BooleanFilter
+  points: IntFilter
   line: LineWhereInput
   bets: BetManyRelationFilter
   image: CloudImageWhereInput
   secondaryImage: CloudImageWhereInput
+}
+
+input StringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  mode: QueryMode
+  not: NestedStringFilter
+}
+
+enum QueryMode {
+  default
+  insensitive
+}
+
+input NestedStringFilter {
+  equals: String
+  in: [String!]
+  notIn: [String!]
+  lt: String
+  lte: String
+  gt: String
+  gte: String
+  contains: String
+  startsWith: String
+  endsWith: String
+  not: NestedStringFilter
 }
 
 input ChoiceSelectionTypeNullableFilter {
@@ -137,6 +176,17 @@ input ChoiceSelectionTypeNullableFilter {
   in: [ChoiceSelectionType!]
   notIn: [ChoiceSelectionType!]
   not: ChoiceSelectionTypeNullableFilter
+}
+
+input IntFilter {
+  equals: Int
+  in: [Int!]
+  notIn: [Int!]
+  lt: Int
+  lte: Int
+  gt: Int
+  gte: Int
+  not: IntFilter
 }
 
 input BetManyRelationFilter {
@@ -147,13 +197,17 @@ input BetManyRelationFilter {
 
 input ChoiceOrderByInput {
   id: OrderDirection
+  title: OrderDirection
   selection: OrderDirection
   isWin: OrderDirection
+  points: OrderDirection
 }
 
 input ChoiceUpdateInput {
+  title: String
   selection: ChoiceSelectionType
   isWin: Boolean
+  points: Int
   line: LineRelateToOneForUpdateInput
   bets: BetRelateToManyForUpdateInput
   image: CloudImageRelateToOneForUpdateInput
@@ -185,8 +239,10 @@ input ChoiceUpdateArgs {
 }
 
 input ChoiceCreateInput {
+  title: String
   selection: ChoiceSelectionType
   isWin: Boolean
+  points: Int
   line: LineRelateToOneForCreateInput
   bets: BetRelateToManyForCreateInput
   image: CloudImageRelateToOneForCreateInput
@@ -274,40 +330,6 @@ input CloudImageWhereInput {
   altText: StringFilter
 }
 
-input StringFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  mode: QueryMode
-  not: NestedStringFilter
-}
-
-enum QueryMode {
-  default
-  insensitive
-}
-
-input NestedStringFilter {
-  equals: String
-  in: [String!]
-  notIn: [String!]
-  lt: String
-  lte: String
-  gt: String
-  gte: String
-  contains: String
-  startsWith: String
-  endsWith: String
-  not: NestedStringFilter
-}
-
 input CloudImageOrderByInput {
   id: OrderDirection
   altText: OrderDirection
@@ -357,6 +379,7 @@ enum ContestContestTypeType {
   NBA_OVER_UNDER
   NFL_OVER_UNDER
   NFL_ATS
+  NBA_PLAYOFFS
 }
 
 input ContestWhereUniqueInput {
@@ -504,6 +527,7 @@ enum HistoryContestTypeType {
   NBA_OVER_UNDER
   NFL_OVER_UNDER
   NFL_ATS
+  NBA_PLAYOFFS
 }
 
 input HistoryWhereUniqueInput {
@@ -526,17 +550,6 @@ input HistoryContestTypeTypeNullableFilter {
   in: [HistoryContestTypeType!]
   notIn: [HistoryContestTypeType!]
   not: HistoryContestTypeTypeNullableFilter
-}
-
-input IntFilter {
-  equals: Int
-  in: [Int!]
-  notIn: [Int!]
-  lt: Int
-  lte: Int
-  gt: Int
-  gte: Int
-  not: IntFilter
 }
 
 input HistoryOrderByInput {

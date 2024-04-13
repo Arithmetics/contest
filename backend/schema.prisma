@@ -25,8 +25,10 @@ model Bet {
 
 model Choice {
   id               String              @id @default(cuid())
+  title            String              @default("")
   selection        ChoiceSelectionType
   isWin            Boolean             @default(false)
+  points           Int                 @default(1)
   line             Line?               @relation("Choice_line", fields: [lineId], references: [id])
   lineId           String?             @map("line")
   bets             Bet[]               @relation("Bet_choice")
@@ -155,6 +157,7 @@ enum ChoiceSelectionType {
   UNDER
   AWAY
   HOME
+  CUSTOM
 }
 
 enum ContestStatusType {
@@ -167,10 +170,12 @@ enum ContestContestTypeType {
   NBA_OVER_UNDER
   NFL_OVER_UNDER
   NFL_ATS
+  NBA_PLAYOFFS
 }
 
 enum HistoryContestTypeType {
   NBA_OVER_UNDER
   NFL_OVER_UNDER
   NFL_ATS
+  NBA_PLAYOFFS
 }

@@ -97,9 +97,11 @@ export type Choice = {
   isWin?: Maybe<Scalars['Boolean']['output']>;
   labelName?: Maybe<Scalars['String']['output']>;
   line?: Maybe<Line>;
+  points?: Maybe<Scalars['Int']['output']>;
   secondaryImage?: Maybe<CloudImage>;
   selection?: Maybe<ChoiceSelectionType>;
   status?: Maybe<ChoiceStatus>;
+  title?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -121,8 +123,10 @@ export type ChoiceCreateInput = {
   image?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   isWin?: InputMaybe<Scalars['Boolean']['input']>;
   line?: InputMaybe<LineRelateToOneForCreateInput>;
+  points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ChoiceManyRelationFilter = {
@@ -134,7 +138,9 @@ export type ChoiceManyRelationFilter = {
 export type ChoiceOrderByInput = {
   id?: InputMaybe<OrderDirection>;
   isWin?: InputMaybe<OrderDirection>;
+  points?: InputMaybe<OrderDirection>;
   selection?: InputMaybe<OrderDirection>;
+  title?: InputMaybe<OrderDirection>;
 };
 
 export type ChoiceRelateToManyForCreateInput = {
@@ -162,6 +168,7 @@ export type ChoiceRelateToOneForUpdateInput = {
 
 export enum ChoiceSelectionType {
   Away = 'AWAY',
+  Custom = 'CUSTOM',
   Home = 'HOME',
   Over = 'OVER',
   Under = 'UNDER'
@@ -192,8 +199,10 @@ export type ChoiceUpdateInput = {
   image?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   isWin?: InputMaybe<Scalars['Boolean']['input']>;
   line?: InputMaybe<LineRelateToOneForUpdateInput>;
+  points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ChoiceWhereInput = {
@@ -205,8 +214,10 @@ export type ChoiceWhereInput = {
   image?: InputMaybe<CloudImageWhereInput>;
   isWin?: InputMaybe<BooleanFilter>;
   line?: InputMaybe<LineWhereInput>;
+  points?: InputMaybe<IntFilter>;
   secondaryImage?: InputMaybe<CloudImageWhereInput>;
   selection?: InputMaybe<ChoiceSelectionTypeNullableFilter>;
+  title?: InputMaybe<StringFilter>;
 };
 
 export type ChoiceWhereUniqueInput = {
@@ -363,6 +374,7 @@ export type ContestRegistrationsCountArgs = {
 
 export enum ContestContestTypeType {
   NbaOverUnder = 'NBA_OVER_UNDER',
+  NbaPlayoffs = 'NBA_PLAYOFFS',
   NflAts = 'NFL_ATS',
   NflOverUnder = 'NFL_OVER_UNDER'
 }
@@ -510,6 +522,7 @@ export type History = {
 
 export enum HistoryContestTypeType {
   NbaOverUnder = 'NBA_OVER_UNDER',
+  NbaPlayoffs = 'NBA_PLAYOFFS',
   NflAts = 'NFL_ATS',
   NflOverUnder = 'NFL_OVER_UNDER'
 }
@@ -1297,7 +1310,7 @@ export type PointCounts = {
   likely?: Maybe<Scalars['Int']['output']>;
   locked?: Maybe<Scalars['Int']['output']>;
   possible?: Maybe<Scalars['Int']['output']>;
-  tiebreaker?: Maybe<Scalars['Int']['output']>;
+  tiebreaker?: Maybe<Scalars['Float']['output']>;
 };
 
 export type Query = {

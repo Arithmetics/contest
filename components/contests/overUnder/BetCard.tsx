@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 import { LockIcon } from '@chakra-ui/icons';
 import { Line, Bet } from '../../../generated/graphql-types';
-import { hasLineClosed } from '../lineCard/LineCard';
+import { hasLineClosed } from '../lineCard/lineCardUtils';
 
 type BetCardProps = {
   line?: Line;

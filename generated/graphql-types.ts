@@ -100,9 +100,11 @@ export type Choice = {
   isWin?: Maybe<Scalars['Boolean']['output']>;
   labelName?: Maybe<Scalars['String']['output']>;
   line?: Maybe<Line>;
+  points?: Maybe<Scalars['Int']['output']>;
   secondaryImage?: Maybe<CloudImage>;
   selection?: Maybe<ChoiceSelectionType>;
   status?: Maybe<ChoiceStatus>;
+  title?: Maybe<Scalars['String']['output']>;
 };
 
 
@@ -124,8 +126,10 @@ export type ChoiceCreateInput = {
   image?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   isWin?: InputMaybe<Scalars['Boolean']['input']>;
   line?: InputMaybe<LineRelateToOneForCreateInput>;
+  points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForCreateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ChoiceManyRelationFilter = {
@@ -137,7 +141,9 @@ export type ChoiceManyRelationFilter = {
 export type ChoiceOrderByInput = {
   id?: InputMaybe<OrderDirection>;
   isWin?: InputMaybe<OrderDirection>;
+  points?: InputMaybe<OrderDirection>;
   selection?: InputMaybe<OrderDirection>;
+  title?: InputMaybe<OrderDirection>;
 };
 
 export type ChoiceRelateToManyForCreateInput = {
@@ -165,6 +171,7 @@ export type ChoiceRelateToOneForUpdateInput = {
 
 export enum ChoiceSelectionType {
   Away = 'AWAY',
+  Custom = 'CUSTOM',
   Home = 'HOME',
   Over = 'OVER',
   Under = 'UNDER'
@@ -195,8 +202,10 @@ export type ChoiceUpdateInput = {
   image?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   isWin?: InputMaybe<Scalars['Boolean']['input']>;
   line?: InputMaybe<LineRelateToOneForUpdateInput>;
+  points?: InputMaybe<Scalars['Int']['input']>;
   secondaryImage?: InputMaybe<CloudImageRelateToOneForUpdateInput>;
   selection?: InputMaybe<ChoiceSelectionType>;
+  title?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type ChoiceWhereInput = {
@@ -208,8 +217,10 @@ export type ChoiceWhereInput = {
   image?: InputMaybe<CloudImageWhereInput>;
   isWin?: InputMaybe<BooleanFilter>;
   line?: InputMaybe<LineWhereInput>;
+  points?: InputMaybe<IntFilter>;
   secondaryImage?: InputMaybe<CloudImageWhereInput>;
   selection?: InputMaybe<ChoiceSelectionTypeNullableFilter>;
+  title?: InputMaybe<StringFilter>;
 };
 
 export type ChoiceWhereUniqueInput = {
@@ -366,6 +377,7 @@ export type ContestRegistrationsCountArgs = {
 
 export enum ContestContestTypeType {
   NbaOverUnder = 'NBA_OVER_UNDER',
+  NbaPlayoffs = 'NBA_PLAYOFFS',
   NflAts = 'NFL_ATS',
   NflOverUnder = 'NFL_OVER_UNDER'
 }
@@ -513,6 +525,7 @@ export type History = {
 
 export enum HistoryContestTypeType {
   NbaOverUnder = 'NBA_OVER_UNDER',
+  NbaPlayoffs = 'NBA_PLAYOFFS',
   NflAts = 'NFL_ATS',
   NflOverUnder = 'NFL_OVER_UNDER'
 }
@@ -1300,7 +1313,7 @@ export type PointCounts = {
   likely?: Maybe<Scalars['Int']['output']>;
   locked?: Maybe<Scalars['Int']['output']>;
   possible?: Maybe<Scalars['Int']['output']>;
-  tiebreaker?: Maybe<Scalars['Int']['output']>;
+  tiebreaker?: Maybe<Scalars['Float']['output']>;
 };
 
 export type Query = {
@@ -2097,7 +2110,7 @@ export type ContestByIdQueryVariables = Exact<{
 }>;
 
 
-export type ContestByIdQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, name?: string | null, description?: string | null, status?: ContestStatusType | null, entryFee?: number | null, contestType?: ContestContestTypeType | null, ruleSet?: { __typename?: 'RuleSet', maxBets?: number | null, maxSuperBets?: number | null, superBetPointCount?: number | null } | null, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, isWin?: boolean | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null }> | null }> | null, registrations?: Array<{ __typename?: 'Registration', id: string, hasPaid?: boolean | null, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, email?: string | null, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, winner?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null } | null };
+export type ContestByIdQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, name?: string | null, description?: string | null, status?: ContestStatusType | null, entryFee?: number | null, contestType?: ContestContestTypeType | null, ruleSet?: { __typename?: 'RuleSet', maxBets?: number | null, maxSuperBets?: number | null, superBetPointCount?: number | null } | null, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, points?: number | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null }> | null }> | null, registrations?: Array<{ __typename?: 'Registration', id: string, hasPaid?: boolean | null, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, email?: string | null, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, winner?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null } | null };
 
 export type ContestRegistrationMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
@@ -2144,14 +2157,14 @@ export type TrackerStatusQueryVariables = Exact<{
 }>;
 
 
-export type TrackerStatusQuery = { __typename?: 'Query', lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, benchmark?: number | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, standings?: Array<{ __typename?: 'Standing', id: string, wins?: number | null, gamesPlayed?: number | null, totalGames?: number | null }> | null, choices?: Array<{ __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, isWin?: boolean | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null }> | null }> | null };
+export type TrackerStatusQuery = { __typename?: 'Query', lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, benchmark?: number | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, standings?: Array<{ __typename?: 'Standing', id: string, wins?: number | null, gamesPlayed?: number | null, totalGames?: number | null }> | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null }> | null }> | null };
 
 export type AtsTrackerStatusQueryVariables = Exact<{
   contestId: Scalars['ID']['input'];
 }>;
 
 
-export type AtsTrackerStatusQuery = { __typename?: 'Query', lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, benchmark?: number | null, closingTime?: any | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, isWin?: boolean | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, user?: { __typename?: 'User', id: string, email?: string | null } | null }> | null }> | null }> | null };
+export type AtsTrackerStatusQuery = { __typename?: 'Query', lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, benchmark?: number | null, closingTime?: any | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, user?: { __typename?: 'User', id: string, email?: string | null } | null }> | null }> | null }> | null };
 
 export type LeaderboardQueryVariables = Exact<{
   contestId: Scalars['ID']['input'];
@@ -2165,14 +2178,14 @@ export type ContestBetsQueryVariables = Exact<{
 }>;
 
 
-export type ContestBetsQuery = { __typename?: 'Query', bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, choice?: { __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, line?: { __typename?: 'Line', id: string } | null } | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
+export type ContestBetsQuery = { __typename?: 'Query', bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, choice?: { __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, line?: { __typename?: 'Line', id: string } | null } | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
 
 export type AtsLeaderboardQueryVariables = Exact<{
   contestId: Scalars['ID']['input'];
 }>;
 
 
-export type AtsLeaderboardQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', ruleSet?: { __typename?: 'RuleSet', id: string, superBetPointCount?: number | null, maxBets?: number | null, maxSuperBets?: number | null } | null, registrations?: Array<{ __typename?: 'Registration', id: string, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, closingTime?: any | null, choices?: Array<{ __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, isWin?: boolean | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, user?: { __typename?: 'User', id: string } | null }> | null }> | null }> | null } | null };
+export type AtsLeaderboardQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, entryFee?: number | null, ruleSet?: { __typename?: 'RuleSet', id: string, superBetPointCount?: number | null, maxBets?: number | null, maxSuperBets?: number | null } | null, registrations?: Array<{ __typename?: 'Registration', id: string, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, closingTime?: any | null, benchmark?: number | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, points?: number | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, user?: { __typename?: 'User', id: string } | null }> | null }> | null }> | null } | null };
 
 export type HistoriesByTypeQueryVariables = Exact<{
   contestType: HistoryContestTypeType;
@@ -2187,7 +2200,7 @@ export type UserContestBetsQueryVariables = Exact<{
 }>;
 
 
-export type UserContestBetsQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, selection?: ChoiceSelectionType | null, isWin?: boolean | null, status?: ChoiceStatus | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null }> | null }> | null }> | null } | null };
+export type UserContestBetsQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, status?: ChoiceStatus | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null }> | null }> | null }> | null } | null };
 
 
 export const CreateNbaContestDocument = gql`
@@ -2841,8 +2854,10 @@ export const ContestByIdDocument = gql`
       }
       choices {
         id
+        title
         selection
         isWin
+        points
         image {
           id
           image {
@@ -3136,6 +3151,7 @@ export const TrackerStatusDocument = gql`
     }
     choices {
       id
+      title
       selection
       isWin
       image {
@@ -3192,6 +3208,7 @@ export const AtsTrackerStatusDocument = gql`
     }
     choices {
       id
+      title
       selection
       isWin
       image {
@@ -3306,6 +3323,7 @@ export const ContestBetsDocument = gql`
     isSuper
     choice {
       id
+      title
       selection
       line {
         id
@@ -3356,6 +3374,8 @@ export type ContestBetsQueryResult = Apollo.QueryResult<ContestBetsQuery, Contes
 export const AtsLeaderboardQueryDocument = gql`
     query ATSLeaderboardQuery($contestId: ID!) {
   contest(where: {id: $contestId}) {
+    id
+    entryFee
     ruleSet {
       id
       superBetPointCount
@@ -3381,10 +3401,13 @@ export const AtsLeaderboardQueryDocument = gql`
       id
       title
       closingTime
+      benchmark
       choices {
         id
+        title
         selection
         isWin
+        points
         image {
           image {
             publicUrlTransformed
@@ -3503,6 +3526,7 @@ export const UserContestBetsQueryDocument = gql`
       }
       choices {
         id
+        title
         selection
         isWin
         status
