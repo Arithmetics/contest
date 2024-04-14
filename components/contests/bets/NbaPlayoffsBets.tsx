@@ -81,7 +81,13 @@ export default function NBAPlayoffsBets({ contestId }: BetsTabProps): JSX.Elemen
     return <NoLinesForContest />;
   }
 
-  const availableLines = lines.filter((l) => !hasLineClosed(l as Line));
+  const availableRegularLines = lines.filter(
+    (l) => !hasLineClosed(l as Line) && !l.choices?.some((c) => c.selection === 'CUSTOM')
+  );
+  const availableCustomLines = lines.filter(
+    (l) => !hasLineClosed(l as Line) && l.choices?.some((c) => c.selection === 'CUSTOM')
+  );
+
   const pendingLines = lines.filter((l) => hasLineClosed(l as Line) && !lineHasWinner(l as Line));
   const settledLines = lines.filter((l) => lineHasWinner(l as Line));
   const userId = user?.id;
@@ -110,14 +116,29 @@ export default function NBAPlayoffsBets({ contestId }: BetsTabProps): JSX.Elemen
           </div>
         </Fade>
       ) : undefined}
-      {availableLines.length !== 0 ? (
+      {availableRegularLines.length !== 0 ? (
         <Box borderWidth="1px" borderRadius="lg" overflow="hidden" padding={margin} m={margin}>
           <Heading as="h3" size="lg">
             Available Lines
           </Heading>
           <Collapse in={isAvailableOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
-              {availableLines.map((line) => {
+              {availableRegularLines.map((line) => {
+                return (
+                  <NbaPlayoffsLineCard
+                    key={line.id}
+                    line={line as Line}
+                    userId={userId}
+                    contestId={contest?.id}
+                    userHasEntered={userHasEntered}
+                    ruleSet={contest?.ruleSet || undefined}
+                    contestType={contest?.contestType}
+                  />
+                );
+              })}
+            </Flex>
+            <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
+              {availableCustomLines.map((line) => {
                 return (
                   <NbaPlayoffsLineCard
                     key={line.id}
