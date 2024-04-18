@@ -15,6 +15,8 @@ import {
   VStack,
   useBreakpointValue,
   useRadioGroup,
+  StatHelpText,
+  Stat,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { BsLightning } from 'react-icons/bs';
@@ -36,7 +38,7 @@ import { NbaPlayoffClosedLineContainer } from './NbaPlayoffClosedLineContainer';
 import NbaPlayoffLineHeader from './NbaPlayoffLineHeader';
 import RadioImage from './RadioImage';
 import SuperBetTag from './SuperBetTag';
-import { formatNbaPoints, hasLineClosed, lineHasWinner } from './lineCardUtils';
+import { formatLineDate, formatNbaPoints, hasLineClosed, lineHasWinner } from './lineCardUtils';
 
 type NflPlayoffsLineCardProps = {
   line: Line;
@@ -426,6 +428,9 @@ export default function NbaPlayoffsLineCard({
     <LineCardContainer userHasBet={!!usersBet} userIsLoggedIn={!!userId}>
       {/* Header */}
       <NbaPlayoffLineHeader line={line} />
+      <Stat>
+        <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>
+      </Stat>
       {/* Body */}
       <Stack spacing={0} align={'left'} paddingTop={3}>
         {radioGroup()}
