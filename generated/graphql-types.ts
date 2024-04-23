@@ -2185,7 +2185,7 @@ export type AtsLeaderboardQueryVariables = Exact<{
 }>;
 
 
-export type AtsLeaderboardQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, entryFee?: number | null, ruleSet?: { __typename?: 'RuleSet', id: string, superBetPointCount?: number | null, maxBets?: number | null, maxSuperBets?: number | null } | null, registrations?: Array<{ __typename?: 'Registration', id: string, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, closingTime?: any | null, benchmark?: number | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, points?: number | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, user?: { __typename?: 'User', id: string } | null }> | null }> | null }> | null } | null };
+export type AtsLeaderboardQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, entryFee?: number | null, ruleSet?: { __typename?: 'RuleSet', id: string, superBetPointCount?: number | null, maxBets?: number | null, maxSuperBets?: number | null } | null, registrations?: Array<{ __typename?: 'Registration', id: string, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, lines?: Array<{ __typename?: 'Line', id: string, title?: string | null, closingTime?: any | null, benchmark?: number | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, points?: number | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null, user?: { __typename?: 'User', id: string } | null }> | null }> | null }> | null } | null };
 
 export type HistoriesByTypeQueryVariables = Exact<{
   contestType: HistoryContestTypeType;
@@ -3402,6 +3402,13 @@ export const AtsLeaderboardQueryDocument = gql`
       title
       closingTime
       benchmark
+      image {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
       choices {
         id
         title

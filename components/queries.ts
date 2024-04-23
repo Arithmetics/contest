@@ -383,6 +383,13 @@ export const ATS_LEADERBOARD_QUERY = gql`
         title
         closingTime
         benchmark
+        image {
+          id
+          altText
+          image {
+            publicUrlTransformed
+          }
+        }
         choices {
           id
           title
