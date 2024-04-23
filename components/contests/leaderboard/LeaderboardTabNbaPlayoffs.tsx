@@ -16,6 +16,7 @@ import {
   Badge,
   VStack,
   Flex,
+  HStack,
 } from '@chakra-ui/react';
 import { firstBy } from 'thenby';
 import {
@@ -23,6 +24,7 @@ import {
   Registration,
   RuleSet,
   AtsLeaderboardQuery,
+  ChoiceSelectionType,
 } from '../../../generated/graphql-types';
 
 const ENTRY_BONUS = 1;
@@ -240,7 +242,62 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
 
             return (
               <Tr key={line?.id}>
-                <Td>{line?.title}</Td>
+                <Td>
+                  <VStack alignItems="center" justifyContent="center">
+                    {line.choices?.some((c) => c.selection === 'CUSTOM') && (
+                      <Image
+                        boxSize="35px"
+                        fit="scale-down"
+                        alt={line?.image?.altText || 'unknown'}
+                        src={line?.image?.image?.publicUrlTransformed || ''}
+                      />
+                    )}
+                    {!line.choices?.some((c) => c.selection === 'CUSTOM') && (
+                      <HStack>
+                        <Image
+                          boxSize="25px"
+                          fit="scale-down"
+                          alt={
+                            (
+                              line.choices?.find((c) => c.selection === ChoiceSelectionType.Over) ||
+                              line.choices?.find((c) => c.selection === ChoiceSelectionType.Away)
+                            )?.secondaryImage?.altText || 'unknown'
+                          }
+                          src={
+                            (
+                              line?.choices?.find(
+                                (c) => c.selection === ChoiceSelectionType.Over
+                              ) ||
+                              line.choices?.find((c) => c.selection === ChoiceSelectionType.Away)
+                            )?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                          }
+                        />
+                        <Text>@</Text>
+                        <Image
+                          boxSize="20px"
+                          fit="scale-down"
+                          alt={
+                            (
+                              line.choices?.find(
+                                (c) => c.selection === ChoiceSelectionType.Under
+                              ) ||
+                              line.choices?.find((c) => c.selection === ChoiceSelectionType.Home)
+                            )?.secondaryImage?.altText || 'unknown'
+                          }
+                          src={
+                            (
+                              line?.choices?.find(
+                                (c) => c.selection === ChoiceSelectionType.Under
+                              ) ||
+                              line.choices?.find((c) => c.selection === ChoiceSelectionType.Home)
+                            )?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                          }
+                        />
+                      </HStack>
+                    )}
+                    <Text textAlign="center">{line?.title}</Text>
+                  </VStack>
+                </Td>
 
                 {sortedRegistrations.map((reg) => {
                   const usersChoice = line?.choices?.find((c) =>
@@ -272,9 +329,77 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                                 src={usersChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
                               />
                             ) : null}
-                            {usersChoice.selection === 'OVER' && <Text>Over {line.benchmark}</Text>}
+                            {usersChoice.selection === 'OVER' && (
+                              <VStack>
+                                <HStack>
+                                  <Image
+                                    boxSize="25px"
+                                    fit="scale-down"
+                                    alt={
+                                      line.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Over
+                                      )?.secondaryImage?.altText || 'unknown'
+                                    }
+                                    src={
+                                      line?.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Over
+                                      )?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                                    }
+                                  />
+                                  <Text>@</Text>
+                                  <Image
+                                    boxSize="20px"
+                                    fit="scale-down"
+                                    alt={
+                                      line.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Under
+                                      )?.secondaryImage?.altText || 'unknown'
+                                    }
+                                    src={
+                                      line?.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Under
+                                      )?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                                    }
+                                  />
+                                </HStack>
+                                <Text fontSize="xl">Over {line.benchmark}</Text>
+                              </VStack>
+                            )}
                             {usersChoice.selection === 'UNDER' && (
-                              <Text>Under {line.benchmark}</Text>
+                              <VStack>
+                                <HStack>
+                                  <Image
+                                    boxSize="25px"
+                                    fit="scale-down"
+                                    alt={
+                                      line.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Over
+                                      )?.secondaryImage?.altText || 'unknown'
+                                    }
+                                    src={
+                                      line?.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Over
+                                      )?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                                    }
+                                  />
+                                  <Text>@</Text>
+                                  <Image
+                                    boxSize="20px"
+                                    fit="scale-down"
+                                    alt={
+                                      line.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Under
+                                      )?.secondaryImage?.altText || 'unknown'
+                                    }
+                                    src={
+                                      line?.choices?.find(
+                                        (c) => c.selection === ChoiceSelectionType.Under
+                                      )?.secondaryImage?.image?.publicUrlTransformed ?? ''
+                                    }
+                                  />
+                                </HStack>
+                                <Text fontSize="xl">Under {line.benchmark}</Text>
+                              </VStack>
                             )}
                             {usersChoice.selection !== 'HOME' &&
                               usersChoice.selection !== 'AWAY' &&
