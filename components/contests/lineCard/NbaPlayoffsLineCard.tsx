@@ -347,15 +347,16 @@ export default function NbaPlayoffsLineCard({
                 alt={selectedChoice?.image?.altText || 'unknown'}
                 src={selectedChoice?.image?.image?.publicUrlTransformed || ''}
               />
-              <Text fontSize="xl" textAlign="center">
+              <Text fontSize="2xl" as="b" textAlign="center">
                 {line?.title}
               </Text>
             </>
           )}
           {(usersBet?.choice?.selection === ChoiceSelectionType.Away ||
             usersBet?.choice?.selection === ChoiceSelectionType.Home) && (
-            <Text fontSize="xl" textAlign="center">
-              {line?.title}
+            <Text fontSize="2xl" as="b" textAlign="center">
+              {/* {line?.title} */}
+              Series Winner
             </Text>
           )}
           {(usersBet?.choice?.selection === ChoiceSelectionType.Over ||
