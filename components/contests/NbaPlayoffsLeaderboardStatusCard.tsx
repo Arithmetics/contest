@@ -26,7 +26,8 @@ const NbaPlayoffLeaderboardStatusCard = ({
   const sortedLeaderboard = sortNbaLeaderboard(
     leaderboardData?.contest?.registrations || [],
     lines || [],
-    ruleSet
+    ruleSet ?? null,
+    0
   );
   const position =
     sortedLeaderboard.findIndex((registration) => registration?.user?.id === user?.id) + 1;
