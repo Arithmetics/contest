@@ -147,6 +147,11 @@ export function sortNbaLeaderboard(
           return bScore - aScore;
         })
           .thenBy<Registration>((a, b) => {
+            const aScore = totalScores[a.user?.id || ''] || 0;
+            const bScore = totalScores[b.user?.id || ''] || 0;
+            return bScore - aScore;
+          })
+          .thenBy<Registration>((a, b) => {
             return remainingLocks[b.user?.id || ''] - remainingLocks[a.user?.id || ''];
           })
           .thenBy<Registration>((a, b) => {

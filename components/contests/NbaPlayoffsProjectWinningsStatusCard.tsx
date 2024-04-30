@@ -46,7 +46,7 @@ const NbaPlayoffsProjectWinningsStatusCard = ({
     <StatusCard
       icon={<GiReceiveMoney fontSize="1.5rem" />}
       statLabel="Current Payout"
-      statNumber={`${payout}`}
+      statNumber={`$${payout}`}
       floatMode={floatMode}
     />
   );
