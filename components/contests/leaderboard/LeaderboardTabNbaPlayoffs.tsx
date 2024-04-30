@@ -27,12 +27,12 @@ import {
   ChoiceSelectionType,
 } from '../../../generated/graphql-types';
 
-const ENTRY_BONUS = 1;
+const ENTRY_BONUS = 4;
 
-type AtsDataLinesType = NonNullable<AtsLeaderboardQuery['contest']>['lines'];
-type AtsDataLineType = NonNullable<AtsDataLinesType>[number];
+export type AtsDataLinesType = NonNullable<AtsLeaderboardQuery['contest']>['lines'];
+export type AtsDataLineType = NonNullable<AtsDataLinesType>[number];
 
-function scoreAllNbaPlayoffRegistrations(
+export function scoreAllNbaPlayoffRegistrations(
   registrations: Registration[],
   lines: AtsDataLinesType,
   ruleSet?: RuleSet | null
@@ -64,7 +64,7 @@ function scoreAllNbaPlayoffRegistrations(
   return scores;
 }
 
-function getProjectedWinnings(
+export function getProjectedWinnings(
   pointMap: Record<string, number>,
   entryFee: number
 ): Record<string, number> {
@@ -100,7 +100,7 @@ function getProjectedWinnings(
   return projectedWinnings;
 }
 
-function getRemainingLocks(
+export function getRemainingLocks(
   registrations: Registration[],
   lines: AtsDataLinesType,
   ruleSet?: RuleSet | null
@@ -132,16 +132,18 @@ function getRemainingLocks(
 export function sortNbaLeaderboard(
   registrations: Registration[],
   lines: AtsDataLinesType,
-  ruleSet?: RuleSet | null
+  ruleSet: RuleSet | null,
+  entryFee: number
 ): Registration[] {
   const totalScores = scoreAllNbaPlayoffRegistrations(registrations || [], lines || [], ruleSet);
   const remainingLocks = getRemainingLocks(registrations || [], lines || [], ruleSet);
+  const projectedWinnings = getProjectedWinnings(totalScores, entryFee);
 
   return registrations
     ? [...registrations]?.sort(
         firstBy<Registration>((a, b) => {
-          const aScore = totalScores[a.user?.id || ''] || 0;
-          const bScore = totalScores[b.user?.id || ''] || 0;
+          const aScore = projectedWinnings[a.user?.id || ''] || 0;
+          const bScore = projectedWinnings[b.user?.id || ''] || 0;
           return bScore - aScore;
         })
           .thenBy<Registration>((a, b) => {
@@ -176,7 +178,12 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
   const totalScores = scoreAllNbaPlayoffRegistrations(registrations || [], lines || [], ruleSet);
   const remainingLocks = getRemainingLocks(registrations || [], lines || [], ruleSet);
 
-  const sortedRegistrations = sortNbaLeaderboard(registrations || [], lines || [], ruleSet);
+  const sortedRegistrations = sortNbaLeaderboard(
+    registrations || [],
+    lines || [],
+    ruleSet ?? null,
+    data?.contest?.entryFee ?? 0
+  );
 
   const projectedWinnings = getProjectedWinnings(totalScores, data?.contest?.entryFee ?? 0);
 

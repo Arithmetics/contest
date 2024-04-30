@@ -1,7 +1,11 @@
 import { GiReceiveMoney } from 'react-icons/gi';
-import { Contest, User } from '../../generated/graphql-types';
-
 import StatusCard from './StatusCard';
+import { Spinner } from '@chakra-ui/react';
+import { Contest, User, useAtsLeaderboardQuery } from '../../generated/graphql-types';
+import {
+  getProjectedWinnings,
+  scoreAllNbaPlayoffRegistrations,
+} from './leaderboard/LeaderboardTabNbaPlayoffs';
 
 type NbaPlayoffsProjectWinningsStatusCardProps = {
   contest?: Contest;
@@ -10,47 +14,39 @@ type NbaPlayoffsProjectWinningsStatusCardProps = {
 };
 
 const NbaPlayoffsProjectWinningsStatusCard = ({
-  //   contest,
-  //   user,
+  contest,
+  user,
   floatMode,
 }: NbaPlayoffsProjectWinningsStatusCardProps): JSX.Element => {
-  //   const { data: leaderboardData, loading: leaderboardLoading } = useAtsLeaderboardQuery({
-  //     variables: { contestId: contest?.id || '' },
-  //   });
+  const { data, loading } = useAtsLeaderboardQuery({ variables: { contestId: contest?.id || '' } });
 
-  //   const lines = leaderboardData?.contest?.lines ?? [];
-  //   const ruleSet = leaderboardData?.contest?.ruleSet;
+  const registrations = data?.contest?.registrations;
+  const lines = data?.contest?.lines ?? [];
 
-  //   const sortedLeaderboard = sortNbaLeaderboard(
-  //     leaderboardData?.contest?.registrations || [],
-  //     lines || [],
-  //     ruleSet
-  //   );
-  //   const position =
-  //     sortedLeaderboard.findIndex((registration) => registration?.user?.id === user?.id) + 1;
+  const ruleSet = data?.contest?.ruleSet;
 
-  //     const totalScores = scoreAllNbaPlayoffRegistrations(registrations || [], lines || [], ruleSet);
+  const totalScores = scoreAllNbaPlayoffRegistrations(registrations || [], lines || [], ruleSet);
 
-  //   const sortedRegistrations = sortNbaLeaderboard(registrations || [], lines || [], ruleSet);
+  const projectedWinnings = getProjectedWinnings(totalScores, data?.contest?.entryFee ?? 0);
 
-  //   const projectedWinnings = getProjectedWinnings(totalScores, data?.contest?.entryFee ?? 0);
+  const payout = projectedWinnings[user?.id || ''];
 
-  //   if (leaderboardLoading) {
-  //     return (
-  //       <StatusCard
-  //         icon={<Spinner />}
-  //         statLabel="Current Payout"
-  //         statNumber="--"
-  //         floatMode={floatMode}
-  //       />
-  //     );
-  //   }
+  if (loading) {
+    return (
+      <StatusCard
+        icon={<Spinner />}
+        statLabel="Current Payout"
+        statNumber="--"
+        floatMode={floatMode}
+      />
+    );
+  }
 
   return (
     <StatusCard
       icon={<GiReceiveMoney fontSize="1.5rem" />}
       statLabel="Current Payout"
-      statNumber={`$234`}
+      statNumber={`${payout}`}
       floatMode={floatMode}
     />
   );
