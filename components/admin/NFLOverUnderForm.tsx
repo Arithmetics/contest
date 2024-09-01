@@ -100,10 +100,12 @@ export default function NFLOverUnderForm(): JSX.Element {
         tennesseeTitansBenchmark: benchmarks.tennesseeTitansBenchmark ?? 0,
         washingtonCommandersBenchmark: benchmarks.washingtonCommandersBenchmark ?? 0,
         overSelection: {
+          title: 'over',
           selection: ChoiceSelectionType.Over,
           isWin: false,
         },
         underSelection: {
+          title: 'under',
           selection: ChoiceSelectionType.Under,
           isWin: false,
         },
