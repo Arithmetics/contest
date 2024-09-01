@@ -96,10 +96,12 @@ export default function NBAOverUnderForm(): JSX.Element {
         utahJazzBenchmark: benchmarks.utahJazzBenchmark ?? 0,
         washingtonWizardsBenchmark: benchmarks.washingtonWizardsBenchmark ?? 0,
         overSelection: {
+          title: 'over',
           selection: ChoiceSelectionType.Over,
           isWin: false,
         },
         underSelection: {
+          title: 'under',
           selection: ChoiceSelectionType.Under,
           isWin: false,
         },
