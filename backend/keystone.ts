@@ -80,12 +80,12 @@ export default auth.withAuth(
 
           // console.log('running NFL standing job!');
 
-          // startDailyStandingsJob(
-          //   context,
-          //   'cll1n0veg005emc0i3yckbc2x',
-          //   17,
-          //   'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
-          // );
+          startDailyStandingsJob(
+            context,
+            'cm0k4j7er005emc0jtzxxmm6l',
+            17,
+            'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
+          );
 
           console.log('running NBA standing job!');
           startDailyStandingsJob(
