@@ -38,14 +38,18 @@ export default function Nav(): JSX.Element {
 
   const determineLinkStyle = (link: string): ThemingProps<'Button'> => {
     if (router.asPath === link) {
-      return { variant: 'solid', size: 'sm', colorScheme: 'teal' };
+      return {
+        variant: 'solid',
+        size: 'sm',
+        colorScheme: 'btbets',
+      };
     }
     return { variant: 'ghost', size: 'sm', colorScheme: 'white' };
   };
 
   return (
     <>
-      <chakra.header bg="gray.900" w="full" px={{ base: 2, sm: 4 }} py={4} shadow="md">
+      <chakra.header bg="blackAlpha.900" w="full" px={{ base: 2, sm: 4 }} py={4} shadow="md">
         <Flex alignItems="center" justifyContent="space-between" mx="auto">
           <HStack display="flex" spacing={3} alignItems="center">
             <Box display={{ base: 'inline-flex', md: 'none' }}>
@@ -159,12 +163,12 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="Sign Up"
                   href={`/${Routes.SIGNUP}`}
-                  buttonTheme={{ variant: 'ghost', colorScheme: 'teal' }}
+                  buttonTheme={{ variant: 'ghost', colorScheme: 'btbets' }}
                 />
                 <ButtonLink
                   title="Log In"
                   href={`/${Routes.LOGIN}`}
-                  buttonTheme={{ variant: 'ghost', colorScheme: 'teal' }}
+                  buttonTheme={{ variant: 'ghost', colorScheme: 'btbets' }}
                 />
               </>
             )}

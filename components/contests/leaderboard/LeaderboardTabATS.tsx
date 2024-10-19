@@ -221,7 +221,7 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                           {isSuper ? (
                             <Box position="absolute" top="15%" left="45%">
                               <Tooltip label="Super Bet">
-                                <Avatar icon={<BsLightning />} size="xs" bg="purple.600" />
+                                <Avatar icon={<BsLightning />} size="xs" bg="btbets.500" />
                               </Tooltip>
                             </Box>
                           ) : undefined}

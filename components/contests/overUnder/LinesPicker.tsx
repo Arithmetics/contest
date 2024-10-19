@@ -135,7 +135,7 @@ export const LinesPicker = ({
             <Button
               isDisabled={overDisabled || makeBetLoading || updateBetLoading}
               rightIcon={<ArrowUpIcon />}
-              colorScheme="teal"
+              colorScheme="btbets"
               variant="outline"
               width="100%"
               onClick={submitBet(line, ChoiceSelectionType.Over)}
@@ -158,7 +158,7 @@ export const LinesPicker = ({
             <Button
               isDisabled={underDisabled || makeBetLoading || updateBetLoading}
               rightIcon={<ArrowDownIcon />}
-              colorScheme="teal"
+              colorScheme="btbets"
               variant="outline"
               width="100%"
               onClick={submitBet(line, ChoiceSelectionType.Under)}

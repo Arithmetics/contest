@@ -27,7 +27,7 @@ export default function RadioImage(props: RadioImageProps & UseRadioProps): JSX.
       <input {...input} />
       <Image
         {...checkbox}
-        _checked={{ filter: 'none', border: '1px', borderColor: 'teal.500' }}
+        _checked={{ filter: 'none', border: '1px', borderColor: 'btbets.500' }}
         filter={hasSelection ? 'grayscale(100%)' : 'none'}
         htmlHeight="100px"
         maxHeight="100px"

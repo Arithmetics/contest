@@ -53,7 +53,7 @@ export default function NflAtsLineCardHeader({ line }: NflAtsLineCardHeaderProps
               <Image
                 boxSize="40px"
                 fit="scale-down"
-                bg={'gray.600'}
+                // bg={'gray.600'}
                 alt={awayChoice.secondaryImage?.altText || 'unknown'}
                 src={awayChoice.secondaryImage?.image?.publicUrlTransformed || ''}
               />
@@ -63,7 +63,7 @@ export default function NflAtsLineCardHeader({ line }: NflAtsLineCardHeaderProps
               <Image
                 boxSize="40px"
                 fit="scale-down"
-                bg={'gray.600'}
+                // bg={'gray.600'}
                 alt={homeChoice.secondaryImage?.altText || 'unknown'}
                 src={homeChoice.secondaryImage?.image?.publicUrlTransformed || ''}
               />

@@ -13,7 +13,6 @@ import {
   StatLabel,
   StatNumber,
   Center,
-  useColorModeValue,
   useToast,
   Tooltip,
   Avatar,
@@ -114,7 +113,10 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
     <Box
       maxW={'500px'}
       width={'full'}
-      bg={useColorModeValue('white', 'gray.600')}
+      borderWidth={'1px'}
+      border={'btbets'}
+      borderStyle="solid"
+      // bg={useColorModeValue('white', 'gray.700')}
       boxShadow={'2xl'}
       rounded={'md'}
       overflow={'hidden'}
@@ -174,7 +176,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
               isLoading={loading}
               flexGrow={1}
               variant="outline"
-              bg="teal.500"
+              bg="btbets.500"
               color={'white'}
               rounded={'md'}
               _hover={{

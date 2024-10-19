@@ -83,9 +83,9 @@ function TrackerBarGraphCard({ line, contestId }: GenericLineProps): JSX.Element
   return (
     <Box
       width={'min(680px, 100%)'}
-      bg={'gray.600'}
+      // bg={'gray.600'}
       border={'1px'}
-      borderColor={'teal.500'}
+      borderColor={'btbets.500'}
       boxShadow={'dark-lg'}
       rounded={'md'}
       position={'relative'}

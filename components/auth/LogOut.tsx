@@ -37,7 +37,7 @@ export default function LogOut(): JSX.Element {
   };
 
   return (
-    <Button variant="ghost" colorScheme="teal" onClick={logout}>
+    <Button variant="ghost" colorScheme="btbets" onClick={logout}>
       Logout
     </Button>
   );

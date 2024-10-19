@@ -19,7 +19,7 @@ export default function UserPickEntry({ bet, choice, line }: UserPickEntryProps)
       <div>
         {line.title} - {choice.selection} - {line.benchmark}
       </div>
-      {bet.isSuper && <Badge colorScheme="purple">Super</Badge>}
+      {bet.isSuper && <Badge colorScheme="btbets.500">Super</Badge>}
     </HStack>
   );
 }

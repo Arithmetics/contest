@@ -133,7 +133,7 @@ export function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps)
                           {bet.isSuper && (
                             <Tooltip label="Super Bet">
                               <AvatarBadge
-                                borderColor={'teal.200'}
+                                borderColor={'btbets.200'}
                                 bg={'blue.400'}
                                 boxSize="1.25em"
                               />
@@ -169,7 +169,7 @@ function NbaPlayoffTrackerBarGraphCard({ line, contestId }: GenericLineProps): J
       width={'min(680px, 100%)'}
       bg={'gray.600'}
       border={'1px'}
-      borderColor={'teal.500'}
+      borderColor={'btbets.500'}
       boxShadow={'dark-lg'}
       rounded={'md'}
       position={'relative'}

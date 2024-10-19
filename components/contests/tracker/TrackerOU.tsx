@@ -96,9 +96,9 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
     <Box
       maxW={'95vw'}
       width={'700px'}
-      bg={'gray.600'}
+      // bg={'gray.600'}
       border={'1px'}
-      borderColor={'teal.500'}
+      borderColor={'btbets.500'}
       boxShadow={'dark-lg'}
       rounded={'md'}
       position={'relative'}
@@ -110,7 +110,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
         <Image
           boxSize="75px"
           fit="scale-down"
-          bg={'gray.600'}
+          // bg={'gray.600'}
           alt={line?.image?.altText || 'unknown'}
           src={line?.image?.image?.publicUrlTransformed || ''}
         />
@@ -219,7 +219,7 @@ export function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps)
                           {bet.isSuper && (
                             <Tooltip label="Super Bet">
                               <AvatarBadge
-                                borderColor={'teal.200'}
+                                borderColor={'btbets.200'}
                                 bg={'blue.400'}
                                 boxSize="1.25em"
                               />

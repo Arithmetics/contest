@@ -429,7 +429,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                             <Badge variant="solid" left="6px" top="6px">
                               {isSuper ? (usersChoice.points ?? 0) * 2 : usersChoice.points} Points
                             </Badge>
-                            {isSuper ? <Badge colorScheme="purple">Super</Badge> : undefined}
+                            {isSuper ? <Badge colorScheme="btbets">Super</Badge> : undefined}
                           </>
                         ) : (
                           '?'
