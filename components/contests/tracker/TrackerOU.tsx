@@ -96,7 +96,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
     <Box
       maxW={'95vw'}
       width={'700px'}
-      // bg={'gray.600'}
+      bg={'gray.600'}
       border={'1px'}
       borderColor={'btbets.500'}
       boxShadow={'dark-lg'}
@@ -110,7 +110,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
         <Image
           boxSize="75px"
           fit="scale-down"
-          // bg={'gray.600'}
+          bg={'gray.600'}
           alt={line?.image?.altText || 'unknown'}
           src={line?.image?.image?.publicUrlTransformed || ''}
         />
