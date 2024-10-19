@@ -8,7 +8,6 @@ import {
   Text,
   Badge,
   HStack,
-  Spinner,
   Stat,
   StatLabel,
   StatNumber,
@@ -17,6 +16,7 @@ import {
   Tooltip,
   Avatar,
 } from '@chakra-ui/react';
+import Spinner from './BTBetsLoading';
 import { useRouter } from 'next/router';
 
 import {
@@ -37,8 +37,8 @@ export default function AllContest(): JSX.Element {
 
   if (loading || getUserLoading) {
     return (
-      <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      <Center marginTop={'20vh'}>
+        <Spinner />
       </Center>
     );
   }

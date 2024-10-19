@@ -1,4 +1,4 @@
-import { Center, Flex, Stack, StackDivider, Icon, Text, Spinner } from '@chakra-ui/react';
+import { Center, Flex, Stack, StackDivider, Icon, Text } from '@chakra-ui/react';
 import {
   FaDiceOne,
   FaDiceTwo,
@@ -12,6 +12,7 @@ import {
   ContestContestTypeType,
   useContestByIdQuery,
 } from '../../generated/graphql-types';
+import Spinner from './BTBetsLoading';
 
 interface FeatureProps {
   text: string;
@@ -167,7 +168,7 @@ export default function Rules({ contestId }: RulesProps): JSX.Element {
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

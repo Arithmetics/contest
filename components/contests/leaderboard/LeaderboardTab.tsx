@@ -1,4 +1,4 @@
-import { Center, Spinner } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import { firstBy } from 'thenby';
 import {
   useContestByIdQuery,
@@ -9,6 +9,7 @@ import {
 import LeaderboardTabATS from './LeaderboardTabATS';
 import LeaderboardTabOU from './LeaderboardTabOU';
 import LeaderboardTabNbaPlayoffs from './LeaderboardTabNbaPlayoffs';
+import Spinner from '../BTBetsLoading';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(
@@ -34,7 +35,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

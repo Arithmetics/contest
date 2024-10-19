@@ -1,4 +1,4 @@
-import { Center, Spinner, Box, Divider, Flex } from '@chakra-ui/react';
+import { Center, Box, Divider, Flex } from '@chakra-ui/react';
 import {
   Line,
   Bet,
@@ -9,6 +9,7 @@ import {
 import NflAtsLineCardHeader from '../lineCard/NflAtsLineCardHeader';
 import { UserBetGroup } from './TrackerOU';
 import TrackerBarGraph, { BarData } from './TrackerBarGraph';
+import Spinner from '../BTBetsLoading';
 
 function prepLineData(line: Line): BarData[] {
   const homeBets = line.choices
@@ -52,7 +53,7 @@ export default function TrackerATS({ contestId }: TrackerATSProps): JSX.Element 
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

@@ -11,7 +11,6 @@ import {
   Tooltip,
   Box,
   useBreakpointValue,
-  Spinner,
 } from '@chakra-ui/react';
 import { BsLightning } from 'react-icons/bs';
 import { firstBy } from 'thenby';
@@ -21,6 +20,7 @@ import {
   RuleSet,
   AtsLeaderboardQuery,
 } from '../../../generated/graphql-types';
+import Spinner from '../BTBetsLoading';
 
 type AtsDataLinesType = NonNullable<AtsLeaderboardQuery['contest']>['lines'];
 type AtsDataLineType = NonNullable<AtsDataLinesType>[number];
@@ -140,7 +140,7 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

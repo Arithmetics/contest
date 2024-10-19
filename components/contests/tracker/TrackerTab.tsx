@@ -1,4 +1,4 @@
-import { Center, Spinner, Box } from '@chakra-ui/react';
+import { Center, Box } from '@chakra-ui/react';
 import {
   useContestByIdQuery,
   Contest,
@@ -7,6 +7,7 @@ import {
 import TrackerATS from './TrackerATS';
 import TrackerOU from './TrackerOU';
 import TrackerNbaPlayoffs from './TrackerNbaPlayoffs';
+import Spinner from '../BTBetsLoading';
 
 type TrackerTabProps = {
   contestId?: string;
@@ -24,7 +25,7 @@ export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element 
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

@@ -1,6 +1,5 @@
 import {
   Center,
-  Spinner,
   Box,
   HStack,
   Stat,
@@ -22,6 +21,7 @@ import {
   useContestBetsQuery,
 } from '../../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
+import Spinner from '../BTBetsLoading';
 
 function winsForOver(line?: Line): number {
   const standings = line?.standings;
@@ -70,7 +70,7 @@ export default function TrackerOU({ contestId }: TrackerOUProps): JSX.Element {
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

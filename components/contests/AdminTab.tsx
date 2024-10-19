@@ -1,7 +1,8 @@
-import { Code, Center, Spinner, Heading, Flex } from '@chakra-ui/react';
+import { Code, Center, Heading, Flex } from '@chakra-ui/react';
 import { useContestByIdQuery, ContestContestTypeType } from '../../generated/graphql-types';
 import CSVsATS from './CSVsATS';
 import CSVsOU from './CSVsOU';
+import Spinner from './BTBetsLoading';
 
 type AdminTabProps = {
   contestId?: string;
@@ -16,8 +17,8 @@ export default function AdminTab({ contestId }: AdminTabProps): JSX.Element {
 
   if (getContestLoading) {
     return (
-      <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      <Center marginTop={'20vh'}>
+        <Spinner />
       </Center>
     );
   }

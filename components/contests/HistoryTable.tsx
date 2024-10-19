@@ -1,6 +1,5 @@
 import {
   Center,
-  Spinner,
   Text,
   Box,
   Table,
@@ -14,6 +13,7 @@ import {
   Avatar,
 } from '@chakra-ui/react';
 import { useHistoriesByTypeQuery, HistoryContestTypeType } from '../../generated/graphql-types';
+import Spinner from './BTBetsLoading';
 
 type HistoryTableProps = {
   contestType: HistoryContestTypeType;
@@ -29,9 +29,7 @@ export default function HistoryTable({ contestType }: HistoryTableProps): JSX.El
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-        {/* @ts-ignore */}
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

@@ -1,14 +1,4 @@
-import {
-  Avatar,
-  AvatarBadge,
-  Box,
-  Center,
-  Divider,
-  Flex,
-  Spinner,
-  Tooltip,
-  Text,
-} from '@chakra-ui/react';
+import { Avatar, AvatarBadge, Box, Center, Divider, Flex, Tooltip, Text } from '@chakra-ui/react';
 import {
   Bet,
   ChoiceSelectionType,
@@ -19,6 +9,7 @@ import {
 import { useContestBetsQuery } from '../../../generated/graphql-types';
 import NflAtsLineCardHeader from '../lineCard/NflAtsLineCardHeader';
 import TrackerBarGraph, { BarData } from './TrackerBarGraph';
+import Spinner from '../BTBetsLoading';
 
 function prepLineData(line: Line): BarData[] {
   const homeBets = line.choices
@@ -64,7 +55,7 @@ export default function TrackerNbaPlayoffs({ contestId }: TrackerNbaProps): JSX.
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }
