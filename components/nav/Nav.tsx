@@ -116,7 +116,22 @@ export default function Nav(): JSX.Element {
             </Box>
 
             <ChakraLink href="/" title="LOGO">
-              <Image width={logoWidth} bg={'gray.600'} mr={10} src="/images/bt-bets-logo.png" />
+              <Image
+                width={logoWidth}
+                bg={'gray.600'}
+                mr={10}
+                src="/images/bt-bets-logo.png"
+                display={{ base: 'none', lg: 'block' }}
+              />
+            </ChakraLink>
+            <ChakraLink href="/" title="LOGO">
+              <Image
+                bg={'gray.600'}
+                width={'60px'}
+                mr={10}
+                src="/images/bt-bets-mobile-icon.png"
+                display={{ base: 'block', lg: 'none' }}
+              />
             </ChakraLink>
 
             <HStack spacing={1} display={{ base: 'none', md: 'inline-flex' }}>

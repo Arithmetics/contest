@@ -88,7 +88,6 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
           <Box
             padding={1}
             border={1}
-            bg={'gray.700'}
             borderColor={'btbets.500'}
             boxShadow={'dark-lg'}
             rounded={'md'}

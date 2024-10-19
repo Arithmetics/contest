@@ -114,7 +114,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
       maxW={'500px'}
       width={'full'}
       borderWidth={'1px'}
-      border={'btbets'}
+      border={'#3302ff'}
       borderStyle="solid"
       // bg={useColorModeValue('white', 'gray.700')}
       boxShadow={'2xl'}
@@ -132,7 +132,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
         src={contest.image?.image?.publicUrlTransformed || ''}
         objectFit={'cover'}
         objectPosition={'top'}
-        filter={contest.status === 'COMPLETE' ? 'grayscale(80%)' : ''}
+        // filter={contest.status === 'COMPLETE' ? 'grayscale(80%)' : ''}
       />
 
       <Box p={6}>
