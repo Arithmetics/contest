@@ -78,8 +78,7 @@ export default auth.withAuth(
             cache[k] = null;
           });
 
-          // console.log('running NFL standing job!');
-
+          console.log('running NFL standing job!');
           startDailyStandingsJob(
             context,
             'cm0k4j7er005emc0jtzxxmm6l',
@@ -90,7 +89,7 @@ export default auth.withAuth(
           console.log('running NBA standing job!');
           startDailyStandingsJob(
             context,
-            'clnmljg2f0052mc0i7inm1wby',
+            'cm1r8i861008mmc0j0ee9tm6g',
             82,
             'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings'
           );
