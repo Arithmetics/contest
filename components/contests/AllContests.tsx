@@ -35,7 +35,7 @@ import { CONTEST_BY_ID_QUERY } from '../queries';
 export default function AllContest(): JSX.Element {
   const { data, loading } = useAllContestsQuery();
   const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
-
+  console.log('?');
   if (loading || getUserLoading) {
     return (
       <Center marginTop={'30vh'}>
