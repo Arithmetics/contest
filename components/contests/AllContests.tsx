@@ -123,9 +123,6 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
       position={'relative'}
       margin={4}
     >
-      <Flex position="absolute" top={5} left={5} zIndex={1}>
-        <ContestCardBadge status={contest.status} />
-      </Flex>
       <Image
         h={'150px'}
         w={'full'}
@@ -138,7 +135,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
       <Box p={6}>
         <Stack spacing={0} align={'center'} mb={5}>
           <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-            {contest.name}
+            {contest.name} <ContestCardBadge status={contest.status} />
           </Heading>
           <Text color={'gray.500'}>{contest.description}</Text>
         </Stack>
