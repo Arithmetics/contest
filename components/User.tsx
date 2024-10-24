@@ -2,5 +2,6 @@ import { useCurrentUserQuery, AuthenticatedItem, User } from '../generated/graph
 
 export function useUser(): Partial<AuthenticatedItem> | null | undefined {
   const { data } = useCurrentUserQuery();
+  console.log({ data });
   return data?.authenticatedItem as User;
 }
