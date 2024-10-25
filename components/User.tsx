@@ -1,7 +1,7 @@
 import { useCurrentUserQuery, AuthenticatedItem, User } from '../generated/graphql-types';
 
 export function useUser(): Partial<AuthenticatedItem> | null | undefined {
-  const { data } = useCurrentUserQuery();
-  console.log({ data });
+  const { data, loading } = useCurrentUserQuery();
+  console.log({ loading, data });
   return data?.authenticatedItem as User;
 }

@@ -1082,10 +1082,17 @@ var keystone_default = auth.withAuth(
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
           });
+          console.log("running NFL standing job!");
+          startDailyStandingsJob(
+            context,
+            "cm0k4j7er005emc0jtzxxmm6l",
+            17,
+            "https://site.api.espn.com/apis/v2/sports/football/nfl/standings"
+          );
           console.log("running NBA standing job!");
           startDailyStandingsJob(
             context,
-            "clnmljg2f0052mc0i7inm1wby",
+            "cm1r8i861008mmc0j0ee9tm6g",
             82,
             "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
           );
