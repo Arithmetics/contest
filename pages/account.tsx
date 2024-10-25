@@ -1,3 +1,5 @@
+'use client';
+
 import { Flex, Stack } from '@chakra-ui/react';
 import UpdateAccountForm from '../components/auth/UpdateAccountForm';
 import UpdatePasswordForm from '../components/auth/UpdatePasswordForm';
