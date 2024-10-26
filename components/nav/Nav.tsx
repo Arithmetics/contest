@@ -1,3 +1,5 @@
+'use client';
+
 import {
   chakra,
   Box,
@@ -108,7 +110,7 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="NBA Over Under"
                   leftIcon={<IoIosBasketball />}
-                  href={`/${Routes.CONTESTS}/clnmljg2f0052mc0i7inm1wby`}
+                  href={`/${Routes.CONTESTS}/cm1r8i861008mmc0j0ee9tm6g`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
@@ -156,8 +158,8 @@ export default function Nav(): JSX.Element {
               <ButtonLink
                 title="NBA Over Under"
                 leftIcon={<IoIosBasketball />}
-                href={`/${Routes.CONTESTS}/clnmljg2f0052mc0i7inm1wby`}
-                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/clnmljg2f0052mc0i7inm1wby`)}
+                href={`/${Routes.CONTESTS}/cm1r8i861008mmc0j0ee9tm6g`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/cm1r8i861008mmc0j0ee9tm6g`)}
               />
             </HStack>
           </HStack>

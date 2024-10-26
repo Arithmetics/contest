@@ -65,7 +65,9 @@ export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
     },
   });
 
-  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery({
+    fetchPolicy: 'network-only',
+  });
 
   const { data: contestBetsData, loading: contestBetsLoading } = useContestBetsQuery({
     variables: { contestId: contestId || '' },

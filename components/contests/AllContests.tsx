@@ -33,8 +33,9 @@ import { CONTEST_BY_ID_QUERY } from '../queries';
 
 export default function AllContest(): JSX.Element {
   const { data, loading } = useAllContestsQuery();
-  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
-
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery({
+    fetchPolicy: 'network-only',
+  });
   if (loading || getUserLoading) {
     return (
       <Center marginTop={'20vh'}>

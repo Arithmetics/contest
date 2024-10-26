@@ -41,3 +41,4 @@ yarn-error.log*
 */backend/node_modules
 standings-job/node_modules
 /.tool-versions
+tsconfig.buildinfo

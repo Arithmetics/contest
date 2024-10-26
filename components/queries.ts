@@ -31,12 +31,6 @@ export const ALL_CONTESTS_QUERY = gql`
       status
       entryFee
       contestType
-      lines {
-        id
-        choices {
-          id
-        }
-      }
       registrations {
         id
         user {

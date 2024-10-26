@@ -2103,7 +2103,7 @@ export type CurrentUserQuery = { __typename?: 'Query', authenticatedItem?: { __t
 export type AllContestsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type AllContestsQuery = { __typename?: 'Query', contests?: Array<{ __typename?: 'Contest', id: string, name?: string | null, description?: string | null, status?: ContestStatusType | null, entryFee?: number | null, contestType?: ContestContestTypeType | null, lines?: Array<{ __typename?: 'Line', id: string, choices?: Array<{ __typename?: 'Choice', id: string }> | null }> | null, registrations?: Array<{ __typename?: 'Registration', id: string, user?: { __typename?: 'User', id: string } | null }> | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, winner?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
+export type AllContestsQuery = { __typename?: 'Query', contests?: Array<{ __typename?: 'Contest', id: string, name?: string | null, description?: string | null, status?: ContestStatusType | null, entryFee?: number | null, contestType?: ContestContestTypeType | null, registrations?: Array<{ __typename?: 'Registration', id: string, user?: { __typename?: 'User', id: string } | null }> | null, image?: { __typename?: 'CloudImage', altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, winner?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null };
 
 export type ContestByIdQueryVariables = Exact<{
   id: Scalars['ID']['input'];
@@ -2767,12 +2767,6 @@ export const AllContestsDocument = gql`
     status
     entryFee
     contestType
-    lines {
-      id
-      choices {
-        id
-      }
-    }
     registrations {
       id
       user {
