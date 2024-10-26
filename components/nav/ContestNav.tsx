@@ -75,7 +75,9 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
   const toast = useToast();
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery({
+    fetchPolicy: 'network-only',
+  });
   const [registerForContest, { loading: registerLoading }] = useContestRegistrationMutation({
     awaitRefetchQueries: true,
     refetchQueries: [{ query: CONTEST_BY_ID_QUERY, variables: { id: contestId } }],

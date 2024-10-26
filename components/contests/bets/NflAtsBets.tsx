@@ -52,7 +52,9 @@ export default function NflAtsBets({ contestId }: BetsTabProps): JSX.Element {
     },
   });
 
-  const { data: userData, loading: getUserLoading } = useCurrentUserQuery();
+  const { data: userData, loading: getUserLoading } = useCurrentUserQuery({
+    fetchPolicy: 'network-only',
+  });
 
   const { loading: contestBetsLoading } = useContestBetsQuery({
     variables: { contestId: contestId || '' },
