@@ -68,10 +68,6 @@ export default auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
       useMigrations: true,
       async onConnect(context) {
-        // async onConnect() {
-        // const context = _context as Context;
-        // async onConnect() {
-        console.log('connected');
         // cron jobs
         cron.schedule('0 0 14 * * *', () => {
           Object.keys(cache).forEach((k) => {
