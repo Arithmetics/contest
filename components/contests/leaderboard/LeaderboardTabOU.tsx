@@ -12,12 +12,12 @@ import {
   Center,
   Box,
   useBreakpointValue,
-  Spinner,
 } from '@chakra-ui/react';
 import { ExternalLinkIcon } from '@chakra-ui/icons';
 import { firstBy } from 'thenby';
 import { useLeaderboardQuery, Registration, User } from '../../../generated/graphql-types';
 import UserPickModal from './UserPickModal';
+import Spinner from '../BTBetsLoading';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
   return [...(registrations || [])].sort(
@@ -46,7 +46,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

@@ -160,7 +160,7 @@ export default function NbaPlayoffsLineCard({
       return (
         <HStack justifyContent="center" spacing={6} width="100%" padding={1}>
           <RadioGroup
-            colorScheme="teal"
+            colorScheme="btbets"
             isDisabled={formDisabled}
             width="100%"
             onChange={setFormSelectedChoiceId}
@@ -258,7 +258,7 @@ export default function NbaPlayoffsLineCard({
               isChecked={superBetSelected}
               marginTop={4}
               isDisabled={formDisabled || !superPickAvailable}
-              colorScheme="teal"
+              colorScheme="btbets"
               size="lg"
             >
               <HStack>
@@ -286,7 +286,7 @@ export default function NbaPlayoffsLineCard({
         <VStack gap={4}>
           {/* points */}
           {lineHasWinner(line) && selectedChoice?.isWin && (
-            <Badge variant="solid" colorScheme="teal">
+            <Badge variant="solid" colorScheme="btbets">
               {formatNbaPoints(selectedChoice?.points)}
               <ArrowUpIcon mb={'2px'} ml={'8px'} />
             </Badge>
@@ -455,7 +455,7 @@ export default function NbaPlayoffsLineCard({
                 isLoading={makeBetLoading}
                 flexGrow={1}
                 variant="outline"
-                bg="teal.500"
+                bg="btbets.500"
                 color={'white'}
                 rounded={'md'}
                 _hover={{

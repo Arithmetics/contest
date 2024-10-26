@@ -11,7 +11,6 @@ import {
   Tooltip,
   Box,
   useBreakpointValue,
-  Spinner,
   Text,
   Badge,
   VStack,
@@ -26,6 +25,7 @@ import {
   AtsLeaderboardQuery,
   ChoiceSelectionType,
 } from '../../../generated/graphql-types';
+import Spinner from '../BTBetsLoading';
 
 const ENTRY_BONUS = 4;
 
@@ -196,8 +196,8 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
 
   if (loading) {
     return (
-      <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      <Center marginTop={'20vh'}>
+        <Spinner />
       </Center>
     );
   }
@@ -429,7 +429,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                             <Badge variant="solid" left="6px" top="6px">
                               {isSuper ? (usersChoice.points ?? 0) * 2 : usersChoice.points} Points
                             </Badge>
-                            {isSuper ? <Badge colorScheme="purple">Super</Badge> : undefined}
+                            {isSuper ? <Badge colorScheme="btbets">Super</Badge> : undefined}
                           </>
                         ) : (
                           '?'

@@ -1,6 +1,7 @@
-import { Center, Spinner } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
 import { useContestByIdQuery, HistoryContestTypeType } from '../../generated/graphql-types';
 import HistoryTable from './HistoryTable';
+import Spinner from './BTBetsLoading';
 
 type HistoryTabProps = {
   contestId?: string;
@@ -18,7 +19,7 @@ export default function HistoryTab({ contestId }: HistoryTabProps): JSX.Element 
   if (getContestLoading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }

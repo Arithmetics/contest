@@ -1,6 +1,5 @@
 import {
   Center,
-  Spinner,
   Box,
   HStack,
   Stat,
@@ -22,6 +21,7 @@ import {
   useContestBetsQuery,
 } from '../../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
+import Spinner from '../BTBetsLoading';
 
 function winsForOver(line?: Line): number {
   const standings = line?.standings;
@@ -70,7 +70,7 @@ export default function TrackerOU({ contestId }: TrackerOUProps): JSX.Element {
   if (loading) {
     return (
       <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+        <Spinner />
       </Center>
     );
   }
@@ -96,9 +96,8 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
     <Box
       maxW={'95vw'}
       width={'700px'}
-      bg={'gray.600'}
       border={'1px'}
-      borderColor={'teal.500'}
+      borderColor={'btbets.500'}
       boxShadow={'dark-lg'}
       rounded={'md'}
       position={'relative'}
@@ -110,7 +109,6 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
         <Image
           boxSize="75px"
           fit="scale-down"
-          bg={'gray.600'}
           alt={line?.image?.altText || 'unknown'}
           src={line?.image?.image?.publicUrlTransformed || ''}
         />
@@ -219,7 +217,7 @@ export function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps)
                           {bet.isSuper && (
                             <Tooltip label="Super Bet">
                               <AvatarBadge
-                                borderColor={'teal.200'}
+                                borderColor={'btbets.200'}
                                 bg={'blue.400'}
                                 boxSize="1.25em"
                               />

@@ -98,15 +98,8 @@ export default function ForgotPasswordForm(): JSX.Element {
   };
 
   return (
-    <Stack
-      spacing={4}
-      w={'full'}
-      maxW={'md'}
-      bg={'gray.50'}
-      rounded={'xl'}
-      p={{ base: 4, sm: 6, md: 8 }}
-    >
-      <Heading color={'gray.800'} lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
+    <Stack spacing={4} w={'full'} maxW={'md'} rounded={'xl'} p={{ base: 4, sm: 6, md: 8 }}>
+      <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
         Sign in to your account
       </Heading>
       <FormControl id="email" isInvalid={!!errors?.email?.message}>
@@ -142,10 +135,15 @@ export default function ForgotPasswordForm(): JSX.Element {
           </Checkbox>
           <ChakraLink href={`/${Routes.FORGOT_PASSWORD}`} title="Forgot Password?" />
         </Stack>
-        <FormLabel color={'red.500'}>
+        <FormLabel color={'btbets.500'}>
           {(data?.authenticateUserWithPassword as UserAuthenticationWithPasswordFailure)?.message}
         </FormLabel>
-        <Button variant="red-gradient" onClick={handleSubmit(submitLogin)} isLoading={loading}>
+        <Button
+          colorScheme="btbets"
+          color="white"
+          onClick={handleSubmit(submitLogin)}
+          isLoading={loading}
+        >
           Sign in
         </Button>
       </Stack>

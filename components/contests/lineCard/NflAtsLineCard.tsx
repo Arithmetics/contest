@@ -210,7 +210,7 @@ export default function NflAtsLineCard({
               isChecked={superBetSelected}
               marginTop={4}
               isDisabled={formDisabled || !superPickAvailable}
-              colorScheme="teal"
+              colorScheme="btbets"
               size="lg"
             >
               <HStack>
@@ -337,7 +337,7 @@ export default function NflAtsLineCard({
                   isLoading={makeBetLoading}
                   flexGrow={1}
                   variant="outline"
-                  bg="teal.500"
+                  bg="btbets.500"
                   color={'white'}
                   rounded={'md'}
                   _hover={{

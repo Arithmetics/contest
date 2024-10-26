@@ -97,7 +97,7 @@ export const BetCard = ({ line, bet, onClick, isSuper }: BetCardProps): JSX.Elem
             />
             <Stat>
               <StatLabel textAlign={'center'}>
-                {isSuper && <Badge colorScheme="purple">Super</Badge>}
+                {isSuper && <Badge colorScheme="btbets">Super</Badge>}
               </StatLabel>
               <StatNumber textAlign={'center'} fontSize={benchMarkSize}>
                 {line.benchmark}
@@ -154,7 +154,7 @@ export const BetCard = ({ line, bet, onClick, isSuper }: BetCardProps): JSX.Elem
           />
           <Stat>
             <StatLabel textAlign={'center'}>
-              {isSuper && <Badge colorScheme="purple">Super</Badge>}
+              {isSuper && <Badge colorScheme="btbets">Super</Badge>}
             </StatLabel>
             <StatNumber textAlign={'center'} fontSize={benchMarkSize}>
               {line.benchmark}

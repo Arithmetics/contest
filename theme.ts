@@ -10,6 +10,27 @@ const theme = extendTheme({
   shadows: {
     outline: '#fff',
   },
+  styles: {
+    global: () => ({
+      body: {
+        bg: 'blackAlpha.300',
+      },
+    }),
+  },
+  colors: {
+    btbets: {
+      50: '#3301ff', // Main color
+      100: '#3301ff', // Main color
+      200: '#3301ff', // Main color
+      300: '#3301ff', // Main color
+      400: '#3301ff', // Main color
+      500: '#3301ff', // Main color
+      600: '#3301ff', // Main color
+      700: '#3301ff', // Main color
+      800: '#3301ff', // Main color
+      900: '#3301ff', // Main color
+    },
+  },
   components: {
     Button: {
       variants: {

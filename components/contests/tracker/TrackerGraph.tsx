@@ -2,7 +2,6 @@ import { Box, useBreakpointValue } from '@chakra-ui/react';
 import { ResponsiveLine, Serie, PointTooltipProps } from '@nivo/line';
 import { LegendAnchor } from '@nivo/legends';
 import { Line } from '../../../generated/graphql-types';
-import theme from '../../../theme';
 
 type ResponsiveLineProps = {
   data: Serie[];
@@ -37,13 +36,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
         fontSize: 10,
         textColor: '#fff',
       }}
-      colors={[
-        theme.colors.red['400'],
-        theme.colors.green['400'],
-        theme.colors.yellow['400'],
-        theme.colors.blue['200'],
-        theme.colors.teal['400'],
-      ]}
+      colors={['red', '#9FFD23', '#FFFF33', '#3302ff']}
       margin={{ top: 50, right: marginRight, bottom: marginBottom, left: 60 }}
       xScale={{ type: 'linear', min: 1, max: maxX }}
       yScale={{ type: 'linear', min: 0, max: 1, reverse: false }}
@@ -95,8 +88,7 @@ export default function TrackerGraph({ data }: ResponsiveLineProps): JSX.Element
           <Box
             padding={1}
             border={1}
-            bg={'gray.700'}
-            borderColor={'teal.500'}
+            borderColor={'btbets.500'}
             boxShadow={'dark-lg'}
             rounded={'md'}
           >

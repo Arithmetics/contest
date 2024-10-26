@@ -21,7 +21,7 @@ export function NbaPlayoffClosedLineContainer({
         width={width}
         bg={'gray.600'}
         border={userHasBet ? '1px' : ''}
-        borderColor={userHasBet ? 'teal.500' : ''}
+        borderColor={userHasBet ? 'btbets.500' : ''}
         boxShadow={userHasBet ? 'dark-lg' : 'lg'}
         rounded={'md'}
         position={'relative'}

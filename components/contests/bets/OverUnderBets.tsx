@@ -131,7 +131,7 @@ export default function BetsTabNext({ contestId }: BetsTabProps): JSX.Element {
                   <Text fontSize="sm">Regular Bets ({regularBets?.length}/5)</Text>
                   <Progress
                     width={'100%'}
-                    colorScheme={regularBets?.length === 5 ? 'teal' : 'red'}
+                    colorScheme={regularBets?.length === 5 ? 'btbets' : 'red'}
                     size="sm"
                     value={(100 * (regularBets?.length || 0)) / 5}
                   />

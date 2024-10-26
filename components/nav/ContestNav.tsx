@@ -204,7 +204,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
             isDisabled={registerLoading || getUserLoading || getContestLoading}
             isLoading={registerLoading}
             variant="outline"
-            bg="teal.500"
+            bg="btbets.500"
             color={'white'}
             rounded={'md'}
             _hover={{
@@ -220,7 +220,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
         <Tabs
           index={indexedTabs[selectedTab || ContestTabs.BETS]}
           borderBottomColor="transparent"
-          colorScheme="teal"
+          colorScheme="btbets.500"
           onChange={updateUrl}
           overflowX="auto"
         >

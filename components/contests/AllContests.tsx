@@ -8,16 +8,15 @@ import {
   Text,
   Badge,
   HStack,
-  Spinner,
   Stat,
   StatLabel,
   StatNumber,
   Center,
-  useColorModeValue,
   useToast,
   Tooltip,
   Avatar,
 } from '@chakra-ui/react';
+import Spinner from './BTBetsLoading';
 import { useRouter } from 'next/router';
 
 import {
@@ -39,8 +38,8 @@ export default function AllContest(): JSX.Element {
   });
   if (loading || getUserLoading) {
     return (
-      <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      <Center marginTop={'20vh'}>
+        <Spinner />
       </Center>
     );
   }
@@ -115,29 +114,29 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
     <Box
       maxW={'500px'}
       width={'full'}
-      bg={useColorModeValue('white', 'gray.600')}
+      borderWidth={'1px'}
+      border={'#3302ff'}
+      borderStyle="solid"
+      // bg={useColorModeValue('white', 'gray.700')}
       boxShadow={'2xl'}
       rounded={'md'}
       overflow={'hidden'}
       position={'relative'}
       margin={4}
     >
-      <Flex position="absolute" top={5} left={5} zIndex={1}>
-        <ContestCardBadge status={contest.status} />
-      </Flex>
       <Image
         h={'150px'}
         w={'full'}
         src={contest.image?.image?.publicUrlTransformed || ''}
         objectFit={'cover'}
         objectPosition={'top'}
-        filter={contest.status === 'COMPLETE' ? 'grayscale(80%)' : ''}
+        // filter={contest.status === 'COMPLETE' ? 'grayscale(80%)' : ''}
       />
 
       <Box p={6}>
         <Stack spacing={0} align={'center'} mb={5}>
           <Heading fontSize={'2xl'} fontWeight={500} fontFamily={'body'}>
-            {contest.name}
+            {contest.name} <ContestCardBadge status={contest.status} />
           </Heading>
           <Text color={'gray.500'}>{contest.description}</Text>
         </Stack>
@@ -175,7 +174,7 @@ function ContestCard({ contest, userId }: ContestCardProps): JSX.Element {
               isLoading={loading}
               flexGrow={1}
               variant="outline"
-              bg="teal.500"
+              bg="btbets.500"
               color={'white'}
               rounded={'md'}
               _hover={{

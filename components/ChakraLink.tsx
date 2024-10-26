@@ -9,7 +9,7 @@ interface ChakraLinkProps {
 export default function ChakraLink({ href, title, children }: ChakraLinkProps): JSX.Element {
   return (
     <NextLink href={href} as={href}>
-      <Link _hover={undefined} color="teal.500">
+      <Link _hover={undefined} color="btbets.500">
         {children ? children : title}
       </Link>
     </NextLink>

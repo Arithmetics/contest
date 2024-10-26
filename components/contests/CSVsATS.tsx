@@ -1,6 +1,7 @@
 import { CSVLink } from 'react-csv';
-import { Text, Button, Box, Center, Spinner, Flex, Heading } from '@chakra-ui/react';
+import { Text, Button, Box, Center, Flex, Heading } from '@chakra-ui/react';
 import { useAtsTrackerStatusQuery, AtsTrackerStatusQuery } from '../../generated/graphql-types';
+import Spinner from './BTBetsLoading';
 
 type AtsLines = NonNullable<AtsTrackerStatusQuery['lines']>;
 
@@ -31,8 +32,8 @@ export default function CSVsATS({ contestId }: CSVsATSProps): JSX.Element {
 
   if (loading) {
     return (
-      <Center marginTop={'30vh'}>
-        <Spinner color="red.500" marginLeft="auto" marginRight="auto" size="xl" />
+      <Center marginTop={'20vh'}>
+        <Spinner />
       </Center>
     );
   }
