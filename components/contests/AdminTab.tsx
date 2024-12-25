@@ -3,6 +3,7 @@ import { useContestByIdQuery, ContestContestTypeType } from '../../generated/gra
 import CSVsATS from './CSVsATS';
 import CSVsOU from './CSVsOU';
 import Spinner from './BTBetsLoading';
+import CreateLinesForm from './CreateLinesForm';
 
 type AdminTabProps = {
   contestId?: string;
@@ -57,7 +58,11 @@ export default function AdminTab({ contestId }: AdminTabProps): JSX.Element {
           <Code>{premiumEmails}</Code>
         </Center>
         {contestData?.contest?.contestType === ContestContestTypeType.NflAts ? (
-          <CSVsATS contestId={contestData?.contest?.id} />
+          <>
+            <CreateLinesForm contestId={contestData?.contest?.id} />
+            <hr />
+            <CSVsATS contestId={contestData?.contest?.id} />
+          </>
         ) : (
           <CSVsOU contestId={contestData?.contest?.id} />
         )}

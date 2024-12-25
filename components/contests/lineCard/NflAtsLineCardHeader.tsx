@@ -55,7 +55,10 @@ export default function NflAtsLineCardHeader({ line }: NflAtsLineCardHeaderProps
                 fit="scale-down"
                 // bg={'gray.600'}
                 alt={awayChoice.secondaryImage?.altText || 'unknown'}
-                src={awayChoice.secondaryImage?.image?.publicUrlTransformed || ''}
+                src={
+                  awayChoice.secondaryImage?.image?.publicUrlTransformed ||
+                  'https://placehold.jp/120x120.png'
+                }
               />
             )}
             <Text fontSize={lineFontSize}>@</Text>
@@ -65,7 +68,10 @@ export default function NflAtsLineCardHeader({ line }: NflAtsLineCardHeaderProps
                 fit="scale-down"
                 // bg={'gray.600'}
                 alt={homeChoice.secondaryImage?.altText || 'unknown'}
-                src={homeChoice.secondaryImage?.image?.publicUrlTransformed || ''}
+                src={
+                  homeChoice.secondaryImage?.image?.publicUrlTransformed ||
+                  'https://placehold.jp/120x120.png'
+                }
               />
             )}
             <Text fontSize={lineFontSize}>{formatATS(true, line.benchmark)}</Text>

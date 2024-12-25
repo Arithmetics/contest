@@ -10,6 +10,7 @@ import {
   Center,
   Tooltip,
   Box,
+  Text,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { BsLightning } from 'react-icons/bs';
@@ -220,7 +221,10 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                         <>
                           {usersChoice?.selection === ChoiceSelectionType.Under ||
                           usersChoice?.selection === ChoiceSelectionType.Over ? (
-                            `${usersChoice?.selection} ${line.benchmark}`
+                            <>
+                              <Text>{usersChoice?.selection}</Text>
+                              <Text>{line.benchmark}</Text>
+                            </>
                           ) : (
                             <Image
                               boxSize="30px"
