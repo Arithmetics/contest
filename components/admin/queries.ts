@@ -15,8 +15,36 @@ export const CREATE_ATS_LINE_MUTATION = gql`
         closingTime: $closingTime
         choices: {
           create: [
-            { selection: AWAY, points: 1, title: "Away" }
-            { selection: HOME, points: 1, title: "Home" }
+            { selection: AWAY, points: 100, title: "Away" }
+            { selection: HOME, points: 100, title: "Home" }
+          ]
+        }
+      }
+    ) {
+      id
+      title
+      benchmark
+    }
+  }
+`;
+
+export const CREATE_ATS_TOTAL_MUTATION = gql`
+  mutation CreateATSTotalLine(
+    $contestId: ID!
+    $title: String!
+    $benchmark: Float!
+    $closingTime: DateTime!
+  ) {
+    createLine(
+      data: {
+        contest: { connect: { id: $contestId } }
+        title: $title
+        benchmark: $benchmark
+        closingTime: $closingTime
+        choices: {
+          create: [
+            { selection: UNDER, points: 1, title: "Under" }
+            { selection: OVER, points: 1, title: "Over" }
           ]
         }
       }

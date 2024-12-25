@@ -56,7 +56,10 @@ export default function NflAtsTotalLineCardHeader({
                 fit="scale-down"
                 // bg={'gray.600'}
                 alt={underChoice.secondaryImage?.altText || 'unknown'}
-                src={underChoice.secondaryImage?.image?.publicUrlTransformed || ''}
+                src={
+                  underChoice.secondaryImage?.image?.publicUrlTransformed ||
+                  'https://placehold.jp/120x120.png'
+                }
               />
             )}
             <Text fontSize={lineFontSize}>@</Text>
@@ -66,10 +69,13 @@ export default function NflAtsTotalLineCardHeader({
                 fit="scale-down"
                 // bg={'gray.600'}
                 alt={overChoice.secondaryImage?.altText || 'unknown'}
-                src={overChoice.secondaryImage?.image?.publicUrlTransformed || ''}
+                src={
+                  overChoice.secondaryImage?.image?.publicUrlTransformed ||
+                  'https://placehold.jp/120x120.png'
+                }
               />
             )}
-            <Text fontSize={lineFontSize}>Total: {line.benchmark}</Text>
+            <Text fontSize={lineFontSize}>Total Points: {line.benchmark}</Text>
           </HStack>
         </StatNumber>
         <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>

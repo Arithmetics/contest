@@ -26,7 +26,7 @@ import { LineCardContainer } from './LineCardContainer';
 import { LineCardFooterTicketCutouts } from './LineCardFooterTicketCutouts';
 import NflAtsTotalLineCardHeader from './NflAtsTotalLineCardHeader';
 import RadioImage from './RadioImage';
-import { formatAtsTotal, hasLineClosed, lineHasWinner } from './lineCardUtils';
+import { hasLineClosed, lineHasWinner } from './lineCardUtils';
 
 type NflAtsTotalLineCardProps = {
   line: Line;
@@ -184,7 +184,7 @@ export default function NflAtsTotalLineCard({
                 hasSelection={formSelectedChoiceId !== '0'}
                 isDisabled={formDisabled}
                 spread={line.benchmark}
-                display={formatAtsTotal(line.benchmark)}
+                display={''}
                 {...radio}
               />
             );
