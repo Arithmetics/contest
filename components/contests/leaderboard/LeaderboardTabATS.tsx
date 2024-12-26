@@ -222,8 +222,9 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                           {usersChoice?.selection === ChoiceSelectionType.Under ||
                           usersChoice?.selection === ChoiceSelectionType.Over ? (
                             <>
-                              <Text>{usersChoice?.selection}</Text>
-                              <Text>{line.benchmark}</Text>
+                              <Text fontSize={'12px'}>
+                                {usersChoice.selection === 'UNDER' ? '⬇️' : '⬆️'} {line.benchmark}
+                              </Text>
                             </>
                           ) : (
                             <Image
