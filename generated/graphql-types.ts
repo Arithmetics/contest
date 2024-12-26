@@ -1934,6 +1934,26 @@ export type ValidateUserPasswordResetTokenResult = {
   message: Scalars['String']['output'];
 };
 
+export type CreateAtsLineMutationVariables = Exact<{
+  contestId: Scalars['ID']['input'];
+  title: Scalars['String']['input'];
+  benchmark: Scalars['Float']['input'];
+  closingTime: Scalars['DateTime']['input'];
+}>;
+
+
+export type CreateAtsLineMutation = { __typename?: 'Mutation', createLine?: { __typename?: 'Line', id: string, title?: string | null, benchmark?: number | null } | null };
+
+export type CreateAtsTotalLineMutationVariables = Exact<{
+  contestId: Scalars['ID']['input'];
+  title: Scalars['String']['input'];
+  benchmark: Scalars['Float']['input'];
+  closingTime: Scalars['DateTime']['input'];
+}>;
+
+
+export type CreateAtsTotalLineMutation = { __typename?: 'Mutation', createLine?: { __typename?: 'Line', id: string, title?: string | null, benchmark?: number | null } | null };
+
 export type CreateNbaContestMutationVariables = Exact<{
   contestName?: InputMaybe<Scalars['String']['input']>;
   overSelection: ChoiceCreateInput;
@@ -2203,6 +2223,86 @@ export type UserContestBetsQueryVariables = Exact<{
 export type UserContestBetsQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, status?: ChoiceStatus | null, bets?: Array<{ __typename?: 'Bet', id: string, isSuper?: boolean | null }> | null }> | null }> | null } | null };
 
 
+export const CreateAtsLineDocument = gql`
+    mutation CreateATSLine($contestId: ID!, $title: String!, $benchmark: Float!, $closingTime: DateTime!) {
+  createLine(
+    data: {contest: {connect: {id: $contestId}}, title: $title, benchmark: $benchmark, closingTime: $closingTime, choices: {create: [{selection: AWAY, points: 100, title: "Away"}, {selection: HOME, points: 100, title: "Home"}]}}
+  ) {
+    id
+    title
+    benchmark
+  }
+}
+    `;
+export type CreateAtsLineMutationFn = Apollo.MutationFunction<CreateAtsLineMutation, CreateAtsLineMutationVariables>;
+
+/**
+ * __useCreateAtsLineMutation__
+ *
+ * To run a mutation, you first call `useCreateAtsLineMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAtsLineMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAtsLineMutation, { data, loading, error }] = useCreateAtsLineMutation({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *      title: // value for 'title'
+ *      benchmark: // value for 'benchmark'
+ *      closingTime: // value for 'closingTime'
+ *   },
+ * });
+ */
+export function useCreateAtsLineMutation(baseOptions?: Apollo.MutationHookOptions<CreateAtsLineMutation, CreateAtsLineMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAtsLineMutation, CreateAtsLineMutationVariables>(CreateAtsLineDocument, options);
+      }
+export type CreateAtsLineMutationHookResult = ReturnType<typeof useCreateAtsLineMutation>;
+export type CreateAtsLineMutationResult = Apollo.MutationResult<CreateAtsLineMutation>;
+export type CreateAtsLineMutationOptions = Apollo.BaseMutationOptions<CreateAtsLineMutation, CreateAtsLineMutationVariables>;
+export const CreateAtsTotalLineDocument = gql`
+    mutation CreateATSTotalLine($contestId: ID!, $title: String!, $benchmark: Float!, $closingTime: DateTime!) {
+  createLine(
+    data: {contest: {connect: {id: $contestId}}, title: $title, benchmark: $benchmark, closingTime: $closingTime, choices: {create: [{selection: UNDER, points: 1, title: "Under"}, {selection: OVER, points: 1, title: "Over"}]}}
+  ) {
+    id
+    title
+    benchmark
+  }
+}
+    `;
+export type CreateAtsTotalLineMutationFn = Apollo.MutationFunction<CreateAtsTotalLineMutation, CreateAtsTotalLineMutationVariables>;
+
+/**
+ * __useCreateAtsTotalLineMutation__
+ *
+ * To run a mutation, you first call `useCreateAtsTotalLineMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAtsTotalLineMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAtsTotalLineMutation, { data, loading, error }] = useCreateAtsTotalLineMutation({
+ *   variables: {
+ *      contestId: // value for 'contestId'
+ *      title: // value for 'title'
+ *      benchmark: // value for 'benchmark'
+ *      closingTime: // value for 'closingTime'
+ *   },
+ * });
+ */
+export function useCreateAtsTotalLineMutation(baseOptions?: Apollo.MutationHookOptions<CreateAtsTotalLineMutation, CreateAtsTotalLineMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateAtsTotalLineMutation, CreateAtsTotalLineMutationVariables>(CreateAtsTotalLineDocument, options);
+      }
+export type CreateAtsTotalLineMutationHookResult = ReturnType<typeof useCreateAtsTotalLineMutation>;
+export type CreateAtsTotalLineMutationResult = Apollo.MutationResult<CreateAtsTotalLineMutation>;
+export type CreateAtsTotalLineMutationOptions = Apollo.BaseMutationOptions<CreateAtsTotalLineMutation, CreateAtsTotalLineMutationVariables>;
 export const CreateNbaContestDocument = gql`
     mutation CreateNbaContest($contestName: String, $overSelection: ChoiceCreateInput!, $underSelection: ChoiceCreateInput!, $closingTime: DateTime, $atlantaHawksBenchmark: Float, $bostonCelticsBenchmark: Float, $brooklynNetsBenchmark: Float, $charlotteHornetsBenchmark: Float, $chicagoBullsBenchmark: Float, $clevelandCavaliersBenchmark: Float, $dallasMavericksBenchmark: Float, $denverNuggetsBenchmark: Float, $detroitPistonsBenchmark: Float, $goldenStateWarriorsBenchmark: Float, $houstonRocketsBenchmark: Float, $indianaPacersBenchmark: Float, $lAClippersBenchmark: Float, $losAngelesLakersBenchmark: Float, $memphisGrizzliesBenchmark: Float, $miamiHeatBenchmark: Float, $milwaukeeBucksBenchmark: Float, $minnesotaTimberwolvesBenchmark: Float, $newOrleansPelicansBenchmark: Float, $newYorkKnicksBenchmark: Float, $oklahomaCityThunderBenchmark: Float, $orlandoMagicBenchmark: Float, $philadelphia76ersBenchmark: Float, $phoenixSunsBenchmark: Float, $portlandTrailBlazersBenchmark: Float, $sacramentoKingsBenchmark: Float, $sanAntonioSpursBenchmark: Float, $torontoRaptorsBenchmark: Float, $utahJazzBenchmark: Float, $washingtonWizardsBenchmark: Float) {
   createContest(

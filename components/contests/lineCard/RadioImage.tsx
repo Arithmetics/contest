@@ -37,7 +37,7 @@ export default function RadioImage(props: RadioImageProps & UseRadioProps): JSX.
         borderRadius="md"
         cursor={isDisabled ? 'default' : 'pointer'}
         alt={altText || 'unknown'}
-        src={imageUrl || ''}
+        src={imageUrl || 'https://placehold.jp/400x350.png'}
         transitionProperty="transform"
         transitionDuration="0.3s"
         transitionTimingFunction="ease-in-out"

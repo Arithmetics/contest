@@ -35,46 +35,47 @@ type NflAtsLineCardHeaderProps = {
   line: Line;
 };
 
-export default function NflAtsLineCardHeader({ line }: NflAtsLineCardHeaderProps): JSX.Element {
+export default function NflAtsTotalLineCardHeader({
+  line,
+}: NflAtsLineCardHeaderProps): JSX.Element {
   const lineFontSize = useBreakpointValue({ base: 'md', md: 'xl' });
 
-  const awayChoice = line?.choices?.find((c) => c.selection === 'AWAY');
-  const homeChoice = line?.choices?.find((c) => c.selection === 'HOME');
-  // const underChoice = line?.choices?.find((c) => c.selection === 'UNDER');
-  // const overChoice = line?.choices?.find((c) => c.selection === 'OVER');
+  //   const awayChoice = line?.choices?.find((c) => c.selection === 'AWAY');
+  //   const homeChoice = line?.choices?.find((c) => c.selection === 'HOME');
+  const underChoice = line?.choices?.find((c) => c.selection === 'UNDER');
+  const overChoice = line?.choices?.find((c) => c.selection === 'OVER');
 
   return (
     <HStack>
       <Stat>
         <StatNumber>
           <HStack>
-            <Text fontSize={lineFontSize}>{formatATS(false, line.benchmark)}</Text>
-            {awayChoice && (
+            {underChoice && (
               <Image
                 boxSize="40px"
                 fit="scale-down"
                 // bg={'gray.600'}
-                alt={awayChoice.secondaryImage?.altText || 'unknown'}
+                alt={underChoice.secondaryImage?.altText || 'unknown'}
                 src={
-                  awayChoice.secondaryImage?.image?.publicUrlTransformed ||
+                  underChoice.secondaryImage?.image?.publicUrlTransformed ||
                   'https://placehold.jp/120x120.png'
                 }
               />
             )}
             <Text fontSize={lineFontSize}>@</Text>
-            {homeChoice && (
+            {overChoice && (
               <Image
                 boxSize="40px"
                 fit="scale-down"
                 // bg={'gray.600'}
-                alt={homeChoice.secondaryImage?.altText || 'unknown'}
+                alt={overChoice.secondaryImage?.altText || 'unknown'}
                 src={
-                  homeChoice.secondaryImage?.image?.publicUrlTransformed ||
+                  overChoice.secondaryImage?.image?.publicUrlTransformed ||
                   'https://placehold.jp/120x120.png'
                 }
               />
             )}
-            <Text fontSize={lineFontSize}>{formatATS(true, line.benchmark)}</Text>
+            <Text fontSize={lineFontSize}>Total Points: {line.benchmark}</Text>
           </HStack>
         </StatNumber>
         <StatHelpText>Closes: {formatLineDate(line)}</StatHelpText>

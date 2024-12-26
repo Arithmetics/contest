@@ -17,6 +17,14 @@ export function lineHasWinner(line: Line): boolean {
   return line.choices.some((c) => c.isWin);
 }
 
+export function formatAtsTotal(benchmark?: number | null): string {
+  if (!benchmark) {
+    return '(???)';
+  }
+
+  return `${benchmark} Points`;
+}
+
 export function formatATS(home: boolean, benchmark?: number | null): string {
   if (!benchmark) {
     return '(???)';

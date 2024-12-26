@@ -19,6 +19,7 @@ import {
 import BetsStatusLine from './NflAtsBetsStatusLine';
 import { hasLineClosed, lineHasWinner } from '../lineCard/lineCardUtils';
 import NflAtsLineCard from '../lineCard/NflAtsLineCard';
+import NflAtsTotalLineCard from '../lineCard/NFLAtsTotalLineCard';
 import NoLinesForContest from './NoLinesForContest';
 import PageLoader from './PageLoader';
 import { useHavePaidToast } from './useHavePaidToast';
@@ -120,6 +121,19 @@ export default function NflAtsBets({ contestId }: BetsTabProps): JSX.Element {
           <Collapse in={isAvailableOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {availableLines.map((line) => {
+                // if its a total line
+                if (line.choices?.some((c) => c.selection === 'UNDER' || c.selection === 'OVER')) {
+                  return (
+                    <NflAtsTotalLineCard
+                      key={line.id}
+                      line={line as Line}
+                      userId={userId}
+                      contestId={contest?.id}
+                      userHasEntered={userHasEntered}
+                      ruleSet={contest?.ruleSet || undefined}
+                    />
+                  );
+                }
                 return (
                   <NflAtsLineCard
                     key={line.id}
@@ -143,6 +157,19 @@ export default function NflAtsBets({ contestId }: BetsTabProps): JSX.Element {
           <Collapse in={isPendingOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {pendingLines.map((line) => {
+                // if its a total line
+                if (line.choices?.some((c) => c.selection === 'UNDER' || c.selection === 'OVER')) {
+                  return (
+                    <NflAtsTotalLineCard
+                      key={line.id}
+                      line={line as Line}
+                      userId={userId}
+                      contestId={contest?.id}
+                      userHasEntered={userHasEntered}
+                      ruleSet={contest?.ruleSet || undefined}
+                    />
+                  );
+                }
                 return (
                   <NflAtsLineCard
                     key={line.id}
@@ -166,6 +193,19 @@ export default function NflAtsBets({ contestId }: BetsTabProps): JSX.Element {
           <Collapse in={isSettledOpen} animateOpacity>
             <Flex justifyContent="center" flexWrap="wrap" gap={3} paddingY={3}>
               {settledLines.map((line) => {
+                // if its a total line
+                if (line.choices?.some((c) => c.selection === 'UNDER' || c.selection === 'OVER')) {
+                  return (
+                    <NflAtsTotalLineCard
+                      key={line.id}
+                      line={line as Line}
+                      userId={userId}
+                      contestId={contest?.id}
+                      userHasEntered={userHasEntered}
+                      ruleSet={contest?.ruleSet || undefined}
+                    />
+                  );
+                }
                 return (
                   <NflAtsLineCard
                     key={line.id}

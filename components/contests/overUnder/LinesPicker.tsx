@@ -85,7 +85,6 @@ export const LinesPicker = ({
       return;
     }
     // update bet
-    console.log('updating bet', updatingBet.id, choice?.id);
     await updateBet({
       variables: {
         userId: userId || '',

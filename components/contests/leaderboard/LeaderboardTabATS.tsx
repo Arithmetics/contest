@@ -10,6 +10,7 @@ import {
   Center,
   Tooltip,
   Box,
+  Text,
   useBreakpointValue,
 } from '@chakra-ui/react';
 import { BsLightning } from 'react-icons/bs';
@@ -19,6 +20,7 @@ import {
   Registration,
   RuleSet,
   AtsLeaderboardQuery,
+  ChoiceSelectionType,
 } from '../../../generated/graphql-types';
 import Spinner from '../BTBetsLoading';
 
@@ -44,9 +46,14 @@ function scoreAllRegistrations(
     line.choices?.forEach((choice) => {
       if (choice.isWin) {
         choice.bets?.forEach((bet) => {
-          // todo: use rules
           if (bet.user?.id) {
-            const points = bet.isSuper ? lockPoints : 1;
+            const points =
+              choice.selection === 'OVER' || choice.selection === 'UNDER'
+                ? 0.01
+                : bet.isSuper
+                ? lockPoints
+                : 1;
+
             const usersCurrentScore = scores[bet.user?.id];
             scores[bet.user?.id] = usersCurrentScore + points;
           }
@@ -212,12 +219,21 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                     <Td key={reg.id} bg={bgc} position="relative">
                       {usersChoice ? (
                         <>
-                          <Image
-                            boxSize="30px"
-                            fit="scale-down"
-                            alt={usersChoice?.secondaryImage?.altText || 'unknown'}
-                            src={usersChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
-                          />
+                          {usersChoice?.selection === ChoiceSelectionType.Under ||
+                          usersChoice?.selection === ChoiceSelectionType.Over ? (
+                            <>
+                              <Text>{usersChoice?.selection}</Text>
+                              <Text>{line.benchmark}</Text>
+                            </>
+                          ) : (
+                            <Image
+                              boxSize="30px"
+                              fit="scale-down"
+                              alt={usersChoice?.secondaryImage?.altText || 'unknown'}
+                              src={usersChoice?.secondaryImage?.image?.publicUrlTransformed || ''}
+                            />
+                          )}
+
                           {isSuper ? (
                             <Box position="absolute" top="15%" left="45%">
                               <Tooltip label="Super Bet">
