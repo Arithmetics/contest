@@ -65,7 +65,7 @@ function makeANiceEmail(text7) {
       font-size: 20px;
     ">
       <h2>Hello,</h2>
-      <p>${text7}</p>
+      ${text7}
       <p>\u{1F44D}\u{1F3FB},</p> 
       <p>Brock</p>
     </div>
@@ -96,6 +96,30 @@ async function sendStandingsUpdate(updates, to) {
     from: "no-reply@btbets.dev",
     subject: "New Over Under Locked Up",
     html: makeANiceEmail(htmlList)
+  });
+  if (!process.env.SENDGRID_API_KEY) {
+    console.log(`\u{1F48C} Message Sent!  Preview it at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
+  }
+}
+async function sendReminderEmail(user, missingPicks) {
+  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
+  const intro = `<p>You are missing some Picks for games about to start.</p>`;
+  const htmlList = `<ul>${missingPicks.map(
+    // format the time
+    (pick) => `<li>${pick.title}, Closes: ${new Date(pick.closingTime).toLocaleString("en-US", {
+      timeZone: "America/Los_Angeles",
+      // Adjust to your desired timezone
+      timeZoneName: "short"
+      // Includes PST, PDT, etc.
+    })}</li>`
+  ).join("")}</ul>`;
+  const outro = `<p>Make picks here: www.btbets.dev</p>`;
+  const to = user.email || "";
+  const info = await usedTransport.sendMail({
+    to,
+    from: "no-reply@btbets.dev",
+    subject: "Missing Picks",
+    html: makeANiceEmail(intro + htmlList + outro)
   });
   if (!process.env.SENDGRID_API_KEY) {
     console.log(`\u{1F48C} Message Sent!  Preview it at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
@@ -243,6 +267,66 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
   });
   if (Object.keys(alertStandings).length > 0) {
     sendStandingsUpdate(alertStandings, "brock.m.tillotson@gmail.com");
+  }
+}
+
+// emailMissingPicksATS.ts
+async function emailMissingPicksATS(keyStoneContext, contestId) {
+  const graphql4 = String.raw;
+  const contest = await keyStoneContext.query.Contest.findOne({
+    where: { id: contestId },
+    query: graphql4`
+        id
+        name
+        registrations {
+        id
+        user {
+            id
+            email
+            name
+            userName
+        }
+        }
+        lines {
+        id
+        title
+        closingTime
+        choices {
+            id
+            selection
+            bets {
+            id
+            user {
+                id
+                email
+                name
+                userName
+            }
+            }
+        }
+        }
+    `
+  });
+  if (!contest) {
+    console.error(`Contest with id ${contestId} not found`);
+    return;
+  }
+  const users = contest.registrations.map((registration) => registration.user);
+  const lines = contest.lines;
+  for (const user of users) {
+    const missingPicks = [];
+    for (const line of lines) {
+      for (const choice of line.choices) {
+        for (const bet of choice.bets) {
+          if (bet.user.id === user.id) {
+            missingPicks.push(line);
+          }
+        }
+      }
+    }
+    if (missingPicks.length > 0) {
+      await sendReminderEmail(user, missingPicks);
+    }
   }
 }
 
@@ -1077,6 +1161,10 @@ var keystone_default = auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
       useMigrations: true,
       async onConnect(context) {
+        import_node_cron.default.schedule("* * * * *", () => {
+          console.log("running missing picks ATS job!");
+          console.log(emailMissingPicksATS(context, "cm44pc6sl0000s0if6ka93yzu"));
+        });
         import_node_cron.default.schedule("0 0 14 * * *", () => {
           Object.keys(cache).forEach((k) => {
             cache[k] = null;

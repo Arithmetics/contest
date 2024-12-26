@@ -1,5 +1,6 @@
 import { createTransport, getTestMessageUrl } from 'nodemailer';
 import nodemailerSendgrid from 'nodemailer-sendgrid';
+import { Line, User } from '../codegen/graphql-types';
 
 const testTransport = createTransport({
   host: process.env.MAIL_HOST || '',
@@ -26,7 +27,7 @@ function makeANiceEmail(text: string): string {
       font-size: 20px;
     ">
       <h2>Hello,</h2>
-      <p>${text}</p>
+      ${text}
       <p>👍🏻,</p> 
       <p>Brock</p>
     </div>
@@ -86,6 +87,37 @@ export async function sendStandingsUpdate(
     from: 'no-reply@btbets.dev',
     subject: 'New Over Under Locked Up',
     html: makeANiceEmail(htmlList),
+  })) as MailResponse;
+
+  if (!process.env.SENDGRID_API_KEY) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
+  }
+}
+
+export async function sendReminderEmail(user: User, missingPicks: Line[]): Promise<void> {
+  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
+
+  const intro = `<p>You are missing some picks for games about to start.</p>`;
+  const htmlList = `<ul>${missingPicks
+    .map(
+      // format the time
+      (pick) =>
+        `<li>${pick.title}, Closes: ${new Date(pick.closingTime).toLocaleString('en-US', {
+          timeZone: 'America/Los_Angeles', // Adjust to your desired timezone
+          timeZoneName: 'short', // Includes PST, PDT, etc.
+        })}</li>`
+    )
+    .join('')}</ul>`;
+  const outro = `<p>Make picks here: www.btbets.dev</p>`;
+  const to = user.email || '';
+
+  const info = (await usedTransport.sendMail({
+    to,
+    from: 'no-reply@btbets.dev',
+    subject: 'Missing Picks',
+    html: makeANiceEmail(intro + htmlList + outro),
   })) as MailResponse;
 
   if (!process.env.SENDGRID_API_KEY) {

@@ -8,6 +8,7 @@ import { sendPasswordResetEmail } from './lib/mail';
 import { cache } from './cache';
 // import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
+import { emailMissingPicksATS } from './emailMissingPicksATS';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -69,6 +70,27 @@ export default auth.withAuth(
       useMigrations: true,
       async onConnect(context) {
         // cron jobs
+
+        // picks and reminders for missing picks ATS
+
+        // every minute
+        cron.schedule('* * * * *', () => {
+          console.log('running missing picks ATS job!');
+          console.log(emailMissingPicksATS(context, 'cm44pc6sl0000s0if6ka93yzu'));
+        });
+
+        // cron.schedule(
+        //   '*/30 8-20 * * *',
+        //   () => {
+        //     console.log('Running 30-minute job during business hours (Pacific Time)');
+        //     emailMissingPicksATS(context, 'cm44pc6sl0000s0if6ka93yzu');
+        //   },
+        //   {
+        //     timezone: 'America/Los_Angeles',
+        //   }
+        // );
+
+        // standings job
         cron.schedule('0 0 14 * * *', () => {
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
