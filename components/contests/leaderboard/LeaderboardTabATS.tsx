@@ -195,9 +195,13 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
           {sortedLines.map((line) => {
             const winningChoice = line?.choices?.find((c) => c.isWin);
 
+            const paddingY = line?.choices?.some((c) => c.selection === ChoiceSelectionType.Under)
+              ? '5px'
+              : '15px';
+
             return (
               <Tr key={line?.id}>
-                <Td>{line?.title}</Td>
+                <Td paddingY={paddingY}>{line?.title}</Td>
 
                 {sortedRegistrations.map((reg) => {
                   const usersChoice = line?.choices?.find((c) =>
@@ -216,14 +220,15 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                     bgc = 'red.800';
                   }
                   return (
-                    <Td key={reg.id} bg={bgc} position="relative">
+                    <Td key={reg.id} bg={bgc} position="relative" paddingY={paddingY}>
                       {usersChoice ? (
                         <>
                           {usersChoice?.selection === ChoiceSelectionType.Under ||
                           usersChoice?.selection === ChoiceSelectionType.Over ? (
                             <>
-                              <Text>{usersChoice?.selection}</Text>
-                              <Text>{line.benchmark}</Text>
+                              <Text fontSize={'12px'}>
+                                {usersChoice.selection === 'UNDER' ? '⬇️' : '⬆️'} {line.benchmark}
+                              </Text>
                             </>
                           ) : (
                             <Image

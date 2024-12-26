@@ -77,12 +77,14 @@ const atsRules = (
     <Rule
       icon={<Icon as={FaDiceOne} color={'btbets.500'} w={5} h={5} />}
       iconBg={'gray.700'}
-      text={'Pick all 13 NFL Playoff games against the spread.'}
+      text={
+        'Pick all 13 NFL Playoff games against the spread. Also pick all Totals (over / under) as a tiebreaker.'
+      }
     />
     <Rule
       icon={<Icon as={FaDiceTwo} color={'btbets.500'} w={5} h={5} />}
       iconBg={'gray.700'}
-      text={' Picks lock in at game time.'}
+      text={'Picks lock in at game time.'}
     />
     <Rule
       icon={<Icon as={FaDiceThree} color={'btbets.500'} w={5} h={5} />}
@@ -94,14 +96,12 @@ const atsRules = (
     <Rule
       icon={<Icon as={FaDiceFour} color={'btbets.500'} w={5} h={5} />}
       iconBg={'gray.700'}
-      text={'Tie breaker one will be picking the Superbowl Total'}
+      text={'Tie breaker one will be the best record picking totals.'}
     />
     <Rule
       icon={<Icon as={FaDiceFive} color={'btbets.500'} w={5} h={5} />}
       iconBg={'gray.700'}
-      text={
-        'Tie breaker two is picking Superbowl final scores. Differential of each score will be used (Prediction: SEA 27 - PIT 12, Result: PIT 20 - SEA 19, Final: (20-8 + 27-19 = 16)'
-      }
+      text={'Tie breaker two is a Superbowl Prop Pick Off'}
     />
     <Rule
       icon={<Icon as={FaDiceSix} color={'btbets.500'} w={5} h={5} />}
