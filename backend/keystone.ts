@@ -74,13 +74,13 @@ export default auth.withAuth(
             cache[k] = null;
           });
 
-          console.log('running NFL standing job!');
-          startDailyStandingsJob(
-            context,
-            'cm0k4j7er005emc0jtzxxmm6l',
-            17,
-            'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
-          );
+          // console.log('running NFL standing job!');
+          // startDailyStandingsJob(
+          //   context,
+          //   'cm0k4j7er005emc0jtzxxmm6l',
+          //   17,
+          //   'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
+          // );
 
           console.log('running NBA standing job!');
           startDailyStandingsJob(
