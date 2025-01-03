@@ -13,7 +13,7 @@ const growShrink$ = keyframes`
   100% { transform: scale(1.15); } /* Shrinks back to normal */
 `;
 
-const Spinner = () => {
+const Spinner = (): JSX.Element => {
   return (
     <Box>
       <Box position={'relative'}>
