@@ -96,17 +96,29 @@ export async function startDailyStandingsJob(
     where: { contest: { id: { equals: contestId } } },
     query: graphql`
       id
-      user {
-        id
-      }
-      counts {
-        locked
-        likely
-        possible
-        tiebreaker
-      }
     `,
   });
+
+  for (const reg of regs) {
+    await keyStoneContext.query.Registration.findOne({
+      where: { id: reg.id },
+      query: graphql` 
+        id
+        user {
+          id
+          email
+        }
+        counts {
+          locked
+          likely
+          possible
+          tiebreaker
+        }
+      `,
+    });
+
+    console.log(`cache filled for ${reg.user.email}`);
+  }
 
   console.log('cache filled');
   regs.forEach((r) => {
