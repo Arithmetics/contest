@@ -201,17 +201,27 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
     where: { contest: { id: { equals: contestId } } },
     query: graphql4`
       id
-      user {
-        id
-      }
-      counts {
-        locked
-        likely
-        possible
-        tiebreaker
-      }
     `
   });
+  for (const reg of regs) {
+    await keyStoneContext.query.Registration.findOne({
+      where: { id: reg.id },
+      query: graphql4` 
+        id
+        user {
+          id
+          email
+        }
+        counts {
+          locked
+          likely
+          possible
+          tiebreaker
+        }
+      `
+    });
+    console.log(`cache filled for ${reg.id}`);
+  }
   console.log("cache filled");
   regs.forEach((r) => {
     console.log(r);
@@ -1077,17 +1087,10 @@ var keystone_default = auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
       useMigrations: true,
       async onConnect(context) {
-        import_node_cron.default.schedule("0 0 14 * * *", () => {
+        import_node_cron.default.schedule("* * * * *", () => {
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
           });
-          console.log("running NFL standing job!");
-          startDailyStandingsJob(
-            context,
-            "cm0k4j7er005emc0jtzxxmm6l",
-            17,
-            "https://site.api.espn.com/apis/v2/sports/football/nfl/standings"
-          );
           console.log("running NBA standing job!");
           startDailyStandingsJob(
             context,

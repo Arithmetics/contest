@@ -1,4 +1,4 @@
-import { Center } from '@chakra-ui/react';
+import { Center, Text } from '@chakra-ui/react';
 import { firstBy } from 'thenby';
 import {
   useContestByIdQuery,
@@ -7,8 +7,8 @@ import {
   ContestContestTypeType,
 } from '../../../generated/graphql-types';
 import LeaderboardTabATS from './LeaderboardTabATS';
-import LeaderboardTabOU from './LeaderboardTabOU';
-import LeaderboardTabNbaPlayoffs from './LeaderboardTabNbaPlayoffs';
+// import LeaderboardTabOU from './LeaderboardTabOU';
+// import LeaderboardTabNbaPlayoffs from './LeaderboardTabNbaPlayoffs';
 import Spinner from '../BTBetsLoading';
 
 export function sortLeaderboard(registrations: Registration[]): Registration[] {
@@ -41,10 +41,12 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
   }
 
   if (contest?.contestType === ContestContestTypeType.NbaPlayoffs) {
-    return <LeaderboardTabNbaPlayoffs contestId={contestId} />;
+    return <Text>Closed rn due to bug...</Text>;
+    // return <LeaderboardTabNbaPlayoffs contestId={contestId} />;
   }
   if (contest?.contestType === ContestContestTypeType.NflAts) {
     return <LeaderboardTabATS contestId={contestId} />;
   }
-  return <LeaderboardTabOU contestId={contestId} />;
+  return <Text>Closed rn due to bug...</Text>;
+  // return <LeaderboardTabOU contestId={contestId} />;
 }
