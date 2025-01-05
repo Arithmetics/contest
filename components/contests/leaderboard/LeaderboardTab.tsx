@@ -39,6 +39,7 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
       </Center>
     );
   }
+  //
 
   if (contest?.contestType === ContestContestTypeType.NbaPlayoffs) {
     return <Text>Closed rn due to bug...</Text>;
