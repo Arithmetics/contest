@@ -220,7 +220,7 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
         }
       `
     });
-    console.log(`cache filled for ${reg.id}`);
+    console.log(`cache filled for ${reg.user.email}`);
   }
   console.log("cache filled");
   regs.forEach((r) => {
@@ -1087,7 +1087,7 @@ var keystone_default = auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
       useMigrations: true,
       async onConnect(context) {
-        import_node_cron.default.schedule("* * * * *", () => {
+        import_node_cron.default.schedule("0 0 14 * * *", () => {
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
           });

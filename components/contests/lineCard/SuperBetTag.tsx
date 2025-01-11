@@ -3,9 +3,9 @@ import { BsLightning } from 'react-icons/bs';
 
 export default function SuperBetTag(): JSX.Element {
   return (
-    <Tag size="md" colorScheme="btbets">
-      <TagLabel>Super Bet</TagLabel>
-      <TagRightIcon as={BsLightning} />
+    <Tag size="md" colorScheme="btbets" backgroundColor="btbets.500">
+      <TagLabel color="white">Super Bet</TagLabel>
+      <TagRightIcon color="white" as={BsLightning} />
     </Tag>
   );
 }
