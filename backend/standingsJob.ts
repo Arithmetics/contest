@@ -92,38 +92,38 @@ export async function startDailyStandingsJob(
   console.log(`${newStandingsToInsert.length} standings inserted in total`);
 
   // await: fill the cache for the contest
-  const regs = await keyStoneContext.query.Registration.findMany({
-    where: { contest: { id: { equals: contestId } } },
-    query: graphql`
-      id
-    `,
-  });
+  // const regs = await keyStoneContext.query.Registration.findMany({
+  //   where: { contest: { id: { equals: contestId } } },
+  //   query: graphql`
+  //     id
+  //   `,
+  // });
 
-  for (const reg of regs) {
-    await keyStoneContext.query.Registration.findOne({
-      where: { id: reg.id },
-      query: graphql` 
-        id
-        user {
-          id
-          email
-        }
-        counts {
-          locked
-          likely
-          possible
-          tiebreaker
-        }
-      `,
-    });
+  // for (const reg of regs) {
+  //   await keyStoneContext.query.Registration.findOne({
+  //     where: { id: reg.id },
+  //     query: graphql`
+  //       id
+  //       user {
+  //         id
+  //         email
+  //       }
+  //       counts {
+  //         locked
+  //         likely
+  //         possible
+  //         tiebreaker
+  //       }
+  //     `,
+  //   });
 
-    console.log(`cache filled for ${reg.user.email}`);
-  }
+  //   console.log(`cache filled for ${reg.user.email}`);
+  // }
 
-  console.log('cache filled');
-  regs.forEach((r) => {
-    console.log(r);
-  });
+  // console.log('cache filled');
+  // regs.forEach((r) => {
+  //   console.log(r);
+  // });
 
   // send standings update email
   const previouslyAlerted: Record<string, boolean> = {};
