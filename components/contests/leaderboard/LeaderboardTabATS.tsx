@@ -267,7 +267,7 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
             <Td>Points</Td>
             {sortedRegistrations?.map((reg) => {
               const userId = reg?.user?.id || '';
-              return <Td key={reg.id}>{totalScores[userId]}</Td>;
+              return <Td key={reg.id}>{Math.round(totalScores[userId] * 100) / 100}</Td>;
             })}
           </Tr>
         </Tbody>
