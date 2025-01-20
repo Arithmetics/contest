@@ -212,7 +212,12 @@ export function UserBetGroup({ contestId, line, choiceType }: UserBetGroupProps)
                         <Avatar
                           size="sm"
                           name={bet.user?.userName || ''}
-                          src={bet.user?.avatarImage?.image?.publicUrlTransformed || ''}
+                          src={
+                            bet.user?.avatarImage?.image?.publicUrlTransformed?.replace(
+                              '/upload/',
+                              `/upload/w_50,h_50,q_auto,f_auto/`
+                            ) || ''
+                          }
                         >
                           {bet.isSuper && (
                             <Tooltip label="Super Bet">
