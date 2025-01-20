@@ -49,7 +49,10 @@ export default function HistoryTable({ contestType }: HistoryTableProps): JSX.El
         <Tbody>
           {[...histories]?.reverse().map((his) => {
             const user = his.user;
-            const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+            const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+              '/upload/',
+              `/upload/w_100,h_100,q_auto,f_auto/`
+            );
 
             return (
               <Tr key={his.id}>

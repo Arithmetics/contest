@@ -36,7 +36,10 @@ export default function UserPickModal({
     },
   });
 
-  const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+  const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+    '/upload/',
+    `/upload/w_100,h_100,q_auto,f_auto/`
+  );
 
   const anyBets = data?.contest?.lines?.some((line) =>
     line?.choices?.some((choice) => choice?.bets?.length)

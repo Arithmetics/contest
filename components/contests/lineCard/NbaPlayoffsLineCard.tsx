@@ -7,7 +7,6 @@ import {
   Grid,
   GridItem,
   HStack,
-  Image,
   Radio,
   RadioGroup,
   Stack,
@@ -39,6 +38,7 @@ import NbaPlayoffLineHeader from './NbaPlayoffLineHeader';
 import RadioImage from './RadioImage';
 import SuperBetTag from './SuperBetTag';
 import { formatLineDate, formatNbaPoints, hasLineClosed, lineHasWinner } from './lineCardUtils';
+import OptimizedImage from '../../OptimizedImage';
 
 type NflPlayoffsLineCardProps = {
   line: Line;
@@ -180,7 +180,7 @@ export default function NbaPlayoffsLineCard({
                             <Badge variant="solid">{formatNbaPoints(choice?.points)}</Badge>
                           </VStack>
                           {(!formDisabled || formSelectedChoiceId === choice.id) && (
-                            <Image
+                            <OptimizedImage
                               boxSize="35px"
                               fit="scale-down"
                               alt={choice?.image?.altText || 'unknown'}
@@ -307,7 +307,7 @@ export default function NbaPlayoffsLineCard({
           {(usersBet?.choice?.selection === ChoiceSelectionType.Away ||
             usersBet?.choice?.selection === ChoiceSelectionType.Home) && (
             <HStack>
-              <Image
+              <OptimizedImage
                 boxSize="50px"
                 fit="scale-down"
                 bg={'gray.600'}
@@ -322,7 +322,7 @@ export default function NbaPlayoffsLineCard({
                 }
               />
               <Text>@</Text>
-              <Image
+              <OptimizedImage
                 boxSize="50px"
                 fit="scale-down"
                 bg={'gray.600'}
@@ -340,7 +340,7 @@ export default function NbaPlayoffsLineCard({
           )}
           {usersBet?.choice?.selection === ChoiceSelectionType.Custom && (
             <>
-              <Image
+              <OptimizedImage
                 boxSize="100px"
                 fit="scale-down"
                 bg={'gray.600'}
@@ -362,7 +362,7 @@ export default function NbaPlayoffsLineCard({
           {(usersBet?.choice?.selection === ChoiceSelectionType.Over ||
             usersBet?.choice?.selection === ChoiceSelectionType.Under) && (
             <HStack>
-              <Image
+              <OptimizedImage
                 boxSize="50px"
                 fit="scale-down"
                 bg={'gray.600'}
@@ -376,7 +376,7 @@ export default function NbaPlayoffsLineCard({
                 }
               />
               <Text>@</Text>
-              <Image
+              <OptimizedImage
                 boxSize="50px"
                 fit="scale-down"
                 bg={'gray.600'}

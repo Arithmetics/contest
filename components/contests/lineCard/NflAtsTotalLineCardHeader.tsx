@@ -1,14 +1,7 @@
-import {
-  Image,
-  HStack,
-  Stat,
-  StatNumber,
-  StatHelpText,
-  Text,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { HStack, Stat, StatNumber, StatHelpText, Text, useBreakpointValue } from '@chakra-ui/react';
 import { Line } from '../../../generated/graphql-types';
 import { formatLineDate } from './lineCardUtils';
+import OptimizedImage from '../../OptimizedImage';
 
 export function formatATS(home: boolean, benchmark?: number | null): string {
   if (!benchmark) {
@@ -51,7 +44,7 @@ export default function NflAtsTotalLineCardHeader({
         <StatNumber>
           <HStack>
             {underChoice && (
-              <Image
+              <OptimizedImage
                 boxSize="40px"
                 fit="scale-down"
                 // bg={'gray.600'}
@@ -64,7 +57,7 @@ export default function NflAtsTotalLineCardHeader({
             )}
             <Text fontSize={lineFontSize}>@</Text>
             {overChoice && (
-              <Image
+              <OptimizedImage
                 boxSize="40px"
                 fit="scale-down"
                 // bg={'gray.600'}

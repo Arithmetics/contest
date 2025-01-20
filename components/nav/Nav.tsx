@@ -36,7 +36,10 @@ export default function Nav(): JSX.Element {
 
   const logoWidth = useBreakpointValue({ base: '100px', md: '150px' }, 'md');
 
-  const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+  const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+    '/upload/',
+    `/upload/w_100,h_100,q_auto,f_auto/`
+  );
 
   const determineLinkStyle = (link: string): ThemingProps<'Button'> => {
     if (router.asPath === link) {

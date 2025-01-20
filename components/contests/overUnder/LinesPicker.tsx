@@ -1,15 +1,5 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons';
-import {
-  Button,
-  Center,
-  Flex,
-  HStack,
-  Image,
-  Spinner,
-  Stat,
-  StatNumber,
-  VStack,
-} from '@chakra-ui/react';
+import { Button, Center, Flex, HStack, Spinner, Stat, StatNumber, VStack } from '@chakra-ui/react';
 import {
   Line,
   Contest,
@@ -20,6 +10,7 @@ import {
   useMakeBetMutation,
   useUpdateBetMutation,
 } from '../../../generated/graphql-types';
+import OptimizedImage from '../../OptimizedImage';
 
 type LinesPickerProps = {
   userId?: string;
@@ -142,7 +133,7 @@ export const LinesPicker = ({
               Over
             </Button>
             <HStack>
-              <Image
+              <OptimizedImage
                 boxSize="50px"
                 fit="scale-down"
                 bg={'gray.600'}
