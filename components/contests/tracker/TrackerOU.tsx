@@ -3,7 +3,6 @@ import {
   Box,
   HStack,
   Stat,
-  Image,
   Divider,
   StatLabel,
   StatNumber,
@@ -22,6 +21,7 @@ import {
 } from '../../../generated/graphql-types';
 import TrackerGraph, { prepareLineStandingsForGraph } from './TrackerGraph';
 import Spinner from '../BTBetsLoading';
+import OptimizedImage from '../../OptimizedImage';
 
 function winsForOver(line?: Line): number {
   const standings = line?.standings;
@@ -106,7 +106,7 @@ function TrackerGraphCard({ contestId, line }: GenericLineProps): JSX.Element {
       p={4}
     >
       <HStack maxW={'100%'}>
-        <Image
+        <OptimizedImage
           boxSize="75px"
           fit="scale-down"
           alt={line?.image?.altText || 'unknown'}

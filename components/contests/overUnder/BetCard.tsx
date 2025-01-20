@@ -1,7 +1,6 @@
 import {
   Badge,
   Box,
-  Image,
   Stat,
   StatArrow,
   StatHelpText,
@@ -15,6 +14,7 @@ import {
 import { LockIcon } from '@chakra-ui/icons';
 import { Line, Bet } from '../../../generated/graphql-types';
 import { hasLineClosed } from '../lineCard/lineCardUtils';
+import OptimizedImage from '../../OptimizedImage';
 
 type BetCardProps = {
   line?: Line;
@@ -88,8 +88,8 @@ export const BetCard = ({ line, bet, onClick, isSuper }: BetCardProps): JSX.Elem
           height={height}
         >
           <Flex gap={gap} justifyContent={'center'} alignItems={'center'} flexDirection={flexDir}>
-            <Image
-              boxSize={imageSize}
+            <OptimizedImage
+              boxSize={imageSize || '35px'}
               fit="scale-down"
               justifyContent={'center'}
               alt={line?.image?.altText || 'unknown'}
@@ -145,8 +145,8 @@ export const BetCard = ({ line, bet, onClick, isSuper }: BetCardProps): JSX.Elem
         }}
       >
         <Flex gap={gap} justifyContent={'center'} alignItems={'center'} flexDirection={flexDir}>
-          <Image
-            boxSize={imageSize}
+          <OptimizedImage
+            boxSize={imageSize || '35px'}
             fit="scale-down"
             justifyContent={'center'}
             alt={line?.image?.altText || 'unknown'}
