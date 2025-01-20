@@ -6,7 +6,6 @@ import {
   Tr,
   Th,
   Td,
-  Image,
   Center,
   Tooltip,
   Box,
@@ -23,6 +22,7 @@ import {
   ChoiceSelectionType,
 } from '../../../generated/graphql-types';
 import Spinner from '../BTBetsLoading';
+import OptimizedImage from '../../OptimizedImage';
 
 type AtsDataLinesType = NonNullable<AtsLeaderboardQuery['contest']>['lines'];
 type AtsDataLineType = NonNullable<AtsDataLinesType>[number];
@@ -160,7 +160,10 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
             <Th>Game</Th>
             {sortedRegistrations?.map((reg) => {
               const user = reg.user;
-              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+                '/upload/',
+                `/upload/w_100,h_100,q_auto,f_auto/`
+              );
               return (
                 <Th
                   key={reg.id}
@@ -231,7 +234,7 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
                               </Text>
                             </>
                           ) : (
-                            <Image
+                            <OptimizedImage
                               boxSize="30px"
                               fit="scale-down"
                               alt={usersChoice?.secondaryImage?.altText || 'unknown'}
@@ -256,6 +259,43 @@ export default function LeaderboardTabATS({ contestId }: LeaderboardTabProps): J
               </Tr>
             );
           })}
+          <Tr>
+            <Th>User</Th>
+            {sortedRegistrations?.map((reg) => {
+              const user = reg.user;
+              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+                '/upload/',
+                `/upload/w_100,h_100,q_auto,f_auto/`
+              );
+              return (
+                <Th
+                  key={reg.id}
+                  style={{
+                    padding: '15px',
+                  }}
+                >
+                  <Tooltip label={user?.userName}>
+                    <div
+                      style={{
+                        position: 'relative',
+                      }}
+                    >
+                      <Avatar size="md" name={user?.userName || ''} src={avatarUrl || ''} />
+                      {reg.isPremium && (
+                        <span
+                          role="img"
+                          aria-label="dog"
+                          style={{ fontSize: '20px', position: 'absolute', right: 0, top: '-25%' }}
+                        >
+                          🐶
+                        </span>
+                      )}
+                    </div>
+                  </Tooltip>
+                </Th>
+              );
+            })}
+          </Tr>
           <Tr bg={'gray.700'}>
             <Td>Super Bets Remaining</Td>
             {sortedRegistrations?.map((reg) => {

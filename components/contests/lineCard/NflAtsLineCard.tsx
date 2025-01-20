@@ -5,7 +5,6 @@ import {
   Checkbox,
   Divider,
   HStack,
-  Image,
   Stack,
   Stat,
   StatArrow,
@@ -31,6 +30,7 @@ import NflAtsLineCardHeader from './NflAtsLineCardHeader';
 import RadioImage from './RadioImage';
 import SuperBetTag from './SuperBetTag';
 import { formatATS, hasLineClosed, lineHasWinner } from './lineCardUtils';
+import OptimizedImage from '../../OptimizedImage';
 
 type NflAtsLineCardProps = {
   line: Line;
@@ -242,7 +242,7 @@ export default function NflAtsLineCard({
               {usersBet && (
                 <HStack>
                   <Text color={'whiteAlpha.600'}>Your selection:</Text>{' '}
-                  <Image
+                  <OptimizedImage
                     boxSize="40px"
                     fit="scale-down"
                     bg={'gray.600'}

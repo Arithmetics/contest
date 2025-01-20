@@ -6,7 +6,6 @@ import {
   Tr,
   Th,
   Td,
-  Image,
   Center,
   Tooltip,
   Box,
@@ -26,6 +25,7 @@ import {
   ChoiceSelectionType,
 } from '../../../generated/graphql-types';
 import Spinner from '../BTBetsLoading';
+import OptimizedImage from '../../OptimizedImage';
 
 const ENTRY_BONUS = 4;
 
@@ -210,7 +210,11 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
             <Th>Game</Th>
             {sortedRegistrations?.map((reg) => {
               const user = reg.user;
-              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+                '/upload/',
+                `/upload/w_100,h_100,q_auto,f_auto/`
+              );
+
               return (
                 <Th
                   key={reg.id}
@@ -257,7 +261,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                 <Td>
                   <VStack alignItems="center" justifyContent="center">
                     {line.choices?.some((c) => c.selection === 'CUSTOM') && (
-                      <Image
+                      <OptimizedImage
                         boxSize="35px"
                         fit="scale-down"
                         alt={line?.image?.altText || 'unknown'}
@@ -266,7 +270,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                     )}
                     {!line.choices?.some((c) => c.selection === 'CUSTOM') && (
                       <HStack>
-                        <Image
+                        <OptimizedImage
                           boxSize="25px"
                           fit="scale-down"
                           alt={
@@ -285,7 +289,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                           }
                         />
                         <Text>@</Text>
-                        <Image
+                        <OptimizedImage
                           boxSize="20px"
                           fit="scale-down"
                           alt={
@@ -334,7 +338,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                           <>
                             {usersChoice.selection === 'HOME' ||
                             usersChoice.selection === 'AWAY' ? (
-                              <Image
+                              <OptimizedImage
                                 boxSize="35px"
                                 fit="scale-down"
                                 alt={usersChoice?.secondaryImage?.altText || 'unknown'}
@@ -344,7 +348,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                             {usersChoice.selection === 'OVER' && (
                               <VStack>
                                 <HStack>
-                                  <Image
+                                  <OptimizedImage
                                     boxSize="25px"
                                     fit="scale-down"
                                     alt={
@@ -359,7 +363,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                                     }
                                   />
                                   <Text>@</Text>
-                                  <Image
+                                  <OptimizedImage
                                     boxSize="20px"
                                     fit="scale-down"
                                     alt={
@@ -380,7 +384,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                             {usersChoice.selection === 'UNDER' && (
                               <VStack>
                                 <HStack>
-                                  <Image
+                                  <OptimizedImage
                                     boxSize="25px"
                                     fit="scale-down"
                                     alt={
@@ -395,7 +399,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                                     }
                                   />
                                   <Text>@</Text>
-                                  <Image
+                                  <OptimizedImage
                                     boxSize="20px"
                                     fit="scale-down"
                                     alt={
@@ -417,7 +421,7 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
                               usersChoice.selection !== 'AWAY' &&
                               usersChoice.selection !== 'OVER' &&
                               usersChoice.selection !== 'UNDER' && (
-                                <Image
+                                <OptimizedImage
                                   boxSize="35px"
                                   fit="scale-down"
                                   alt={usersChoice?.secondaryImage?.altText || 'unknown'}
@@ -445,7 +449,11 @@ export default function LeaderboardTabNbaPlayoffs({ contestId }: LeaderboardTabP
             <Th>User</Th>
             {sortedRegistrations?.map((reg) => {
               const user = reg.user;
-              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+                '/upload/',
+                `/upload/w_100,h_100,q_auto,f_auto/`
+              );
+
               return (
                 <Th
                   key={reg.id}

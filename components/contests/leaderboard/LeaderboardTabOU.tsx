@@ -83,7 +83,10 @@ export default function LeaderboardTab({ contestId }: LeaderboardTabProps): JSX.
           <Tbody>
             {sortedLeaderboard?.map((reg, i) => {
               const user = reg.user;
-              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed;
+              const avatarUrl = user?.avatarImage?.image?.publicUrlTransformed?.replace(
+                '/upload/',
+                `/upload/w_100,h_100,q_auto,f_auto/`
+              );
 
               return (
                 <Tr key={reg.id}>

@@ -197,35 +197,6 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
     );
   });
   console.log(`${newStandingsToInsert.length} standings inserted in total`);
-  const regs = await keyStoneContext.query.Registration.findMany({
-    where: { contest: { id: { equals: contestId } } },
-    query: graphql4`
-      id
-    `
-  });
-  for (const reg of regs) {
-    await keyStoneContext.query.Registration.findOne({
-      where: { id: reg.id },
-      query: graphql4` 
-        id
-        user {
-          id
-          email
-        }
-        counts {
-          locked
-          likely
-          possible
-          tiebreaker
-        }
-      `
-    });
-    console.log(`cache filled for ${reg.user.email}`);
-  }
-  console.log("cache filled");
-  regs.forEach((r) => {
-    console.log(r);
-  });
   const previouslyAlerted = {};
   filteredLineStandings?.forEach((line) => {
     const team = line.title || "";
