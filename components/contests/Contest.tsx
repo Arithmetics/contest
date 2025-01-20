@@ -1,11 +1,25 @@
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import ContestNav, { ContestTabs } from '../../components/nav/ContestNav';
 import LeaderboardTab from './leaderboard/LeaderboardTab';
 import HistoryTab from './HistoryTab';
-import TrackerTab from './tracker/TrackerTab';
+// import TrackerTab from './tracker/TrackerTab';
 import RulesTab from './RulesTab';
 import AdminTab from './AdminTab';
 import BetsTab from './bets/BetsTab';
+import { Spinner } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
+
+const TrackerTab = dynamic(() => import('./tracker/TrackerTab'), {
+  ssr: false,
+  loading: () => {
+    return (
+      <Center marginTop={'20vh'}>
+        <Spinner />
+      </Center>
+    );
+  },
+});
 
 type ContestProps = {
   id?: string;
