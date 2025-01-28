@@ -2,12 +2,181 @@ import { integer, relationship, select, text } from '@keystone-6/core/fields';
 import { list } from '@keystone-6/core';
 import { isAdmin } from '../keystoneTypeAugments';
 import { Lists } from '.keystone/types';
+import { cache } from '../cache';
+import { Context } from '.keystone/types';
+
+const refreshTimeouts: Record<string, NodeJS.Timeout> = {};
 
 export enum RootContestType {
   NBA_OVER_UNDER = 'NBA_OVER_UNDER',
   NFL_OVER_UNDER = 'NFL_OVER_UNDER',
   NFL_ATS = 'NFL_ATS',
   NBA_PLAYOFFS = 'NBA_PLAYOFFS',
+}
+
+// Add this before the Contest definition
+const CONTEST_QUERY = `
+  id
+  name
+  description
+  status
+  entryFee
+  contestType
+  ruleSet {
+    maxBets
+    maxSuperBets
+    superBetPointCount
+  }
+  lines(orderBy: [{ closingTime: asc }, { benchmark: desc }]) {
+    id
+    benchmark
+    closingTime
+    title
+    image {
+      id
+      image {
+        publicUrlTransformed
+      }
+      altText
+    }
+    choices {
+      id
+      title
+      selection
+      isWin
+      points
+      image {
+        id
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+      secondaryImage {
+        id
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+    }
+  }
+  registrations {
+    id
+    hasPaid
+    isPremium
+    user {
+      id
+      email
+      userName
+      avatarImage {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+  image {
+    id
+    image {
+      publicUrlTransformed
+    }
+    altText
+  }
+  winner {
+    id
+    userName
+    avatarImage {
+      id
+      altText
+      image {
+        publicUrlTransformed
+      }
+    }
+  }
+`;
+
+export async function getCachedContest(
+  context: Context,
+  id: string
+): Promise<Lists.Contest | null> {
+  const cacheKey = `contest:${id}`;
+
+  if (cache[cacheKey]) {
+    return cache[cacheKey];
+  }
+
+  const contest = await context.query.Contest.findOne({
+    where: { id },
+    query: CONTEST_QUERY,
+  });
+
+  if (contest) {
+    cache[cacheKey] = contest;
+  }
+
+  return contest as Lists.Contest;
+}
+
+export async function refreshCachedContest(
+  context: Context,
+  id: string
+): Promise<Lists.Contest | null> {
+  const cacheKey = `contest:${id}`;
+
+  const contest = await context.query.Contest.findOne({
+    where: { id },
+    query: CONTEST_QUERY,
+  });
+
+  if (contest) {
+    cache[cacheKey] = contest;
+  } else {
+    cache[cacheKey] = null;
+  }
+
+  return contest as Lists.Contest;
+}
+
+export function debouncedRefreshCachedContest(context: Context, id: string): void {
+  const cacheKey = `contest:${id}`;
+
+  // Clear existing timeout if there is one
+  if (refreshTimeouts[cacheKey]) {
+    clearTimeout(refreshTimeouts[cacheKey]);
+  }
+
+  // Set new timeout
+  refreshTimeouts[cacheKey] = setTimeout(() => {
+    refreshCachedContest(context, id);
+    delete refreshTimeouts[cacheKey];
+  }, 10000); // 10 seconds
+}
+
+export async function initializeContestCache(context: Context): Promise<void> {
+  console.log('Starting contest cache initialization...');
+  const contests = await context.query.Contest.findMany({
+    where: {
+      OR: [{ status: { equals: 'OPEN' } }, { status: { equals: 'IN_PROGRESS' } }],
+    },
+    query: 'id name status',
+  });
+
+  console.log(`Found ${contests.length} active contests to cache`);
+
+  // Process sequentially instead of using Promise.all
+  for (const contest of contests) {
+    const startTime = process.hrtime();
+    await refreshCachedContest(context, contest.id);
+    const [seconds, nanoseconds] = process.hrtime(startTime);
+    const duration = (seconds + nanoseconds / 1e9).toFixed(3);
+
+    console.log(`Cached contest "${contest.name}" (${contest.status}) in ${duration}s`);
+  }
+
+  console.log('Contest cache initialization complete');
 }
 
 export const Contest: Lists.Contest = list({

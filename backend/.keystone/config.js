@@ -137,11 +137,11 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
       isAdmin: true
     }
   }).sudo().db;
-  const graphql4 = String.raw;
+  const graphql5 = String.raw;
   const espnStandings = await fetchEspnStandings(apiUrl);
   const linesWithStandings = await keyStoneContext.query.Line.findMany({
     where: { contest: { id: { equals: contestId } } },
-    query: graphql4`
+    query: graphql5`
       id
       title
       benchmark
@@ -227,7 +227,7 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
   }
 }
 
-// schemas/User.ts
+// schemas/Contest.ts
 var import_fields = require("@keystone-6/core/fields");
 var import_core = require("@keystone-6/core");
 
@@ -287,49 +287,135 @@ async function canReadBet(accessArgs) {
   return betOwnerOrLineClosed;
 }
 
-// schemas/User.ts
-var User = (0, import_core.list)({
-  access: {
-    operation: {
-      create: isOwnAccount,
-      query: () => true,
-      update: isOwnAccount,
-      delete: isAdmin
-    }
-  },
-  fields: {
-    email: (0, import_fields.text)({ validation: { isRequired: true }, isIndexed: "unique", isFilterable: true }),
-    name: (0, import_fields.text)({ validation: { isRequired: true } }),
-    userName: (0, import_fields.text)({ validation: { isRequired: true }, isIndexed: "unique", isFilterable: true }),
-    password: (0, import_fields.password)(),
-    isAdmin: (0, import_fields.checkbox)({
-      defaultValue: false,
-      access: { read: () => true, update: isAdmin, create: isAdmin }
-    }),
-    bets: (0, import_fields.relationship)({ ref: "Bet.user", many: true }),
-    avatarImage: (0, import_fields.relationship)({
-      ref: "CloudImage",
-      ui: {
-        displayMode: "cards",
-        cardFields: ["image", "altText"],
-        inlineCreate: { fields: ["image", "altText"] },
-        inlineEdit: { fields: ["image", "altText"] }
+// schemas/Contest.ts
+var CONTEST_QUERY = `
+  id
+  name
+  description
+  status
+  entryFee
+  contestType
+  ruleSet {
+    maxBets
+    maxSuperBets
+    superBetPointCount
+  }
+  lines(orderBy: [{ closingTime: asc }, { benchmark: desc }]) {
+    id
+    benchmark
+    closingTime
+    title
+    image {
+      id
+      image {
+        publicUrlTransformed
       }
-    }),
-    registrations: (0, import_fields.relationship)({ ref: "Registration.user", many: true }),
-    histories: (0, import_fields.relationship)({ ref: "History.user", many: true })
-  },
-  ui: {
-    listView: {
-      initialColumns: ["email", "name", "isAdmin"]
+      altText
+    }
+    choices {
+      id
+      title
+      selection
+      isWin
+      points
+      image {
+        id
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
+      secondaryImage {
+        id
+        image {
+          publicUrlTransformed
+        }
+        altText
+      }
     }
   }
-});
-
-// schemas/Contest.ts
-var import_fields2 = require("@keystone-6/core/fields");
-var import_core2 = require("@keystone-6/core");
-var Contest = (0, import_core2.list)({
+  registrations {
+    id
+    hasPaid
+    isPremium
+    user {
+      id
+      email
+      userName
+      avatarImage {
+        id
+        altText
+        image {
+          publicUrlTransformed
+        }
+      }
+    }
+  }
+  image {
+    id
+    image {
+      publicUrlTransformed
+    }
+    altText
+  }
+  winner {
+    id
+    userName
+    avatarImage {
+      id
+      altText
+      image {
+        publicUrlTransformed
+      }
+    }
+  }
+`;
+async function getCachedContest(context, id) {
+  const cacheKey = `contest:${id}`;
+  if (cache[cacheKey]) {
+    return cache[cacheKey];
+  }
+  const contest = await context.query.Contest.findOne({
+    where: { id },
+    query: CONTEST_QUERY
+  });
+  if (contest) {
+    cache[cacheKey] = contest;
+  }
+  return contest;
+}
+async function refreshCachedContest(context, id) {
+  const cacheKey = `contest:${id}`;
+  const contest = await context.query.Contest.findOne({
+    where: { id },
+    query: CONTEST_QUERY
+  });
+  if (contest) {
+    cache[cacheKey] = contest;
+  } else {
+    cache[cacheKey] = null;
+  }
+  return contest;
+}
+async function initializeContestCache(context) {
+  console.log("Starting contest cache initialization...");
+  const contests = await context.query.Contest.findMany({
+    where: {
+      OR: [{ status: { equals: "OPEN" } }, { status: { equals: "IN_PROGRESS" } }]
+    },
+    query: "id name status"
+  });
+  console.log(`Found ${contests.length} active contests to cache`);
+  for (const contest of contests) {
+    const startTime = process.hrtime();
+    await refreshCachedContest(context, contest.id);
+    const [seconds, nanoseconds] = process.hrtime(startTime);
+    const duration = (seconds + nanoseconds / 1e9).toFixed(3);
+    console.log(`Cached contest "${contest.name}" (${contest.status}) in ${duration}s`);
+  }
+  console.log("Contest cache initialization complete");
+}
+var Contest = (0, import_core.list)({
   access: {
     operation: {
       create: isAdmin,
@@ -339,13 +425,13 @@ var Contest = (0, import_core2.list)({
     }
   },
   fields: {
-    name: (0, import_fields2.text)({ validation: { isRequired: true } }),
-    description: (0, import_fields2.text)({
+    name: (0, import_fields.text)({ validation: { isRequired: true } }),
+    description: (0, import_fields.text)({
       ui: {
         displayMode: "textarea"
       }
     }),
-    status: (0, import_fields2.select)({
+    status: (0, import_fields.select)({
       type: "enum",
       options: [
         { label: "Open", value: "OPEN" },
@@ -360,8 +446,8 @@ var Contest = (0, import_core2.list)({
         displayMode: "segmented-control"
       }
     }),
-    entryFee: (0, import_fields2.integer)(),
-    contestType: (0, import_fields2.select)({
+    entryFee: (0, import_fields.integer)(),
+    contestType: (0, import_fields.select)({
       type: "enum",
       options: [
         { label: "NBA Over Under", value: "NBA_OVER_UNDER" /* NBA_OVER_UNDER */ },
@@ -373,7 +459,7 @@ var Contest = (0, import_core2.list)({
         isRequired: true
       }
     }),
-    image: (0, import_fields2.relationship)({
+    image: (0, import_fields.relationship)({
       ref: "CloudImage",
       ui: {
         displayMode: "cards",
@@ -382,10 +468,51 @@ var Contest = (0, import_core2.list)({
         inlineEdit: { fields: ["image", "altText"] }
       }
     }),
-    lines: (0, import_fields2.relationship)({ ref: "Line.contest", many: true }),
-    registrations: (0, import_fields2.relationship)({ ref: "Registration.contest", many: true }),
-    ruleSet: (0, import_fields2.relationship)({ ref: "RuleSet.contest", many: false }),
-    winner: (0, import_fields2.relationship)({ ref: "User", many: false })
+    lines: (0, import_fields.relationship)({ ref: "Line.contest", many: true }),
+    registrations: (0, import_fields.relationship)({ ref: "Registration.contest", many: true }),
+    ruleSet: (0, import_fields.relationship)({ ref: "RuleSet.contest", many: false }),
+    winner: (0, import_fields.relationship)({ ref: "User", many: false })
+  }
+});
+
+// schemas/User.ts
+var import_fields2 = require("@keystone-6/core/fields");
+var import_core2 = require("@keystone-6/core");
+var User = (0, import_core2.list)({
+  access: {
+    operation: {
+      create: isOwnAccount,
+      query: () => true,
+      update: isOwnAccount,
+      delete: isAdmin
+    }
+  },
+  fields: {
+    email: (0, import_fields2.text)({ validation: { isRequired: true }, isIndexed: "unique", isFilterable: true }),
+    name: (0, import_fields2.text)({ validation: { isRequired: true } }),
+    userName: (0, import_fields2.text)({ validation: { isRequired: true }, isIndexed: "unique", isFilterable: true }),
+    password: (0, import_fields2.password)(),
+    isAdmin: (0, import_fields2.checkbox)({
+      defaultValue: false,
+      access: { read: () => true, update: isAdmin, create: isAdmin }
+    }),
+    bets: (0, import_fields2.relationship)({ ref: "Bet.user", many: true }),
+    avatarImage: (0, import_fields2.relationship)({
+      ref: "CloudImage",
+      ui: {
+        displayMode: "cards",
+        cardFields: ["image", "altText"],
+        inlineCreate: { fields: ["image", "altText"] },
+        inlineEdit: { fields: ["image", "altText"] }
+      }
+    }),
+    registrations: (0, import_fields2.relationship)({ ref: "Registration.user", many: true }),
+    histories: (0, import_fields2.relationship)({ ref: "History.user", many: true })
+  },
+  ui: {
+    listView: {
+      initialColumns: ["email", "name", "isAdmin"]
+    }
   }
 });
 
@@ -456,10 +583,10 @@ var Line = (0, import_core4.list)({
         async resolve(item, _args, _context) {
           const context = _context;
           const lists = context.query;
-          const graphql4 = String.raw;
+          const graphql5 = String.raw;
           const parentContest = await lists.Contest.findOne({
             where: { id: item.contestId || "" },
-            query: graphql4`
+            query: graphql5`
               id
               name
             `
@@ -534,10 +661,10 @@ var Choice = (0, import_core5.list)({
         async resolve(item, _args, _context) {
           const context = _context;
           const lists = context.query;
-          const graphql4 = String.raw;
+          const graphql5 = String.raw;
           const requestedLine = await lists.Line.findOne({
             where: { id: item.lineId || "" },
-            query: graphql4`
+            query: graphql5`
               id
               title
               benchmark
@@ -596,10 +723,10 @@ var Choice = (0, import_core5.list)({
         async resolve(item, _args, _context) {
           const context = _context;
           const lists = context.query;
-          const graphql4 = String.raw;
+          const graphql5 = String.raw;
           const requestedLine = await lists.Line.findOne({
             where: { id: item.lineId || "" },
-            query: graphql4`
+            query: graphql5`
               id
               title
               benchmark
@@ -646,7 +773,7 @@ var Bet = (0, import_core6.list)({
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context, operation } = args;
       const lists = context.query;
-      const graphql4 = String.raw;
+      const graphql5 = String.raw;
       const session = context.session;
       if (session.data.isAdmin) {
         return;
@@ -654,7 +781,7 @@ var Bet = (0, import_core6.list)({
       const userId = resolvedData.user?.connect?.id;
       const requestedChoice = await lists.Choice.findOne({
         where: { id: resolvedData.choice?.connect?.id },
-        query: graphql4`
+        query: graphql5`
             id
             line {
               id
@@ -717,7 +844,7 @@ var Bet = (0, import_core6.list)({
           user: { id: { equals: userId } },
           choice: { line: { contest: { id: { equals: contest?.id } } } }
         },
-        query: graphql4`
+        query: graphql5`
           id
           isSuper
         `
@@ -785,13 +912,13 @@ var Registration = (0, import_core7.list)({
         async resolve(item, _args, _context) {
           console.log("starting");
           const context = _context;
-          const graphql4 = String.raw;
+          const graphql5 = String.raw;
           if (cache[item.contestId] && cache[item.contestId][item.userId]) {
             return cache[item.contestId][item.userId];
           }
           const contestLines = await context.query.Line.findMany({
             where: { contest: { id: { equals: item.contestId || "" } } },
-            query: graphql4`
+            query: graphql5`
               id
               title
               benchmark
@@ -885,7 +1012,7 @@ var Registration = (0, import_core7.list)({
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context } = args;
       const lists = context.query;
-      const graphql4 = String.raw;
+      const graphql5 = String.raw;
       const session = context.session;
       if (session.data.isAdmin) {
         return;
@@ -895,7 +1022,7 @@ var Registration = (0, import_core7.list)({
       }
       const requestedContest = await lists.Contest.findOne({
         where: { id: resolvedData.contest?.connect?.id },
-        query: graphql4`
+        query: graphql5`
             id
             status
           `
@@ -908,7 +1035,7 @@ var Registration = (0, import_core7.list)({
           contest: { id: { equals: resolvedData.contest?.connect?.id } },
           user: { id: { equals: session?.data?.id } }
         },
-        query: graphql4`
+        query: graphql5`
             id
           `
       });
@@ -919,7 +1046,7 @@ var Registration = (0, import_core7.list)({
     validateDelete: async (args) => {
       const { item, addValidationError, context } = args;
       const lists = context.query;
-      const graphql4 = String.raw;
+      const graphql5 = String.raw;
       const session = context.session;
       if (session.data.isAdmin) {
         return;
@@ -929,7 +1056,7 @@ var Registration = (0, import_core7.list)({
       }
       const requestedContest = await lists.Contest.findOne({
         where: { id: item.contestId },
-        query: graphql4`
+        query: graphql5`
             id
             status
           `
@@ -1058,6 +1185,7 @@ var keystone_default = auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
       useMigrations: true,
       async onConnect(context) {
+        await initializeContestCache(context);
         import_node_cron.default.schedule("0 0 14 * * *", () => {
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
@@ -1090,6 +1218,19 @@ var keystone_default = auth.withAuth(
       Standing,
       User
     },
+    extendGraphqlSchema: import_core11.graphql.extend((base) => {
+      return {
+        query: {
+          cachedContest: import_core11.graphql.field({
+            type: base.object("Contest"),
+            args: { id: import_core11.graphql.arg({ type: import_core11.graphql.nonNull(import_core11.graphql.ID) }) },
+            resolve(source, { id }, context) {
+              return getCachedContest(context, id);
+            }
+          })
+        }
+      };
+    }),
     session: (0, import_session.statelessSessions)({
       maxAge: sessionMaxAge,
       secret: sessionSecret

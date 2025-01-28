@@ -1,13 +1,14 @@
 import { statelessSessions } from '@keystone-6/core/session';
 import { createAuth } from '@keystone-6/auth';
-import { config } from '@keystone-6/core';
+import { config, graphql } from '@keystone-6/core';
 import cron from 'node-cron';
 import 'dotenv/config';
-
+import { Context } from '.keystone/types';
 import { sendPasswordResetEmail } from './lib/mail';
 import { cache } from './cache';
 // import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
+import { getCachedContest, initializeContestCache } from './schemas/Contest';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -68,6 +69,9 @@ export default auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
       useMigrations: true,
       async onConnect(context) {
+        // Initialize contest cache
+        await initializeContestCache(context);
+
         // cron jobs
         cron.schedule('0 0 14 * * *', () => {
           Object.keys(cache).forEach((k) => {
@@ -113,6 +117,19 @@ export default auth.withAuth(
       Standing,
       User,
     },
+    extendGraphqlSchema: graphql.extend((base) => {
+      return {
+        query: {
+          cachedContest: graphql.field({
+            type: base.object('Contest'),
+            args: { id: graphql.arg({ type: graphql.nonNull(graphql.ID) }) },
+            resolve(source, { id }, context: Context) {
+              return getCachedContest(context, id);
+            },
+          }),
+        },
+      };
+    }),
     session: statelessSessions({
       maxAge: sessionMaxAge,
       secret: sessionSecret,
