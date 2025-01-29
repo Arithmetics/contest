@@ -5,10 +5,11 @@ import cron from 'node-cron';
 import 'dotenv/config';
 import { Context } from '.keystone/types';
 import { sendPasswordResetEmail } from './lib/mail';
-import { cache } from './cache';
+// import { cache } from './cache';
 // import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
 import { getCachedContest, initializeContestCache } from './schemas/Contest';
+import { initializeCache } from './cache';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -69,14 +70,16 @@ export default auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
       useMigrations: true,
       async onConnect(context) {
+        // Initialize cache with context
+        initializeCache(context);
         // Initialize contest cache
         await initializeContestCache(context);
 
         // cron jobs
         cron.schedule('0 0 14 * * *', () => {
-          Object.keys(cache).forEach((k) => {
-            cache[k] = null;
-          });
+          // Object.keys(cache).forEach((k) => {
+          //   cache[k] = null;
+          // });
 
           // console.log('running NFL standing job!');
           // startDailyStandingsJob(

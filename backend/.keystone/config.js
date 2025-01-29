@@ -102,9 +102,6 @@ async function sendStandingsUpdate(updates, to) {
   }
 }
 
-// cache.ts
-var cache = {};
-
 // espnStandings.ts
 var import_got = __toESM(require("got"));
 async function fetchEspnStandings(url) {
@@ -287,6 +284,50 @@ async function canReadBet(accessArgs) {
   return betOwnerOrLineClosed;
 }
 
+// cache.ts
+var import_node_cache = __toESM(require("node-cache"));
+var CACHE_KEYS = {
+  CONTEST: "CONTEST"
+};
+function createCacheKey(prefix, id) {
+  return `${CACHE_KEYS[prefix]}:${id}`;
+}
+function extractIdFromKey(key) {
+  const [prefix, id] = key.split(":");
+  console.log("prefix", prefix);
+  return id || null;
+}
+var cache = new import_node_cache.default({
+  stdTTL: 3600,
+  // Default TTL of 1 hour in seconds
+  checkperiod: 600
+  // Check for expired keys every 10 minutes
+});
+var keystoneContext = null;
+function initializeCache(context) {
+  keystoneContext = context;
+  cache.on("expired", async (key) => {
+    if (!keystoneContext) {
+      console.error("No Keystone context available for cache refresh");
+      return;
+    }
+    const [prefix] = key.split(":");
+    if (prefix === CACHE_KEYS.CONTEST) {
+      const contestId = extractIdFromKey(key);
+      if (!contestId) {
+        console.error(`Invalid cache key format: ${key}`);
+        return;
+      }
+      console.log(`Cache expired for contest ${contestId}, triggering refresh...`);
+      try {
+        debouncedRefreshCachedContest(keystoneContext, contestId);
+      } catch (error) {
+        console.error(`Failed to refresh expired contest ${contestId}:`, error);
+      }
+    }
+  });
+}
+
 // ../components/contestQueries.ts
 var CONTEST_FIELDS = `
   id
@@ -372,11 +413,13 @@ var CONTEST_FIELDS = `
 `;
 
 // schemas/Contest.ts
+var refreshTimeouts = {};
 async function getCachedContest(context, id) {
-  const cacheKey = `contest:${id}`;
-  if (cache[cacheKey]) {
+  const cacheKey = createCacheKey(CACHE_KEYS.CONTEST, id);
+  const cachedContest = cache.get(cacheKey);
+  if (cachedContest) {
     console.log(`Cache hit for contest ${id}`);
-    return cache[cacheKey];
+    return cachedContest;
   }
   console.log(`Cache miss for contest ${id}`);
   const contest = await context.query.Contest.findOne({
@@ -384,22 +427,32 @@ async function getCachedContest(context, id) {
     query: CONTEST_FIELDS
   });
   if (contest) {
-    cache[cacheKey] = contest;
+    cache.set(cacheKey, contest);
   }
   return contest;
 }
 async function refreshCachedContest(context, id) {
-  const cacheKey = `contest:${id}`;
+  const cacheKey = createCacheKey(CACHE_KEYS.CONTEST, id);
   const contest = await context.query.Contest.findOne({
     where: { id },
     query: CONTEST_FIELDS
   });
   if (contest) {
-    cache[cacheKey] = contest;
+    cache.set(cacheKey, contest);
   } else {
-    cache[cacheKey] = null;
+    cache.del(cacheKey);
   }
   return contest;
+}
+function debouncedRefreshCachedContest(context, id) {
+  const cacheKey = `contest:${id}`;
+  if (refreshTimeouts[cacheKey]) {
+    clearTimeout(refreshTimeouts[cacheKey]);
+  }
+  refreshTimeouts[cacheKey] = setTimeout(() => {
+    refreshCachedContest(context, id);
+    delete refreshTimeouts[cacheKey];
+  }, 1e4);
 }
 async function initializeContestCache(context) {
   console.log("Starting contest cache initialization...");
@@ -874,8 +927,8 @@ var Bet = (0, import_core6.list)({
 });
 
 // schemas/Registration.ts
-var import_fields7 = require("@keystone-6/core/fields");
 var import_core7 = require("@keystone-6/core");
+var import_fields7 = require("@keystone-6/core/fields");
 var Registration = (0, import_core7.list)({
   access: {
     operation: {
@@ -913,99 +966,12 @@ var Registration = (0, import_core7.list)({
             tiebreaker: import_core7.graphql.field({ type: import_core7.graphql.Float })
           }
         }),
-        async resolve(item, _args, _context) {
-          console.log("starting");
-          const context = _context;
-          const graphql5 = String.raw;
-          if (cache[item.contestId] && cache[item.contestId][item.userId]) {
-            return cache[item.contestId][item.userId];
-          }
-          const contestLines = await context.query.Line.findMany({
-            where: { contest: { id: { equals: item.contestId || "" } } },
-            query: graphql5`
-              id
-              title
-              benchmark
-              standings(orderBy: { gamesPlayed: desc }, take: 1) {
-                id
-                wins
-                gamesPlayed
-                totalGames
-              }
-              choices {
-                selection
-                status
-                bets {
-                  id
-                  isSuper
-                  user {
-                    id
-                  }
-                }
-              }
-            `
-          });
-          let locked = 0;
-          let likely = 0;
-          let possible = 0;
-          let tiebreaker = 0;
-          contestLines?.forEach((line) => {
-            line.choices?.forEach((choice) => {
-              let lineDiff = 0;
-              const usersBet = choice.bets?.find((bet) => bet?.user?.id === item.userId);
-              if (usersBet) {
-                const points = usersBet.isSuper ? 2 : 1;
-                const standing = line.standings?.[0];
-                if (standing) {
-                  const totalGames = line.standings?.[0].totalGames || 0;
-                  const gamesPlayed = line.standings?.[0].gamesPlayed || 0;
-                  const wins = line.standings?.[0].wins || 0;
-                  const winPercentage = wins / (gamesPlayed || 1);
-                  const projectedWins = Math.round(winPercentage * totalGames);
-                  const benchmark = line.benchmark || 0;
-                  lineDiff = Math.abs(projectedWins - benchmark);
-                }
-                if (choice.status === "WON" /* Won */) {
-                  locked += points;
-                  likely += points;
-                  possible += points;
-                  tiebreaker += lineDiff;
-                }
-                if (choice.status === "WINNING" /* Winning */) {
-                  likely += points;
-                  possible += points;
-                  tiebreaker += lineDiff;
-                }
-                if (choice.status === "LOSING" /* Losing */) {
-                  possible += points;
-                  tiebreaker = tiebreaker - lineDiff;
-                }
-                if (choice.status === "LOST" /* Lost */) {
-                  tiebreaker = tiebreaker - lineDiff;
-                }
-                if (choice.status === "NOT_STARTED" /* NotStarted */) {
-                  possible += points;
-                }
-              }
-            });
-          });
-          if (!cache[item.contestId]) {
-            cache[item.contestId] = {};
-          }
-          cache[item.contestId][item.userId] = {
-            locked,
-            likely,
-            possible,
-            tiebreaker
-          };
-          console.log(
-            `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible},${tiebreaker}`
-          );
+        async resolve() {
           return {
-            locked,
-            likely,
-            possible,
-            tiebreaker
+            locked: 0,
+            likely: 0,
+            possible: 0,
+            tiebreaker: 0
           };
         }
       }),
@@ -1189,11 +1155,9 @@ var keystone_default = auth.withAuth(
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
       useMigrations: true,
       async onConnect(context) {
+        initializeCache(context);
         await initializeContestCache(context);
         import_node_cron.default.schedule("0 0 14 * * *", () => {
-          Object.keys(cache).forEach((k) => {
-            cache[k] = null;
-          });
           console.log("running NBA standing job!");
           startDailyStandingsJob(
             context,

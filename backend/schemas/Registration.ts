@@ -1,9 +1,7 @@
+import { ContestStatusType, Lists } from '.keystone/types';
+import { graphql, list } from '@keystone-6/core';
 import { checkbox, relationship, virtual } from '@keystone-6/core/fields';
-import { list, graphql } from '@keystone-6/core';
-import { Context, ContestStatusType, Lists } from '.keystone/types';
-import { isAdmin, isSignedIn, AugKeystoneSession } from '../keystoneTypeAugments';
-import { ChoiceStatus, Line } from '../codegen/graphql-types';
-import { cache } from '../cache';
+import { AugKeystoneSession, isAdmin, isSignedIn } from '../keystoneTypeAugments';
 
 export const Registration: Lists.Registration = list({
   access: {
@@ -48,111 +46,111 @@ export const Registration: Lists.Registration = list({
             tiebreaker: graphql.field({ type: graphql.Float }),
           },
         }),
-        async resolve(item, _args, _context) {
-          console.log('starting');
-          const context = _context as Context;
-          const graphql = String.raw;
+        async resolve() {
+          // console.log('starting');
+          // const context = _context as Context;
+          // const graphql = String.raw;
 
-          if (
-            cache[item.contestId as string] &&
-            cache[item.contestId as string][item.userId as string]
-          ) {
-            return cache[item.contestId as string][item.userId as string];
-          }
-          // const contestLines = (await lists.Line.findMany({
-          const contestLines = (await context.query.Line.findMany({
-            where: { contest: { id: { equals: (item.contestId as string) || '' } } },
-            query: graphql`
-              id
-              title
-              benchmark
-              standings(orderBy: { gamesPlayed: desc }, take: 1) {
-                id
-                wins
-                gamesPlayed
-                totalGames
-              }
-              choices {
-                selection
-                status
-                bets {
-                  id
-                  isSuper
-                  user {
-                    id
-                  }
-                }
-              }
-            `,
-          })) as Line[] | null;
+          // if (
+          //   cache[item.contestId as string] &&
+          //   cache[item.contestId as string][item.userId as string]
+          // ) {
+          //   return cache[item.contestId as string][item.userId as string];
+          // }
+          // // const contestLines = (await lists.Line.findMany({
+          // const contestLines = (await context.query.Line.findMany({
+          //   where: { contest: { id: { equals: (item.contestId as string) || '' } } },
+          //   query: graphql`
+          //     id
+          //     title
+          //     benchmark
+          //     standings(orderBy: { gamesPlayed: desc }, take: 1) {
+          //       id
+          //       wins
+          //       gamesPlayed
+          //       totalGames
+          //     }
+          //     choices {
+          //       selection
+          //       status
+          //       bets {
+          //         id
+          //         isSuper
+          //         user {
+          //           id
+          //         }
+          //       }
+          //     }
+          //   `,
+          // })) as Line[] | null;
 
-          let locked = 0;
-          let likely = 0;
-          let possible = 0;
-          let tiebreaker = 0;
+          // let locked = 0;
+          // let likely = 0;
+          // let possible = 0;
+          // let tiebreaker = 0;
 
-          contestLines?.forEach((line) => {
-            line.choices?.forEach((choice) => {
-              let lineDiff = 0;
-              // only add points if user has a bet on the choice
-              const usersBet = choice.bets?.find((bet) => bet?.user?.id === item.userId);
-              if (usersBet) {
-                const points = usersBet.isSuper ? 2 : 1;
-                const standing = line.standings?.[0];
-                if (standing) {
-                  const totalGames = line.standings?.[0].totalGames || 0;
-                  const gamesPlayed = line.standings?.[0].gamesPlayed || 0;
-                  const wins = line.standings?.[0].wins || 0;
+          // contestLines?.forEach((line) => {
+          //   line.choices?.forEach((choice) => {
+          //     let lineDiff = 0;
+          //     // only add points if user has a bet on the choice
+          //     const usersBet = choice.bets?.find((bet) => bet?.user?.id === item.userId);
+          //     if (usersBet) {
+          //       const points = usersBet.isSuper ? 2 : 1;
+          //       const standing = line.standings?.[0];
+          //       if (standing) {
+          //         const totalGames = line.standings?.[0].totalGames || 0;
+          //         const gamesPlayed = line.standings?.[0].gamesPlayed || 0;
+          //         const wins = line.standings?.[0].wins || 0;
 
-                  const winPercentage = wins / (gamesPlayed || 1);
-                  const projectedWins = Math.round(winPercentage * totalGames);
+          //         const winPercentage = wins / (gamesPlayed || 1);
+          //         const projectedWins = Math.round(winPercentage * totalGames);
 
-                  const benchmark = line.benchmark || 0;
+          //         const benchmark = line.benchmark || 0;
 
-                  lineDiff = Math.abs(projectedWins - benchmark);
-                }
+          //         lineDiff = Math.abs(projectedWins - benchmark);
+          //       }
 
-                if (choice.status === ChoiceStatus.Won) {
-                  locked += points;
-                  likely += points;
-                  possible += points;
-                  tiebreaker += lineDiff;
-                }
-                if (choice.status === ChoiceStatus.Winning) {
-                  likely += points;
-                  possible += points;
-                  tiebreaker += lineDiff;
-                }
-                if (choice.status === ChoiceStatus.Losing) {
-                  possible += points;
-                  tiebreaker = tiebreaker - lineDiff;
-                }
-                if (choice.status === ChoiceStatus.Lost) {
-                  tiebreaker = tiebreaker - lineDiff;
-                }
-                if (choice.status === ChoiceStatus.NotStarted) {
-                  possible += points;
-                }
-              }
-            });
-          });
-          if (!cache[item.contestId as string]) {
-            cache[item.contestId as string] = {};
-          }
-          cache[item.contestId as string][item.userId as string] = {
-            locked,
-            likely,
-            possible,
-            tiebreaker,
-          };
-          console.log(
-            `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible},${tiebreaker}`
-          );
+          //       if (choice.status === ChoiceStatus.Won) {
+          //         locked += points;
+          //         likely += points;
+          //         possible += points;
+          //         tiebreaker += lineDiff;
+          //       }
+          //       if (choice.status === ChoiceStatus.Winning) {
+          //         likely += points;
+          //         possible += points;
+          //         tiebreaker += lineDiff;
+          //       }
+          //       if (choice.status === ChoiceStatus.Losing) {
+          //         possible += points;
+          //         tiebreaker = tiebreaker - lineDiff;
+          //       }
+          //       if (choice.status === ChoiceStatus.Lost) {
+          //         tiebreaker = tiebreaker - lineDiff;
+          //       }
+          //       if (choice.status === ChoiceStatus.NotStarted) {
+          //         possible += points;
+          //       }
+          //     }
+          //   });
+          // });
+          // if (!cache[item.contestId as string]) {
+          //   cache[item.contestId as string] = {};
+          // }
+          // cache[item.contestId as string][item.userId as string] = {
+          //   locked,
+          //   likely,
+          //   possible,
+          //   tiebreaker,
+          // };
+          // console.log(
+          //   `set the queue for ${item.contestId},${item.userId}: ${locked},${likely},${possible},${tiebreaker}`
+          // );
           return {
-            locked,
-            likely,
-            possible,
-            tiebreaker,
+            locked: 0,
+            likely: 0,
+            possible: 0,
+            tiebreaker: 0,
           };
         },
       }),

@@ -5,6 +5,7 @@ import { Lists } from '.keystone/types';
 import { cache } from '../cache';
 import { Context } from '.keystone/types';
 import { CONTEST_FIELDS } from '../../components/contestQueries';
+import { createCacheKey, CACHE_KEYS } from '../cache';
 
 const refreshTimeouts: Record<string, NodeJS.Timeout> = {};
 
@@ -19,11 +20,12 @@ export async function getCachedContest(
   context: Context,
   id: string
 ): Promise<Lists.Contest | null> {
-  const cacheKey = `contest:${id}`;
+  const cacheKey = createCacheKey(CACHE_KEYS.CONTEST, id);
 
-  if (cache[cacheKey]) {
+  const cachedContest = cache.get<Lists.Contest>(cacheKey);
+  if (cachedContest) {
     console.log(`Cache hit for contest ${id}`);
-    return cache[cacheKey];
+    return cachedContest;
   }
 
   console.log(`Cache miss for contest ${id}`);
@@ -33,7 +35,7 @@ export async function getCachedContest(
   });
 
   if (contest) {
-    cache[cacheKey] = contest;
+    cache.set(cacheKey, contest);
   }
 
   return contest as Lists.Contest;
@@ -43,7 +45,7 @@ export async function refreshCachedContest(
   context: Context,
   id: string
 ): Promise<Lists.Contest | null> {
-  const cacheKey = `contest:${id}`;
+  const cacheKey = createCacheKey(CACHE_KEYS.CONTEST, id);
 
   const contest = await context.query.Contest.findOne({
     where: { id },
@@ -51,9 +53,9 @@ export async function refreshCachedContest(
   });
 
   if (contest) {
-    cache[cacheKey] = contest;
+    cache.set(cacheKey, contest);
   } else {
-    cache[cacheKey] = null;
+    cache.del(cacheKey);
   }
 
   return contest as Lists.Contest;
