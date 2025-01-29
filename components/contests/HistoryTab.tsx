@@ -14,7 +14,7 @@ export default function HistoryTab({ contestId }: HistoryTabProps): JSX.Element 
     },
   });
 
-  const contestType = contestData?.contest?.contestType;
+  const contestType = contestData?.cachedContest?.contestType;
 
   if (getContestLoading) {
     return (

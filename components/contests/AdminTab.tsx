@@ -26,7 +26,7 @@ export default function AdminTab({ contestId }: AdminTabProps): JSX.Element {
 
   let emails = '';
   let premiumEmails = '';
-  const reg = contestData?.contest?.registrations;
+  const reg = contestData?.cachedContest?.registrations;
   reg?.forEach((r) => {
     if (r.user?.email) {
       emails = `${emails} ${r.user?.email},`;
@@ -57,14 +57,14 @@ export default function AdminTab({ contestId }: AdminTabProps): JSX.Element {
         <Center>
           <Code>{premiumEmails}</Code>
         </Center>
-        {contestData?.contest?.contestType === ContestContestTypeType.NflAts ? (
+        {contestData?.cachedContest?.contestType === ContestContestTypeType.NflAts ? (
           <>
-            <CreateLinesForm contestId={contestData?.contest?.id} />
+            <CreateLinesForm contestId={contestData?.cachedContest?.id} />
             <hr />
-            <CSVsATS contestId={contestData?.contest?.id} />
+            <CSVsATS contestId={contestData?.cachedContest?.id} />
           </>
         ) : (
-          <CSVsOU contestId={contestData?.contest?.id} />
+          <CSVsOU contestId={contestData?.cachedContest?.id} />
         )}
       </Flex>
     </Center>

@@ -20,7 +20,7 @@ export default function TrackerTab({ contestId }: TrackerTabProps): JSX.Element 
     },
   });
 
-  const contest = data?.contest as Contest | undefined;
+  const contest = data?.cachedContest as Contest | undefined;
 
   if (loading) {
     return (

@@ -60,7 +60,7 @@ export const ALL_CONTESTS_QUERY = gql`
 
 export const CONTEST_BY_ID_QUERY = gql`
   query ContestById($id: ID!) {
-    contest(where: { id: $id }) {
+    cachedContest(id: $id) {
       id
       name
       description

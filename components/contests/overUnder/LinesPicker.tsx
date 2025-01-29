@@ -53,7 +53,7 @@ export const LinesPicker = ({
     },
   });
 
-  const contest = contestData?.contest as Contest | undefined;
+  const contest = contestData?.cachedContest as Contest | undefined;
   const lines = contest?.lines as Line[] | undefined;
 
   const submitBet = (line: Line, selection: ChoiceSelectionType) => async () => {

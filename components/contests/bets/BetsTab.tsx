@@ -19,7 +19,7 @@ export default function BetsTab({ contestId }: BetsTabProps): JSX.Element {
     return <PageLoader />;
   }
 
-  const contestType = data?.contest?.contestType;
+  const contestType = data?.cachedContest?.contestType;
 
   if (
     contestType === ContestContestTypeType.NbaOverUnder ||

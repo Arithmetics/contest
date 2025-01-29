@@ -4,6 +4,7 @@ import { isAdmin } from '../keystoneTypeAugments';
 import { Lists } from '.keystone/types';
 import { cache } from '../cache';
 import { Context } from '.keystone/types';
+import { CONTEST_FIELDS } from '../../components/contestQueries';
 
 const refreshTimeouts: Record<string, NodeJS.Timeout> = {};
 
@@ -14,90 +15,6 @@ export enum RootContestType {
   NBA_PLAYOFFS = 'NBA_PLAYOFFS',
 }
 
-// Add this before the Contest definition
-const CONTEST_QUERY = `
-  id
-  name
-  description
-  status
-  entryFee
-  contestType
-  ruleSet {
-    maxBets
-    maxSuperBets
-    superBetPointCount
-  }
-  lines(orderBy: [{ closingTime: asc }, { benchmark: desc }]) {
-    id
-    benchmark
-    closingTime
-    title
-    image {
-      id
-      image {
-        publicUrlTransformed
-      }
-      altText
-    }
-    choices {
-      id
-      title
-      selection
-      isWin
-      points
-      image {
-        id
-        image {
-          publicUrlTransformed
-        }
-        altText
-      }
-      secondaryImage {
-        id
-        image {
-          publicUrlTransformed
-        }
-        altText
-      }
-    }
-  }
-  registrations {
-    id
-    hasPaid
-    isPremium
-    user {
-      id
-      email
-      userName
-      avatarImage {
-        id
-        altText
-        image {
-          publicUrlTransformed
-        }
-      }
-    }
-  }
-  image {
-    id
-    image {
-      publicUrlTransformed
-    }
-    altText
-  }
-  winner {
-    id
-    userName
-    avatarImage {
-      id
-      altText
-      image {
-        publicUrlTransformed
-      }
-    }
-  }
-`;
-
 export async function getCachedContest(
   context: Context,
   id: string
@@ -105,12 +22,14 @@ export async function getCachedContest(
   const cacheKey = `contest:${id}`;
 
   if (cache[cacheKey]) {
+    console.log(`Cache hit for contest ${id}`);
     return cache[cacheKey];
   }
 
+  console.log(`Cache miss for contest ${id}`);
   const contest = await context.query.Contest.findOne({
     where: { id },
-    query: CONTEST_QUERY,
+    query: CONTEST_FIELDS,
   });
 
   if (contest) {
@@ -128,7 +47,7 @@ export async function refreshCachedContest(
 
   const contest = await context.query.Contest.findOne({
     where: { id },
-    query: CONTEST_QUERY,
+    query: CONTEST_FIELDS,
   });
 
   if (contest) {

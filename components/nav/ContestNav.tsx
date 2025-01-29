@@ -88,7 +88,7 @@ export default function ContestNav({ selectedTab, contestId }: ContestNavProps):
     },
   });
 
-  const contest = contestData?.contest as Contest | undefined;
+  const contest = contestData?.cachedContest as Contest | undefined;
   const userId = userData?.authenticatedItem?.id;
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
   const showEnterContestButton =

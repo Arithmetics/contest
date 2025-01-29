@@ -1319,6 +1319,7 @@ export type Query = {
   bet?: Maybe<Bet>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']['output']>;
+  cachedContest?: Maybe<Contest>;
   choice?: Maybe<Choice>;
   choices?: Maybe<Array<Choice>>;
   choicesCount?: Maybe<Scalars['Int']['output']>;
@@ -1367,6 +1368,11 @@ export type QueryBetsArgs = {
 
 export type QueryBetsCountArgs = {
   where?: BetWhereInput;
+};
+
+
+export type QueryCachedContestArgs = {
+  id: Scalars['ID']['input'];
 };
 
 

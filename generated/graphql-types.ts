@@ -1322,6 +1322,7 @@ export type Query = {
   bet?: Maybe<Bet>;
   bets?: Maybe<Array<Bet>>;
   betsCount?: Maybe<Scalars['Int']['output']>;
+  cachedContest?: Maybe<Contest>;
   choice?: Maybe<Choice>;
   choices?: Maybe<Array<Choice>>;
   choicesCount?: Maybe<Scalars['Int']['output']>;
@@ -1370,6 +1371,11 @@ export type QueryBetsArgs = {
 
 export type QueryBetsCountArgs = {
   where?: BetWhereInput;
+};
+
+
+export type QueryCachedContestArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -2130,7 +2136,7 @@ export type ContestByIdQueryVariables = Exact<{
 }>;
 
 
-export type ContestByIdQuery = { __typename?: 'Query', contest?: { __typename?: 'Contest', id: string, name?: string | null, description?: string | null, status?: ContestStatusType | null, entryFee?: number | null, contestType?: ContestContestTypeType | null, ruleSet?: { __typename?: 'RuleSet', maxBets?: number | null, maxSuperBets?: number | null, superBetPointCount?: number | null } | null, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, points?: number | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null }> | null }> | null, registrations?: Array<{ __typename?: 'Registration', id: string, hasPaid?: boolean | null, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, email?: string | null, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, winner?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null } | null };
+export type ContestByIdQuery = { __typename?: 'Query', cachedContest?: { __typename?: 'Contest', id: string, name?: string | null, description?: string | null, status?: ContestStatusType | null, entryFee?: number | null, contestType?: ContestContestTypeType | null, ruleSet?: { __typename?: 'RuleSet', maxBets?: number | null, maxSuperBets?: number | null, superBetPointCount?: number | null } | null, lines?: Array<{ __typename?: 'Line', id: string, benchmark?: number | null, closingTime?: any | null, title?: string | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, choices?: Array<{ __typename?: 'Choice', id: string, title?: string | null, selection?: ChoiceSelectionType | null, isWin?: boolean | null, points?: number | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, secondaryImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null }> | null }> | null, registrations?: Array<{ __typename?: 'Registration', id: string, hasPaid?: boolean | null, isPremium?: boolean | null, user?: { __typename?: 'User', id: string, email?: string | null, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null }> | null, image?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null, winner?: { __typename?: 'User', id: string, userName?: string | null, avatarImage?: { __typename?: 'CloudImage', id: string, altText?: string | null, image?: { __typename?: 'CloudinaryImage_File', publicUrlTransformed?: string | null } | null } | null } | null } | null };
 
 export type ContestRegistrationMutationVariables = Exact<{
   userId: Scalars['ID']['input'];
@@ -2922,7 +2928,7 @@ export type AllContestsLazyQueryHookResult = ReturnType<typeof useAllContestsLaz
 export type AllContestsQueryResult = Apollo.QueryResult<AllContestsQuery, AllContestsQueryVariables>;
 export const ContestByIdDocument = gql`
     query ContestById($id: ID!) {
-  contest(where: {id: $id}) {
+  cachedContest(id: $id) {
     id
     name
     description

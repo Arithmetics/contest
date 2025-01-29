@@ -287,8 +287,8 @@ async function canReadBet(accessArgs) {
   return betOwnerOrLineClosed;
 }
 
-// schemas/Contest.ts
-var CONTEST_QUERY = `
+// ../components/contestQueries.ts
+var CONTEST_FIELDS = `
   id
   name
   description
@@ -370,14 +370,18 @@ var CONTEST_QUERY = `
     }
   }
 `;
+
+// schemas/Contest.ts
 async function getCachedContest(context, id) {
   const cacheKey = `contest:${id}`;
   if (cache[cacheKey]) {
+    console.log(`Cache hit for contest ${id}`);
     return cache[cacheKey];
   }
+  console.log(`Cache miss for contest ${id}`);
   const contest = await context.query.Contest.findOne({
     where: { id },
-    query: CONTEST_QUERY
+    query: CONTEST_FIELDS
   });
   if (contest) {
     cache[cacheKey] = contest;
@@ -388,7 +392,7 @@ async function refreshCachedContest(context, id) {
   const cacheKey = `contest:${id}`;
   const contest = await context.query.Contest.findOne({
     where: { id },
-    query: CONTEST_QUERY
+    query: CONTEST_FIELDS
   });
   if (contest) {
     cache[cacheKey] = contest;

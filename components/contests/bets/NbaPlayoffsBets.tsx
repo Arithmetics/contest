@@ -60,7 +60,7 @@ export default function NBAPlayoffsBets({ contestId }: BetsTabProps): JSX.Elemen
     variables: { contestId: contestId || '' },
   });
 
-  const contest = contestData?.contest as Contest | undefined;
+  const contest = contestData?.cachedContest as Contest | undefined;
   const lines = contest?.lines as Line[] | undefined;
   const user = userData?.authenticatedItem as User | undefined;
 
