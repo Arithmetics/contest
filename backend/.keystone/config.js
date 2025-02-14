@@ -197,6 +197,36 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
     );
   });
   console.log(`${newStandingsToInsert.length} standings inserted in total`);
+  const regs = await keyStoneContext.query.Registration.findMany({
+    where: { contest: { id: { equals: contestId } } },
+    query: graphql4`
+      id
+    `
+  });
+  for (let i = 0; i < regs.length; i++) {
+    const reg = regs[i];
+    await keyStoneContext.query.Registration.findOne({
+      where: { id: reg.id },
+      query: graphql4`
+        id
+        user {
+          id
+          email
+        }
+        counts {
+          locked
+          likely
+          possible
+          tiebreaker
+        }
+      `
+    });
+    console.log(`cache filled for ${reg.user.email}`);
+  }
+  console.log("cache filled");
+  regs.forEach((r) => {
+    console.log(r);
+  });
   const previouslyAlerted = {};
   filteredLineStandings?.forEach((line) => {
     const team = line.title || "";
@@ -1056,7 +1086,6 @@ var keystone_default = auth.withAuth(
     db: {
       provider: "postgresql",
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
-      useMigrations: true,
       async onConnect(context) {
         import_node_cron.default.schedule("0 0 14 * * *", () => {
           Object.keys(cache).forEach((k) => {
