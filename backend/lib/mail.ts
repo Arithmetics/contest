@@ -53,14 +53,14 @@ export async function sendPasswordResetEmail(resetToken: string, to: string): Pr
   console.log('sendPasswordResetEmail got here');
   const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
 
-  const info = (await usedTransport.sendMail({
+  const info = await usedTransport.sendMail({
     to,
     from: 'no-reply@btbets.dev',
     subject: 'Your password reset token',
     html: makeANiceEmail(`Your Password Reset Token is here ->
       <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
       `),
-  })) as MailResponse;
+  });
 
   if (!process.env.SENDGRID_API_KEY) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -81,12 +81,12 @@ export async function sendStandingsUpdate(
     (team) => `<li>${team}: ${updates[team]}</li>`
   )}</ul>`;
 
-  const info = (await usedTransport.sendMail({
+  const info = await usedTransport.sendMail({
     to,
     from: 'no-reply@btbets.dev',
     subject: 'New Over Under Locked Up',
     html: makeANiceEmail(htmlList),
-  })) as MailResponse;
+  });
 
   if (!process.env.SENDGRID_API_KEY) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
