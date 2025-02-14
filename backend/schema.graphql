@@ -1096,35 +1096,35 @@ enum PasswordResetRedemptionErrorCode {
 }
 
 type Query {
-  bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   bet(where: BetWhereUniqueInput!): Bet
+  bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
-  choices(where: ChoiceWhereInput! = {}, orderBy: [ChoiceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ChoiceWhereUniqueInput): [Choice!]
   choice(where: ChoiceWhereUniqueInput!): Choice
+  choices(where: ChoiceWhereInput! = {}, orderBy: [ChoiceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ChoiceWhereUniqueInput): [Choice!]
   choicesCount(where: ChoiceWhereInput! = {}): Int
-  cloudImages(where: CloudImageWhereInput! = {}, orderBy: [CloudImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CloudImageWhereUniqueInput): [CloudImage!]
   cloudImage(where: CloudImageWhereUniqueInput!): CloudImage
+  cloudImages(where: CloudImageWhereInput! = {}, orderBy: [CloudImageOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: CloudImageWhereUniqueInput): [CloudImage!]
   cloudImagesCount(where: CloudImageWhereInput! = {}): Int
-  contests(where: ContestWhereInput! = {}, orderBy: [ContestOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ContestWhereUniqueInput): [Contest!]
   contest(where: ContestWhereUniqueInput!): Contest
+  contests(where: ContestWhereInput! = {}, orderBy: [ContestOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ContestWhereUniqueInput): [Contest!]
   contestsCount(where: ContestWhereInput! = {}): Int
-  histories(where: HistoryWhereInput! = {}, orderBy: [HistoryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: HistoryWhereUniqueInput): [History!]
   history(where: HistoryWhereUniqueInput!): History
+  histories(where: HistoryWhereInput! = {}, orderBy: [HistoryOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: HistoryWhereUniqueInput): [History!]
   historiesCount(where: HistoryWhereInput! = {}): Int
-  lines(where: LineWhereInput! = {}, orderBy: [LineOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LineWhereUniqueInput): [Line!]
   line(where: LineWhereUniqueInput!): Line
+  lines(where: LineWhereInput! = {}, orderBy: [LineOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LineWhereUniqueInput): [Line!]
   linesCount(where: LineWhereInput! = {}): Int
-  registrations(where: RegistrationWhereInput! = {}, orderBy: [RegistrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrationWhereUniqueInput): [Registration!]
   registration(where: RegistrationWhereUniqueInput!): Registration
+  registrations(where: RegistrationWhereInput! = {}, orderBy: [RegistrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrationWhereUniqueInput): [Registration!]
   registrationsCount(where: RegistrationWhereInput! = {}): Int
-  ruleSets(where: RuleSetWhereInput! = {}, orderBy: [RuleSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RuleSetWhereUniqueInput): [RuleSet!]
   ruleSet(where: RuleSetWhereUniqueInput!): RuleSet
+  ruleSets(where: RuleSetWhereInput! = {}, orderBy: [RuleSetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RuleSetWhereUniqueInput): [RuleSet!]
   ruleSetsCount(where: RuleSetWhereInput! = {}): Int
-  standings(where: StandingWhereInput! = {}, orderBy: [StandingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StandingWhereUniqueInput): [Standing!]
   standing(where: StandingWhereUniqueInput!): Standing
+  standings(where: StandingWhereInput! = {}, orderBy: [StandingOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: StandingWhereUniqueInput): [Standing!]
   standingsCount(where: StandingWhereInput! = {}): Int
-  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput! = {}, orderBy: [UserOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: UserWhereUniqueInput): [User!]
   usersCount(where: UserWhereInput! = {}): Int
   keystone: KeystoneMeta!
   authenticatedItem: AuthenticatedItem
@@ -1163,6 +1163,7 @@ type KeystoneAdminUIListMeta {
   labelField: String!
   fields: [KeystoneAdminUIFieldMeta!]!
   groups: [KeystoneAdminUIFieldGroupMeta!]!
+  graphql: KeystoneAdminUIGraphQL!
   initialSort: KeystoneAdminUISort
   isHidden: Boolean!
   isSingleton: Boolean!
@@ -1228,6 +1229,33 @@ type KeystoneAdminUIFieldGroupMeta {
   label: String!
   description: String
   fields: [KeystoneAdminUIFieldMeta!]!
+}
+
+type KeystoneAdminUIGraphQL {
+  names: KeystoneAdminUIGraphQLNames!
+}
+
+type KeystoneAdminUIGraphQLNames {
+  outputTypeName: String!
+  whereInputName: String!
+  whereUniqueInputName: String!
+  createInputName: String!
+  createMutationName: String!
+  createManyMutationName: String!
+  relateToOneForCreateInputName: String!
+  relateToManyForCreateInputName: String!
+  itemQueryName: String!
+  listOrderName: String!
+  listQueryCountName: String!
+  listQueryName: String!
+  updateInputName: String!
+  updateMutationName: String!
+  updateManyInputName: String!
+  updateManyMutationName: String!
+  relateToOneForUpdateInputName: String!
+  relateToManyForUpdateInputName: String!
+  deleteMutationName: String!
+  deleteManyMutationName: String!
 }
 
 type KeystoneAdminUISort {

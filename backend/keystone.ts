@@ -66,7 +66,6 @@ export default auth.withAuth(
     db: {
       provider: 'postgresql',
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
-      useMigrations: true,
       async onConnect(context) {
         // cron jobs
         cron.schedule('0 0 14 * * *', () => {
