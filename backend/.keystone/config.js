@@ -257,6 +257,84 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
   }
 }
 
+// contestBackfill.ts
+async function choiceContestBackfill(keyStoneContext) {
+  const graphql4 = String.raw;
+  const context = keyStoneContext.sudo();
+  context.session = {
+    data: {
+      isAdmin: true
+    }
+  };
+  const choices = await context.query.Choice.findMany({
+    where: { contest: null },
+    query: graphql4`
+      id
+      line {
+        id
+        contest {
+          id
+        }
+      }
+    `
+  });
+  console.log(`Found ${choices.length} choices without contests`);
+  for (const choice of choices) {
+    if (choice.line?.contest?.id) {
+      await context.query.Choice.updateOne({
+        where: { id: choice.id },
+        data: {
+          contest: {
+            connect: { id: choice.line.contest.id }
+          }
+        }
+      });
+      console.log(`Updated choice ${choice.id} with contest ${choice.line.contest.id}`);
+    } else {
+      console.log(`Skipping choice ${choice.id} - no contest found on parent line`);
+    }
+  }
+  console.log("Contest backfill complete");
+}
+async function betContestBackfill(keyStoneContext) {
+  const graphql4 = String.raw;
+  const context = keyStoneContext.sudo();
+  context.session = {
+    data: {
+      isAdmin: true
+    }
+  };
+  const bets = await context.query.Bet.findMany({
+    where: { contest: null },
+    query: graphql4`
+      id
+      choice {
+        id
+        contest {
+          id
+        }
+      }
+    `
+  });
+  console.log(`Found ${bets.length} bets without contests`);
+  for (const bet of bets) {
+    if (bet.choice?.contest?.id) {
+      await context.query.Bet.updateOne({
+        where: { id: bet.id },
+        data: {
+          contest: {
+            connect: { id: bet.choice.contest.id }
+          }
+        }
+      });
+      console.log(`Updated bet ${bet.id} with contest ${bet.choice.contest.id}`);
+    } else {
+      console.log(`Skipping bet ${bet.id} - no contest found on parent choice`);
+    }
+  }
+  console.log("Bet contest backfill complete");
+}
+
 // schemas/User.ts
 var import_fields = require("@keystone-6/core/fields");
 var import_core = require("@keystone-6/core");
@@ -1149,6 +1227,8 @@ var keystone_default = auth.withAuth(
       provider: "postgresql",
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
       async onConnect(context) {
+        await choiceContestBackfill(context);
+        await betContestBackfill(context);
         import_node_cron.default.schedule("0 0 14 * * *", () => {
           Object.keys(cache).forEach((k) => {
             cache[k] = null;

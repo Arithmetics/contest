@@ -8,6 +8,7 @@ import { sendPasswordResetEmail } from './lib/mail';
 import { cache } from './cache';
 // import { insertSeedData } from './seedData';
 import { startDailyStandingsJob } from './standingsJob';
+// import { choiceContestBackfill, betContestBackfill } from './contestBackfill';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -67,6 +68,10 @@ export default auth.withAuth(
       provider: 'postgresql',
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
       async onConnect(context) {
+        // run contest backfill on Choices first, then Bets
+        // await choiceContestBackfill(context);
+        // await betContestBackfill(context);
+
         // cron jobs
         cron.schedule('0 0 14 * * *', () => {
           Object.keys(cache).forEach((k) => {
