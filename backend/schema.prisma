@@ -12,15 +12,18 @@ generator client {
 }
 
 model Bet {
-  id       String  @id @default(cuid())
-  user     User?   @relation("Bet_user", fields: [userId], references: [id])
-  userId   String? @map("user")
-  choice   Choice? @relation("Bet_choice", fields: [choiceId], references: [id])
-  choiceId String? @map("choice")
-  isSuper  Boolean @default(false)
+  id        String   @id @default(cuid())
+  user      User?    @relation("Bet_user", fields: [userId], references: [id])
+  userId    String?  @map("user")
+  choice    Choice?  @relation("Bet_choice", fields: [choiceId], references: [id])
+  choiceId  String?  @map("choice")
+  contest   Contest? @relation("Bet_contest", fields: [contestId], references: [id])
+  contestId String?  @map("contest")
+  isSuper   Boolean  @default(false)
 
   @@index([userId])
   @@index([choiceId])
+  @@index([contestId])
 }
 
 model Choice {
@@ -31,6 +34,8 @@ model Choice {
   points           Int                 @default(1)
   line             Line?               @relation("Choice_line", fields: [lineId], references: [id])
   lineId           String?             @map("line")
+  contest          Contest?            @relation("Choice_contest", fields: [contestId], references: [id])
+  contestId        String?             @map("contest")
   bets             Bet[]               @relation("Bet_choice")
   image            CloudImage?         @relation("Choice_image", fields: [imageId], references: [id])
   imageId          String?             @map("image")
@@ -38,6 +43,7 @@ model Choice {
   secondaryImageId String?             @map("secondaryImage")
 
   @@index([lineId])
+  @@index([contestId])
   @@index([imageId])
   @@index([secondaryImageId])
 }
@@ -63,6 +69,8 @@ model Contest {
   image         CloudImage?            @relation("Contest_image", fields: [imageId], references: [id])
   imageId       String?                @map("image")
   lines         Line[]                 @relation("Line_contest")
+  choices       Choice[]               @relation("Choice_contest")
+  bets          Bet[]                  @relation("Bet_contest")
   registrations Registration[]         @relation("Registration_contest")
   ruleSet       RuleSet?               @relation("Contest_ruleSet", fields: [ruleSetId], references: [id])
   ruleSetId     String?                @unique @map("ruleSet")

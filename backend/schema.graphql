@@ -5,6 +5,7 @@ type Bet {
   id: ID!
   user: User
   choice: Choice
+  contest: Contest
   isSuper: Boolean
 }
 
@@ -19,6 +20,7 @@ input BetWhereInput {
   id: IDFilter
   user: UserWhereInput
   choice: ChoiceWhereInput
+  contest: ContestWhereInput
   isSuper: BooleanFilter
 }
 
@@ -51,6 +53,7 @@ enum OrderDirection {
 input BetUpdateInput {
   user: UserRelateToOneForUpdateInput
   choice: ChoiceRelateToOneForUpdateInput
+  contest: ContestRelateToOneForUpdateInput
   isSuper: Boolean
 }
 
@@ -66,6 +69,12 @@ input ChoiceRelateToOneForUpdateInput {
   disconnect: Boolean
 }
 
+input ContestRelateToOneForUpdateInput {
+  create: ContestCreateInput
+  connect: ContestWhereUniqueInput
+  disconnect: Boolean
+}
+
 input BetUpdateArgs {
   where: BetWhereUniqueInput!
   data: BetUpdateInput!
@@ -74,6 +83,7 @@ input BetUpdateArgs {
 input BetCreateInput {
   user: UserRelateToOneForCreateInput
   choice: ChoiceRelateToOneForCreateInput
+  contest: ContestRelateToOneForCreateInput
   isSuper: Boolean
 }
 
@@ -87,6 +97,11 @@ input ChoiceRelateToOneForCreateInput {
   connect: ChoiceWhereUniqueInput
 }
 
+input ContestRelateToOneForCreateInput {
+  create: ContestCreateInput
+  connect: ContestWhereUniqueInput
+}
+
 type Choice {
   id: ID!
   title: String
@@ -94,6 +109,7 @@ type Choice {
   isWin: Boolean
   points: Int
   line: Line
+  contest: Contest
   bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
   betsCount(where: BetWhereInput! = {}): Int
   image: CloudImage
@@ -132,6 +148,7 @@ input ChoiceWhereInput {
   isWin: BooleanFilter
   points: IntFilter
   line: LineWhereInput
+  contest: ContestWhereInput
   bets: BetManyRelationFilter
   image: CloudImageWhereInput
   secondaryImage: CloudImageWhereInput
@@ -209,6 +226,7 @@ input ChoiceUpdateInput {
   isWin: Boolean
   points: Int
   line: LineRelateToOneForUpdateInput
+  contest: ContestRelateToOneForUpdateInput
   bets: BetRelateToManyForUpdateInput
   image: CloudImageRelateToOneForUpdateInput
   secondaryImage: CloudImageRelateToOneForUpdateInput
@@ -244,6 +262,7 @@ input ChoiceCreateInput {
   isWin: Boolean
   points: Int
   line: LineRelateToOneForCreateInput
+  contest: ContestRelateToOneForCreateInput
   bets: BetRelateToManyForCreateInput
   image: CloudImageRelateToOneForCreateInput
   secondaryImage: CloudImageRelateToOneForCreateInput
@@ -363,6 +382,10 @@ type Contest {
   image: CloudImage
   lines(where: LineWhereInput! = {}, orderBy: [LineOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: LineWhereUniqueInput): [Line!]
   linesCount(where: LineWhereInput! = {}): Int
+  choices(where: ChoiceWhereInput! = {}, orderBy: [ChoiceOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: ChoiceWhereUniqueInput): [Choice!]
+  choicesCount(where: ChoiceWhereInput! = {}): Int
+  bets(where: BetWhereInput! = {}, orderBy: [BetOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: BetWhereUniqueInput): [Bet!]
+  betsCount(where: BetWhereInput! = {}): Int
   registrations(where: RegistrationWhereInput! = {}, orderBy: [RegistrationOrderByInput!]! = [], take: Int, skip: Int! = 0, cursor: RegistrationWhereUniqueInput): [Registration!]
   registrationsCount(where: RegistrationWhereInput! = {}): Int
   ruleSet: RuleSet
@@ -398,6 +421,8 @@ input ContestWhereInput {
   contestType: ContestContestTypeTypeNullableFilter
   image: CloudImageWhereInput
   lines: LineManyRelationFilter
+  choices: ChoiceManyRelationFilter
+  bets: BetManyRelationFilter
   registrations: RegistrationManyRelationFilter
   ruleSet: RuleSetWhereInput
   winner: UserWhereInput
@@ -434,6 +459,12 @@ input LineManyRelationFilter {
   none: LineWhereInput
 }
 
+input ChoiceManyRelationFilter {
+  every: ChoiceWhereInput
+  some: ChoiceWhereInput
+  none: ChoiceWhereInput
+}
+
 input RegistrationManyRelationFilter {
   every: RegistrationWhereInput
   some: RegistrationWhereInput
@@ -457,6 +488,8 @@ input ContestUpdateInput {
   contestType: ContestContestTypeType
   image: CloudImageRelateToOneForUpdateInput
   lines: LineRelateToManyForUpdateInput
+  choices: ChoiceRelateToManyForUpdateInput
+  bets: BetRelateToManyForUpdateInput
   registrations: RegistrationRelateToManyForUpdateInput
   ruleSet: RuleSetRelateToOneForUpdateInput
   winner: UserRelateToOneForUpdateInput
@@ -467,6 +500,13 @@ input LineRelateToManyForUpdateInput {
   set: [LineWhereUniqueInput!]
   create: [LineCreateInput!]
   connect: [LineWhereUniqueInput!]
+}
+
+input ChoiceRelateToManyForUpdateInput {
+  disconnect: [ChoiceWhereUniqueInput!]
+  set: [ChoiceWhereUniqueInput!]
+  create: [ChoiceCreateInput!]
+  connect: [ChoiceWhereUniqueInput!]
 }
 
 input RegistrationRelateToManyForUpdateInput {
@@ -495,6 +535,8 @@ input ContestCreateInput {
   contestType: ContestContestTypeType
   image: CloudImageRelateToOneForCreateInput
   lines: LineRelateToManyForCreateInput
+  choices: ChoiceRelateToManyForCreateInput
+  bets: BetRelateToManyForCreateInput
   registrations: RegistrationRelateToManyForCreateInput
   ruleSet: RuleSetRelateToOneForCreateInput
   winner: UserRelateToOneForCreateInput
@@ -503,6 +545,11 @@ input ContestCreateInput {
 input LineRelateToManyForCreateInput {
   create: [LineCreateInput!]
   connect: [LineWhereUniqueInput!]
+}
+
+input ChoiceRelateToManyForCreateInput {
+  create: [ChoiceCreateInput!]
+  connect: [ChoiceWhereUniqueInput!]
 }
 
 input RegistrationRelateToManyForCreateInput {
@@ -634,12 +681,6 @@ input FloatFilter {
   not: FloatFilter
 }
 
-input ChoiceManyRelationFilter {
-  every: ChoiceWhereInput
-  some: ChoiceWhereInput
-  none: ChoiceWhereInput
-}
-
 input StandingManyRelationFilter {
   every: StandingWhereInput
   some: StandingWhereInput
@@ -663,19 +704,6 @@ input LineUpdateInput {
   standings: StandingRelateToManyForUpdateInput
 }
 
-input ContestRelateToOneForUpdateInput {
-  create: ContestCreateInput
-  connect: ContestWhereUniqueInput
-  disconnect: Boolean
-}
-
-input ChoiceRelateToManyForUpdateInput {
-  disconnect: [ChoiceWhereUniqueInput!]
-  set: [ChoiceWhereUniqueInput!]
-  create: [ChoiceCreateInput!]
-  connect: [ChoiceWhereUniqueInput!]
-}
-
 input StandingRelateToManyForUpdateInput {
   disconnect: [StandingWhereUniqueInput!]
   set: [StandingWhereUniqueInput!]
@@ -696,16 +724,6 @@ input LineCreateInput {
   contest: ContestRelateToOneForCreateInput
   choices: ChoiceRelateToManyForCreateInput
   standings: StandingRelateToManyForCreateInput
-}
-
-input ContestRelateToOneForCreateInput {
-  create: ContestCreateInput
-  connect: ContestWhereUniqueInput
-}
-
-input ChoiceRelateToManyForCreateInput {
-  create: [ChoiceCreateInput!]
-  connect: [ChoiceWhereUniqueInput!]
 }
 
 input StandingRelateToManyForCreateInput {

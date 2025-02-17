@@ -28,9 +28,41 @@ export const Bet: Lists.Bet = list({
   fields: {
     user: relationship({ ref: 'User.bets', many: false }),
     choice: relationship({ ref: 'Choice.bets', many: false }),
+    contest: relationship({
+      ref: 'Contest.bets',
+      many: false,
+      ui: {
+        hideCreate: true,
+      },
+    }),
     isSuper: checkbox({ defaultValue: false }),
   },
   hooks: {
+    resolveInput: async ({ resolvedData, context }) => {
+      if (resolvedData.choice && !resolvedData.contest) {
+        const lists = context.query;
+        const graphql = String.raw;
+
+        const id = resolvedData?.choice?.connect?.id;
+
+        const parentChoice = await lists.Choice.findOne({
+          where: { id },
+          query: graphql`
+            id
+            contest {
+              id
+            }
+          `,
+        });
+
+        if (parentChoice?.contest?.id) {
+          resolvedData.contest = {
+            connect: { id: parentChoice.contest.id },
+          };
+        }
+      }
+      return resolvedData;
+    },
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context, operation } = args;
       const lists = context.query;

@@ -13,6 +13,36 @@ export const Choice: Lists.Choice = list({
       delete: isAdmin,
     },
   },
+  hooks: {
+    resolveInput: async ({ resolvedData, context }) => {
+      // If there's a line being set and no contest specified
+      if (resolvedData.line && !resolvedData.contest) {
+        const lists = context.query;
+        const graphql = String.raw;
+
+        const id = resolvedData?.line?.connect?.id;
+
+        // Find the parent Line and get its contest
+        const parentLine = await lists.Line.findOne({
+          where: { id },
+          query: graphql`
+            id
+            contest {
+              id
+            }
+          `,
+        });
+
+        // If the parent Line has a contest, set it on the Choice
+        if (parentLine?.contest?.id) {
+          resolvedData.contest = {
+            connect: { id: parentLine.contest.id },
+          };
+        }
+      }
+      return resolvedData;
+    },
+  },
   fields: {
     title: text({ validation: { isRequired: true } }),
     selection: select({
@@ -32,6 +62,13 @@ export const Choice: Lists.Choice = list({
     isWin: checkbox({ defaultValue: false }),
     points: integer({ validation: { isRequired: true }, defaultValue: 1 }),
     line: relationship({ ref: 'Line.choices', many: false }),
+    contest: relationship({
+      ref: 'Contest.choices',
+      many: false,
+      ui: {
+        hideCreate: true,
+      },
+    }),
     bets: relationship({ ref: 'Bet.choice', many: true }),
     image: relationship({
       ref: 'CloudImage',

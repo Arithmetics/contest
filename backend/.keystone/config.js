@@ -413,6 +413,8 @@ var Contest = (0, import_core2.list)({
       }
     }),
     lines: (0, import_fields2.relationship)({ ref: "Line.contest", many: true }),
+    choices: (0, import_fields2.relationship)({ ref: "Choice.contest", many: true }),
+    bets: (0, import_fields2.relationship)({ ref: "Bet.contest", many: true }),
     registrations: (0, import_fields2.relationship)({ ref: "Registration.contest", many: true }),
     ruleSet: (0, import_fields2.relationship)({ ref: "RuleSet.contest", many: false }),
     winner: (0, import_fields2.relationship)({ ref: "User", many: false })
@@ -517,6 +519,30 @@ var Choice = (0, import_core5.list)({
       delete: isAdmin
     }
   },
+  hooks: {
+    resolveInput: async ({ resolvedData, context }) => {
+      if (resolvedData.line && !resolvedData.contest) {
+        const lists = context.query;
+        const graphql4 = String.raw;
+        const id = resolvedData?.line?.connect?.id;
+        const parentLine = await lists.Line.findOne({
+          where: { id },
+          query: graphql4`
+            id
+            contest {
+              id
+            }
+          `
+        });
+        if (parentLine?.contest?.id) {
+          resolvedData.contest = {
+            connect: { id: parentLine.contest.id }
+          };
+        }
+      }
+      return resolvedData;
+    }
+  },
   fields: {
     title: (0, import_fields5.text)({ validation: { isRequired: true } }),
     selection: (0, import_fields5.select)({
@@ -536,6 +562,13 @@ var Choice = (0, import_core5.list)({
     isWin: (0, import_fields5.checkbox)({ defaultValue: false }),
     points: (0, import_fields5.integer)({ validation: { isRequired: true }, defaultValue: 1 }),
     line: (0, import_fields5.relationship)({ ref: "Line.choices", many: false }),
+    contest: (0, import_fields5.relationship)({
+      ref: "Contest.choices",
+      many: false,
+      ui: {
+        hideCreate: true
+      }
+    }),
     bets: (0, import_fields5.relationship)({ ref: "Bet.choice", many: true }),
     image: (0, import_fields5.relationship)({
       ref: "CloudImage",
@@ -670,9 +703,38 @@ var Bet = (0, import_core6.list)({
   fields: {
     user: (0, import_fields6.relationship)({ ref: "User.bets", many: false }),
     choice: (0, import_fields6.relationship)({ ref: "Choice.bets", many: false }),
+    contest: (0, import_fields6.relationship)({
+      ref: "Contest.bets",
+      many: false,
+      ui: {
+        hideCreate: true
+      }
+    }),
     isSuper: (0, import_fields6.checkbox)({ defaultValue: false })
   },
   hooks: {
+    resolveInput: async ({ resolvedData, context }) => {
+      if (resolvedData.choice && !resolvedData.contest) {
+        const lists = context.query;
+        const graphql4 = String.raw;
+        const id = resolvedData?.choice?.connect?.id;
+        const parentChoice = await lists.Choice.findOne({
+          where: { id },
+          query: graphql4`
+            id
+            contest {
+              id
+            }
+          `
+        });
+        if (parentChoice?.contest?.id) {
+          resolvedData.contest = {
+            connect: { id: parentChoice.contest.id }
+          };
+        }
+      }
+      return resolvedData;
+    },
     validateInput: async (args) => {
       const { resolvedData, addValidationError, context, operation } = args;
       const lists = context.query;

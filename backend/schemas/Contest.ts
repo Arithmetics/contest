@@ -64,6 +64,8 @@ export const Contest: Lists.Contest = list({
       },
     }),
     lines: relationship({ ref: 'Line.contest', many: true }),
+    choices: relationship({ ref: 'Choice.contest', many: true }),
+    bets: relationship({ ref: 'Bet.contest', many: true }),
     registrations: relationship({ ref: 'Registration.contest', many: true }),
     ruleSet: relationship({ ref: 'RuleSet.contest', many: false }),
     winner: relationship({ ref: 'User', many: false }),
