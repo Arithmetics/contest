@@ -105,8 +105,8 @@ export default function UpdateAccountForm(): JSX.Element {
 
   return (
     <Stack
-      bg={'gray.50'}
       rounded={'xl'}
+      boxShadow={'lg'}
       padding={{ base: 4, sm: 6, md: 8 }}
       spacing={{ base: 8 }}
       maxW={{ lg: 'lg' }}
@@ -114,11 +114,7 @@ export default function UpdateAccountForm(): JSX.Element {
       marginTop={8}
     >
       <Stack spacing={4}>
-        <Heading
-          color={'gray.800'}
-          lineHeight={1.1}
-          fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
-        >
+        <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
           Basic Account Settings
         </Heading>
       </Stack>
@@ -128,9 +124,9 @@ export default function UpdateAccountForm(): JSX.Element {
             <FormLabel color={'gray.500'}>Email</FormLabel>
             <Input
               name="email"
-              bg={'gray.100'}
-              border={0}
-              color={'gray.500'}
+              bg={'white'}
+              borderColor={'gray.300'}
+              color={'gray.900'}
               type="email"
               _placeholder={{ color: 'gray.500' }}
               placeholder={user?.email ?? ''}
@@ -138,19 +134,14 @@ export default function UpdateAccountForm(): JSX.Element {
             />
           </FormControl>
 
-          <FormControl
-            id="realName"
-            isRequired
-            isInvalid={!!errors?.realName?.message}
-            // errortext={errors?.realName?.message}
-          >
+          <FormControl id="realName" isRequired isInvalid={!!errors?.realName?.message}>
             <FormLabel color={'gray.500'}>Real Name</FormLabel>
             <Input
               {...register('realName')}
               name="realName"
-              bg={'gray.100'}
-              border={0}
-              color={'gray.500'}
+              bg={'white'}
+              borderColor={'gray.300'}
+              color={'gray.900'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="I need this for payment"
               disabled={updateUserLoading}
@@ -163,15 +154,15 @@ export default function UpdateAccountForm(): JSX.Element {
             <Input
               {...register('userName')}
               name="userName"
-              bg={'gray.100'}
-              border={0}
-              color={'gray.500'}
+              bg={'white'}
+              borderColor={'gray.300'}
+              color={'gray.900'}
               _placeholder={{ color: 'gray.500' }}
               placeholder="Everyone else will see this"
               disabled={updateUserLoading}
             />
             {userNameLoading && (
-              <Spinner position="absolute" right={5} top={10} color="red.500" zIndex={300} />
+              <Spinner position="absolute" right={5} top={10} color="blue.500" zIndex={300} />
             )}
             <FormErrorMessage>
               {errors?.userName?.message || userNameAvailQuery.error?.message}
@@ -179,12 +170,13 @@ export default function UpdateAccountForm(): JSX.Element {
           </FormControl>
         </Stack>
         <Button
-          variant="red-gradient"
+          colorScheme="btbets"
           mt={8}
           w={'full'}
           onClick={handleSubmit(submitUpdateAccount)}
           isDisabled={!!errors.realName || !!errors.userName}
           isLoading={updateUserLoading}
+          size="lg"
         >
           Submit
         </Button>

@@ -9,6 +9,15 @@ type AvatarComponentProps = {
 
 export default function AvatarComponent({ onFileLoad, onCrop }: AvatarComponentProps): JSX.Element {
   return (
-    <Avatar width={400} imageWidth={300} height={300} onFileLoad={onFileLoad} onCrop={onCrop} />
+    <Avatar
+      labelStyle={{
+        color: 'white',
+      }}
+      width={400}
+      imageWidth={300}
+      height={300}
+      onFileLoad={onFileLoad}
+      onCrop={onCrop}
+    />
   );
 }

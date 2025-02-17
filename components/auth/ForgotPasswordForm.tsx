@@ -2,6 +2,7 @@ import {
   Button,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Heading,
   Input,
   Stack,
@@ -76,24 +77,16 @@ export default function ForgotPasswordForm(): JSX.Element {
   };
 
   return (
-    <Stack
-      spacing={4}
-      w={'full'}
-      maxW={'md'}
-      bg={'gray.50'}
-      rounded={'xl'}
-      p={{ base: 4, sm: 6, md: 8 }}
-    >
-      <Heading color={'gray.800'} lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
+    <Stack spacing={4} w={'full'} maxW={'md'} rounded={'xl'} p={{ base: 4, sm: 6, md: 8 }}>
+      <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
         Forgot your password?
       </Heading>
       <Text color={'gray.500'} fontSize={{ base: 'sm', sm: 'md' }}>
         You&apos;ll get an email with a reset link
       </Text>
       <FormControl id="email" isInvalid={!!errors?.email?.message}>
+        <FormLabel color={'gray.500'}>Email address</FormLabel>
         <Input
-          placeholder="your-email@example.com"
-          _placeholder={{ color: 'gray.500' }}
           {...register('email')}
           name="email"
           type="email"
@@ -105,7 +98,8 @@ export default function ForgotPasswordForm(): JSX.Element {
       </FormControl>
       <Stack spacing={6}>
         <Button
-          variant="red-gradient"
+          colorScheme="btbets"
+          color="white"
           onClick={handleSubmit(submitForgotPassword)}
           isDisabled={loading}
           isLoading={loading}

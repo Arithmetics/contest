@@ -14,9 +14,10 @@ export default function SignUpPage(): JSX.Element {
       {show && (
         <Flex flex={1}>
           <Image
+            maxHeight={'600px'}
             alt={'Signup Image'}
             objectFit={'cover'}
-            src={'https://cdn131.picsart.com/325450196018211.png?type=webp&to=min&r=640'}
+            src={'/images/login_graphic.png'}
           />
         </Flex>
       )}

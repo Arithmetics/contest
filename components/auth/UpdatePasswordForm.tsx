@@ -67,8 +67,8 @@ export default function UpdatePasswordForm(): JSX.Element {
 
   return (
     <Stack
-      bg={'gray.50'}
       rounded={'xl'}
+      boxShadow={'lg'}
       p={{ base: 4, sm: 6, md: 8 }}
       spacing={{ base: 8 }}
       maxW={{ lg: 'lg' }}
@@ -76,11 +76,7 @@ export default function UpdatePasswordForm(): JSX.Element {
       marginTop={8}
     >
       <Stack spacing={4}>
-        <Heading
-          color={'gray.800'}
-          lineHeight={1.1}
-          fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}
-        >
+        <Heading lineHeight={1.1} fontSize={{ base: '2xl', sm: '3xl', md: '4xl' }}>
           Change Password
         </Heading>
       </Stack>
@@ -97,12 +93,13 @@ export default function UpdatePasswordForm(): JSX.Element {
           </FormControl>
         </Stack>
         <Button
-          variant="red-gradient"
+          colorScheme="btbets"
           mt={8}
           w={'full'}
           onClick={handleSubmit(submitUpdatePassword)}
           isDisabled={!!errors.password}
           isLoading={updatePasswordLoading}
+          size="lg"
         >
           Submit
         </Button>

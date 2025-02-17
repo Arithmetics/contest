@@ -17,7 +17,14 @@ export default function AccountPage(): JSX.Element {
 
   return (
     <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
-      <Flex flex={1} flexDirection={'column'} alignItems={'center'} justifyContent={'start'}>
+      <Flex
+        flex={1}
+        flexDirection={{ base: 'column', xl: 'row' }}
+        alignItems={{ base: 'center', xl: 'start' }}
+        justifyContent={'center'}
+        gap={6}
+        p={4}
+      >
         <UpdateAccountForm />
         <UpdatePasswordForm />
         <UpdateAvatar />
