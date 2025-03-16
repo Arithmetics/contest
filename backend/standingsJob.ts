@@ -118,7 +118,7 @@ export async function startDailyStandingsJob(
       `,
     });
 
-    console.log(`cache filled for ${reg.user.email}`);
+    console.log(`cache filled for ${reg?.user?.email}`);
   }
 
   console.log('cache filled');
