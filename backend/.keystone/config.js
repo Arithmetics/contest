@@ -221,7 +221,7 @@ async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, ap
         }
       `
     });
-    console.log(`cache filled for ${reg.user.email}`);
+    console.log(`cache filled for ${reg?.user?.email}`);
   }
   console.log("cache filled");
   regs.forEach((r) => {
