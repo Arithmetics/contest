@@ -7,7 +7,7 @@ import 'dotenv/config';
 import { sendPasswordResetEmail } from './lib/mail';
 import { cache } from './cache';
 // import { insertSeedData } from './seedData';
-import { startDailyStandingsJob } from './standingsJob';
+// import { startDailyStandingsJob } from './standingsJob';
 
 import { User } from './schemas/User';
 import { Contest } from './schemas/Contest';
@@ -66,7 +66,7 @@ export default auth.withAuth(
     db: {
       provider: 'postgresql',
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || 'postgres://localhost:5432/contest',
-      async onConnect(context) {
+      async onConnect() {
         // cron jobs
         cron.schedule('0 0 14 * * *', () => {
           Object.keys(cache).forEach((k) => {
@@ -81,14 +81,14 @@ export default auth.withAuth(
           //   'https://site.api.espn.com/apis/v2/sports/football/nfl/standings'
           // );
 
-          console.log('running NBA standing job!');
-          startDailyStandingsJob(
-            context,
-            'cm1r8i861008mmc0j0ee9tm6g',
-            82,
-            'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings'
-          );
-          // console.log('NO CRON JOBS SCHEDULED');
+          // console.log('running NBA standing job!');
+          // startDailyStandingsJob(
+          //   context,
+          //   'cm1r8i861008mmc0j0ee9tm6g',
+          //   82,
+          //   'https://site.api.espn.com/apis/v2/sports/basketball/nba/standings'
+          // );
+          console.log('NO CRON JOBS SCHEDULED');
         });
 
         if (process.argv.includes('--seed-data')) {
