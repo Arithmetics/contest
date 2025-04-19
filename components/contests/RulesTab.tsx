@@ -140,9 +140,7 @@ const nbaPlayoffRules = (
     <Rule
       icon={<Icon as={FaDiceFive} color={'btbets.500'} w={5} h={5} />}
       iconBg={'gray.700'}
-      text={
-        'Any missing picks will be entered as the largest underdog or the under on the game total. (Ex: If you miss a game total, it will be entered as the under).'
-      }
+      text={'Any missing picks will be entered as the pick worth the LEAST points.'}
     />
     <Rule
       icon={<Icon as={FaDiceSix} color={'btbets.500'} w={5} h={5} />}
