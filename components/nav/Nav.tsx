@@ -91,7 +91,7 @@ export default function Nav(): JSX.Element {
                 <ButtonLink
                   title="NBA Playoff Club"
                   leftIcon={<CgCardClubs />}
-                  href={`/${Routes.CONTESTS}/cluyk8rno0002mc0jabu8urxt`}
+                  href={`/${Routes.CONTESTS}/cm9gghxt300c7pmys9bisgu01`}
                   buttonTheme={{ variant: 'ghost' }}
                   layoutProps={{ w: 'full' }}
                 />
@@ -143,8 +143,8 @@ export default function Nav(): JSX.Element {
               <ButtonLink
                 title="NBA Playoff Club"
                 leftIcon={<CgCardClubs />}
-                href={`/${Routes.CONTESTS}/cluyk8rno0002mc0jabu8urxt`}
-                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/cluyk8rno0002mc0jabu8urxt`)}
+                href={`/${Routes.CONTESTS}/cm9gghxt300c7pmys9bisgu01`}
+                buttonTheme={determineLinkStyle(`/${Routes.CONTESTS}/cm9gghxt300c7pmys9bisgu01`)}
               />
               <ButtonLink
                 title="NFL ATS"
