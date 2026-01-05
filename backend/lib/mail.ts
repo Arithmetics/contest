@@ -1,20 +1,18 @@
 import { createTransport, getTestMessageUrl } from 'nodemailer';
-import nodemailerSendgrid from 'nodemailer-sendgrid';
+import { Resend } from 'resend';
 
+// Test transport for development (e.g., Ethereal Email, Mailtrap, or local SMTP)
 const testTransport = createTransport({
-  host: process.env.MAIL_HOST || '',
-  port: Number(process.env.MAIL_PORT),
+  host: process.env.MAIL_HOST || 'smtp.ethereal.email',
+  port: Number(process.env.MAIL_PORT) || 587,
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS,
+    user: process.env.MAIL_USER || '',
+    pass: process.env.MAIL_PASS || '',
   },
 });
 
-const prodTransport = createTransport(
-  nodemailerSendgrid({
-    apiKey: process.env.SENDGRID_API_KEY || '',
-  })
-);
+// Production transport using Resend SDK (free tier: 3,000 emails/month)
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 function makeANiceEmail(text: string): string {
   return `
@@ -51,18 +49,27 @@ export interface Envelope {
 export async function sendPasswordResetEmail(resetToken: string, to: string): Promise<void> {
   // email the user a token
   console.log('sendPasswordResetEmail got here');
-  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
 
-  const info = await usedTransport.sendMail({
-    to,
-    from: 'no-reply@btbets.dev',
-    subject: 'Your password reset token',
-    html: makeANiceEmail(`Your Password Reset Token is here ->
-      <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
-      `),
-  });
+  const emailHtml = makeANiceEmail(`Your Password Reset Token is here ->
+    <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
+    `);
 
-  if (!process.env.SENDGRID_API_KEY) {
+  if (resend) {
+    // Use Resend SDK for production
+    await resend.emails.send({
+      from: 'no-reply@btbets.dev',
+      to,
+      subject: 'Your password reset token',
+      html: emailHtml,
+    });
+  } else {
+    // Use test transport for development
+    const info = await testTransport.sendMail({
+      to,
+      from: 'no-reply@btbets.dev',
+      subject: 'Your password reset token',
+      html: emailHtml,
+    });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
@@ -75,20 +82,28 @@ export async function sendStandingsUpdate(
 ): Promise<void> {
   // email updates to standings
 
-  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
-
   const htmlList = `<ul>${Object.keys(updates).map(
     (team) => `<li>${team}: ${updates[team]}</li>`
   )}</ul>`;
 
-  const info = await usedTransport.sendMail({
-    to,
-    from: 'no-reply@btbets.dev',
-    subject: 'New Over Under Locked Up',
-    html: makeANiceEmail(htmlList),
-  });
+  const emailHtml = makeANiceEmail(htmlList);
 
-  if (!process.env.SENDGRID_API_KEY) {
+  if (resend) {
+    // Use Resend SDK for production
+    await resend.emails.send({
+      from: 'no-reply@btbets.dev',
+      to,
+      subject: 'New Over Under Locked Up',
+      html: emailHtml,
+    });
+  } else {
+    // Use test transport for development
+    const info = await testTransport.sendMail({
+      to,
+      from: 'no-reply@btbets.dev',
+      subject: 'New Over Under Locked Up',
+      html: emailHtml,
+    });
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     console.log(`💌 Message Sent!  Preview it at ${getTestMessageUrl(info)}`);
