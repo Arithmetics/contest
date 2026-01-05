@@ -41,20 +41,16 @@ var import_config = require("dotenv/config");
 
 // lib/mail.ts
 var import_nodemailer = require("nodemailer");
-var import_nodemailer_sendgrid = __toESM(require("nodemailer-sendgrid"));
+var import_resend = require("resend");
 var testTransport = (0, import_nodemailer.createTransport)({
-  host: process.env.MAIL_HOST || "",
-  port: Number(process.env.MAIL_PORT),
+  host: process.env.MAIL_HOST || "smtp.ethereal.email",
+  port: Number(process.env.MAIL_PORT) || 587,
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASS
+    user: process.env.MAIL_USER || "",
+    pass: process.env.MAIL_PASS || ""
   }
 });
-var prodTransport = (0, import_nodemailer.createTransport)(
-  (0, import_nodemailer_sendgrid.default)({
-    apiKey: process.env.SENDGRID_API_KEY || ""
-  })
-);
+var resend = process.env.RESEND_API_KEY ? new import_resend.Resend(process.env.RESEND_API_KEY) : null;
 function makeANiceEmail(text7) {
   return `
     <div className="email" style="
@@ -73,189 +69,29 @@ function makeANiceEmail(text7) {
 }
 async function sendPasswordResetEmail(resetToken, to) {
   console.log("sendPasswordResetEmail got here");
-  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
-  const info = await usedTransport.sendMail({
-    to,
-    from: "no-reply@btbets.dev",
-    subject: "Your password reset token",
-    html: makeANiceEmail(`Your Password Reset Token is here ->
-      <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
-      `)
-  });
-  if (!process.env.SENDGRID_API_KEY) {
-    console.log(`\u{1F48C} Message Sent!  Preview it at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
-  }
-}
-async function sendStandingsUpdate(updates, to) {
-  const usedTransport = process.env.SENDGRID_API_KEY ? prodTransport : testTransport;
-  const htmlList = `<ul>${Object.keys(updates).map(
-    (team) => `<li>${team}: ${updates[team]}</li>`
-  )}</ul>`;
-  const info = await usedTransport.sendMail({
-    to,
-    from: "no-reply@btbets.dev",
-    subject: "New Over Under Locked Up",
-    html: makeANiceEmail(htmlList)
-  });
-  if (!process.env.SENDGRID_API_KEY) {
+  const emailHtml = makeANiceEmail(`Your Password Reset Token is here ->
+    <a href="${process.env.FRONTEND_URL}/resetPassword?token=${resetToken}">Click Here to reset</a>
+    `);
+  if (resend) {
+    await resend.emails.send({
+      from: "no-reply@btbets.dev",
+      to,
+      subject: "Your password reset token",
+      html: emailHtml
+    });
+  } else {
+    const info = await testTransport.sendMail({
+      to,
+      from: "no-reply@btbets.dev",
+      subject: "Your password reset token",
+      html: emailHtml
+    });
     console.log(`\u{1F48C} Message Sent!  Preview it at ${(0, import_nodemailer.getTestMessageUrl)(info)}`);
   }
 }
 
 // cache.ts
 var cache = {};
-
-// espnStandings.ts
-var import_got = __toESM(require("got"));
-async function fetchEspnStandings(url) {
-  const response = await (0, import_got.default)(url, {});
-  const data = JSON.parse(response.body);
-  const teams0 = data.children[0].standings.entries;
-  const teams1 = data.children[1].standings.entries;
-  const teams = [...teams0, ...teams1];
-  const exportStandings = [];
-  teams.forEach((espnTeam) => {
-    const teamName = `${espnTeam.team.location} ${espnTeam.team.name ?? "Football Team"}`;
-    const wins = espnTeam.stats.find((s) => s.name === "wins")?.value || 0;
-    const losses = espnTeam.stats.find((s) => s.name === "losses")?.value || 0;
-    const ties = espnTeam.stats.find((s) => s.name === "ties")?.value || 0;
-    const gamesPlayed = wins + losses + ties;
-    exportStandings.push({
-      teamName,
-      gamesPlayed,
-      wins
-    });
-  });
-  return exportStandings;
-}
-
-// standingsJob.ts
-async function startDailyStandingsJob(keyStoneContext, contestId, totalGames, apiUrl) {
-  const lists = keyStoneContext.withSession({
-    data: {
-      id: "xx",
-      isAdmin: true
-    }
-  }).sudo().db;
-  const graphql4 = String.raw;
-  const espnStandings = await fetchEspnStandings(apiUrl);
-  const linesWithStandings = await keyStoneContext.query.Line.findMany({
-    where: { contest: { id: { equals: contestId } } },
-    query: graphql4`
-      id
-      title
-      benchmark
-      standings {
-        id
-        gamesPlayed
-        wins
-      }
-    `
-  });
-  const filteredLineStandings = linesWithStandings?.map((line) => {
-    let maxGamesPlayed = 0;
-    line?.standings?.forEach((standing) => {
-      if (standing && standing.gamesPlayed && standing.gamesPlayed > maxGamesPlayed) {
-        maxGamesPlayed = standing.gamesPlayed;
-      }
-    });
-    const copyLine = { ...line };
-    copyLine.standings = line.standings?.filter((s) => s.gamesPlayed === maxGamesPlayed);
-    return copyLine;
-  });
-  const newStandingsToInsert = [];
-  filteredLineStandings?.forEach((line) => {
-    const matchingESPNStanding = espnStandings.find((s) => s.teamName === line.title);
-    if ((matchingESPNStanding?.gamesPlayed || 0) > (line.standings?.[0]?.gamesPlayed || 0)) {
-      newStandingsToInsert.push({
-        id: "",
-        gamesPlayed: matchingESPNStanding?.gamesPlayed,
-        wins: matchingESPNStanding?.wins,
-        totalGames,
-        line: {
-          id: line.id,
-          title: line.title,
-          benchmark: line.benchmark
-        }
-      });
-    }
-  });
-  const newLineData = newStandingsToInsert.map((ns) => {
-    return {
-      gamesPlayed: ns.gamesPlayed,
-      wins: ns.wins,
-      totalGames: ns.totalGames,
-      line: { connect: { id: ns.line?.id } }
-    };
-  });
-  await lists.Standing.createMany({
-    data: newLineData
-  });
-  newStandingsToInsert.forEach((ns) => {
-    console.log(
-      `New standing inserted: ${ns.line?.title} - ${ns.wins} wins / ${ns.gamesPlayed} games played`
-    );
-  });
-  console.log(`${newStandingsToInsert.length} standings inserted in total`);
-  const regs = await keyStoneContext.query.Registration.findMany({
-    where: { contest: { id: { equals: contestId } } },
-    query: graphql4`
-      id
-    `
-  });
-  for (let i = 0; i < regs.length; i++) {
-    const reg = regs[i];
-    await keyStoneContext.query.Registration.findOne({
-      where: { id: reg.id },
-      query: graphql4`
-        id
-        user {
-          id
-          email
-        }
-        counts {
-          locked
-          likely
-          possible
-          tiebreaker
-        }
-      `
-    });
-    console.log(`cache filled for ${reg.user.email}`);
-  }
-  console.log("cache filled");
-  regs.forEach((r) => {
-    console.log(r);
-  });
-  const previouslyAlerted = {};
-  filteredLineStandings?.forEach((line) => {
-    const team = line.title || "";
-    const winsNeeded = line.benchmark || 0;
-    const lossesNeeded = totalGames - winsNeeded;
-    const wins = line.standings?.[0].wins || 0;
-    const losses = (line.standings?.[0].gamesPlayed || 0) - wins;
-    if (wins > winsNeeded || losses > lossesNeeded) {
-      previouslyAlerted[team] = true;
-    }
-  });
-  const alertStandings = {};
-  newStandingsToInsert.forEach((standing) => {
-    const team = standing.line?.title || "";
-    const winsNeeded = standing?.line?.benchmark || 0;
-    const lossesNeeded = totalGames - winsNeeded;
-    const wins = standing.wins || 0;
-    const losses = (standing?.gamesPlayed || 0) - wins;
-    if (!previouslyAlerted[team] && wins > winsNeeded) {
-      alertStandings[team] = "OVER";
-    }
-    if (!previouslyAlerted[team] && losses > lossesNeeded) {
-      alertStandings[team] = "UNDER";
-    }
-  });
-  if (Object.keys(alertStandings).length > 0) {
-    sendStandingsUpdate(alertStandings, "brock.m.tillotson@gmail.com");
-  }
-}
 
 // schemas/User.ts
 var import_fields = require("@keystone-6/core/fields");
@@ -1086,18 +922,12 @@ var keystone_default = auth.withAuth(
     db: {
       provider: "postgresql",
       url: `${process.env.DATABASE_URL}?pool_timeout=0` || "postgres://localhost:5432/contest",
-      async onConnect(context) {
+      async onConnect() {
         import_node_cron.default.schedule("0 0 14 * * *", () => {
           Object.keys(cache).forEach((k) => {
             cache[k] = null;
           });
-          console.log("running NBA standing job!");
-          startDailyStandingsJob(
-            context,
-            "cm1r8i861008mmc0j0ee9tm6g",
-            82,
-            "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings"
-          );
+          console.log("NO CRON JOBS SCHEDULED");
         });
         if (process.argv.includes("--seed-data")) {
           console.log("NO SEED DATA");
