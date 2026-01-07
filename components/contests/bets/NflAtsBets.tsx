@@ -17,7 +17,7 @@ import {
   useCurrentUserQuery,
 } from '../../../generated/graphql-types';
 import BetsStatusLine from './NflAtsBetsStatusLine';
-import { hasLineClosed, lineHasWinner } from '../lineCard/lineCardUtils';
+import { hasLineClosed, lineHasWinner, sortLines } from '../lineCard/lineCardUtils';
 import NflAtsLineCard from '../lineCard/NflAtsLineCard';
 import NflAtsTotalLineCard from '../lineCard/NFLAtsTotalLineCard';
 import NoLinesForContest from './NoLinesForContest';
@@ -84,9 +84,11 @@ export default function NflAtsBets({ contestId }: BetsTabProps): JSX.Element {
     return <NoLinesForContest />;
   }
 
-  const availableLines = lines.filter((l) => !hasLineClosed(l as Line));
-  const pendingLines = lines.filter((l) => hasLineClosed(l as Line) && !lineHasWinner(l as Line));
-  const settledLines = lines.filter((l) => lineHasWinner(l as Line));
+  const availableLines = sortLines(lines.filter((l) => !hasLineClosed(l as Line)));
+  const pendingLines = sortLines(
+    lines.filter((l) => hasLineClosed(l as Line) && !lineHasWinner(l as Line))
+  );
+  const settledLines = sortLines(lines.filter((l) => lineHasWinner(l as Line)));
   const userId = user?.id;
   const userHasEntered = contest?.registrations?.some((r) => r.user?.id === userId);
 
