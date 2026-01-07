@@ -1,4 +1,5 @@
-import { Line } from '../../../generated/graphql-types';
+import { firstBy } from 'thenby';
+import { ChoiceSelectionType, Line } from '../../../generated/graphql-types';
 
 export function hasLineClosed(line: Line): boolean {
   if (!line.closingTime) {
@@ -58,4 +59,30 @@ export function formatLineDate(line: Line): string {
     minute: 'numeric',
     timeZoneName: 'short',
   });
+}
+
+export function sortLines(linesToSort: Line[]): Line[] {
+  return [...linesToSort].sort(
+    firstBy<Line>((a, b) => {
+      const aTime = a.closingTime ? new Date(a.closingTime).getTime() : 0;
+      const bTime = b.closingTime ? new Date(b.closingTime).getTime() : 0;
+      return aTime - bTime;
+    }).thenBy<Line>((a, b) => {
+      const aHasAwayHome =
+        a.choices?.some(
+          (c) =>
+            c.selection === ChoiceSelectionType.Away || c.selection === ChoiceSelectionType.Home
+        ) ?? false;
+      const bHasAwayHome =
+        b.choices?.some(
+          (c) =>
+            c.selection === ChoiceSelectionType.Away || c.selection === ChoiceSelectionType.Home
+        ) ?? false;
+
+      // Away/Home lines come first (return -1), Over/Under lines come second (return 1)
+      if (aHasAwayHome && !bHasAwayHome) return -1;
+      if (!aHasAwayHome && bHasAwayHome) return 1;
+      return 0;
+    })
+  );
 }
