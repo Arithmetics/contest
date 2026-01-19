@@ -17,8 +17,8 @@ import {
 
 export default function CreateLinesForm({ contestId }: { contestId: string }): JSX.Element {
   const [title, setTitle] = useState('');
-  const [benchmark, setBenchmark] = useState(0);
-  const [totalBenchmark, setTotalBenchmark] = useState(0);
+  const [benchmark, setBenchmark] = useState<number | string>(0);
+  const [totalBenchmark, setTotalBenchmark] = useState<number | string>(0);
   const [closingTime, setClosingTime] = useState('');
   const toast = useToast();
 
@@ -32,12 +32,16 @@ export default function CreateLinesForm({ contestId }: { contestId: string }): J
       const localDate = new Date(closingTime);
       const utcString = localDate.toISOString();
 
+      const benchmarkNum = typeof benchmark === 'string' ? parseFloat(benchmark) : benchmark;
+      const totalBenchmarkNum =
+        typeof totalBenchmark === 'string' ? parseFloat(totalBenchmark) : totalBenchmark;
+
       await Promise.all([
         createLine({
           variables: {
             contestId,
             title,
-            benchmark,
+            benchmark: benchmarkNum,
             closingTime: utcString,
           },
         }),
@@ -45,7 +49,7 @@ export default function CreateLinesForm({ contestId }: { contestId: string }): J
           variables: {
             contestId,
             title,
-            benchmark: totalBenchmark,
+            benchmark: totalBenchmarkNum,
             closingTime: utcString,
           },
         }),
@@ -85,9 +89,15 @@ export default function CreateLinesForm({ contestId }: { contestId: string }): J
           <NumberInput
             value={benchmark}
             min={-999}
+            max={999}
             step={0.5}
             precision={1}
-            onChange={(_, val) => setBenchmark(val)}
+            allowMouseWheel
+            onChange={(valueAsString, valueAsNumber) => {
+              setBenchmark(
+                valueAsString === '' ? '' : isNaN(valueAsNumber) ? valueAsString : valueAsNumber
+              );
+            }}
           >
             <NumberInputField />
           </NumberInput>
@@ -97,10 +107,16 @@ export default function CreateLinesForm({ contestId }: { contestId: string }): J
           <FormLabel>Total Benchmark</FormLabel>
           <NumberInput
             value={totalBenchmark}
-            min={0}
+            min={-999}
+            max={999}
             step={0.5}
             precision={1}
-            onChange={(_, val) => setTotalBenchmark(val)}
+            allowMouseWheel
+            onChange={(valueAsString, valueAsNumber) => {
+              setTotalBenchmark(
+                valueAsString === '' ? '' : isNaN(valueAsNumber) ? valueAsString : valueAsNumber
+              );
+            }}
           >
             <NumberInputField />
           </NumberInput>
